@@ -260,9 +260,10 @@ blocking screen with a different Arabic message ("can't open this data"), file u
 
 - **Logo source (A5, corrected 2026-10-19):** `assets/images/logo.png`, already in this repo, placed by
   the owner. 799×1024 px, 8-bit RGBA PNG, 897,908 B. It is used in place on the welcome and
-  data-and-backup screens with a spoken label (FR-020). `E:\projects\Cardeil\assets\images\logo.png`
-  belongs to a different product and must never be read or used; nothing is copied from another
-  project. Only `logo.png` is registered as an asset; the other files in `assets/images/` are not.
+  data-and-backup screens with a spoken label (FR-020). This repo file is the only logo source.
+  The Cardeil project's logo belongs to another product and must never be used; nothing is copied
+  from another project. Only `logo.png` is registered as an asset; the other files in
+  `assets/images/` are not.
 - **Dark appearance (FR-021):** the logo has no transparency. Every pixel is opaque, on an off-white
   canvas (about `#FBFAF9`). On the dark theme the illustration stays visible and legible, but it
   shows as a bright rectangle with hard edges instead of blending into the screen.
