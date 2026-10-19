@@ -112,17 +112,17 @@ for human review.
 **Purpose**: pure-Dart utilities from contracts/core-utils.md, fully tested. Every file is
 independent, so all tasks are [P].
 
-- [ ] T013 [P] `lib/core/utils/result.dart`: `sealed class Result<T, E>` with `Ok<T, E>(value)` and
+- [X] T013 [P] `lib/core/utils/result.dart`: `sealed class Result<T, E>` with `Ok<T, E>(value)` and
   `Err<T, E>(error)`, plus `fold`. Test in `test/core/utils/result_test.dart`.
-- [ ] T014 [P] `lib/core/utils/app_locale_code.dart`: `enum AppLocaleCode { ar, en }`.
-- [ ] T015 [P] `lib/core/utils/digits.dart`:
+- [X] T014 [P] `lib/core/utils/app_locale_code.dart`: `enum AppLocaleCode { ar, en }`.
+- [X] T015 [P] `lib/core/utils/digits.dart`:
   - `enum DigitStyle { arabicIndic, latin }`;
   - `normalizeDigits(String)`: U+0660–0669 and U+06F0–06F9 become `0-9`;
   - `applyDigitStyle(String latin, DigitStyle)`: `0-9 → ٠-٩`, `. → ٫`, `, → ٬` when Arabic-Indic, otherwise unchanged;
   - `ltrIsolate(String)`: wraps in U+2066 … U+2069.
 
   Tests in `test/core/utils/digits_test.dart`.
-- [ ] T016 [P] `lib/core/utils/money.dart`:
+- [X] T016 [P] `lib/core/utils/money.dart`:
   - `piastersPerPound = 100`;
   - `roundHalfUpDiv` (half away from zero; asserts denominator > 0);
   - `lineTotalPiasters(qtyMilli, unitPricePiasters) = roundHalfUpDiv(qty*price, 1000)`;
@@ -135,14 +135,14 @@ independent, so all tasks are [P].
 
   Tests in `test/core/utils/money_test.dart` cover every case listed in contracts/core-utils.md,
   including a seeded-Random property test for allocation.
-- [ ] T017 [P] `lib/core/utils/quantity.dart`:
+- [X] T017 [P] `lib/core/utils/quantity.dart`:
   - `milliPerUnit = 1000`;
   - `enum UnitType { piece, kg, liter, meter }` with `allowsFraction` and `maxDecimals` (piece 0, others 3);
   - `tryParseQuantityMilli` rejects fractions for piece;
   - `formatQuantityMilli`.
 
   Tests in `test/core/utils/quantity_test.dart` include parse/format round-trips.
-- [ ] T018 [P] `lib/core/utils/phone.dart`:
+- [X] T018 [P] `lib/core/utils/phone.dart`:
   - `sealed class PhoneParse` with `PhoneOk(normalized)`, `PhoneEmpty`, `PhoneInvalidChars`,
     `PhoneTooShort` and `PhoneTooLong`;
   - `parseShopPhone(raw)` strips spaces and `-`, then `normalizeDigits`; allows an optional single
@@ -150,20 +150,20 @@ independent, so all tasks are [P].
 
   Tests in `test/core/utils/phone_test.dart`: the boundaries 6/7/15/16, Arabic digits, `+` in the
   middle rejected, empty → `PhoneEmpty`.
-- [ ] T019 [P] `lib/core/utils/arabic_normalize.dart`: `arabicNormalize(String)` does the following:
+- [X] T019 [P] `lib/core/utils/arabic_normalize.dart`: `arabicNormalize(String)` does the following:
   - removes tashkeel (U+064B–U+0652, U+0670) and tatweel (U+0640);
   - folds أإآ→ا, ة→ه, ى→ي;
   - converts digits to Latin and lowercases Latin;
   - collapses whitespace and trims.
 
   Tests in `test/core/utils/arabic_normalize_test.dart` cover each rule and idempotence.
-- [ ] T020 [P] `lib/core/utils/id.dart`: `IdGenerator` interface and `UuidV7Generator` (lowercase canonical
+- [X] T020 [P] `lib/core/utils/id.dart`: `IdGenerator` interface and `UuidV7Generator` (lowercase canonical
   UUID v7 via uuid 4.6.0). Tests in `test/core/utils/id_test.dart`: regex, lowercase, ordering across 1,000 ids.
-- [ ] T021 [P] `lib/core/utils/clock.dart`: `Clock` with `nowUtc()`, `SystemClock`, and `FixedClock(DateTime utc)`,
+- [X] T021 [P] `lib/core/utils/clock.dart`: `Clock` with `nowUtc()`, `SystemClock`, and `FixedClock(DateTime utc)`,
   which asserts the time is UTC. Tests in `test/core/utils/clock_test.dart`.
-- [ ] T022 [P] `lib/core/utils/text_length.dart`: `codePointLength(String) = s.runes.length` (matches
+- [X] T022 [P] `lib/core/utils/text_length.dart`: `codePointLength(String) = s.runes.length` (matches
   SQLite `length()`). Tests in `test/core/utils/text_length_test.dart` include emoji and Arabic.
-- [ ] T023 Phase gate: `flutter analyze` and `flutter test` green. Report and STOP.
+- [X] T023 Phase gate: `flutter analyze` and `flutter test` green. Report and STOP.
 
 **Checkpoint**: utilities are ready and the no-double rule passes.
 
