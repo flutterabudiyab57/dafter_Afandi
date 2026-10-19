@@ -371,8 +371,8 @@ independent, so all tasks are [P].
   - `IBMPlexSansArabic-Regular.ttf` (235,924 B), `-Medium.ttf` (242,100 B), `-SemiBold.ttf` (244,616 B),
     `-Bold.ttf` (246,992 B) and `OFL.txt` (4,456 B), into `assets/fonts/`;
   - verify each byte size, and report SHA-256 values.
-- [ ] T057 [P] Copy `E:\projects\Cardeil\assets\images\logo.png` (1184×1040, 435,593 B) to `assets/images/logo.png`.
-  This is the only file read from the old project (A5).
+- [ ] T057 [P] Verify `assets/images/logo.png` exists (placed by the owner, A5) and record its dimensions
+  (expected 799×1024 RGBA, 897,908 B). Copy nothing; never read any file from another project.
 - [ ] T058 Add to the `pubspec.yaml` `flutter:` section:
   - `assets: [assets/images/logo.png, assets/fonts/OFL.txt]`;
   - `fonts: - family: IBMPlexSansArabic` with weights 400/500/600/700 mapped to the four files.

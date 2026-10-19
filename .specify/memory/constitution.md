@@ -1,19 +1,3 @@
-<!--
-Sync Impact Report
-- Version change: (unfilled template) → 1.0.0
-- Principles (all new):
-  I. Local-First, Single Source of Truth
-  II. Arabic-First and Honest Documents
-  III. Data Integrity (NON-NEGOTIABLE)
-  IV. Feature-First, Strict Layering
-  V. Stack and Dependency Discipline
-- Added sections: Technical Rules; Quality Gates and Workflow; Governance
-- Removed sections: none
-- Sources folded in as binding rules: docs/research/M0-PHASE1-REPORT.md §7.1 (Draft CLAUDE.md),
-  amended by docs/research/M0-DECISIONS.md (Q2, Q4, Q8, Q16, Q20-Q23 applied explicitly)
-- Templates: not modified (scope guard); plan/spec/tasks templates read this file at runtime
-- Deferred TODOs: none
--->
 
 # Daftar Afandi (دفتر أفندي) Constitution
 

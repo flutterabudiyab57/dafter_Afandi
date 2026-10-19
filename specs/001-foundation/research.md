@@ -258,12 +258,19 @@ blocking screen with a different Arabic message ("can't open this data"), file u
 
 ## R11. Logo, launcher icon, splash
 
-- **Logo source** (only file read from the old project): `E:\projects\Cardeil\assets\images\logo.png`,
-  1184×1040 RGBA, 435,593 B. It is the only `assets/images/logo.png` under `E:\projects`. Copy it to
-  `assets/images/logo.png` and use it on the welcome and data-and-backup screens with a spoken label
-  (FR-020). **A5 approved 2026-10-19**: the owner confirmed this is the correct logo.
+- **Logo source (A5, corrected 2026-10-19):** `assets/images/logo.png`, already in this repo, placed by
+  the owner. 799×1024 px, 8-bit RGBA PNG, 897,908 B. It is used in place on the welcome and
+  data-and-backup screens with a spoken label (FR-020). `E:\projects\Cardeil\assets\images\logo.png`
+  belongs to a different product and must never be read or used; nothing is copied from another
+  project. Only `logo.png` is registered as an asset; the other files in `assets/images/` are not.
+- **Dark appearance (FR-021):** the logo has no transparency. Every pixel is opaque, on an off-white
+  canvas (about `#FBFAF9`). On the dark theme the illustration stays visible and legible, but it
+  shows as a bright rectangle with hard edges instead of blending into the screen.
+  **Design follow-up (not done now; the image is not edited):** a transparent-background or
+  dark-theme variant of the logo, supplied in the designs phase. Until then both themes show the
+  same image.
 - **Recommendation: defer the launcher icon and splash to the designs phase.** The logo isn't square
-  (1184×1040), and an Android adaptive icon needs a foreground drawn inside a 66% safe zone on its own
+  (799×1024), and an Android adaptive icon needs a foreground drawn inside a 66% safe zone on its own
   background, so generating icons now would mean redoing them. Until then the scaffold's default icons
   and Flutter's plain launch screen stay, and flutter_launcher_icons / flutter_native_splash are not
   added.

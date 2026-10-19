@@ -95,12 +95,16 @@ row in use; 17 tables prepared.
 | A2 | Add dependency_overrides for dev-only transitives that the lock audit finds too new (analyzer, source_gen, dart_style, build_daemon today), each with a "remove after" date? | Yes (or implement after 2026-10-29, when none is needed). |
 | A3 | Remove `cupertino_icons` from pubspec? | Yes. |
 | A4 | Data with a foreign application id or a corrupt header: the same blocking screen with a "can't open this data" message, file untouched? | Yes. |
-| A5 | Is `E:\projects\Cardeil\assets\images\logo.png` the right logo? | Confirm. |
+| A5 | Which logo? (Corrected 2026-10-19: `assets/images/logo.png`, already in this repo, placed by the owner.) | Use it in place; copy nothing. |
 
 **Approved 2026-10-19 by the project owner: A1–A5 all as recommended.** Rollback journal (no WAL,
 no direct sqlite3); dev-only overrides from the lock audit allowed, with "remove after" comments;
 `cupertino_icons` removed; an unrecognized file gets the blocking screen with the "can't open this
-data" message; the Cardeil logo is the correct one.
+data" message.
+
+**A5 corrected 2026-10-19 by the project owner:** the logo is `assets/images/logo.png`, already in
+this repo (799×1024 RGBA PNG). The file at the other project's path recorded earlier belongs to a
+different product and must never be read or used. Nothing is copied from another project.
 
 ## Project Structure
 
@@ -183,7 +187,7 @@ green, then stops for human review. The agent never commits.
 | **2. core/utils** | money, quantity, digits, phone, arabic_normalize, id, clock, text_length, result, with the full tests from contracts/core-utils.md | utils coverage complete; no `double` |
 | **3. Schema v1** | 17 tables, converters, `schema_sql.dart` triggers and partial indexes, seeds, `AppDatabase`, `TransactionRunner`, `SettingsDao`, build_runner, make-migrations v1 | schema, trigger (incl. meta), CHECK, seed and migration tests pass |
 | **4. Startup guard and bootstrap** | `schema_constants`, `SchemaGuard`, DB location (Application Support), `main.dart` order, `UpdateRequiredApp`, `StartupErrorApp`, `onUpgrade` from > to guard, DI setup | guard tests incl. bytes-unchanged; the bootstrap selects the right app |
-| **5. Theme, fonts, l10n shell** | download the fonts (asks first) and copy the logo; cmap check; tokens (`AppTokens` extension, light/dark from seed, typography, clamped spacing); LicenseRegistry; ARB ar/en with all keys; `app.dart` (delegates, ThemeMode.system, ScreenUtilInit) | delegates test, text-scale-untouched test, ARB parity and "no tax wording" tests |
+| **5. Theme, fonts, l10n shell** | download the fonts (asks first) and verify the logo in place; cmap check; tokens (`AppTokens` extension, light/dark from seed, typography, clamped spacing); LicenseRegistry; ARB ar/en with all keys; `app.dart` (delegates, ThemeMode.system, ScreenUtilInit) | delegates test, text-scale-untouched test, ARB parity and "no tax wording" tests |
 | **6. Settings domain and data** | `AppSettings`, `ShopProfile`, `SettingsRepository` and impl, `AppPreferencesCubit`, `ShopProfileFormCubit` | bloc_test and repository tests (atomic onboarding, persistence across reopen) |
 | **7. First run and router** | go_router with redirects, welcome (language switch), shop step, data-safety screen (platform text), completion → Home | widget tests: ar/en, 200% text, dark, interrupted-restart, redirect matrix |
 | **8. Shell, placeholders, settings UI** | `StatefulShellRoute` with 5 destinations, `SectionPlaceholder`, settings screen, shop edit, version row (Latin), digit-style rendering via `DigitStyleScope` | widget tests: order and RTL, shop name as typed, version Latin, semantics labels on all controls |
