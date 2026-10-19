@@ -1,0 +1,7 @@
+{
+  "@@locale": "ar",
+  "appName": "دفتر أفندي",
+  "@appName": {
+    "description": "Application name shown in the app and on the welcome screen."
+  }
+}

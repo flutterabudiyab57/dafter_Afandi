@@ -47,3 +47,11 @@ app.*.map.json
 .claude/settings.local.json
 .claude/**/*.local.*
 CLAUDE.local.md
+
+# Local data / secrets
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+.env
+.env.*
