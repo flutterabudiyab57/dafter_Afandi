@@ -66,6 +66,16 @@ final class ProductRepositoryImpl implements ProductRepository {
       .map((row) => row == null ? null : ProductMappers.summary(row));
 
   @override
+  Future<ProductSummary?> activeByBarcode(String barcode) async {
+    final code = normalizeCode(barcode);
+    if (code == null) return null;
+    final row = await _products.activeWithBarcode(code);
+    if (row == null) return null;
+    final summary = await _products.watchSummary(row.id).first;
+    return summary == null ? null : ProductMappers.summary(summary);
+  }
+
+  @override
   Stream<List<ProductSummary>> watchArchived() => _products.watchArchived().map(
     (rows) => rows.map(ProductMappers.summary).toList(),
   );

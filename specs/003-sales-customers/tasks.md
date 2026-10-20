@@ -15,11 +15,11 @@ is ambiguous.
 
 ## Phase 1: Domain (Foundational)
 
-- [ ] T001 Run the 14-day lock audit; report overrides past their date. Change nothing.
-- [ ] T002 [P] `lib/core/utils/doc_number.dart`: `formatDocNumber(String prefix, int n)` → `S-000012`
+- [X] T001 Run the 14-day lock audit; report overrides past their date. Change nothing.
+- [X] T002 [P] `lib/core/utils/doc_number.dart`: `formatDocNumber(String prefix, int n)` → `S-000012`
   (six digits minimum, Latin; the screen applies the digit style). Tests in
   `test/core/utils/doc_number_test.dart`.
-- [ ] T003 [P] `lib/features/customers/domain/`: `customer.dart` (Customer, CustomerSummary,
+- [X] T003 [P] `lib/features/customers/domain/`: `customer.dart` (Customer, CustomerSummary,
   CustomerQuery), `customer_errors.dart` (limits: name 100, text 200, amount 1e9; CustomerField
   enum; CustomerFieldError; CustomerSaveError; PaymentError; ReasonError), `customer_draft.dart`
   (`CustomerDraft.create` with "name trimmed, 1–100 code points", phone via `parseShopPhone`,
@@ -27,17 +27,17 @@ is ambiguous.
   sign by direction), `payment.dart` (PaymentMethod, PaymentRequest.create, validateReason
   "trimmed, 1–200 code points"), `ledger_entry.dart` (LedgerEntryType, LedgerEntry, LedgerCursor),
   `customer_repository.dart` (contract).
-- [ ] T004 [P] `lib/features/sales/domain/`: `sale_draft.dart` (SaleLine, SaleDraft with add /
+- [X] T004 [P] `lib/features/sales/domain/`: `sale_draft.dart` (SaleLine, SaleDraft with add /
   set / remove, totals, shares via `allocateLargestRemainder`, `validate()`), `sale_errors.dart`
   (SaleError, Shortage, SaleSaveError, VoidError), `sale.dart` (SaleSummary with kind, SaleInvoice,
   SaleItem, SaleQuery, SaleSaved), `sales_repository.dart` (contract).
-- [ ] T005 Add `activeByBarcode` to `ProductRepository`, its impl (via the existing
+- [X] T005 Add `activeByBarcode` to `ProductRepository`, its impl (via the existing
   `activeWithBarcode` DAO query) and the fake.
-- [ ] T006 [P] Tests: `test/features/customers/domain/` (draft limits, phone, opening sign,
+- [X] T006 [P] Tests: `test/features/customers/domain/` (draft limits, phone, opening sign,
   payment amount, reason) and `test/features/sales/domain/sale_draft_test.dart` (rounding half up,
   line and invoice discount limits, shares sum exactly, add same product raises qty, piece
   fraction rejected via the parsers, credit needs customer, paid > total).
-- [ ] T007 Gate: analyze clean, all tests green. Commit `feat(003): phase 1 domain`.
+- [X] T007 Gate: analyze clean, all tests green. Commit `feat(003): phase 1 domain`.
 
 ## Phase 2: Data (Foundational)
 

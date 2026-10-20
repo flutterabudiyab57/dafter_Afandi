@@ -36,6 +36,10 @@ final class _CountingRepository implements ProductRepository {
   Stream<List<ProductSummary>> watchArchived() => _inner.watchArchived();
 
   @override
+  Future<ProductSummary?> activeByBarcode(String barcode) =>
+      _inner.activeByBarcode(barcode);
+
+  @override
   Future<Result<ProductSaved, ProductSaveError>> create(ProductDraft d) =>
       _inner.create(d);
 

@@ -19,6 +19,10 @@ abstract interface class ProductRepository {
 
   Stream<List<ProductSummary>> watchArchived();
 
+  /// The active product with this barcode (folded like saved barcodes), or
+  /// null (003 research R2).
+  Future<ProductSummary?> activeByBarcode(String barcode);
+
   /// Saves a new product and, when `draft.opening` is set, its opening stock
   /// and average cost, all in one transaction.
   Future<Result<ProductSaved, ProductSaveError>> create(ProductDraft draft);

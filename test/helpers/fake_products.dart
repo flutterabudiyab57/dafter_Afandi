@@ -336,6 +336,15 @@ final class FakeProductRepository implements ProductRepository {
   Stream<List<ProductSummary>> watchArchived() => _s._watch(_s.archived);
 
   @override
+  Future<ProductSummary?> activeByBarcode(String barcode) async {
+    final code = normalizeCode(barcode);
+    for (final s in _s.summaries(const ProductQuery())) {
+      if (code != null && s.product.barcode == code) return s;
+    }
+    return null;
+  }
+
+  @override
   Future<Result<ProductSaved, ProductSaveError>> create(
     ProductDraft draft,
   ) async {
