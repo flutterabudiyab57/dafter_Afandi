@@ -12,6 +12,22 @@ abstract final class RoutePaths {
   static const String settingsShop = '/settings/shop';
   static const String settingsData = '/settings/data';
 
+  // Products, under the Home branch (002 research R10).
+  static const String products = '/home/products';
+  static const String productsLow = '/home/products?filter=low';
+  static const String productNew = '/home/products/new';
+  static const String productsArchived = '/home/products/archived';
+  static const String categories = '/home/categories';
+
+  static String productDetails(String id) => '$products/$id';
+  static String productEdit(String id) => '$products/$id/edit';
+  static String productOpening(String id) => '$products/$id/opening';
+  static String productAdjust(String id) => '$products/$id/adjust';
+
+  /// The five section roots, where the shell shows its own app bar.
+  static bool isSectionRoot(String path) =>
+      const {home, sales, parties, purchases, reports}.contains(path);
+
   /// The first-run routes: the only ones allowed before onboarding, and
   /// never shown after it.
   static bool isFirstRun(String path) =>

@@ -22,6 +22,7 @@ const List<String> kOnboardedPaths = [
   RoutePaths.settings,
   RoutePaths.settingsShop,
   RoutePaths.settingsData,
+  RoutePaths.products,
 ];
 
 const List<Widget> kBlockingApps = [

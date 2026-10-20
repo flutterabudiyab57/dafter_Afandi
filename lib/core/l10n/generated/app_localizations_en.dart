@@ -184,4 +184,403 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get startupErrorBody =>
       'Your data couldn\'t be opened. Nothing in it was changed. Close the app and open it again; if the problem continues, update the app from the store.';
+
+  @override
+  String get homeProductsAction => 'Products';
+
+  @override
+  String get homeCategoriesAction => 'Categories';
+
+  @override
+  String get lowStockCardTitle => 'Low stock';
+
+  @override
+  String lowStockCount(int count, String countText) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countText products are low on stock',
+      one: '1 product is low on stock',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get lowStockNone => 'Stock is fine.';
+
+  @override
+  String get lowStockNoProducts => 'Add products to track their stock.';
+
+  @override
+  String get lowStockSeeAll => 'See all';
+
+  @override
+  String get productsTitle => 'Products';
+
+  @override
+  String get productsSearchHint => 'Search by name, code or barcode';
+
+  @override
+  String get productsFilterAll => 'All';
+
+  @override
+  String get productsFilterNoCategory => 'No category';
+
+  @override
+  String get productsFilterLow => 'Low stock';
+
+  @override
+  String get productsArchivedTitle => 'Archived products';
+
+  @override
+  String get productsEmpty =>
+      'No products yet. Add your first product to start.';
+
+  @override
+  String get productsEmptyAction => 'Add product';
+
+  @override
+  String productsNoMatch(String query) {
+    return 'No product named “$query”.';
+  }
+
+  @override
+  String productsAddNamed(String name) {
+    return 'Add “$name”';
+  }
+
+  @override
+  String get markLowStock => 'Low stock';
+
+  @override
+  String get markBelowZero => 'Stock below zero';
+
+  @override
+  String get productArchivedBadge => 'Archived';
+
+  @override
+  String get unitPiece => 'By piece';
+
+  @override
+  String get unitKg => 'By kilogram';
+
+  @override
+  String get unitLiter => 'By liter';
+
+  @override
+  String get unitMeter => 'By meter';
+
+  @override
+  String get unitPieceShort => 'pc';
+
+  @override
+  String get unitKgShort => 'kg';
+
+  @override
+  String get unitLiterShort => 'L';
+
+  @override
+  String get unitMeterShort => 'm';
+
+  @override
+  String get productAddTitle => 'Add product';
+
+  @override
+  String get productEditTitle => 'Edit product';
+
+  @override
+  String get productNameLabel => 'Product name';
+
+  @override
+  String get productUnitLabel => 'Sold';
+
+  @override
+  String get productPriceLabel => 'Sale price per unit';
+
+  @override
+  String get productCategoryLabel => 'Category';
+
+  @override
+  String get productNoCategory => 'No category';
+
+  @override
+  String get productBarcodeLabel => 'Barcode';
+
+  @override
+  String get productSkuLabel => 'Code';
+
+  @override
+  String get productLowStockLabel => 'Low-stock level';
+
+  @override
+  String get productLowStockHint =>
+      'You\'ll see a mark when stock reaches this quantity or less.';
+
+  @override
+  String get productOpeningSection => 'Opening stock';
+
+  @override
+  String get productOpeningHint =>
+      'What\'s on the shelf now and what each unit cost you.';
+
+  @override
+  String get productOpeningQtyLabel => 'Quantity on hand';
+
+  @override
+  String get productOpeningCostLabel => 'Cost per unit';
+
+  @override
+  String get productUnitLockedNote =>
+      'The unit can\'t change once the product has stock history.';
+
+  @override
+  String get openingConfirmTitle => 'Confirm opening stock';
+
+  @override
+  String openingConfirmBody(String qty, String cost, String total) {
+    return '$qty × $cost = $total\nOpening stock can\'t be changed after saving.';
+  }
+
+  @override
+  String get confirmAction => 'Confirm';
+
+  @override
+  String get backAction => 'Back';
+
+  @override
+  String get cancelAction => 'Cancel';
+
+  @override
+  String get productNameExistsNotice =>
+      'Saved. Another product has the same name.';
+
+  @override
+  String get errorNameRequired => 'Enter the product name.';
+
+  @override
+  String errorNameTooLong(String max) {
+    return 'The name can be at most $max characters.';
+  }
+
+  @override
+  String get errorPriceRequired => 'Enter the sale price.';
+
+  @override
+  String get errorPriceInvalid =>
+      'Enter a valid amount with at most two decimal places.';
+
+  @override
+  String errorPriceTooLarge(String max) {
+    return 'The amount can be at most $max.';
+  }
+
+  @override
+  String get errorQuantityRequired => 'Enter the quantity.';
+
+  @override
+  String get errorQuantityInvalid =>
+      'Enter a valid quantity with at most three decimal places.';
+
+  @override
+  String get errorQuantityNotWhole => 'Pieces are whole numbers.';
+
+  @override
+  String errorQuantityTooLarge(String max) {
+    return 'The quantity can be at most $max.';
+  }
+
+  @override
+  String get errorOpeningCostRequired =>
+      'Enter the cost per unit; it\'s needed to work out profit.';
+
+  @override
+  String errorBarcodeTaken(String name) {
+    return 'This barcode is already used by “$name”.';
+  }
+
+  @override
+  String errorCodeTooLong(String max) {
+    return 'At most $max characters.';
+  }
+
+  @override
+  String errorRestoreBarcodeTaken(String name) {
+    return 'Can\'t restore: the barcode is now used by “$name”.';
+  }
+
+  @override
+  String errorNoteTooLong(String max) {
+    return 'The note can be at most $max characters.';
+  }
+
+  @override
+  String get productDetailsTitle => 'Product details';
+
+  @override
+  String get productAvgCost => 'Average cost';
+
+  @override
+  String get productStockOnHand => 'Stock on hand';
+
+  @override
+  String get productEditAction => 'Edit';
+
+  @override
+  String get productAdjustAction => 'Adjust stock';
+
+  @override
+  String get productSetOpeningAction => 'Set opening stock';
+
+  @override
+  String get productArchiveAction => 'Archive';
+
+  @override
+  String get productArchiveConfirm =>
+      'Archive this product? It leaves the list and search; its history is kept and you can restore it.';
+
+  @override
+  String get productRestoreAction => 'Restore';
+
+  @override
+  String get productRestored => 'Product restored.';
+
+  @override
+  String get historyTitle => 'Stock history';
+
+  @override
+  String get historyEmpty => 'No stock changes yet.';
+
+  @override
+  String get historyShowMore => 'Show more';
+
+  @override
+  String get stockOpening => 'Opening stock';
+
+  @override
+  String get stockPurchase => 'Purchase';
+
+  @override
+  String get stockPurchaseVoid => 'Purchase voided';
+
+  @override
+  String get stockSale => 'Sale';
+
+  @override
+  String get stockSaleReturn => 'Sale return';
+
+  @override
+  String get stockSaleVoid => 'Sale voided';
+
+  @override
+  String get stockAdjustment => 'Adjustment';
+
+  @override
+  String get reasonDamage => 'Damaged';
+
+  @override
+  String get reasonCount => 'Stock count';
+
+  @override
+  String get reasonOther => 'Other';
+
+  @override
+  String get adjustTitle => 'Adjust stock';
+
+  @override
+  String get adjustReasonLabel => 'Reason';
+
+  @override
+  String adjustOnHand(String qty) {
+    return 'On hand now: $qty';
+  }
+
+  @override
+  String get adjustCountedLabel => 'Counted quantity';
+
+  @override
+  String get adjustRemoveLabel => 'Quantity to remove';
+
+  @override
+  String get adjustAdd => 'Add';
+
+  @override
+  String get adjustRemove => 'Remove';
+
+  @override
+  String get adjustQtyLabel => 'Quantity';
+
+  @override
+  String get adjustNoteLabel => 'Note';
+
+  @override
+  String get adjustNoteRequired => 'Write a note explaining why.';
+
+  @override
+  String adjustExceedsStock(String qty) {
+    return 'Only $qty on hand.';
+  }
+
+  @override
+  String get adjustAlreadyMatches =>
+      'Stock already matches; nothing was recorded.';
+
+  @override
+  String adjustSaved(String qty) {
+    return 'Saved. Stock is now $qty.';
+  }
+
+  @override
+  String get categoriesTitle => 'Categories';
+
+  @override
+  String get categoryAddHint => 'New category name';
+
+  @override
+  String get categoryAddAction => 'Add';
+
+  @override
+  String get categoryRename => 'Rename';
+
+  @override
+  String get categoryMoveUp => 'Move up';
+
+  @override
+  String get categoryMoveDown => 'Move down';
+
+  @override
+  String get categoryArchive => 'Archive category';
+
+  @override
+  String get categoryArchiveConfirm =>
+      'Archive this category? Its products stay and show as “No category”.';
+
+  @override
+  String categoryProductCount(int count, String countText) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countText products',
+      one: '1 product',
+      zero: 'No products',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get categoriesEmpty => 'No categories yet.';
+
+  @override
+  String get errorCategoryNameRequired => 'Enter the category name.';
+
+  @override
+  String get errorCategoryDuplicate =>
+      'A category with this name already exists.';
+
+  @override
+  String errorCategoryNameTooLong(String max) {
+    return 'The category name can be at most $max characters.';
+  }
+
+  @override
+  String get productsFilterEmpty => 'No products match this filter.';
 }

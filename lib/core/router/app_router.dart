@@ -6,6 +6,9 @@ import '../../features/customers/presentation/parties_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/onboarding/presentation/shop_details_step_screen.dart';
 import '../../features/onboarding/presentation/welcome_screen.dart';
+import '../../features/products/domain/product_query.dart';
+import '../../features/products/presentation/products_cubits.dart';
+import '../../features/products/presentation/screens/product_list_screen.dart';
 import '../../features/purchases/presentation/purchases_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/sales/presentation/sales_screen.dart';
@@ -15,6 +18,7 @@ import '../../features/settings/presentation/cubits/shop_profile_form_cubit.dart
 import '../../features/settings/presentation/data_safety_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/settings/presentation/shop_profile_edit_screen.dart';
+import '../l10n/generated/app_localizations.dart';
 import '../widgets/app_shell_scaffold.dart';
 import 'route_names.dart';
 import 'stream_listenable.dart';
@@ -31,6 +35,7 @@ typedef ShopProfileFormCubitFactory = ShopProfileFormCubit Function(
 GoRouter createAppRouter(
   AppPreferencesCubit prefs, {
   required ShopProfileFormCubitFactory shopProfileForm,
+  required ProductsCubits products,
 }) {
   StatefulShellBranch section(String path, Widget screen) =>
       StatefulShellBranch(
@@ -70,10 +75,12 @@ GoRouter createAppRouter(
       ),
       // The five sections, in the order of FR-008, each keeping its stack.
       StatefulShellRoute.indexedStack(
-        builder: (context, state, shell) =>
-            AppShellScaffold(navigationShell: shell),
+        builder: (context, state, shell) => AppShellScaffold(
+          navigationShell: shell,
+          showAppBar: RoutePaths.isSectionRoot(state.uri.path),
+        ),
         branches: [
-          section(RoutePaths.home, const HomeScreen()),
+          StatefulShellBranch(routes: [_homeRoute(products)]),
           section(RoutePaths.sales, const SalesScreen()),
           section(RoutePaths.parties, const PartiesScreen()),
           section(RoutePaths.purchases, const PurchasesScreen()),
@@ -103,6 +110,79 @@ GoRouter createAppRouter(
         ],
       ),
     ],
+  );
+}
+
+/// Home and the products screens below it, so the bottom bar stays and Back
+/// returns to Home (002 research R10).
+GoRoute _homeRoute(ProductsCubits products) => GoRoute(
+  path: RoutePaths.home,
+  builder: (context, state) => BlocProvider(
+    create: (_) => products.lowStock(),
+    child: const HomeScreen(),
+  ),
+  routes: [
+    GoRoute(
+      path: 'products',
+      builder: (context, state) => BlocProvider(
+        create: (_) => products.productList(
+          initialQuery: ProductQuery(
+            lowOnly: state.uri.queryParameters['filter'] == 'low',
+          ),
+        ),
+        child: const ProductListScreen(),
+      ),
+      routes: [
+        // Before ':id', so these never match as ids.
+        GoRoute(
+          path: 'new',
+          builder: (context, state) => _Pending((l10n) => l10n.productAddTitle),
+        ),
+        GoRoute(
+          path: 'archived',
+          builder: (context, state) =>
+              _Pending((l10n) => l10n.productsArchivedTitle),
+        ),
+        GoRoute(
+          path: ':id',
+          builder: (context, state) =>
+              _Pending((l10n) => l10n.productDetailsTitle),
+          routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (context, state) =>
+                  _Pending((l10n) => l10n.productEditTitle),
+            ),
+            GoRoute(
+              path: 'opening',
+              builder: (context, state) =>
+                  _Pending((l10n) => l10n.productSetOpeningAction),
+            ),
+            GoRoute(
+              path: 'adjust',
+              builder: (context, state) => _Pending((l10n) => l10n.adjustTitle),
+            ),
+          ],
+        ),
+      ],
+    ),
+    GoRoute(
+      path: 'categories',
+      builder: (context, state) => _Pending((l10n) => l10n.categoriesTitle),
+    ),
+  ],
+);
+
+/// A titled, empty page for a products screen that a later phase of 002
+/// fills in.
+class _Pending extends StatelessWidget {
+  const _Pending(this.title);
+
+  final String Function(AppLocalizations l10n) title;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text(title(AppLocalizations.of(context)))),
   );
 }
 

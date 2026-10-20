@@ -68,24 +68,33 @@ void main() {
       },
     );
 
-    testWidgets('${locale.name}: each section shows its own placeholder', (
-      tester,
-    ) async {
-      await open(tester);
-      for (final (index, (path, title, body)) in sections.indexed) {
-        await tester.tap(find.text(labels[index]).last);
-        await tester.pumpAndSettle();
+    testWidgets(
+      '${locale.name}: Home shows products; the others their placeholder',
+      (tester) async {
+        await open(tester);
+        for (final (index, (path, title, body)) in sections.indexed) {
+          await tester.tap(find.text(labels[index]).last);
+          await tester.pumpAndSettle();
 
-        expect(currentPath(tester), path);
-        final bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
-        expect(bar.selectedIndex, index);
-        expect(find.text(body), findsOneWidget);
-        expect(find.text(title), findsWidgets);
-        // A placeholder, not a list of sample data.
-        expect(find.byType(ListTile), findsNothing);
-        expect(find.byType(ListView), findsNothing);
-      }
-    });
+          expect(currentPath(tester), path);
+          final bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
+          expect(bar.selectedIndex, index);
+          if (path == RoutePaths.home) {
+            // Home has real content since 002: Products, Categories and the
+            // low-stock card.
+            expect(find.text(l10n.homeProductsAction), findsOneWidget);
+            expect(find.text(l10n.homeCategoriesAction), findsOneWidget);
+            expect(find.text(l10n.lowStockCardTitle), findsOneWidget);
+            continue;
+          }
+          expect(find.text(body), findsOneWidget);
+          expect(find.text(title), findsWidgets);
+          // A placeholder, not a list of sample data.
+          expect(find.byType(ListTile), findsNothing);
+          expect(find.byType(ListView), findsNothing);
+        }
+      },
+    );
   }
 
   testWidgets('the settings button opens settings above the shell', (

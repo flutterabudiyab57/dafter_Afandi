@@ -9,6 +9,7 @@ import 'core/theme/app_spacing.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/app_tokens.dart';
 import 'core/widgets/digit_style_scope.dart';
+import 'features/products/presentation/products_cubits.dart';
 import 'features/settings/domain/app_settings.dart';
 import 'features/settings/domain/app_version.dart';
 import 'features/settings/presentation/cubits/app_preferences_cubit.dart';
@@ -19,6 +20,7 @@ class App extends StatefulWidget {
     required this.preferences,
     required this.appVersion,
     required this.shopProfileForm,
+    required this.products,
     super.key,
   });
 
@@ -30,6 +32,9 @@ class App extends StatefulWidget {
 
   final ShopProfileFormCubitFactory shopProfileForm;
 
+  /// Builds the products screens' cubits (002 research R11).
+  final ProductsCubits products;
+
   @override
   State<App> createState() => _AppState();
 }
@@ -38,6 +43,7 @@ class _AppState extends State<App> {
   late final GoRouter _router = createAppRouter(
     widget.preferences,
     shopProfileForm: widget.shopProfileForm,
+    products: widget.products,
   );
 
   @override

@@ -303,30 +303,30 @@ interfaces.
 **Independent test**: with seeded products (repository fakes), search by folded name, barcode and
 code, filter by category and low, and confirm the Home card states.
 
-- [ ] T041 [US2] Add every ARB key from contracts/screens-and-state.md to
+- [X] T041 [US2] Add every ARB key from contracts/screens-and-state.md to
   `lib/core/l10n/arb/app_ar.arb` (the template) and `app_en.arb`. Use placeholders as listed;
   `lowStockCount` and `categoryProductCount` are ICU plurals.
   - Units: Arabic قطعة / كجم / لتر / م and English pc / kg / L / m for the short labels (B3), plus
     the full names.
   - Run `flutter gen-l10n`.
-- [ ] T042 [P] [US2] Create `lib/features/products/presentation/widgets/unit_label.dart`
+- [X] T042 [P] [US2] Create `lib/features/products/presentation/widgets/unit_label.dart`
   (UnitType → short or full ARB label) and `stock_marks.dart`. The marks are icons for low and
   below zero, with spoken labels `markLowStock` and `markBelowZero`. Quantities are formatted via
   `formatQuantityMilli` and `context.digits`, then followed by the short unit label.
-- [ ] T043 [US2] Extend `lib/core/router/route_names.dart` with the R10 paths and builders
+- [X] T043 [US2] Extend `lib/core/router/route_names.dart` with the R10 paths and builders
   (`productDetails(id)`, `productEdit(id)`, `productOpening(id)`, `productAdjust(id)`). Add the
   children under the Home branch in `lib/core/router/app_router.dart`, with `new` and `archived`
   declared before `:id`.
   - `createAppRouter` takes `required ProductsCubits products`.
   - The routes this phase doesn't build yet point to a temporary `SectionPlaceholder`, replaced in
     Phases 5–7.
-- [ ] T044 [US2] Pass `ProductsCubits` through `lib/app.dart` (a `products` parameter) and
+- [X] T044 [US2] Pass `ProductsCubits` through `lib/app.dart` (a `products` parameter) and
   `lib/bootstrap.dart` (`sl<ProductsCubits>()`). Update `test/helpers/pump_app.dart` so `pumpApp`
   takes an optional `ProductsCubits`, defaulting to `FakeProductsCubits`.
-- [ ] T045 [P] [US2] Create `lib/features/products/presentation/widgets/product_row.dart`: the
+- [X] T045 [P] [US2] Create `lib/features/products/presentation/widgets/product_row.dart`: the
   name (wraps), price via `formatPiasters`, stock with the unit, and the marks. Tapping opens
   details. Its semantics label combines name, price and stock.
-- [ ] T046 [US2] Create `lib/features/products/presentation/screens/product_list_screen.dart`:
+- [X] T046 [US2] Create `lib/features/products/presentation/screens/product_list_screen.dart`:
   - a search field in the app bar;
   - filter chips (All / each active category in order / No category, and a Low stock toggle); the
     `?filter=low` query param starts with low on;
@@ -334,28 +334,28 @@ code, filter by category and low, and confirm the Home card states.
   - empty states: no products (`productsEmpty` with an add button), and no match
     (`productsNoMatch` with an "Add ‘…’" button that opens `/home/products/new` with the name
     filled in).
-- [ ] T047 [P] [US2] Create `lib/features/products/presentation/widgets/low_stock_card.dart` with
+- [X] T047 [P] [US2] Create `lib/features/products/presentation/widgets/low_stock_card.dart` with
   three states:
   - none low: `lowStockNone`;
   - no products: `lowStockNoProducts`;
   - some low: up to 5 rows, `lowStockCount`, and a tap that opens `/home/products?filter=low`.
 
   Tapping a row opens details.
-- [ ] T048 [US2] Replace the placeholder in `lib/features/home/presentation/home_screen.dart` with
+- [X] T048 [US2] Replace the placeholder in `lib/features/home/presentation/home_screen.dart` with
   the Products button, a Categories entry and the LowStockCard, providing `LowStockCubit` from
   `ProductsCubits`. The screen scrolls and has a capped width.
-- [ ] T049 [P] [US2] Widget tests in
+- [X] T049 [P] [US2] Widget tests in
   `test/features/products/presentation/product_list_screen_test.dart` for US2 scenarios 1–6 in ar
   and en: folded search, barcode first, category filter, low mark plus filter, both empty states
   (the "Add ‘…’" button carries the name), and RTL order.
-- [ ] T050 [P] [US2] Widget tests in `test/features/home/home_screen_test.dart` for US2 scenarios
+- [X] T050 [P] [US2] Widget tests in `test/features/home/home_screen_test.dart` for US2 scenarios
   7–9: Products opens the list, the card shows 5 of 7 and its tap opens the list with the low
   filter on, the card says stock is fine, and the no-products state. Run them at 100% and 200%
   text.
-- [ ] T051 [US2] Update `test/core/router/router_redirect_test.dart` with the new paths (blocked
+- [X] T051 [US2] Update `test/core/router/router_redirect_test.dart` with the new paths (blocked
   before onboarding and allowed after), and `test/helpers/screens.dart` (`kOnboardedPaths` gains
   the list).
-- [ ] T052 [US2] Gate: analyze clean, all tests green, ARB tests green. Commit
+- [X] T052 [US2] Gate: analyze clean, all tests green, ARB tests green. Commit
   `feat(002): phase 4 product list and Home`.
 
 ---

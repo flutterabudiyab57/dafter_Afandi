@@ -19,6 +19,14 @@ const List<String> _afterFirstRun = [
   RoutePaths.settings,
   RoutePaths.settingsShop,
   RoutePaths.settingsData,
+  RoutePaths.products,
+  RoutePaths.productNew,
+  RoutePaths.productsArchived,
+  RoutePaths.categories,
+  '/home/products/p1',
+  '/home/products/p1/edit',
+  '/home/products/p1/opening',
+  '/home/products/p1/adjust',
 ];
 
 void main() {
@@ -35,6 +43,14 @@ void main() {
       RoutePaths.settings,
       RoutePaths.settingsShop,
       RoutePaths.settingsData,
+      RoutePaths.products,
+      RoutePaths.productNew,
+      RoutePaths.productsArchived,
+      RoutePaths.categories,
+      '/home/products/p1',
+      '/home/products/p1/edit',
+      '/home/products/p1/opening',
+      '/home/products/p1/adjust',
     ];
 
     test('not onboarded: only first-run routes, everything else → welcome', () {

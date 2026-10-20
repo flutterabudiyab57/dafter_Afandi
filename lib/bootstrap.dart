@@ -13,6 +13,7 @@ import 'core/di/service_locator.dart';
 import 'core/theme/font_license.dart';
 import 'core/widgets/startup_error_app.dart';
 import 'core/widgets/update_required_app.dart';
+import 'features/products/presentation/products_cubits.dart';
 import 'features/settings/domain/app_settings.dart';
 import 'features/settings/domain/app_version.dart';
 import 'features/settings/domain/settings_repository.dart';
@@ -83,6 +84,7 @@ Future<void> bootstrap({
       appVersion: version,
       shopProfileForm: (mode, initial) =>
           sl<ShopProfileFormCubit>(param1: mode, param2: initial),
+      products: sl<ProductsCubits>(),
     ),
   );
 }

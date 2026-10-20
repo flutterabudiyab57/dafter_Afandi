@@ -7,24 +7,34 @@ import '../router/route_names.dart';
 /// The five sections in a bottom navigation bar, in the order of FR-008,
 /// with a settings button in the app bar.
 class AppShellScaffold extends StatelessWidget {
-  const AppShellScaffold({required this.navigationShell, super.key});
+  const AppShellScaffold({
+    required this.navigationShell,
+    this.showAppBar = true,
+    super.key,
+  });
 
   final StatefulNavigationShell navigationShell;
+
+  /// False on screens below a section (e.g. the product list), which bring
+  /// their own app bar with a back button.
+  final bool showAppBar;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.appName),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            tooltip: l10n.openSettingsSemantics,
-            onPressed: () => context.push(RoutePaths.settings),
-          ),
-        ],
-      ),
+      appBar: !showAppBar
+          ? null
+          : AppBar(
+              title: Text(l10n.appName),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.settings_outlined),
+                  tooltip: l10n.openSettingsSemantics,
+                  onPressed: () => context.push(RoutePaths.settings),
+                ),
+              ],
+            ),
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,

@@ -222,5 +222,553 @@
   "startupErrorBody": "تعذّر فتح بياناتك. لم يتم تغيير أي شيء فيها. أغلق التطبيق وافتحه مرة أخرى، وإذا تكررت المشكلة حدّث التطبيق من المتجر.",
   "@startupErrorBody": {
     "description": "Body of the screen shown when opening or upgrading the database fails."
+  },
+  "homeProductsAction": "المنتجات",
+  "@homeProductsAction": {
+    "description": "Home button that opens the product list."
+  },
+  "homeCategoriesAction": "الأقسام",
+  "@homeCategoriesAction": {
+    "description": "Home entry that opens the categories screen."
+  },
+  "lowStockCardTitle": "مخزون قليل",
+  "@lowStockCardTitle": {
+    "description": "Title of the Home card listing products low on stock."
+  },
+  "lowStockCount": "{count, plural, =1{منتج واحد مخزونه قليل} =2{منتجان مخزونهما قليل} few{{countText} منتجات مخزونها قليل} other{{countText} منتج مخزونه قليل}}",
+  "@lowStockCount": {
+    "description": "How many products are low on stock. {count} picks the plural form; {countText} is the same number in the active digit style.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "countText": {
+        "type": "String"
+      }
+    }
+  },
+  "lowStockNone": "المخزون كله على ما يرام.",
+  "@lowStockNone": {
+    "description": "Home card text when no product is low on stock."
+  },
+  "lowStockNoProducts": "أضف منتجاتك لتتابع مخزونها.",
+  "@lowStockNoProducts": {
+    "description": "Home card text when the shop has no products yet."
+  },
+  "lowStockSeeAll": "عرض الكل",
+  "@lowStockSeeAll": {
+    "description": "Home card action that opens the list filtered to low stock."
+  },
+  "productsTitle": "المنتجات",
+  "@productsTitle": {
+    "description": "Title of the product list."
+  },
+  "productsSearchHint": "ابحث بالاسم أو الكود أو الباركود",
+  "@productsSearchHint": {
+    "description": "Hint in the product search field."
+  },
+  "productsFilterAll": "الكل",
+  "@productsFilterAll": {
+    "description": "Filter chip: all categories."
+  },
+  "productsFilterNoCategory": "بدون قسم",
+  "@productsFilterNoCategory": {
+    "description": "Filter chip: products with no category."
+  },
+  "productsFilterLow": "مخزون قليل",
+  "@productsFilterLow": {
+    "description": "Filter chip: only products low on stock."
+  },
+  "productsArchivedTitle": "المنتجات المؤرشفة",
+  "@productsArchivedTitle": {
+    "description": "Title of the archived products screen and its menu item."
+  },
+  "productsEmpty": "لا توجد منتجات بعد. أضف أول منتج لتبدأ.",
+  "@productsEmpty": {
+    "description": "Empty state of the product list."
+  },
+  "productsEmptyAction": "إضافة منتج",
+  "@productsEmptyAction": {
+    "description": "Button in the empty product list."
+  },
+  "productsNoMatch": "لا يوجد منتج باسم «{query}».",
+  "@productsNoMatch": {
+    "description": "Empty search result. {query} is what the owner typed.",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "productsAddNamed": "إضافة «{name}»",
+  "@productsAddNamed": {
+    "description": "Button that opens the add form with the typed name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "markLowStock": "مخزون قليل",
+  "@markLowStock": {
+    "description": "Spoken label of the low-stock mark on a product row."
+  },
+  "markBelowZero": "المخزون أقل من صفر",
+  "@markBelowZero": {
+    "description": "Spoken label of the below-zero mark on a product row."
+  },
+  "productArchivedBadge": "مؤرشف",
+  "@productArchivedBadge": {
+    "description": "Badge on an archived product."
+  },
+  "unitPiece": "بالقطعة",
+  "@unitPiece": {
+    "description": "Unit option: sold by piece."
+  },
+  "unitKg": "بالكيلو",
+  "@unitKg": {
+    "description": "Unit option: sold by kilogram."
+  },
+  "unitLiter": "باللتر",
+  "@unitLiter": {
+    "description": "Unit option: sold by liter."
+  },
+  "unitMeter": "بالمتر",
+  "@unitMeter": {
+    "description": "Unit option: sold by meter."
+  },
+  "unitPieceShort": "قطعة",
+  "@unitPieceShort": {
+    "description": "Short unit label after a quantity: piece. No plural."
+  },
+  "unitKgShort": "كجم",
+  "@unitKgShort": {
+    "description": "Short unit label after a quantity: kilogram."
+  },
+  "unitLiterShort": "لتر",
+  "@unitLiterShort": {
+    "description": "Short unit label after a quantity: liter."
+  },
+  "unitMeterShort": "م",
+  "@unitMeterShort": {
+    "description": "Short unit label after a quantity: meter."
+  },
+  "productAddTitle": "إضافة منتج",
+  "@productAddTitle": {
+    "description": "Title of the add product screen and its button."
+  },
+  "productEditTitle": "تعديل المنتج",
+  "@productEditTitle": {
+    "description": "Title of the edit product screen."
+  },
+  "productNameLabel": "اسم المنتج",
+  "@productNameLabel": {
+    "description": "Label of the product name field."
+  },
+  "productUnitLabel": "يُباع",
+  "@productUnitLabel": {
+    "description": "Label above the unit options."
+  },
+  "productPriceLabel": "سعر البيع للوحدة",
+  "@productPriceLabel": {
+    "description": "Label of the sale price field."
+  },
+  "productCategoryLabel": "القسم",
+  "@productCategoryLabel": {
+    "description": "Label of the category picker and the category row in details."
+  },
+  "productNoCategory": "بدون قسم",
+  "@productNoCategory": {
+    "description": "Category option: none."
+  },
+  "productBarcodeLabel": "الباركود",
+  "@productBarcodeLabel": {
+    "description": "Label of the barcode field."
+  },
+  "productSkuLabel": "الكود",
+  "@productSkuLabel": {
+    "description": "Label of the product code (SKU) field."
+  },
+  "productLowStockLabel": "حد المخزون القليل",
+  "@productLowStockLabel": {
+    "description": "Label of the low-stock level field."
+  },
+  "productLowStockHint": "تظهر علامة عندما يصل المخزون إلى هذه الكمية أو أقل.",
+  "@productLowStockHint": {
+    "description": "Helper text under the low-stock level field."
+  },
+  "productOpeningSection": "رصيد أول المدة",
+  "@productOpeningSection": {
+    "description": "Header of the opening stock section."
+  },
+  "productOpeningHint": "الكمية الموجودة لديك الآن، وتكلفة الوحدة عليك.",
+  "@productOpeningHint": {
+    "description": "Helper text of the opening stock section."
+  },
+  "productOpeningQtyLabel": "الكمية الموجودة",
+  "@productOpeningQtyLabel": {
+    "description": "Label of the opening quantity field."
+  },
+  "productOpeningCostLabel": "تكلفة الوحدة",
+  "@productOpeningCostLabel": {
+    "description": "Label of the opening cost field."
+  },
+  "productUnitLockedNote": "لا يمكن تغيير الوحدة بعد تسجيل حركات مخزون للمنتج.",
+  "@productUnitLockedNote": {
+    "description": "Note under the disabled unit options."
+  },
+  "openingConfirmTitle": "تأكيد رصيد أول المدة",
+  "@openingConfirmTitle": {
+    "description": "Title of the opening stock confirmation."
+  },
+  "openingConfirmBody": "{qty} × {cost} = {total}\nلا يمكن تعديل رصيد أول المدة بعد الحفظ.",
+  "@openingConfirmBody": {
+    "description": "Opening stock confirmation. {qty} includes the unit; all values are already formatted.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmAction": "تأكيد",
+  "@confirmAction": {
+    "description": "Confirm button."
+  },
+  "backAction": "رجوع",
+  "@backAction": {
+    "description": "Back button in a dialog; nothing is saved."
+  },
+  "cancelAction": "إلغاء",
+  "@cancelAction": {
+    "description": "Cancel button in a dialog."
+  },
+  "productNameExistsNotice": "تم الحفظ. يوجد منتج آخر بنفس الاسم.",
+  "@productNameExistsNotice": {
+    "description": "Notice after saving a product whose name another product has."
+  },
+  "errorNameRequired": "اكتب اسم المنتج.",
+  "@errorNameRequired": {
+    "description": "Error when the product name is empty."
+  },
+  "errorNameTooLong": "الاسم لا يزيد على {max} حرفًا.",
+  "@errorNameTooLong": {
+    "description": "Error when a name is too long. {max} is already in the active digit style.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPriceRequired": "اكتب سعر البيع.",
+  "@errorPriceRequired": {
+    "description": "Error when the sale price is empty."
+  },
+  "errorPriceInvalid": "اكتب مبلغًا صحيحًا بحد أقصى رقمين بعد العلامة العشرية.",
+  "@errorPriceInvalid": {
+    "description": "Error when an amount is not a number or has too many decimals."
+  },
+  "errorPriceTooLarge": "المبلغ لا يزيد على {max}.",
+  "@errorPriceTooLarge": {
+    "description": "Error when an amount is too large. {max} is already formatted with the currency.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorQuantityRequired": "اكتب الكمية.",
+  "@errorQuantityRequired": {
+    "description": "Error when a quantity is empty or zero."
+  },
+  "errorQuantityInvalid": "اكتب كمية صحيحة بحد أقصى ٣ أرقام بعد العلامة العشرية.",
+  "@errorQuantityInvalid": {
+    "description": "Error when a quantity is not a number, negative or has too many decimals."
+  },
+  "errorQuantityNotWhole": "القطع تُكتب أعدادًا صحيحة بدون كسور.",
+  "@errorQuantityNotWhole": {
+    "description": "Error when a piece quantity has a fraction."
+  },
+  "errorQuantityTooLarge": "الكمية لا تزيد على {max}.",
+  "@errorQuantityTooLarge": {
+    "description": "Error when a quantity is too large. {max} is already formatted.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorOpeningCostRequired": "اكتب تكلفة الوحدة، نحتاجها لحساب الربح.",
+  "@errorOpeningCostRequired": {
+    "description": "Error when an opening quantity has no cost."
+  },
+  "errorBarcodeTaken": "هذا الباركود مستخدم للمنتج «{name}».",
+  "@errorBarcodeTaken": {
+    "description": "Error when another active product has the barcode.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCodeTooLong": "لا يزيد على {max} حرفًا.",
+  "@errorCodeTooLong": {
+    "description": "Error when a barcode or code is too long. {max} is already formatted.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorRestoreBarcodeTaken": "لا يمكن الاسترجاع: الباركود مستخدم الآن للمنتج «{name}».",
+  "@errorRestoreBarcodeTaken": {
+    "description": "Error when restoring a product whose barcode another active product has.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorNoteTooLong": "الملاحظة لا تزيد على {max} حرفًا.",
+  "@errorNoteTooLong": {
+    "description": "Error when a note is too long. {max} is already formatted.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "productDetailsTitle": "تفاصيل المنتج",
+  "@productDetailsTitle": {
+    "description": "Title of the product details screen."
+  },
+  "productAvgCost": "متوسط التكلفة",
+  "@productAvgCost": {
+    "description": "Row label: average cost per unit."
+  },
+  "productStockOnHand": "المخزون الحالي",
+  "@productStockOnHand": {
+    "description": "Row label: stock on hand."
+  },
+  "productEditAction": "تعديل",
+  "@productEditAction": {
+    "description": "Action that opens the edit form."
+  },
+  "productAdjustAction": "تسوية المخزون",
+  "@productAdjustAction": {
+    "description": "Action that opens the stock adjustment."
+  },
+  "productSetOpeningAction": "إدخال رصيد أول المدة",
+  "@productSetOpeningAction": {
+    "description": "Action that opens the opening stock screen."
+  },
+  "productArchiveAction": "أرشفة",
+  "@productArchiveAction": {
+    "description": "Action that archives the product."
+  },
+  "productArchiveConfirm": "أرشفة المنتج؟ لن يظهر في القائمة والبحث، ويبقى سجله محفوظًا ويمكن استرجاعه.",
+  "@productArchiveConfirm": {
+    "description": "Archive confirmation text."
+  },
+  "productRestoreAction": "استرجاع",
+  "@productRestoreAction": {
+    "description": "Action that restores an archived product."
+  },
+  "productRestored": "تم استرجاع المنتج.",
+  "@productRestored": {
+    "description": "Notice after restoring a product."
+  },
+  "historyTitle": "حركة المخزون",
+  "@historyTitle": {
+    "description": "Header of the stock history list."
+  },
+  "historyEmpty": "لا توجد حركات مخزون بعد.",
+  "@historyEmpty": {
+    "description": "Empty stock history."
+  },
+  "historyShowMore": "عرض المزيد",
+  "@historyShowMore": {
+    "description": "Loads more history rows."
+  },
+  "stockOpening": "رصيد أول المدة",
+  "@stockOpening": {
+    "description": "History type: opening stock."
+  },
+  "stockPurchase": "شراء",
+  "@stockPurchase": {
+    "description": "History type: purchase."
+  },
+  "stockPurchaseVoid": "إلغاء شراء",
+  "@stockPurchaseVoid": {
+    "description": "History type: purchase voided."
+  },
+  "stockSale": "بيع",
+  "@stockSale": {
+    "description": "History type: sale."
+  },
+  "stockSaleReturn": "مرتجع بيع",
+  "@stockSaleReturn": {
+    "description": "History type: sale return."
+  },
+  "stockSaleVoid": "إلغاء بيع",
+  "@stockSaleVoid": {
+    "description": "History type: sale voided."
+  },
+  "stockAdjustment": "تسوية",
+  "@stockAdjustment": {
+    "description": "History type: stock adjustment."
+  },
+  "reasonDamage": "تالف",
+  "@reasonDamage": {
+    "description": "Adjustment reason: damaged."
+  },
+  "reasonCount": "جرد",
+  "@reasonCount": {
+    "description": "Adjustment reason: stock count."
+  },
+  "reasonOther": "أخرى",
+  "@reasonOther": {
+    "description": "Adjustment reason: other."
+  },
+  "adjustTitle": "تسوية المخزون",
+  "@adjustTitle": {
+    "description": "Title of the stock adjustment screen."
+  },
+  "adjustReasonLabel": "السبب",
+  "@adjustReasonLabel": {
+    "description": "Label above the adjustment reasons."
+  },
+  "adjustOnHand": "الموجود حاليًا: {qty}",
+  "@adjustOnHand": {
+    "description": "Current stock on the adjustment screen. {qty} includes the unit.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "adjustCountedLabel": "الكمية التي تم عدّها",
+  "@adjustCountedLabel": {
+    "description": "Field label for a stock count."
+  },
+  "adjustRemoveLabel": "الكمية المطلوب خصمها",
+  "@adjustRemoveLabel": {
+    "description": "Field label for damaged stock."
+  },
+  "adjustAdd": "إضافة",
+  "@adjustAdd": {
+    "description": "Direction option: add stock."
+  },
+  "adjustRemove": "خصم",
+  "@adjustRemove": {
+    "description": "Direction option: remove stock."
+  },
+  "adjustQtyLabel": "الكمية",
+  "@adjustQtyLabel": {
+    "description": "Field label for the other reason."
+  },
+  "adjustNoteLabel": "ملاحظة",
+  "@adjustNoteLabel": {
+    "description": "Label of the note field."
+  },
+  "adjustNoteRequired": "اكتب ملاحظة توضح السبب.",
+  "@adjustNoteRequired": {
+    "description": "Error when the other reason has no note."
+  },
+  "adjustExceedsStock": "الموجود {qty} فقط.",
+  "@adjustExceedsStock": {
+    "description": "Error when removing more than is on hand. {qty} includes the unit.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "adjustAlreadyMatches": "المخزون مطابق بالفعل، لم يتم تسجيل شيء.",
+  "@adjustAlreadyMatches": {
+    "description": "Info when a count equals the stock."
+  },
+  "adjustSaved": "تم الحفظ. المخزون الآن {qty}.",
+  "@adjustSaved": {
+    "description": "Notice after an adjustment. {qty} includes the unit.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "categoriesTitle": "الأقسام",
+  "@categoriesTitle": {
+    "description": "Title of the categories screen."
+  },
+  "categoryAddHint": "اسم قسم جديد",
+  "@categoryAddHint": {
+    "description": "Hint of the add category field."
+  },
+  "categoryAddAction": "إضافة",
+  "@categoryAddAction": {
+    "description": "Button that adds the typed category."
+  },
+  "categoryRename": "تغيير الاسم",
+  "@categoryRename": {
+    "description": "Action that renames a category."
+  },
+  "categoryMoveUp": "تحريك لأعلى",
+  "@categoryMoveUp": {
+    "description": "Action that moves a category up."
+  },
+  "categoryMoveDown": "تحريك لأسفل",
+  "@categoryMoveDown": {
+    "description": "Action that moves a category down."
+  },
+  "categoryArchive": "أرشفة القسم",
+  "@categoryArchive": {
+    "description": "Action that archives a category."
+  },
+  "categoryArchiveConfirm": "أرشفة القسم؟ منتجاته تبقى وتظهر «بدون قسم».",
+  "@categoryArchiveConfirm": {
+    "description": "Category archive confirmation."
+  },
+  "categoryProductCount": "{count, plural, =0{لا منتجات} =1{منتج واحد} =2{منتجان} few{{countText} منتجات} other{{countText} منتج}}",
+  "@categoryProductCount": {
+    "description": "Number of products in a category. {count} picks the plural form; {countText} is the same number in the active digit style.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "countText": {
+        "type": "String"
+      }
+    }
+  },
+  "categoriesEmpty": "لا توجد أقسام بعد.",
+  "@categoriesEmpty": {
+    "description": "Empty categories list."
+  },
+  "errorCategoryNameRequired": "اكتب اسم القسم.",
+  "@errorCategoryNameRequired": {
+    "description": "Error when a category name is empty."
+  },
+  "errorCategoryDuplicate": "يوجد قسم بنفس الاسم.",
+  "@errorCategoryDuplicate": {
+    "description": "Error when an active category has the same name."
+  },
+  "errorCategoryNameTooLong": "اسم القسم لا يزيد على {max} حرفًا.",
+  "@errorCategoryNameTooLong": {
+    "description": "Error when a category name is too long. {max} is already formatted.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "productsFilterEmpty": "لا توجد منتجات تطابق هذا الاختيار.",
+  "@productsFilterEmpty": {
+    "description": "Empty list when filters (no search text) match nothing."
   }
 }

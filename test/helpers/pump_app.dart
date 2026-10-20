@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:daftar_afandi/app.dart';
+import 'package:daftar_afandi/features/products/presentation/products_cubits.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:daftar_afandi/features/settings/domain/app_settings.dart';
 import 'package:daftar_afandi/features/settings/domain/app_version.dart';
@@ -11,6 +12,8 @@ import 'package:daftar_afandi/features/settings/presentation/cubits/shop_profile
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
+
+import 'fake_products.dart';
 
 const AppVersion kTestVersion = AppVersion(name: '1.0.0', build: '1');
 
@@ -101,6 +104,7 @@ Future<void> pumpApp(
   Size size = const Size(420, 812),
   double textScale = 1,
   Brightness brightness = Brightness.light,
+  ProductsCubits? products,
 }) async {
   tester.view
     ..devicePixelRatio = 1
@@ -123,6 +127,7 @@ Future<void> pumpApp(
       appVersion: kTestVersion,
       shopProfileForm: (mode, initial) =>
           ShopProfileFormCubit(repository, mode: mode, initial: initial),
+      products: products ?? FakeProductsCubits(),
     ),
   );
   await tester.pumpAndSettle();
