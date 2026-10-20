@@ -6,12 +6,16 @@ import 'core/l10n/generated/app_localizations.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_spacing.dart';
 import 'core/theme/app_theme.dart';
+import 'features/settings/domain/app_version.dart';
 
 /// The app root: locale, themes and the router.
 class App extends StatefulWidget {
-  const App({required this.locale, super.key});
+  const App({required this.locale, required this.appVersion, super.key});
 
   final Locale locale;
+
+  /// Read once at startup; shown in settings (FR-010).
+  final AppVersion appVersion;
 
   @override
   State<App> createState() => _AppState();

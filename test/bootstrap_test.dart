@@ -11,6 +11,7 @@ import 'package:daftar_afandi/core/utils/clock.dart';
 import 'package:daftar_afandi/core/utils/id.dart';
 import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
+import 'package:daftar_afandi/features/settings/domain/app_version.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,6 +45,7 @@ void main() {
     runAppFn: shown.add,
     supportDir: () async => dir,
     executorFactory: executorFactory,
+    versionSource: const _FixedVersion(),
   );
 
   /// A real v1 file made by AppDatabase, then closed.
@@ -71,7 +73,9 @@ void main() {
 
     expect(
       shown.single,
-      isA<App>().having((a) => a.locale, 'locale', const Locale('ar')),
+      isA<App>()
+          .having((a) => a.locale, 'locale', const Locale('ar'))
+          .having((a) => a.appVersion.display, 'version', '1.0.0 (1)'),
     );
     expect(executorCalls, 1);
     expect(dbFile.existsSync(), isTrue);
@@ -172,4 +176,12 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.textContaining('تعذّر فتح بياناتك'), findsOneWidget);
   });
+}
+
+final class _FixedVersion implements AppVersionSource {
+  const _FixedVersion();
+
+  @override
+  Future<AppVersion> read() async =>
+      const AppVersion(name: '1.0.0', build: '1');
 }

@@ -427,52 +427,52 @@ independent, so all tasks are [P].
 
 **Purpose**: contracts/settings-and-state.md: entities, repository and Cubits.
 
-- [ ] T072 [P] `lib/features/settings/domain/app_locale.dart`: `enum AppLocale { ar, en }` and
+- [X] T072 [P] `lib/features/settings/domain/app_locale.dart`: `enum AppLocale { ar, en }` and
   `enum DigitStylePreference { followLanguage, arabicIndic, latin }`.
-- [ ] T073 [P] `lib/features/settings/domain/shop_profile.dart`:
+- [X] T073 [P] `lib/features/settings/domain/shop_profile.dart`:
   - `ShopProfile` (Equatable) {name, phone?};
   - `static Result<ShopProfile, ShopProfileError> create(String rawName, String rawPhone)`;
   - name: trim; "1–60 code points" (`codePointLength`);
   - phone: delegates to `parseShopPhone` (empty → null);
   - `enum ShopProfileError { nameRequired, nameTooLong, phoneInvalidCharacters, phoneTooShort, phoneTooLong }`.
-- [ ] T074 [P] `lib/features/settings/domain/app_settings.dart`: `AppSettings` (Equatable) {locale, digitStyle,
+- [X] T074 [P] `lib/features/settings/domain/app_settings.dart`: `AppSettings` (Equatable) {locale, digitStyle,
   shop?, onboardingCompleted} with `effectiveDigitStyle` (`followLanguage`: ar → arabicIndic, en → latin).
-- [ ] T075 [P] `lib/features/settings/domain/app_version.dart`: `AppVersion {name, build}`, with
+- [X] T075 [P] `lib/features/settings/domain/app_version.dart`: `AppVersion {name, build}`, with
   `display => '$name ($build)'` (always Latin), and `abstract interface class AppVersionSource { Future<AppVersion> read(); }`.
-- [ ] T076 [P] `lib/features/settings/domain/settings_repository.dart`: the interface from the contract
+- [X] T076 [P] `lib/features/settings/domain/settings_repository.dart`: the interface from the contract
   (`load`, `watch`, `setLocale`, `setDigitStyle`, `saveShopProfile`, `completeOnboarding`) and
   `SettingsWriteFailure`.
-- [ ] T077 `lib/features/settings/data/settings_repository_impl.dart`:
+- [X] T077 `lib/features/settings/data/settings_repository_impl.dart`:
   - `SettingsRepositoryImpl(SettingsDao, TransactionRunner, Clock)` with row ↔ entity mapping;
   - `completeOnboarding` = ONE `TransactionRunner.run` that updates `shopName`, `shopPhone`,
     `onboardingCompletedAt` and `updatedAt`;
   - storage errors are wrapped in `SettingsWriteFailure`.
-- [ ] T078 [P] `lib/features/settings/data/package_info_app_version_source.dart`: implements `AppVersionSource`
+- [X] T078 [P] `lib/features/settings/data/package_info_app_version_source.dart`: implements `AppVersionSource`
   via `PackageInfo.fromPlatform()`.
-- [ ] T079 `lib/features/settings/presentation/cubits/app_preferences_cubit.dart`:
+- [X] T079 `lib/features/settings/presentation/cubits/app_preferences_cubit.dart`:
   - state = `AppSettings`;
   - subscribes to `repository.watch()`;
   - `changeLocale` and `changeDigitStyle` write through the repository.
-- [ ] T080 `lib/features/settings/presentation/cubits/shop_profile_form_cubit.dart` and `shop_profile_form_state.dart`:
+- [X] T080 `lib/features/settings/presentation/cubits/shop_profile_form_cubit.dart` and `shop_profile_form_state.dart`:
   - `ShopProfileFormMode { onboarding, settings }`;
   - state {nameInput, phoneInput, nameError?, phoneError?, status: idle/saving/saved/failed};
   - `nameChanged`, `phoneChanged`, `validate()` (no write), and `submit()`, which calls
     `completeOnboarding` (onboarding) or `saveShopProfile` (settings);
   - a failure keeps the inputs.
-- [ ] T081 Register `SettingsRepository`, `AppVersionSource` and the Cubit factories in
+- [X] T081 Register `SettingsRepository`, `AppVersionSource` and the Cubit factories in
   `lib/core/di/service_locator.dart`. Load `AppVersion` once in `bootstrap()` and pass it down.
-- [ ] T082 [P] `test/features/settings/domain/shop_profile_test.dart`: every error, the 60/61 code-point boundary,
+- [X] T082 [P] `test/features/settings/domain/shop_profile_test.dart`: every error, the 60/61 code-point boundary,
   trim, an Arabic-digit phone normalized.
-- [ ] T083 [P] `test/features/settings/data/settings_repository_impl_test.dart` on `NativeDatabase.memory()`
+- [X] T083 [P] `test/features/settings/data/settings_repository_impl_test.dart` on `NativeDatabase.memory()`
   and a temp file:
   - load defaults; set locale and digit style;
   - `completeOnboarding` atomic: a forced DAO failure leaves `onboardingCompletedAt` NULL;
   - values persist after close and reopen of the temp file (SC-003).
-- [ ] T084 [P] `test/features/settings/presentation/app_preferences_cubit_test.dart` (bloc_test + mocktail): the stream
+- [X] T084 [P] `test/features/settings/presentation/app_preferences_cubit_test.dart` (bloc_test + mocktail): the stream
   updates the state; `changeLocale` calls the repository.
-- [ ] T085 [P] `test/features/settings/presentation/shop_profile_form_cubit_test.dart`: validation errors, submit success
+- [X] T085 [P] `test/features/settings/presentation/shop_profile_form_cubit_test.dart`: validation errors, submit success
   in both modes, a failure keeping inputs.
-- [ ] T086 Phase gate: `flutter analyze` and `flutter test` green. Report and STOP.
+- [X] T086 Phase gate: `flutter analyze` and `flutter test` green. Report and STOP.
 
 **Checkpoint**: settings state is persisted and reactive.
 

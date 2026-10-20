@@ -7,14 +7,15 @@ import 'package:path_provider/path_provider.dart';
 
 import 'app.dart';
 import 'core/database/connection.dart';
-import 'core/database/daos/settings_dao.dart';
 import 'core/database/schema_errors.dart';
 import 'core/database/schema_guard.dart';
-import 'core/database/tables/enums.dart';
 import 'core/di/service_locator.dart';
 import 'core/theme/font_license.dart';
 import 'core/widgets/startup_error_app.dart';
 import 'core/widgets/update_required_app.dart';
+import 'features/settings/domain/app_settings.dart';
+import 'features/settings/domain/app_version.dart';
+import 'features/settings/domain/settings_repository.dart';
 
 /// Starts the app (contracts/startup-guard.md). The schema guard runs before
 /// any database object or DI registration exists, so a newer or foreign file
@@ -24,6 +25,7 @@ Future<void> bootstrap({
   SchemaGuard? guard,
   Future<Directory> Function()? supportDir,
   QueryExecutor Function(Directory)? executorFactory,
+  AppVersionSource? versionSource,
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -52,13 +54,17 @@ Future<void> bootstrap({
       break;
   }
 
-  final LocaleCode localeCode;
+  final AppSettings settings;
+  final AppVersion version;
   try {
     await configureDependencies(
       executor: (executorFactory ?? openAppDatabaseExecutor)(dir),
+      versionSource: versionSource,
     );
     // The first query opens the file and runs onCreate or onUpgrade.
-    localeCode = (await sl<SettingsDao>().getSingleton()).localeCode;
+    settings = await sl<SettingsRepository>().load();
+    // Read once and passed down (T081).
+    version = await sl<AppVersionSource>().read();
   } on SchemaTooNewException {
     await _releaseDatabase();
     runAppFn(const UpdateRequiredApp(kind: UpdateRequiredKind.tooNew));
@@ -69,7 +75,7 @@ Future<void> bootstrap({
     return;
   }
 
-  runAppFn(App(locale: Locale(localeCode.name)));
+  runAppFn(App(locale: Locale(settings.locale.name), appVersion: version));
 }
 
 Future<void> _releaseDatabase() async {
