@@ -1093,6 +1093,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد منتجات تطابق هذا الاختيار.'**
   String get productsFilterEmpty;
+
+  /// Shown when a product page is opened for a product that does not exist.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا المنتج غير موجود.'**
+  String get productNotFound;
+
+  /// Empty archived products list.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد منتجات مؤرشفة.'**
+  String get productsArchivedEmpty;
 }
 
 class _AppLocalizationsDelegate

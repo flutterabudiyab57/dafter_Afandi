@@ -79,7 +79,9 @@ final class FakeProductsStore {
         changes = _changes.stream.listen((_) => controller.add(read()));
         controller.add(read());
       },
-      onCancel: () => changes?.cancel(),
+      // Not returned: Stream.first waits for this future, and under fake
+      // async a broadcast cancel never completes.
+      onCancel: () => unawaited(changes?.cancel()),
     );
     return controller.stream;
   }

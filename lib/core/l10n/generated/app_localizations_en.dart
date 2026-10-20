@@ -583,4 +583,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get productsFilterEmpty => 'No products match this filter.';
+
+  @override
+  String get productNotFound => 'This product doesn\'t exist.';
+
+  @override
+  String get productsArchivedEmpty => 'No archived products.';
 }

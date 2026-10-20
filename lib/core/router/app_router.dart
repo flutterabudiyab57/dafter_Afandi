@@ -7,7 +7,11 @@ import '../../features/home/presentation/home_screen.dart';
 import '../../features/onboarding/presentation/shop_details_step_screen.dart';
 import '../../features/onboarding/presentation/welcome_screen.dart';
 import '../../features/products/domain/product_query.dart';
+import '../../features/products/presentation/cubits/product_form_cubit.dart';
 import '../../features/products/presentation/products_cubits.dart';
+import '../../features/products/presentation/screens/archived_products_screen.dart';
+import '../../features/products/presentation/screens/product_details_screen.dart';
+import '../../features/products/presentation/screens/product_form_screen.dart';
 import '../../features/products/presentation/screens/product_list_screen.dart';
 import '../../features/purchases/presentation/purchases_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
@@ -136,22 +140,37 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
         // Before ':id', so these never match as ids.
         GoRoute(
           path: 'new',
-          builder: (context, state) => _Pending((l10n) => l10n.productAddTitle),
+          builder: (context, state) => BlocProvider(
+            create: (_) => products.productForm(
+              mode: ProductFormMode.create,
+              initialName: state.extra is String ? state.extra! as String : '',
+            ),
+            child: const ProductFormScreen(),
+          ),
         ),
         GoRoute(
           path: 'archived',
-          builder: (context, state) =>
-              _Pending((l10n) => l10n.productsArchivedTitle),
+          builder: (context, state) => BlocProvider(
+            create: (_) => products.archivedProducts(),
+            child: const ArchivedProductsScreen(),
+          ),
         ),
         GoRoute(
           path: ':id',
-          builder: (context, state) =>
-              _Pending((l10n) => l10n.productDetailsTitle),
+          builder: (context, state) => BlocProvider(
+            create: (_) => products.productDetails(state.pathParameters['id']!),
+            child: const ProductDetailsScreen(),
+          ),
           routes: [
             GoRoute(
               path: 'edit',
-              builder: (context, state) =>
-                  _Pending((l10n) => l10n.productEditTitle),
+              builder: (context, state) => BlocProvider(
+                create: (_) => products.productForm(
+                  mode: ProductFormMode.edit,
+                  productId: state.pathParameters['id'],
+                ),
+                child: const ProductFormScreen(),
+              ),
             ),
             GoRoute(
               path: 'opening',

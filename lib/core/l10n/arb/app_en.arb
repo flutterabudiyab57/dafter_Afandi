@@ -165,5 +165,7 @@
   "errorCategoryNameRequired": "Enter the category name.",
   "errorCategoryDuplicate": "A category with this name already exists.",
   "errorCategoryNameTooLong": "The category name can be at most {max} characters.",
-  "productsFilterEmpty": "No products match this filter."
+  "productsFilterEmpty": "No products match this filter.",
+  "productNotFound": "This product doesn't exist.",
+  "productsArchivedEmpty": "No archived products."
 }

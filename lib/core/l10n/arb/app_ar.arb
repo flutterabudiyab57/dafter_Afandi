@@ -770,5 +770,13 @@
   "productsFilterEmpty": "لا توجد منتجات تطابق هذا الاختيار.",
   "@productsFilterEmpty": {
     "description": "Empty list when filters (no search text) match nothing."
+  },
+  "productNotFound": "هذا المنتج غير موجود.",
+  "@productNotFound": {
+    "description": "Shown when a product page is opened for a product that does not exist."
+  },
+  "productsArchivedEmpty": "لا توجد منتجات مؤرشفة.",
+  "@productsArchivedEmpty": {
+    "description": "Empty archived products list."
   }
 }

@@ -367,19 +367,19 @@ code, filter by category and low, and confirm the Home card states.
 **Independent test**: add a piece product and a kg product with opening stock, close and reopen,
 and both are there; change a price; archive and restore.
 
-- [ ] T053 [P] [US1] Create `lib/core/widgets/money_field.dart` and
+- [X] T053 [P] [US1] Create `lib/core/widgets/money_field.dart` and
   `lib/core/widgets/quantity_field.dart`:
   - `TextFormField`s with `TextInputType.numberWithOptions(decimal: true)`;
   - a formatter that accepts both digit sets and caps the decimals: 2 for money, and
     `unit.maxDecimals` for quantity (0 for piece, 3 otherwise), so a 4th decimal cannot be typed;
   - an LTR-isolated input. Test them in `test/core/widgets/number_fields_test.dart`.
-- [ ] T054 [P] [US1] Create `lib/features/products/presentation/widgets/product_error_text.dart`:
+- [X] T054 [P] [US1] Create `lib/features/products/presentation/widgets/product_error_text.dart`:
   `ProductFieldError`, `ProductSaveError` and `RestoreError` mapped to ARB messages, with numeric
   limits formatted in the active digit style.
-- [ ] T055 [P] [US1] Create
+- [X] T055 [P] [US1] Create
   `lib/features/products/presentation/widgets/opening_confirm_dialog.dart`. It shows
   `openingConfirmBody(qty with unit, cost, total)` with Confirm and Back, and returns a bool.
-- [ ] T056 [US1] Create `lib/features/products/presentation/screens/product_form_screen.dart`
+- [X] T056 [US1] Create `lib/features/products/presentation/screens/product_form_screen.dart`
   (create and edit):
   - fields: name; unit as a SegmentedButton of 4, disabled with `productUnitLockedNote` when
     locked; price; a category picker with "No category"; barcode; code; low-stock level;
@@ -389,7 +389,7 @@ and both are there; change a price; archive and restore.
   - on `confirmOpening` it shows the dialog;
   - on `saved` it pops to details, and shows the `productNameExistsNotice` SnackBar when flagged.
   - Wire `/home/products/new` and `/home/products/:id/edit`.
-- [ ] T057 [US3] Create `lib/features/products/presentation/screens/product_details_screen.dart`:
+- [X] T057 [US3] Create `lib/features/products/presentation/screens/product_details_screen.dart`:
   - a header with name, unit, price, average cost, stock (with marks), category or "No category",
     barcode, code and low-stock level;
   - actions: Edit, Adjust stock (a route placeholder until Phase 6), Set opening stock (only when
@@ -397,10 +397,10 @@ and both are there; change a price; archive and restore.
   - an archived product shows Restore, with the error as a SnackBar;
   - a history section reserved for Phase 6 (an empty-state text for now).
   - Wire `/home/products/:id`.
-- [ ] T058 [P] [US3] Create
+- [X] T058 [P] [US3] Create
   `lib/features/products/presentation/screens/archived_products_screen.dart`: a list with a
   Restore action per row and a restore error SnackBar. Wire `/home/products/archived`.
-- [ ] T059 [P] [US1] Widget tests in
+- [X] T059 [P] [US1] Widget tests in
   `test/features/products/presentation/product_form_screen_test.dart` for US1 scenarios 1–8:
   - required fields;
   - the confirmation shows 12 × 7.50 = 90.00, and Back keeps the form and saves nothing;
@@ -411,7 +411,7 @@ and both are there; change a price; archive and restore.
   - Arabic and Latin digits.
 
   Run in ar and en, at 100% and 200%.
-- [ ] T060 [P] [US3] Widget tests in
+- [X] T060 [P] [US3] Widget tests in
   `test/features/products/presentation/product_details_screen_test.dart` and
   `archived_products_screen_test.dart` for US3 scenarios 1–6:
   - edit the price;
@@ -419,11 +419,11 @@ and both are there; change a price; archive and restore.
   - archive hides the product, and restore brings it back;
   - a restore barcode conflict;
   - no delete action exists anywhere.
-- [ ] T061 [US1] Add an integration test on a real temp database
+- [X] T061 [US1] Add an integration test on a real temp database
   (`test/features/products/products_flow_test.dart`, using `tester.runAsync`): add a product with
   opening stock, dispose the database and reopen it, then confirm the product and stock are still
   there (SC-006).
-- [ ] T062 Gate: analyze clean and all tests green. Commit `feat(002): phase 5 product form and
+- [X] T062 Gate: analyze clean and all tests green. Commit `feat(002): phase 5 product form and
   details`.
 
 ---

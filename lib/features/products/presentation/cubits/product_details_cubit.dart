@@ -51,9 +51,11 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
 
   Future<void> archive() => _repository.archive(productId);
 
-  Future<void> restore() async {
+  /// True when restored; a conflict becomes [ProductDetailsState.restoreError].
+  Future<bool> restore() async {
     final result = await _repository.restore(productId);
-    if (result case Err(:final error) when !isClosed) {
+    if (result case Err(:final error)) {
+      if (isClosed) return false;
       emit(
         ProductDetailsState(
           loaded: state.loaded,
@@ -61,7 +63,9 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
           restoreError: error,
         ),
       );
+      return false;
     }
+    return true;
   }
 
   void clearMessage() =>

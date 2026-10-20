@@ -584,4 +584,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get productsFilterEmpty => 'لا توجد منتجات تطابق هذا الاختيار.';
+
+  @override
+  String get productNotFound => 'هذا المنتج غير موجود.';
+
+  @override
+  String get productsArchivedEmpty => 'لا توجد منتجات مؤرشفة.';
 }
