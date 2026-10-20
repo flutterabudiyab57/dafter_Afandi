@@ -5,7 +5,10 @@ void main() {
   group('parseShopPhone', () {
     test('valid numbers come back as Latin digits', () {
       expect(parseShopPhone('01012345678'), const PhoneOk('01012345678'));
-      expect(parseShopPhone('+20 100 123 4567'), const PhoneOk('+201001234567'));
+      expect(
+        parseShopPhone('+20 100 123 4567'),
+        const PhoneOk('+201001234567'),
+      );
     });
 
     test('Arabic-Indic and Persian digits, spaces and dashes', () {
@@ -23,7 +26,10 @@ void main() {
     test('boundaries 6 / 7 / 15 / 16 digits', () {
       expect(parseShopPhone('123456'), isA<PhoneTooShort>());
       expect(parseShopPhone('1234567'), const PhoneOk('1234567'));
-      expect(parseShopPhone('123456789012345'), const PhoneOk('123456789012345'));
+      expect(
+        parseShopPhone('123456789012345'),
+        const PhoneOk('123456789012345'),
+      );
       expect(parseShopPhone('1234567890123456'), isA<PhoneTooLong>());
     });
 

@@ -22,11 +22,8 @@ enum UnitType {
 ///
 /// Same digit and separator rules as money; up to [UnitType.maxDecimals]
 /// decimals, so a piece rejects any fraction. Negative input is rejected.
-int? tryParseQuantityMilli(String input, UnitType unit) => parseScaledDecimal(
-      input,
-      scale: 3,
-      maxDecimals: unit.maxDecimals,
-    );
+int? tryParseQuantityMilli(String input, UnitType unit) =>
+    parseScaledDecimal(input, scale: 3, maxDecimals: unit.maxDecimals);
 
 /// Formats milli-units without trailing zeros: `2`, `1.5`, `0.125`,
 /// `1,250`. [digits] picks the digit shapes. Unit names come from ARB, so
@@ -36,8 +33,7 @@ String formatQuantityMilli(
   UnitType unit, {
   required AppLocaleCode locale,
   required DigitStyle digits,
-}) =>
-    applyDigitStyle(
-      formatScaledDecimal(milli, scale: 3, minDecimals: 0),
-      digits,
-    );
+}) => applyDigitStyle(
+  formatScaledDecimal(milli, scale: 3, minDecimals: 0),
+  digits,
+);

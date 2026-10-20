@@ -17,7 +17,10 @@ void main() {
   group('applyDigitStyle', () {
     test('Arabic-Indic maps digits and separators', () {
       expect(applyDigitStyle('1,234.50', DigitStyle.arabicIndic), '١٬٢٣٤٫٥٠');
-      expect(applyDigitStyle('0123456789', DigitStyle.arabicIndic), '٠١٢٣٤٥٦٧٨٩');
+      expect(
+        applyDigitStyle('0123456789', DigitStyle.arabicIndic),
+        '٠١٢٣٤٥٦٧٨٩',
+      );
     });
 
     test('Arabic-Indic keeps other characters', () {

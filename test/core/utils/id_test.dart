@@ -18,7 +18,10 @@ void main() {
     final before = DateTime.timestamp().millisecondsSinceEpoch;
     final id = generator.newId();
     final after = DateTime.timestamp().millisecondsSinceEpoch;
-    final millis = int.parse(id.replaceAll('-', '').substring(0, 12), radix: 16);
+    final millis = int.parse(
+      id.replaceAll('-', '').substring(0, 12),
+      radix: 16,
+    );
     // The counter may push the timestamp a few ms ahead of the clock.
     expect(millis, inInclusiveRange(before, after + 5));
   });
@@ -30,8 +33,11 @@ void main() {
     }
     expect(ids.toSet().length, ids.length);
     for (var i = 1; i < ids.length; i++) {
-      expect(ids[i].compareTo(ids[i - 1]) > 0, isTrue,
-          reason: '${ids[i - 1]} then ${ids[i]}');
+      expect(
+        ids[i].compareTo(ids[i - 1]) > 0,
+        isTrue,
+        reason: '${ids[i - 1]} then ${ids[i]}',
+      );
     }
   });
 }

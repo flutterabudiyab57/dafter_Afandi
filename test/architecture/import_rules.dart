@@ -27,10 +27,13 @@ typedef Rule = Iterable<Violation> Function(SourceFile file, String code);
 
 const String _packagePrefix = 'package:daftar_afandi/';
 
-final RegExp _directive =
-    RegExp(r'''^\s*(?:import|export)\s+['"]([^'"]+)['"]''', multiLine: true);
-final RegExp _featureLayer =
-    RegExp(r'^lib/features/([^/]+)/(data|domain|presentation)/');
+final RegExp _directive = RegExp(
+  r'''^\s*(?:import|export)\s+['"]([^'"]+)['"]''',
+  multiLine: true,
+);
+final RegExp _featureLayer = RegExp(
+  r'^lib/features/([^/]+)/(data|domain|presentation)/',
+);
 
 /// Removes `/* */` blocks and `//` comments (a `//` preceded by `:` is kept,
 /// so URLs inside strings survive).
@@ -100,7 +103,9 @@ Iterable<Violation> layerDirection(SourceFile file, String code) sync* {
   for (final target in resolvedImports(file, code)) {
     final other = _featureOf(target);
     final crossFeatureData =
-        other != null && other.layer == 'data' && other.feature != owner.feature;
+        other != null &&
+        other.layer == 'data' &&
+        other.feature != owner.feature;
     if (target.startsWith('package:drift') ||
         target.startsWith('lib/core/database/') ||
         crossFeatureData) {
@@ -119,20 +124,23 @@ Iterable<Violation> domainIsPureDart(SourceFile file, String code) sync* {
 }
 
 Iterable<Violation> noLegacyDelegates(SourceFile file, String code) => _matches(
-      'no-legacy-delegates',
-      file,
-      code,
-      RegExp(r'AppLocalizations\.localizationsDelegates'),
-    );
+  'no-legacy-delegates',
+  file,
+  code,
+  RegExp(r'AppLocalizations\.localizationsDelegates'),
+);
 
 Iterable<Violation> noFlutterLocalizationsWithMaterialUi(
   SourceFile file,
   String code,
 ) sync* {
   final targets = resolvedImports(file, code);
-  final hasLocalizations =
-      targets.any((t) => t.startsWith('package:flutter_localizations/'));
-  final hasMaterialUi = targets.any((t) => t.startsWith('package:material_ui/'));
+  final hasLocalizations = targets.any(
+    (t) => t.startsWith('package:flutter_localizations/'),
+  );
+  final hasMaterialUi = targets.any(
+    (t) => t.startsWith('package:material_ui/'),
+  );
   if (hasLocalizations && hasMaterialUi) {
     yield Violation(
       'no-flutter-localizations-with-material-ui',
@@ -143,7 +151,8 @@ Iterable<Violation> noFlutterLocalizationsWithMaterialUi(
 }
 
 Iterable<Violation> noDoubleInMoneyPaths(SourceFile file, String code) {
-  final inScope = _featureOf(file.path)?.layer == 'domain' ||
+  final inScope =
+      _featureOf(file.path)?.layer == 'domain' ||
       file.path == 'lib/core/utils/money.dart' ||
       file.path == 'lib/core/utils/quantity.dart';
   if (!inScope) return const [];

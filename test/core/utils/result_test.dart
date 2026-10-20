@@ -14,9 +14,9 @@ void main() {
 
   test('switch is exhaustive over Ok and Err', () {
     String describe(Result<int, String> r) => switch (r) {
-          Ok(:final value) => 'value $value',
-          Err(:final error) => 'error $error',
-        };
+      Ok(:final value) => 'value $value',
+      Err(:final error) => 'error $error',
+    };
     expect(describe(const Ok(1)), 'value 1');
     expect(describe(const Err('x')), 'error x');
   });

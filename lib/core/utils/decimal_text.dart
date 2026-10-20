@@ -44,7 +44,8 @@ int? parseScaledDecimal(
   if (fraction.length > maxDecimals) return null;
   if (integerDigits.length > _maxIntegerDigits) return null;
 
-  final value = int.parse(integerDigits) * _pow10(scale) +
+  final value =
+      int.parse(integerDigits) * _pow10(scale) +
       (fraction.isEmpty ? 0 : int.parse(fraction.padRight(scale, '0')));
   return negative ? -value : value;
 }
