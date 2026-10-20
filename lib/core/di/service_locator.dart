@@ -7,6 +7,7 @@ import '../../features/products/data/product_repository_impl.dart';
 import '../../features/products/domain/category_repository.dart';
 import '../../features/products/domain/inventory_repository.dart';
 import '../../features/products/domain/product_repository.dart';
+import '../../features/products/presentation/products_cubits.dart';
 import '../../features/settings/data/package_info_app_version_source.dart';
 import '../../features/settings/data/settings_repository_impl.dart';
 import '../../features/settings/domain/app_settings.dart';
@@ -84,6 +85,7 @@ Future<void> configureDependencies({
         sl<Clock>(),
       ),
     )
+    ..registerLazySingleton<ProductsCubits>(() => AppProductsCubits(sl))
     ..registerSingleton<AppVersionSource>(
       versionSource ?? const PackageInfoAppVersionSource(),
     )

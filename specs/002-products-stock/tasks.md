@@ -239,21 +239,21 @@ interfaces.
 
 **Purpose**: all presentation state for the products feature, tested with fakes.
 
-- [ ] T029 Create `lib/features/products/presentation/products_cubits.dart` (R11):
+- [X] T029 Create `lib/features/products/presentation/products_cubits.dart` (R11):
   - `abstract class ProductsCubits` with one factory method per cubit: lowStock, productList
     (initial query), productForm (mode, productId?, initialName?), productDetails(id),
     stockHistory(id), openingStock(id), stockAdjustment(id), categories, archivedProducts;
   - `AppProductsCubits implements ProductsCubits`, which builds them from get_it.
 
   Register `ProductsCubits` in `service_locator.dart`.
-- [ ] T030 [P] Create `lib/features/products/presentation/cubits/low_stock_cubit.dart`: it watches
+- [X] T030 [P] Create `lib/features/products/presentation/cubits/low_stock_cubit.dart`: it watches
   `watchLowStock(5)`. The state is loading or ready(snapshot, hasAnyProduct).
-- [ ] T031 [P] Create `lib/features/products/presentation/cubits/product_list_cubit.dart`:
+- [X] T031 [P] Create `lib/features/products/presentation/cubits/product_list_cubit.dart`:
   - `search(text)` waits 200 ms after the last call (use an injectable `Duration` for tests);
   - `setCategory(filter)` and `toggleLow()`;
   - each change cancels the old subscription and subscribes to `watchSummaries` again;
   - the state is query, items and status.
-- [ ] T032 [P] Create `lib/features/products/presentation/cubits/product_form_cubit.dart`:
+- [X] T032 [P] Create `lib/features/products/presentation/cubits/product_form_cubit.dart`:
   - field setters; it loads categories and, in edit mode, the product (`unitLocked =
     hasHistory`);
   - `submit()` runs `ProductDraft.create`. Field errors go to `errors`. With an opening, the
@@ -262,28 +262,28 @@ interfaces.
   - `saved(id, nameExistsElsewhere)`;
   - repository errors map to field errors (barcodeTaken on the barcode field, unitLocked), and any
     other exception becomes `failed`.
-- [ ] T033 [P] Create `lib/features/products/presentation/cubits/product_details_cubit.dart`: it
+- [X] T033 [P] Create `lib/features/products/presentation/cubits/product_details_cubit.dart`: it
   watches `watchSummary(id)`. `archive()` and `restore()` expose a RestoreError as a one-shot
   message.
-- [ ] T034 [P] Create `lib/features/products/presentation/cubits/stock_history_cubit.dart`:
+- [X] T034 [P] Create `lib/features/products/presentation/cubits/stock_history_cubit.dart`:
   `load()`, `loadMore()` (50 per page, cursor), `hasMore`, and `refresh()`, which the details
   screen calls when the stock changes.
-- [ ] T035 [P] Create `lib/features/products/presentation/cubits/opening_stock_cubit.dart`: the
+- [X] T035 [P] Create `lib/features/products/presentation/cubits/opening_stock_cubit.dart`: the
   quantity and cost fields, the same validation as ProductDraft's opening part, the same
   confirm/cancel flow, then `InventoryRepository.setOpening`.
-- [ ] T036 [P] Create `lib/features/products/presentation/cubits/stock_adjustment_cubit.dart`:
+- [X] T036 [P] Create `lib/features/products/presentation/cubits/stock_adjustment_cubit.dart`:
   - kind, direction (other only), quantity or counted text, note;
   - `onHandMilli` from the product;
   - `submit()` builds the AdjustmentRequest, calls adjust, and maps the errors;
   - `alreadyMatches` becomes an info status, not an error; success becomes `saved(newStockMilli)`.
-- [ ] T037 [P] Create `lib/features/products/presentation/cubits/categories_cubit.dart` (create,
+- [X] T037 [P] Create `lib/features/products/presentation/cubits/categories_cubit.dart` (create,
   rename, archive, moveUp, moveDown, errors) and
   `lib/features/products/presentation/cubits/archived_products_cubit.dart` (watch, restore with a
   one-shot error).
-- [ ] T038 [P] Create `test/helpers/fake_products.dart`:
+- [X] T038 [P] Create `test/helpers/fake_products.dart`:
   - fakes of the three repositories, built on StreamControllers and recording their writes;
   - `FakeProductsCubits`, which builds real cubits on the fakes.
-- [ ] T039 [P] bloc_test every cubit, with one file each under
+- [X] T039 [P] bloc_test every cubit, with one file each under
   `test/features/products/presentation/cubits/`. Cover:
   - every input and every error path;
   - the debounce: three quick searches cause one subscription;
@@ -292,7 +292,7 @@ interfaces.
   - the restore error.
 
   Don't await `cubit.close` in tearDown inside fake async (see 001).
-- [ ] T040 Gate: analyze clean and all tests green. Commit `feat(002): phase 3 cubits`.
+- [X] T040 Gate: analyze clean and all tests green. Commit `feat(002): phase 3 cubits`.
 
 ---
 
