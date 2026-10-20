@@ -9,15 +9,13 @@ import '../../../../core/utils/digits.dart';
 import '../../domain/product.dart';
 import '../cubits/product_details_cubit.dart';
 import '../widgets/product_error_text.dart';
+import '../widgets/stock_history_section.dart';
 import '../widgets/stock_marks.dart';
 import '../widgets/unit_label.dart';
 
 /// One product: its details, actions and stock history (US3, US4).
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({this.history, super.key});
-
-  /// The stock history list, filled in by its own cubit (phase 6).
-  final Widget? history;
+  const ProductDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class ProductDetailsScreen extends StatelessWidget {
             if (summary == null) {
               return Center(child: Text(l10n.productNotFound));
             }
-            return _Details(summary: summary, history: history);
+            return _Details(summary: summary);
           },
         ),
       ),
@@ -51,10 +49,9 @@ class ProductDetailsScreen extends StatelessWidget {
 }
 
 class _Details extends StatelessWidget {
-  const _Details({required this.summary, required this.history});
+  const _Details({required this.summary});
 
   final ProductSummary summary;
-  final Widget? history;
 
   @override
   Widget build(BuildContext context) {
@@ -134,11 +131,7 @@ class _Details extends StatelessWidget {
               ),
             ),
           ),
-          history ??
-              Padding(
-                padding: EdgeInsetsDirectional.all(tokens.spaceMd),
-                child: Text(l10n.historyEmpty),
-              ),
+          StockHistorySection(unit: p.unit),
         ],
       ),
     );

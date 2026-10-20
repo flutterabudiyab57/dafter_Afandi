@@ -2,6 +2,7 @@ import 'package:daftar_afandi/core/router/app_router.dart';
 import 'package:daftar_afandi/core/router/route_names.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../helpers/fake_products.dart';
 import '../../helpers/pump_app.dart';
 
 /// Every route registered in this phase.
@@ -103,7 +104,13 @@ void main() {
     testWidgets('onboarded: starts on /home and first-run routes redirect', (
       tester,
     ) async {
-      await pumpApp(tester, FakeSettingsRepository(kOnboardedSettings));
+      // p1 exists without history, so its opening page stays open.
+      final store = FakeProductsStore()..seedProduct('p');
+      await pumpApp(
+        tester,
+        FakeSettingsRepository(kOnboardedSettings),
+        products: FakeProductsCubits(store),
+      );
       expect(currentPath(tester), RoutePaths.home);
       for (final path in _afterFirstRun) {
         await goTo(tester, path);

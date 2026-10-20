@@ -54,4 +54,27 @@ extension ProductFormatting on BuildContext {
     final shown = milli < 0 ? ltrIsolate(number) : number;
     return '$shown ${unitShort(AppLocalizations.of(this), unit)}';
   }
+
+  /// Like [quantity] but with a "+" on additions, for history rows.
+  String signedQuantity(int milli, UnitType unit) {
+    if (milli <= 0) return quantity(milli, unit);
+    final number = formatQuantityMilli(
+      milli,
+      unit,
+      locale: _localeCode,
+      digits: DigitStyleScope.of(this),
+    );
+    return '${ltrIsolate('+$number')} ${unitShort(AppLocalizations.of(this), unit)}';
+  }
+
+  /// A UTC time as local "2026/10/20 14:05", kept left-to-right.
+  String dateTime(DateTime utc) {
+    final t = utc.toLocal();
+    String two(int v) => v.toString().padLeft(2, '0');
+    return ltrIsolate(
+      digits(
+        '${t.year}/${two(t.month)}/${two(t.day)} ${two(t.hour)}:${two(t.minute)}',
+      ),
+    );
+  }
 }

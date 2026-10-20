@@ -10,9 +10,11 @@ import '../../features/products/domain/product_query.dart';
 import '../../features/products/presentation/cubits/product_form_cubit.dart';
 import '../../features/products/presentation/products_cubits.dart';
 import '../../features/products/presentation/screens/archived_products_screen.dart';
+import '../../features/products/presentation/screens/opening_stock_screen.dart';
 import '../../features/products/presentation/screens/product_details_screen.dart';
 import '../../features/products/presentation/screens/product_form_screen.dart';
 import '../../features/products/presentation/screens/product_list_screen.dart';
+import '../../features/products/presentation/screens/stock_adjustment_screen.dart';
 import '../../features/purchases/presentation/purchases_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/sales/presentation/sales_screen.dart';
@@ -157,10 +159,16 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
         ),
         GoRoute(
           path: ':id',
-          builder: (context, state) => BlocProvider(
-            create: (_) => products.productDetails(state.pathParameters['id']!),
-            child: const ProductDetailsScreen(),
-          ),
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (_) => products.productDetails(id)),
+                BlocProvider(create: (_) => products.stockHistory(id)..load()),
+              ],
+              child: const ProductDetailsScreen(),
+            );
+          },
           routes: [
             GoRoute(
               path: 'edit',
@@ -174,12 +182,19 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
             ),
             GoRoute(
               path: 'opening',
-              builder: (context, state) =>
-                  _Pending((l10n) => l10n.productSetOpeningAction),
+              builder: (context, state) => BlocProvider(
+                create: (_) =>
+                    products.openingStock(state.pathParameters['id']!),
+                child: const OpeningStockScreen(),
+              ),
             ),
             GoRoute(
               path: 'adjust',
-              builder: (context, state) => _Pending((l10n) => l10n.adjustTitle),
+              builder: (context, state) => BlocProvider(
+                create: (_) =>
+                    products.stockAdjustment(state.pathParameters['id']!),
+                child: const StockAdjustmentScreen(),
+              ),
             ),
           ],
         ),

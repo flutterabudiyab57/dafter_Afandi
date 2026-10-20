@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/utils/decimal_text.dart';
+import '../../../../core/utils/quantity.dart';
 import '../../../../core/widgets/digit_style_scope.dart';
 import '../../domain/product_errors.dart';
 import 'unit_label.dart';
@@ -54,4 +55,20 @@ extension ProductErrorText on BuildContext {
     ),
     CategoryDuplicate() => _l10n.errorCategoryDuplicate,
   };
+
+  /// [unit] formats the on-hand quantity of [ExceedsStock].
+  String adjustmentError(AdjustmentError error, UnitType unit) =>
+      switch (error) {
+        AdjustmentQuantityRequired() => _l10n.errorQuantityRequired,
+        AdjustmentQuantityInvalid() => _l10n.errorQuantityInvalid,
+        AdjustmentQuantityNotWhole() => _l10n.errorQuantityNotWhole,
+        AdjustmentQuantityTooLarge(:final maxMilli) =>
+          _l10n.errorQuantityTooLarge(_limitMilli(maxMilli)),
+        AdjustmentNoteRequired() => _l10n.adjustNoteRequired,
+        AdjustmentNoteTooLong(:final max) => _l10n.errorNoteTooLong(count(max)),
+        ExceedsStock(:final onHandMilli) => _l10n.adjustExceedsStock(
+          quantity(onHandMilli, unit),
+        ),
+        AlreadyMatches() => _l10n.adjustAlreadyMatches,
+      };
 }

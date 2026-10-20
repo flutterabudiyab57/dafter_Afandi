@@ -435,10 +435,10 @@ and both are there; change a price; archive and restore.
 **Independent test**: 10 on hand → count 8 → damage 1 gives stock 7, with history showing opening,
 count and damage.
 
-- [ ] T063 [US4] Create `lib/features/products/presentation/screens/opening_stock_screen.dart`:
+- [X] T063 [US4] Create `lib/features/products/presentation/screens/opening_stock_screen.dart`:
   quantity and cost fields, the confirm dialog, and save. It redirects to details when the product
   already has history. Wire `/home/products/:id/opening`.
-- [ ] T064 [US4] Create `lib/features/products/presentation/screens/stock_adjustment_screen.dart`:
+- [X] T064 [US4] Create `lib/features/products/presentation/screens/stock_adjustment_screen.dart`:
   - a reason picker (Damaged / Stock count / Other);
   - Count shows `adjustOnHand` and the counted field; Damaged shows the remove quantity; Other
     shows an Add/Remove toggle, the quantity and a required note;
@@ -446,20 +446,20 @@ count and damage.
   - `alreadyMatches` shows an info message; success pops with the `adjustSaved(newStock)`
     SnackBar.
   - Wire `/home/products/:id/adjust`.
-- [ ] T065 [US4] Fill the history section of `product_details_screen.dart` from
+- [X] T065 [US4] Fill the history section of `product_details_screen.dart` from
   `StockHistoryCubit`:
   - each row shows the local date and time, the type label (all 7 types), the reason, the signed
     quantity with its unit, and the note;
   - "Show more" loads the next page;
   - the list refreshes when the summary's stock changes.
-- [ ] T066 [P] [US4] Widget tests in
+- [X] T066 [P] [US4] Widget tests in
   `test/features/products/presentation/stock_adjustment_screen_test.dart` and
   `opening_stock_screen_test.dart` for US4 scenarios 1–7: count down, count equal, damage above
   stock blocked, other without a note blocked, no edit or delete on history rows, avg cost
   unchanged, and opening once. Run in ar and en, at 100% and 200%.
-- [ ] T067 [P] [US4] Test that every `StockEntryType` and `AdjustmentKind` has a label in both
+- [X] T067 [P] [US4] Test that every `StockEntryType` and `AdjustmentKind` has a label in both
   languages, in `test/features/products/presentation/history_labels_test.dart`.
-- [ ] T068 Gate: analyze clean and all tests green. Commit `feat(002): phase 6 stock adjustments
+- [X] T068 Gate: analyze clean and all tests green. Commit `feat(002): phase 6 stock adjustments
   and history`.
 
 ---
