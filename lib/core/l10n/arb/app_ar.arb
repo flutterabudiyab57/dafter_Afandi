@@ -799,5 +799,606 @@
         "type": "String"
       }
     }
+  },
+  "salesNewAction": "بيع جديد",
+  "@salesNewAction": {
+    "description": "Button that starts a new sale."
+  },
+  "salesListEmpty": "لا توجد فواتير بعد.",
+  "@salesListEmpty": {
+    "description": "Invoice list with no invoices."
+  },
+  "salesNoMatch": "لا توجد فواتير مطابقة.",
+  "@salesNoMatch": {
+    "description": "Invoice search or filter with no result."
+  },
+  "salesSearchHint": "ابحث برقم الفاتورة أو اسم العميل",
+  "@salesSearchHint": {
+    "description": "Hint of the invoice search field."
+  },
+  "salesFilterUnpaid": "غير مدفوعة بالكامل",
+  "@salesFilterUnpaid": {
+    "description": "Filter chip: credit or partly paid invoices."
+  },
+  "listShowMore": "عرض المزيد",
+  "@listShowMore": {
+    "description": "Loads more rows of a list."
+  },
+  "walkInCustomer": "عميل نقدي",
+  "@walkInCustomer": {
+    "description": "Shown instead of a customer name on a sale without a customer."
+  },
+  "saleKindCredit": "آجل",
+  "@saleKindCredit": {
+    "description": "Mark on an invoice nothing of which was paid."
+  },
+  "saleKindPartial": "مدفوعة جزئيًا",
+  "@saleKindPartial": {
+    "description": "Mark on an invoice partly paid."
+  },
+  "saleVoidedBadge": "ملغاة",
+  "@saleVoidedBadge": {
+    "description": "Mark on a voided invoice."
+  },
+  "saleNewTitle": "فاتورة بيع جديدة",
+  "@saleNewTitle": {
+    "description": "Title of the new sale screen."
+  },
+  "saleAddProductAction": "إضافة منتج",
+  "@saleAddProductAction": {
+    "description": "Opens the product picker on the sale screen."
+  },
+  "saleBarcodeLabel": "امسح أو اكتب الباركود",
+  "@saleBarcodeLabel": {
+    "description": "Barcode field on the sale screen; Enter adds the product."
+  },
+  "saleBarcodeNotFound": "لا يوجد منتج نشط بهذا الباركود.",
+  "@saleBarcodeNotFound": {
+    "description": "Barcode on the sale screen matched nothing."
+  },
+  "saleEmpty": "أضف منتجًا للبدء.",
+  "@saleEmpty": {
+    "description": "Sale with no lines yet."
+  },
+  "saleQtyLabel": "الكمية",
+  "@saleQtyLabel": {
+    "description": "Quantity field of a sale line."
+  },
+  "salePriceLabel": "سعر الوحدة",
+  "@salePriceLabel": {
+    "description": "Unit price field of a sale line."
+  },
+  "saleLineDiscountLabel": "خصم السطر",
+  "@saleLineDiscountLabel": {
+    "description": "Discount field of a sale line."
+  },
+  "saleRemoveLine": "إزالة {name} من الفاتورة",
+  "@saleRemoveLine": {
+    "description": "Spoken label of the button that removes a line. {name} is the product.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLineTotal": "إجمالي السطر: {amount}",
+  "@saleLineTotal": {
+    "description": "Total of one line. {amount} is formatted money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "saleSubtotal": "المجموع",
+  "@saleSubtotal": {
+    "description": "Sum of the line totals."
+  },
+  "saleInvoiceDiscountLabel": "خصم على الفاتورة",
+  "@saleInvoiceDiscountLabel": {
+    "description": "Discount on the whole invoice."
+  },
+  "saleTotal": "الإجمالي",
+  "@saleTotal": {
+    "description": "Invoice total after discounts."
+  },
+  "salePaidLabel": "المدفوع الآن",
+  "@salePaidLabel": {
+    "description": "Amount paid at the time of sale."
+  },
+  "salePaidHint": "اتركه فارغًا لدفع الإجمالي كاملًا",
+  "@salePaidHint": {
+    "description": "Helper of the paid-now field."
+  },
+  "saleRemaining": "المتبقي",
+  "@saleRemaining": {
+    "description": "Amount not paid now."
+  },
+  "saleMethodLabel": "طريقة الدفع",
+  "@saleMethodLabel": {
+    "description": "Label above the payment method choices."
+  },
+  "methodCash": "نقدي",
+  "@methodCash": {
+    "description": "Payment method."
+  },
+  "methodWallet": "محفظة إلكترونية",
+  "@methodWallet": {
+    "description": "Payment method."
+  },
+  "methodInstapay": "إنستاباي",
+  "@methodInstapay": {
+    "description": "Payment method."
+  },
+  "methodCard": "بطاقة",
+  "@methodCard": {
+    "description": "Payment method (stored, not offered)."
+  },
+  "saleCustomerLabel": "العميل",
+  "@saleCustomerLabel": {
+    "description": "Label of the customer on a sale or invoice."
+  },
+  "saleCustomerPick": "اختيار عميل",
+  "@saleCustomerPick": {
+    "description": "Opens the customer picker."
+  },
+  "saleCustomerClear": "بدون عميل",
+  "@saleCustomerClear": {
+    "description": "Removes the customer from the sale."
+  },
+  "saleSaveAction": "حفظ الفاتورة",
+  "@saleSaveAction": {
+    "description": "Saves the sale."
+  },
+  "saleSaved": "تم حفظ الفاتورة {number}.",
+  "@saleSaved": {
+    "description": "After a sale is saved. {number} is like S-000012.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "saleDiscardTitle": "تجاهل الفاتورة؟",
+  "@saleDiscardTitle": {
+    "description": "Leaving a sale with lines."
+  },
+  "saleDiscardBody": "المنتجات المضافة لن تُحفظ.",
+  "@saleDiscardBody": {
+    "description": "Body of the leave dialog."
+  },
+  "saleDiscardAction": "تجاهل",
+  "@saleDiscardAction": {
+    "description": "Leaves and drops the sale."
+  },
+  "saleKeepAction": "متابعة البيع",
+  "@saleKeepAction": {
+    "description": "Stays on the sale."
+  },
+  "shortageTitle": "المخزون لا يكفي",
+  "@shortageTitle": {
+    "description": "Title of the stock shortage warning."
+  },
+  "shortageBody": "سيصبح المخزون أقل من صفر لهذه المنتجات:",
+  "@shortageBody": {
+    "description": "Body of the stock shortage warning."
+  },
+  "shortageLine": "{name}: المتاح {stock}، المطلوب {need}",
+  "@shortageLine": {
+    "description": "One short product. Quantities are formatted with their unit.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "stock": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "shortageConfirm": "حفظ على أي حال",
+  "@shortageConfirm": {
+    "description": "Saves despite the shortage."
+  },
+  "errorSaleNoLines": "أضف منتجًا واحدًا على الأقل.",
+  "@errorSaleNoLines": {
+    "description": "Saving a sale with no lines."
+  },
+  "errorCreditNeedsCustomer": "البيع الآجل أو الدفع الجزئي يحتاج إلى عميل مسمّى.",
+  "@errorCreditNeedsCustomer": {
+    "description": "Paid now below the total without a customer."
+  },
+  "errorPaidTooLarge": "المدفوع أكبر من الإجمالي.",
+  "@errorPaidTooLarge": {
+    "description": "Paid now above the total."
+  },
+  "errorLineDiscountTooLarge": "الخصم أكبر من قيمة السطر.",
+  "@errorLineDiscountTooLarge": {
+    "description": "Line discount above the line."
+  },
+  "errorInvoiceDiscountTooLarge": "الخصم أكبر من المجموع.",
+  "@errorInvoiceDiscountTooLarge": {
+    "description": "Invoice discount above the subtotal."
+  },
+  "errorProductUnavailable": "المنتج «{name}» لم يعد متاحًا؛ أزله من الفاتورة.",
+  "@errorProductUnavailable": {
+    "description": "A product on the sale was archived.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCustomerUnavailable": "العميل لم يعد متاحًا؛ اختر عميلًا آخر.",
+  "@errorCustomerUnavailable": {
+    "description": "The picked customer was archived."
+  },
+  "invoiceTitle": "فاتورة بيع {number}",
+  "@invoiceTitle": {
+    "description": "Title of an invoice. {number} is like S-000012. Never a tax invoice.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceDateLabel": "التاريخ",
+  "@invoiceDateLabel": {
+    "description": "Date and time of an invoice."
+  },
+  "invoiceLineDetail": "{qty} × {price}",
+  "@invoiceLineDetail": {
+    "description": "Quantity times unit price on an invoice line.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceLineDiscount": "خصم {amount}",
+  "@invoiceLineDiscount": {
+    "description": "Line discount on an invoice line.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceVoidAction": "إلغاء الفاتورة",
+  "@invoiceVoidAction": {
+    "description": "Starts voiding an invoice."
+  },
+  "invoiceVoidTitle": "إلغاء الفاتورة؟",
+  "@invoiceVoidTitle": {
+    "description": "Title of the void dialog."
+  },
+  "invoiceVoidBody": "يرجع المخزون ورصيد العميل كما كانا قبل البيع، ولا يمكن التراجع.",
+  "@invoiceVoidBody": {
+    "description": "Body of the void dialog."
+  },
+  "reasonLabel": "السبب",
+  "@reasonLabel": {
+    "description": "Reason field of a void or cancel."
+  },
+  "invoiceVoidedOn": "ملغاة في {date}: {reason}",
+  "@invoiceVoidedOn": {
+    "description": "Shown on a voided invoice.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceVoided": "تم إلغاء الفاتورة.",
+  "@invoiceVoided": {
+    "description": "After voiding."
+  },
+  "invoiceNotFound": "هذه الفاتورة غير موجودة.",
+  "@invoiceNotFound": {
+    "description": "Invoice id not found."
+  },
+  "errorReasonRequired": "اكتب السبب.",
+  "@errorReasonRequired": {
+    "description": "Void or cancel without a reason."
+  },
+  "errorReasonTooLong": "يمكن أن يصل السبب إلى {max} حرفًا كحد أقصى.",
+  "@errorReasonTooLong": {
+    "description": "Reason over the limit.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "customersTitle": "العملاء",
+  "@customersTitle": {
+    "description": "Title of the customer list."
+  },
+  "customersSearchHint": "ابحث بالاسم أو رقم الهاتف",
+  "@customersSearchHint": {
+    "description": "Hint of the customer search."
+  },
+  "customersFilterOwes": "المدينون",
+  "@customersFilterOwes": {
+    "description": "Filter chip: customers who owe the shop."
+  },
+  "customersEmpty": "لا يوجد عملاء بعد.",
+  "@customersEmpty": {
+    "description": "Customer list with no customers."
+  },
+  "customersNoMatch": "لا يوجد عملاء مطابقون.",
+  "@customersNoMatch": {
+    "description": "Customer search with no result."
+  },
+  "customerAddTitle": "إضافة عميل",
+  "@customerAddTitle": {
+    "description": "Title and button for adding a customer."
+  },
+  "customerAddNamed": "إضافة «{name}»",
+  "@customerAddNamed": {
+    "description": "Adds a customer with the searched name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "customersArchivedTitle": "العملاء المؤرشفون",
+  "@customersArchivedTitle": {
+    "description": "Title of the archived customers view."
+  },
+  "customersArchivedEmpty": "لا يوجد عملاء مؤرشفون.",
+  "@customersArchivedEmpty": {
+    "description": "Archived customers view is empty."
+  },
+  "customerEditTitle": "تعديل العميل",
+  "@customerEditTitle": {
+    "description": "Title of the customer edit form."
+  },
+  "customerNameLabel": "اسم العميل",
+  "@customerNameLabel": {
+    "description": "Name field."
+  },
+  "customerPhoneLabel": "رقم الهاتف",
+  "@customerPhoneLabel": {
+    "description": "Phone field."
+  },
+  "customerAddressLabel": "العنوان",
+  "@customerAddressLabel": {
+    "description": "Address field."
+  },
+  "customerNoteLabel": "ملاحظة",
+  "@customerNoteLabel": {
+    "description": "Note field."
+  },
+  "customerOpeningSection": "رصيد سابق",
+  "@customerOpeningSection": {
+    "description": "Section of the add form."
+  },
+  "customerOpeningHint": "إن كان للعميل حساب قبل استخدام التطبيق. لا يمكن تعديله بعد الحفظ.",
+  "@customerOpeningHint": {
+    "description": "Help for the opening balance."
+  },
+  "customerOpeningAmount": "المبلغ",
+  "@customerOpeningAmount": {
+    "description": "Opening balance amount."
+  },
+  "customerOpeningOwes": "العميل مدين للمحل",
+  "@customerOpeningOwes": {
+    "description": "Direction of the opening balance."
+  },
+  "customerOpeningInFavour": "المحل مدين للعميل",
+  "@customerOpeningInFavour": {
+    "description": "Direction of the opening balance."
+  },
+  "customerNameExistsNotice": "تم الحفظ. يوجد عميل آخر بالاسم نفسه.",
+  "@customerNameExistsNotice": {
+    "description": "Same-name notice."
+  },
+  "customerDetailsTitle": "بيانات العميل",
+  "@customerDetailsTitle": {
+    "description": "Title of the customer page."
+  },
+  "customerBalanceLabel": "الرصيد",
+  "@customerBalanceLabel": {
+    "description": "Label of the balance."
+  },
+  "balanceOwes": "عليه {amount}",
+  "@balanceOwes": {
+    "description": "Balance the customer owes.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "balanceInFavour": "له {amount}",
+  "@balanceInFavour": {
+    "description": "Balance the shop owes the customer.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "balanceZero": "لا رصيد",
+  "@balanceZero": {
+    "description": "Zero balance."
+  },
+  "customerReceivePayment": "استلام دفعة",
+  "@customerReceivePayment": {
+    "description": "Opens the payment screen."
+  },
+  "customerArchiveAction": "أرشفة العميل",
+  "@customerArchiveAction": {
+    "description": "Archives a customer."
+  },
+  "customerArchiveConfirm": "أرشفة العميل؟ فواتيره وكشف حسابه تبقى ويمكن استعادته.",
+  "@customerArchiveConfirm": {
+    "description": "Archive confirmation."
+  },
+  "customerArchiveConfirmBalance": "أرشفة العميل؟ رصيده {balance} يبقى كما هو، وفواتيره وكشف حسابه تبقى ويمكن استعادته.",
+  "@customerArchiveConfirmBalance": {
+    "description": "Archive confirmation with a non-zero balance.",
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      }
+    }
+  },
+  "customerArchivedBadge": "مؤرشف",
+  "@customerArchivedBadge": {
+    "description": "Mark on an archived customer."
+  },
+  "customerRestoreAction": "استعادة",
+  "@customerRestoreAction": {
+    "description": "Restores a customer."
+  },
+  "customerRestored": "تمت استعادة العميل.",
+  "@customerRestored": {
+    "description": "After restoring."
+  },
+  "customerNotFound": "هذا العميل غير موجود.",
+  "@customerNotFound": {
+    "description": "Customer id not found."
+  },
+  "statementTitle": "كشف الحساب",
+  "@statementTitle": {
+    "description": "Section with the customer's account rows."
+  },
+  "statementEmpty": "لا توجد حركات بعد.",
+  "@statementEmpty": {
+    "description": "Empty statement."
+  },
+  "ledgerOpening": "رصيد سابق",
+  "@ledgerOpening": {
+    "description": "Statement row type."
+  },
+  "ledgerSale": "فاتورة {number}",
+  "@ledgerSale": {
+    "description": "Statement row for a sale.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerPayment": "دفعة",
+  "@ledgerPayment": {
+    "description": "Statement row for a payment made with a sale."
+  },
+  "ledgerPaymentReceipt": "دفعة {number}",
+  "@ledgerPaymentReceipt": {
+    "description": "Statement row for a payment. {number} is like RC-000001.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerSaleVoid": "إلغاء فاتورة {number}",
+  "@ledgerSaleVoid": {
+    "description": "Statement row reversing a sale.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerReversal": "قيد عكسي",
+  "@ledgerReversal": {
+    "description": "Statement row reversing a payment."
+  },
+  "ledgerBalanceAfter": "الرصيد: {amount}",
+  "@ledgerBalanceAfter": {
+    "description": "Running balance after a row.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerCancelled": "ملغاة",
+  "@ledgerCancelled": {
+    "description": "Mark on a cancelled payment."
+  },
+  "paymentCancelAction": "إلغاء الدفعة",
+  "@paymentCancelAction": {
+    "description": "Starts cancelling a payment."
+  },
+  "paymentCancelTitle": "إلغاء الدفعة؟",
+  "@paymentCancelTitle": {
+    "description": "Title of the cancel dialog."
+  },
+  "paymentCancelBody": "يُضاف قيد عكسي بالمبلغ نفسه ويرجع الرصيد كما كان.",
+  "@paymentCancelBody": {
+    "description": "Body of the cancel dialog."
+  },
+  "paymentCancelled": "تم إلغاء الدفعة.",
+  "@paymentCancelled": {
+    "description": "After cancelling."
+  },
+  "customerInvoicesTitle": "الفواتير",
+  "@customerInvoicesTitle": {
+    "description": "Section with the customer's invoices."
+  },
+  "paymentTitle": "استلام دفعة",
+  "@paymentTitle": {
+    "description": "Title of the payment screen."
+  },
+  "paymentBalanceNow": "الرصيد الحالي: {amount}",
+  "@paymentBalanceNow": {
+    "description": "Shown on the payment screen.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentAmountLabel": "المبلغ",
+  "@paymentAmountLabel": {
+    "description": "Payment amount."
+  },
+  "paymentCreditTitle": "الدفعة أكبر من الرصيد",
+  "@paymentCreditTitle": {
+    "description": "Title of the credit notice."
+  },
+  "paymentCreditBody": "سيصبح للعميل رصيد دائن قدره {amount}.",
+  "@paymentCreditBody": {
+    "description": "Body of the credit notice.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentSaved": "تم حفظ الدفعة {number}.",
+  "@paymentSaved": {
+    "description": "After saving. {number} is like RC-000001.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "errorAmountRequired": "أدخل المبلغ.",
+  "@errorAmountRequired": {
+    "description": "Amount empty or zero."
+  },
+  "errorCustomerNameRequired": "أدخل اسم العميل.",
+  "@errorCustomerNameRequired": {
+    "description": "Name empty."
+  },
+  "errorCustomerArchived": "العميل مؤرشف؛ استعده أولًا.",
+  "@errorCustomerArchived": {
+    "description": "Payment for an archived customer."
   }
 }

@@ -2,7 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../features/customers/presentation/parties_screen.dart';
+import '../../features/customers/presentation/cubits/customer_form_cubit.dart';
+import '../../features/customers/presentation/customers_cubits.dart';
+import '../../features/customers/presentation/screens/archived_customers_screen.dart';
+import '../../features/customers/presentation/screens/customer_details_screen.dart';
+import '../../features/customers/presentation/screens/customer_form_screen.dart';
+import '../../features/customers/presentation/screens/customers_screen.dart';
+import '../../features/customers/presentation/screens/payment_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/onboarding/presentation/shop_details_step_screen.dart';
 import '../../features/onboarding/presentation/welcome_screen.dart';
@@ -18,6 +24,7 @@ import '../../features/products/presentation/screens/product_list_screen.dart';
 import '../../features/products/presentation/screens/stock_adjustment_screen.dart';
 import '../../features/purchases/presentation/purchases_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
+import '../../features/sales/presentation/sales_cubits.dart';
 import '../../features/sales/presentation/sales_screen.dart';
 import '../../features/settings/domain/shop_profile.dart';
 import '../../features/settings/presentation/cubits/app_preferences_cubit.dart';
@@ -42,6 +49,8 @@ GoRouter createAppRouter(
   AppPreferencesCubit prefs, {
   required ShopProfileFormCubitFactory shopProfileForm,
   required ProductsCubits products,
+  required CustomersCubits customers,
+  required SalesCubits sales,
 }) {
   StatefulShellBranch section(String path, Widget screen) =>
       StatefulShellBranch(
@@ -88,7 +97,7 @@ GoRouter createAppRouter(
         branches: [
           StatefulShellBranch(routes: [_homeRoute(products)]),
           section(RoutePaths.sales, const SalesScreen()),
-          section(RoutePaths.parties, const PartiesScreen()),
+          StatefulShellBranch(routes: [_partiesRoute(customers, sales)]),
           section(RoutePaths.purchases, const PurchasesScreen()),
           section(RoutePaths.reports, const ReportsScreen()),
         ],
@@ -206,6 +215,69 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
         create: (_) => products.categories(),
         child: const CategoriesScreen(),
       ),
+    ),
+  ],
+);
+
+/// The Parties section: customers and the pages below them (003 research
+/// R15).
+GoRoute _partiesRoute(CustomersCubits customers, SalesCubits sales) => GoRoute(
+  path: RoutePaths.parties,
+  builder: (context, state) => BlocProvider(
+    create: (_) => customers.customersList(),
+    child: const CustomersScreen(),
+  ),
+  routes: [
+    // Before 'customers/:id', so these never match as ids.
+    GoRoute(
+      path: 'customers/new',
+      builder: (context, state) => BlocProvider(
+        create: (_) => customers.customerForm(
+          mode: CustomerFormMode.create,
+          initialName: state.extra is String ? state.extra! as String : '',
+        ),
+        child: const CustomerFormScreen(),
+      ),
+    ),
+    GoRoute(
+      path: 'customers/archived',
+      builder: (context, state) => BlocProvider(
+        create: (_) => customers.archivedCustomers(),
+        child: const ArchivedCustomersScreen(),
+      ),
+    ),
+    GoRoute(
+      path: 'customers/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => customers.customerDetails(id)),
+            BlocProvider(create: (_) => customers.statement(id)..load()),
+            BlocProvider(create: (_) => sales.salesList(customerId: id)),
+          ],
+          child: const CustomerDetailsScreen(),
+        );
+      },
+      routes: [
+        GoRoute(
+          path: 'edit',
+          builder: (context, state) => BlocProvider(
+            create: (_) => customers.customerForm(
+              mode: CustomerFormMode.edit,
+              customerId: state.pathParameters['id'],
+            ),
+            child: const CustomerFormScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'payment',
+          builder: (context, state) => BlocProvider(
+            create: (_) => customers.payment(state.pathParameters['id']!),
+            child: const PaymentScreen(),
+          ),
+        ),
+      ],
     ),
   ],
 );

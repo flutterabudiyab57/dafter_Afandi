@@ -604,4 +604,415 @@ class AppLocalizationsAr extends AppLocalizations {
   String demoSeedDone(String count) {
     return 'تمت إضافة المنتجات التجريبية: $count.';
   }
+
+  @override
+  String get salesNewAction => 'بيع جديد';
+
+  @override
+  String get salesListEmpty => 'لا توجد فواتير بعد.';
+
+  @override
+  String get salesNoMatch => 'لا توجد فواتير مطابقة.';
+
+  @override
+  String get salesSearchHint => 'ابحث برقم الفاتورة أو اسم العميل';
+
+  @override
+  String get salesFilterUnpaid => 'غير مدفوعة بالكامل';
+
+  @override
+  String get listShowMore => 'عرض المزيد';
+
+  @override
+  String get walkInCustomer => 'عميل نقدي';
+
+  @override
+  String get saleKindCredit => 'آجل';
+
+  @override
+  String get saleKindPartial => 'مدفوعة جزئيًا';
+
+  @override
+  String get saleVoidedBadge => 'ملغاة';
+
+  @override
+  String get saleNewTitle => 'فاتورة بيع جديدة';
+
+  @override
+  String get saleAddProductAction => 'إضافة منتج';
+
+  @override
+  String get saleBarcodeLabel => 'امسح أو اكتب الباركود';
+
+  @override
+  String get saleBarcodeNotFound => 'لا يوجد منتج نشط بهذا الباركود.';
+
+  @override
+  String get saleEmpty => 'أضف منتجًا للبدء.';
+
+  @override
+  String get saleQtyLabel => 'الكمية';
+
+  @override
+  String get salePriceLabel => 'سعر الوحدة';
+
+  @override
+  String get saleLineDiscountLabel => 'خصم السطر';
+
+  @override
+  String saleRemoveLine(String name) {
+    return 'إزالة $name من الفاتورة';
+  }
+
+  @override
+  String saleLineTotal(String amount) {
+    return 'إجمالي السطر: $amount';
+  }
+
+  @override
+  String get saleSubtotal => 'المجموع';
+
+  @override
+  String get saleInvoiceDiscountLabel => 'خصم على الفاتورة';
+
+  @override
+  String get saleTotal => 'الإجمالي';
+
+  @override
+  String get salePaidLabel => 'المدفوع الآن';
+
+  @override
+  String get salePaidHint => 'اتركه فارغًا لدفع الإجمالي كاملًا';
+
+  @override
+  String get saleRemaining => 'المتبقي';
+
+  @override
+  String get saleMethodLabel => 'طريقة الدفع';
+
+  @override
+  String get methodCash => 'نقدي';
+
+  @override
+  String get methodWallet => 'محفظة إلكترونية';
+
+  @override
+  String get methodInstapay => 'إنستاباي';
+
+  @override
+  String get methodCard => 'بطاقة';
+
+  @override
+  String get saleCustomerLabel => 'العميل';
+
+  @override
+  String get saleCustomerPick => 'اختيار عميل';
+
+  @override
+  String get saleCustomerClear => 'بدون عميل';
+
+  @override
+  String get saleSaveAction => 'حفظ الفاتورة';
+
+  @override
+  String saleSaved(String number) {
+    return 'تم حفظ الفاتورة $number.';
+  }
+
+  @override
+  String get saleDiscardTitle => 'تجاهل الفاتورة؟';
+
+  @override
+  String get saleDiscardBody => 'المنتجات المضافة لن تُحفظ.';
+
+  @override
+  String get saleDiscardAction => 'تجاهل';
+
+  @override
+  String get saleKeepAction => 'متابعة البيع';
+
+  @override
+  String get shortageTitle => 'المخزون لا يكفي';
+
+  @override
+  String get shortageBody => 'سيصبح المخزون أقل من صفر لهذه المنتجات:';
+
+  @override
+  String shortageLine(String name, String stock, String need) {
+    return '$name: المتاح $stock، المطلوب $need';
+  }
+
+  @override
+  String get shortageConfirm => 'حفظ على أي حال';
+
+  @override
+  String get errorSaleNoLines => 'أضف منتجًا واحدًا على الأقل.';
+
+  @override
+  String get errorCreditNeedsCustomer =>
+      'البيع الآجل أو الدفع الجزئي يحتاج إلى عميل مسمّى.';
+
+  @override
+  String get errorPaidTooLarge => 'المدفوع أكبر من الإجمالي.';
+
+  @override
+  String get errorLineDiscountTooLarge => 'الخصم أكبر من قيمة السطر.';
+
+  @override
+  String get errorInvoiceDiscountTooLarge => 'الخصم أكبر من المجموع.';
+
+  @override
+  String errorProductUnavailable(String name) {
+    return 'المنتج «$name» لم يعد متاحًا؛ أزله من الفاتورة.';
+  }
+
+  @override
+  String get errorCustomerUnavailable =>
+      'العميل لم يعد متاحًا؛ اختر عميلًا آخر.';
+
+  @override
+  String invoiceTitle(String number) {
+    return 'فاتورة بيع $number';
+  }
+
+  @override
+  String get invoiceDateLabel => 'التاريخ';
+
+  @override
+  String invoiceLineDetail(String qty, String price) {
+    return '$qty × $price';
+  }
+
+  @override
+  String invoiceLineDiscount(String amount) {
+    return 'خصم $amount';
+  }
+
+  @override
+  String get invoiceVoidAction => 'إلغاء الفاتورة';
+
+  @override
+  String get invoiceVoidTitle => 'إلغاء الفاتورة؟';
+
+  @override
+  String get invoiceVoidBody =>
+      'يرجع المخزون ورصيد العميل كما كانا قبل البيع، ولا يمكن التراجع.';
+
+  @override
+  String get reasonLabel => 'السبب';
+
+  @override
+  String invoiceVoidedOn(String date, String reason) {
+    return 'ملغاة في $date: $reason';
+  }
+
+  @override
+  String get invoiceVoided => 'تم إلغاء الفاتورة.';
+
+  @override
+  String get invoiceNotFound => 'هذه الفاتورة غير موجودة.';
+
+  @override
+  String get errorReasonRequired => 'اكتب السبب.';
+
+  @override
+  String errorReasonTooLong(String max) {
+    return 'يمكن أن يصل السبب إلى $max حرفًا كحد أقصى.';
+  }
+
+  @override
+  String get customersTitle => 'العملاء';
+
+  @override
+  String get customersSearchHint => 'ابحث بالاسم أو رقم الهاتف';
+
+  @override
+  String get customersFilterOwes => 'المدينون';
+
+  @override
+  String get customersEmpty => 'لا يوجد عملاء بعد.';
+
+  @override
+  String get customersNoMatch => 'لا يوجد عملاء مطابقون.';
+
+  @override
+  String get customerAddTitle => 'إضافة عميل';
+
+  @override
+  String customerAddNamed(String name) {
+    return 'إضافة «$name»';
+  }
+
+  @override
+  String get customersArchivedTitle => 'العملاء المؤرشفون';
+
+  @override
+  String get customersArchivedEmpty => 'لا يوجد عملاء مؤرشفون.';
+
+  @override
+  String get customerEditTitle => 'تعديل العميل';
+
+  @override
+  String get customerNameLabel => 'اسم العميل';
+
+  @override
+  String get customerPhoneLabel => 'رقم الهاتف';
+
+  @override
+  String get customerAddressLabel => 'العنوان';
+
+  @override
+  String get customerNoteLabel => 'ملاحظة';
+
+  @override
+  String get customerOpeningSection => 'رصيد سابق';
+
+  @override
+  String get customerOpeningHint =>
+      'إن كان للعميل حساب قبل استخدام التطبيق. لا يمكن تعديله بعد الحفظ.';
+
+  @override
+  String get customerOpeningAmount => 'المبلغ';
+
+  @override
+  String get customerOpeningOwes => 'العميل مدين للمحل';
+
+  @override
+  String get customerOpeningInFavour => 'المحل مدين للعميل';
+
+  @override
+  String get customerNameExistsNotice => 'تم الحفظ. يوجد عميل آخر بالاسم نفسه.';
+
+  @override
+  String get customerDetailsTitle => 'بيانات العميل';
+
+  @override
+  String get customerBalanceLabel => 'الرصيد';
+
+  @override
+  String balanceOwes(String amount) {
+    return 'عليه $amount';
+  }
+
+  @override
+  String balanceInFavour(String amount) {
+    return 'له $amount';
+  }
+
+  @override
+  String get balanceZero => 'لا رصيد';
+
+  @override
+  String get customerReceivePayment => 'استلام دفعة';
+
+  @override
+  String get customerArchiveAction => 'أرشفة العميل';
+
+  @override
+  String get customerArchiveConfirm =>
+      'أرشفة العميل؟ فواتيره وكشف حسابه تبقى ويمكن استعادته.';
+
+  @override
+  String customerArchiveConfirmBalance(String balance) {
+    return 'أرشفة العميل؟ رصيده $balance يبقى كما هو، وفواتيره وكشف حسابه تبقى ويمكن استعادته.';
+  }
+
+  @override
+  String get customerArchivedBadge => 'مؤرشف';
+
+  @override
+  String get customerRestoreAction => 'استعادة';
+
+  @override
+  String get customerRestored => 'تمت استعادة العميل.';
+
+  @override
+  String get customerNotFound => 'هذا العميل غير موجود.';
+
+  @override
+  String get statementTitle => 'كشف الحساب';
+
+  @override
+  String get statementEmpty => 'لا توجد حركات بعد.';
+
+  @override
+  String get ledgerOpening => 'رصيد سابق';
+
+  @override
+  String ledgerSale(String number) {
+    return 'فاتورة $number';
+  }
+
+  @override
+  String get ledgerPayment => 'دفعة';
+
+  @override
+  String ledgerPaymentReceipt(String number) {
+    return 'دفعة $number';
+  }
+
+  @override
+  String ledgerSaleVoid(String number) {
+    return 'إلغاء فاتورة $number';
+  }
+
+  @override
+  String get ledgerReversal => 'قيد عكسي';
+
+  @override
+  String ledgerBalanceAfter(String amount) {
+    return 'الرصيد: $amount';
+  }
+
+  @override
+  String get ledgerCancelled => 'ملغاة';
+
+  @override
+  String get paymentCancelAction => 'إلغاء الدفعة';
+
+  @override
+  String get paymentCancelTitle => 'إلغاء الدفعة؟';
+
+  @override
+  String get paymentCancelBody =>
+      'يُضاف قيد عكسي بالمبلغ نفسه ويرجع الرصيد كما كان.';
+
+  @override
+  String get paymentCancelled => 'تم إلغاء الدفعة.';
+
+  @override
+  String get customerInvoicesTitle => 'الفواتير';
+
+  @override
+  String get paymentTitle => 'استلام دفعة';
+
+  @override
+  String paymentBalanceNow(String amount) {
+    return 'الرصيد الحالي: $amount';
+  }
+
+  @override
+  String get paymentAmountLabel => 'المبلغ';
+
+  @override
+  String get paymentCreditTitle => 'الدفعة أكبر من الرصيد';
+
+  @override
+  String paymentCreditBody(String amount) {
+    return 'سيصبح للعميل رصيد دائن قدره $amount.';
+  }
+
+  @override
+  String paymentSaved(String number) {
+    return 'تم حفظ الدفعة $number.';
+  }
+
+  @override
+  String get errorAmountRequired => 'أدخل المبلغ.';
+
+  @override
+  String get errorCustomerNameRequired => 'أدخل اسم العميل.';
+
+  @override
+  String get errorCustomerArchived => 'العميل مؤرشف؛ استعده أولًا.';
 }

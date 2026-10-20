@@ -1129,6 +1129,732 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تمت إضافة المنتجات التجريبية: {count}.'**
   String demoSeedDone(String count);
+
+  /// Button that starts a new sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'بيع جديد'**
+  String get salesNewAction;
+
+  /// Invoice list with no invoices.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد فواتير بعد.'**
+  String get salesListEmpty;
+
+  /// Invoice search or filter with no result.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد فواتير مطابقة.'**
+  String get salesNoMatch;
+
+  /// Hint of the invoice search field.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابحث برقم الفاتورة أو اسم العميل'**
+  String get salesSearchHint;
+
+  /// Filter chip: credit or partly paid invoices.
+  ///
+  /// In ar, this message translates to:
+  /// **'غير مدفوعة بالكامل'**
+  String get salesFilterUnpaid;
+
+  /// Loads more rows of a list.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض المزيد'**
+  String get listShowMore;
+
+  /// Shown instead of a customer name on a sale without a customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'عميل نقدي'**
+  String get walkInCustomer;
+
+  /// Mark on an invoice nothing of which was paid.
+  ///
+  /// In ar, this message translates to:
+  /// **'آجل'**
+  String get saleKindCredit;
+
+  /// Mark on an invoice partly paid.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدفوعة جزئيًا'**
+  String get saleKindPartial;
+
+  /// Mark on a voided invoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملغاة'**
+  String get saleVoidedBadge;
+
+  /// Title of the new sale screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة بيع جديدة'**
+  String get saleNewTitle;
+
+  /// Opens the product picker on the sale screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة منتج'**
+  String get saleAddProductAction;
+
+  /// Barcode field on the sale screen; Enter adds the product.
+  ///
+  /// In ar, this message translates to:
+  /// **'امسح أو اكتب الباركود'**
+  String get saleBarcodeLabel;
+
+  /// Barcode on the sale screen matched nothing.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد منتج نشط بهذا الباركود.'**
+  String get saleBarcodeNotFound;
+
+  /// Sale with no lines yet.
+  ///
+  /// In ar, this message translates to:
+  /// **'أضف منتجًا للبدء.'**
+  String get saleEmpty;
+
+  /// Quantity field of a sale line.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكمية'**
+  String get saleQtyLabel;
+
+  /// Unit price field of a sale line.
+  ///
+  /// In ar, this message translates to:
+  /// **'سعر الوحدة'**
+  String get salePriceLabel;
+
+  /// Discount field of a sale line.
+  ///
+  /// In ar, this message translates to:
+  /// **'خصم السطر'**
+  String get saleLineDiscountLabel;
+
+  /// Spoken label of the button that removes a line. {name} is the product.
+  ///
+  /// In ar, this message translates to:
+  /// **'إزالة {name} من الفاتورة'**
+  String saleRemoveLine(String name);
+
+  /// Total of one line. {amount} is formatted money.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي السطر: {amount}'**
+  String saleLineTotal(String amount);
+
+  /// Sum of the line totals.
+  ///
+  /// In ar, this message translates to:
+  /// **'المجموع'**
+  String get saleSubtotal;
+
+  /// Discount on the whole invoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'خصم على الفاتورة'**
+  String get saleInvoiceDiscountLabel;
+
+  /// Invoice total after discounts.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإجمالي'**
+  String get saleTotal;
+
+  /// Amount paid at the time of sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدفوع الآن'**
+  String get salePaidLabel;
+
+  /// Helper of the paid-now field.
+  ///
+  /// In ar, this message translates to:
+  /// **'اتركه فارغًا لدفع الإجمالي كاملًا'**
+  String get salePaidHint;
+
+  /// Amount not paid now.
+  ///
+  /// In ar, this message translates to:
+  /// **'المتبقي'**
+  String get saleRemaining;
+
+  /// Label above the payment method choices.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة الدفع'**
+  String get saleMethodLabel;
+
+  /// Payment method.
+  ///
+  /// In ar, this message translates to:
+  /// **'نقدي'**
+  String get methodCash;
+
+  /// Payment method.
+  ///
+  /// In ar, this message translates to:
+  /// **'محفظة إلكترونية'**
+  String get methodWallet;
+
+  /// Payment method.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنستاباي'**
+  String get methodInstapay;
+
+  /// Payment method (stored, not offered).
+  ///
+  /// In ar, this message translates to:
+  /// **'بطاقة'**
+  String get methodCard;
+
+  /// Label of the customer on a sale or invoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'العميل'**
+  String get saleCustomerLabel;
+
+  /// Opens the customer picker.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختيار عميل'**
+  String get saleCustomerPick;
+
+  /// Removes the customer from the sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'بدون عميل'**
+  String get saleCustomerClear;
+
+  /// Saves the sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ الفاتورة'**
+  String get saleSaveAction;
+
+  /// After a sale is saved. {number} is like S-000012.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حفظ الفاتورة {number}.'**
+  String saleSaved(String number);
+
+  /// Leaving a sale with lines.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل الفاتورة؟'**
+  String get saleDiscardTitle;
+
+  /// Body of the leave dialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'المنتجات المضافة لن تُحفظ.'**
+  String get saleDiscardBody;
+
+  /// Leaves and drops the sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل'**
+  String get saleDiscardAction;
+
+  /// Stays on the sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة البيع'**
+  String get saleKeepAction;
+
+  /// Title of the stock shortage warning.
+  ///
+  /// In ar, this message translates to:
+  /// **'المخزون لا يكفي'**
+  String get shortageTitle;
+
+  /// Body of the stock shortage warning.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيصبح المخزون أقل من صفر لهذه المنتجات:'**
+  String get shortageBody;
+
+  /// One short product. Quantities are formatted with their unit.
+  ///
+  /// In ar, this message translates to:
+  /// **'{name}: المتاح {stock}، المطلوب {need}'**
+  String shortageLine(String name, String stock, String need);
+
+  /// Saves despite the shortage.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ على أي حال'**
+  String get shortageConfirm;
+
+  /// Saving a sale with no lines.
+  ///
+  /// In ar, this message translates to:
+  /// **'أضف منتجًا واحدًا على الأقل.'**
+  String get errorSaleNoLines;
+
+  /// Paid now below the total without a customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'البيع الآجل أو الدفع الجزئي يحتاج إلى عميل مسمّى.'**
+  String get errorCreditNeedsCustomer;
+
+  /// Paid now above the total.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدفوع أكبر من الإجمالي.'**
+  String get errorPaidTooLarge;
+
+  /// Line discount above the line.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخصم أكبر من قيمة السطر.'**
+  String get errorLineDiscountTooLarge;
+
+  /// Invoice discount above the subtotal.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخصم أكبر من المجموع.'**
+  String get errorInvoiceDiscountTooLarge;
+
+  /// A product on the sale was archived.
+  ///
+  /// In ar, this message translates to:
+  /// **'المنتج «{name}» لم يعد متاحًا؛ أزله من الفاتورة.'**
+  String errorProductUnavailable(String name);
+
+  /// The picked customer was archived.
+  ///
+  /// In ar, this message translates to:
+  /// **'العميل لم يعد متاحًا؛ اختر عميلًا آخر.'**
+  String get errorCustomerUnavailable;
+
+  /// Title of an invoice. {number} is like S-000012. Never a tax invoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة بيع {number}'**
+  String invoiceTitle(String number);
+
+  /// Date and time of an invoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'التاريخ'**
+  String get invoiceDateLabel;
+
+  /// Quantity times unit price on an invoice line.
+  ///
+  /// In ar, this message translates to:
+  /// **'{qty} × {price}'**
+  String invoiceLineDetail(String qty, String price);
+
+  /// Line discount on an invoice line.
+  ///
+  /// In ar, this message translates to:
+  /// **'خصم {amount}'**
+  String invoiceLineDiscount(String amount);
+
+  /// Starts voiding an invoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء الفاتورة'**
+  String get invoiceVoidAction;
+
+  /// Title of the void dialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء الفاتورة؟'**
+  String get invoiceVoidTitle;
+
+  /// Body of the void dialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'يرجع المخزون ورصيد العميل كما كانا قبل البيع، ولا يمكن التراجع.'**
+  String get invoiceVoidBody;
+
+  /// Reason field of a void or cancel.
+  ///
+  /// In ar, this message translates to:
+  /// **'السبب'**
+  String get reasonLabel;
+
+  /// Shown on a voided invoice.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملغاة في {date}: {reason}'**
+  String invoiceVoidedOn(String date, String reason);
+
+  /// After voiding.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إلغاء الفاتورة.'**
+  String get invoiceVoided;
+
+  /// Invoice id not found.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذه الفاتورة غير موجودة.'**
+  String get invoiceNotFound;
+
+  /// Void or cancel without a reason.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب السبب.'**
+  String get errorReasonRequired;
+
+  /// Reason over the limit.
+  ///
+  /// In ar, this message translates to:
+  /// **'يمكن أن يصل السبب إلى {max} حرفًا كحد أقصى.'**
+  String errorReasonTooLong(String max);
+
+  /// Title of the customer list.
+  ///
+  /// In ar, this message translates to:
+  /// **'العملاء'**
+  String get customersTitle;
+
+  /// Hint of the customer search.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابحث بالاسم أو رقم الهاتف'**
+  String get customersSearchHint;
+
+  /// Filter chip: customers who owe the shop.
+  ///
+  /// In ar, this message translates to:
+  /// **'المدينون'**
+  String get customersFilterOwes;
+
+  /// Customer list with no customers.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد عملاء بعد.'**
+  String get customersEmpty;
+
+  /// Customer search with no result.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد عملاء مطابقون.'**
+  String get customersNoMatch;
+
+  /// Title and button for adding a customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة عميل'**
+  String get customerAddTitle;
+
+  /// Adds a customer with the searched name.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة «{name}»'**
+  String customerAddNamed(String name);
+
+  /// Title of the archived customers view.
+  ///
+  /// In ar, this message translates to:
+  /// **'العملاء المؤرشفون'**
+  String get customersArchivedTitle;
+
+  /// Archived customers view is empty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد عملاء مؤرشفون.'**
+  String get customersArchivedEmpty;
+
+  /// Title of the customer edit form.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل العميل'**
+  String get customerEditTitle;
+
+  /// Name field.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم العميل'**
+  String get customerNameLabel;
+
+  /// Phone field.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الهاتف'**
+  String get customerPhoneLabel;
+
+  /// Address field.
+  ///
+  /// In ar, this message translates to:
+  /// **'العنوان'**
+  String get customerAddressLabel;
+
+  /// Note field.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملاحظة'**
+  String get customerNoteLabel;
+
+  /// Section of the add form.
+  ///
+  /// In ar, this message translates to:
+  /// **'رصيد سابق'**
+  String get customerOpeningSection;
+
+  /// Help for the opening balance.
+  ///
+  /// In ar, this message translates to:
+  /// **'إن كان للعميل حساب قبل استخدام التطبيق. لا يمكن تعديله بعد الحفظ.'**
+  String get customerOpeningHint;
+
+  /// Opening balance amount.
+  ///
+  /// In ar, this message translates to:
+  /// **'المبلغ'**
+  String get customerOpeningAmount;
+
+  /// Direction of the opening balance.
+  ///
+  /// In ar, this message translates to:
+  /// **'العميل مدين للمحل'**
+  String get customerOpeningOwes;
+
+  /// Direction of the opening balance.
+  ///
+  /// In ar, this message translates to:
+  /// **'المحل مدين للعميل'**
+  String get customerOpeningInFavour;
+
+  /// Same-name notice.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم الحفظ. يوجد عميل آخر بالاسم نفسه.'**
+  String get customerNameExistsNotice;
+
+  /// Title of the customer page.
+  ///
+  /// In ar, this message translates to:
+  /// **'بيانات العميل'**
+  String get customerDetailsTitle;
+
+  /// Label of the balance.
+  ///
+  /// In ar, this message translates to:
+  /// **'الرصيد'**
+  String get customerBalanceLabel;
+
+  /// Balance the customer owes.
+  ///
+  /// In ar, this message translates to:
+  /// **'عليه {amount}'**
+  String balanceOwes(String amount);
+
+  /// Balance the shop owes the customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'له {amount}'**
+  String balanceInFavour(String amount);
+
+  /// Zero balance.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا رصيد'**
+  String get balanceZero;
+
+  /// Opens the payment screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'استلام دفعة'**
+  String get customerReceivePayment;
+
+  /// Archives a customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة العميل'**
+  String get customerArchiveAction;
+
+  /// Archive confirmation.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة العميل؟ فواتيره وكشف حسابه تبقى ويمكن استعادته.'**
+  String get customerArchiveConfirm;
+
+  /// Archive confirmation with a non-zero balance.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة العميل؟ رصيده {balance} يبقى كما هو، وفواتيره وكشف حسابه تبقى ويمكن استعادته.'**
+  String customerArchiveConfirmBalance(String balance);
+
+  /// Mark on an archived customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'مؤرشف'**
+  String get customerArchivedBadge;
+
+  /// Restores a customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'استعادة'**
+  String get customerRestoreAction;
+
+  /// After restoring.
+  ///
+  /// In ar, this message translates to:
+  /// **'تمت استعادة العميل.'**
+  String get customerRestored;
+
+  /// Customer id not found.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا العميل غير موجود.'**
+  String get customerNotFound;
+
+  /// Section with the customer's account rows.
+  ///
+  /// In ar, this message translates to:
+  /// **'كشف الحساب'**
+  String get statementTitle;
+
+  /// Empty statement.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد حركات بعد.'**
+  String get statementEmpty;
+
+  /// Statement row type.
+  ///
+  /// In ar, this message translates to:
+  /// **'رصيد سابق'**
+  String get ledgerOpening;
+
+  /// Statement row for a sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة {number}'**
+  String ledgerSale(String number);
+
+  /// Statement row for a payment made with a sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'دفعة'**
+  String get ledgerPayment;
+
+  /// Statement row for a payment. {number} is like RC-000001.
+  ///
+  /// In ar, this message translates to:
+  /// **'دفعة {number}'**
+  String ledgerPaymentReceipt(String number);
+
+  /// Statement row reversing a sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء فاتورة {number}'**
+  String ledgerSaleVoid(String number);
+
+  /// Statement row reversing a payment.
+  ///
+  /// In ar, this message translates to:
+  /// **'قيد عكسي'**
+  String get ledgerReversal;
+
+  /// Running balance after a row.
+  ///
+  /// In ar, this message translates to:
+  /// **'الرصيد: {amount}'**
+  String ledgerBalanceAfter(String amount);
+
+  /// Mark on a cancelled payment.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملغاة'**
+  String get ledgerCancelled;
+
+  /// Starts cancelling a payment.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء الدفعة'**
+  String get paymentCancelAction;
+
+  /// Title of the cancel dialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء الدفعة؟'**
+  String get paymentCancelTitle;
+
+  /// Body of the cancel dialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُضاف قيد عكسي بالمبلغ نفسه ويرجع الرصيد كما كان.'**
+  String get paymentCancelBody;
+
+  /// After cancelling.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إلغاء الدفعة.'**
+  String get paymentCancelled;
+
+  /// Section with the customer's invoices.
+  ///
+  /// In ar, this message translates to:
+  /// **'الفواتير'**
+  String get customerInvoicesTitle;
+
+  /// Title of the payment screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'استلام دفعة'**
+  String get paymentTitle;
+
+  /// Shown on the payment screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'الرصيد الحالي: {amount}'**
+  String paymentBalanceNow(String amount);
+
+  /// Payment amount.
+  ///
+  /// In ar, this message translates to:
+  /// **'المبلغ'**
+  String get paymentAmountLabel;
+
+  /// Title of the credit notice.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدفعة أكبر من الرصيد'**
+  String get paymentCreditTitle;
+
+  /// Body of the credit notice.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيصبح للعميل رصيد دائن قدره {amount}.'**
+  String paymentCreditBody(String amount);
+
+  /// After saving. {number} is like RC-000001.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حفظ الدفعة {number}.'**
+  String paymentSaved(String number);
+
+  /// Amount empty or zero.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل المبلغ.'**
+  String get errorAmountRequired;
+
+  /// Name empty.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل اسم العميل.'**
+  String get errorCustomerNameRequired;
+
+  /// Payment for an archived customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'العميل مؤرشف؛ استعده أولًا.'**
+  String get errorCustomerArchived;
 }
 
 class _AppLocalizationsDelegate

@@ -79,13 +79,13 @@ is ambiguous.
 
 ## Phase 4: Customers UI — US4 (P2)
 
-- [ ] T023 ARB keys (ar + en) for all of 003.
-- [ ] T024 Routes (R15) and wiring through App, bootstrap and pumpApp; Parties root shows the
+- [X] T023 ARB keys (ar + en) for all of 003.
+- [X] T024 Routes (R15) and wiring through App, bootstrap and pumpApp; Parties root shows the
   customers list.
-- [ ] T025 CustomersScreen, CustomerFormScreen, CustomerDetailsScreen (balance, actions, statement
+- [X] T025 CustomersScreen, CustomerFormScreen, CustomerDetailsScreen (balance, actions, statement
   section, invoices list), ArchivedCustomersScreen.
-- [ ] T026 [P] Widget tests US4 scenarios 1–7 in ar/en at 100/200%.
-- [ ] T027 Gate. Commit `feat(003): phase 4 customers`.
+- [X] T026 [P] Widget tests US4 scenarios 1–7 in ar/en at 100/200%.
+- [X] T027 Gate. Commit `feat(003): phase 4 customers`.
 
 ## Phase 5: New sale — US1, US2 (P1)
 

@@ -24,6 +24,17 @@ abstract final class RoutePaths {
   static String productOpening(String id) => '$products/$id/opening';
   static String productAdjust(String id) => '$products/$id/adjust';
 
+  // Sales, under the Sales branch (003 research R15).
+  static const String salesNew = '/sales/new';
+  static String saleInvoice(String id) => '$sales/$id';
+
+  // Customers, under the Parties branch.
+  static const String customerNew = '/parties/customers/new';
+  static const String customersArchived = '/parties/customers/archived';
+  static String customerDetails(String id) => '$parties/customers/$id';
+  static String customerEdit(String id) => '$parties/customers/$id/edit';
+  static String customerPayment(String id) => '$parties/customers/$id/payment';
+
   /// The five section roots, where the shell shows its own app bar.
   static bool isSectionRoot(String path) =>
       const {home, sales, parties, purchases, reports}.contains(path);
