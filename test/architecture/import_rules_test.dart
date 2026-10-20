@@ -314,6 +314,42 @@ void main() {
     });
   });
 
+  group('no-delete', () {
+    test('flags deletes and stock movement updates', () {
+      for (final code in [
+        'await delete(products).go();',
+        "customStatement('DELETE FROM products')",
+        "customStatement('delete from categories')",
+        "customStatement('UPDATE stock_movements SET note = 1')",
+        'update(stockMovements).write(x);',
+      ]) {
+        expect(
+          _rulesHit(
+            'lib/core/database/daos/x.dart',
+            code,
+            noDeleteOrMovementUpdate,
+          ),
+          ['no-delete'],
+          reason: code,
+        );
+      }
+    });
+
+    test('allows other updates and the no-delete triggers', () {
+      for (final code in [
+        'update(products).write(x);',
+        "'CREATE TRIGGER t BEFORE DELETE ON products'",
+        'await sl.reset();',
+      ]) {
+        expect(
+          _rulesHit('lib/core/database/x.dart', code, noDeleteOrMovementUpdate),
+          isEmpty,
+          reason: code,
+        );
+      }
+    });
+  });
+
   group('stripComments', () {
     test('keeps URLs inside strings', () {
       expect(

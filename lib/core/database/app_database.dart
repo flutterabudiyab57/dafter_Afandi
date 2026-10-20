@@ -3,7 +3,10 @@ import 'package:drift/drift.dart';
 import '../utils/clock.dart';
 import '../utils/id.dart';
 import 'converters/utc_millis_converter.dart';
+import 'daos/categories_dao.dart';
+import 'daos/products_dao.dart';
 import 'daos/settings_dao.dart';
+import 'daos/stock_movements_dao.dart';
 import 'schema_constants.dart';
 import 'schema_errors.dart';
 import 'schema_sql.dart';
@@ -49,7 +52,7 @@ part 'app_database.g.dart';
     SupplierLedger,
     Expenses,
   ],
-  daos: [SettingsDao],
+  daos: [SettingsDao, ProductsDao, CategoriesDao, StockMovementsDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor, this._ids, this._clock);

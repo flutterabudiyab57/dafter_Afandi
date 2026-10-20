@@ -124,7 +124,7 @@ interfaces.
 
 **Purpose**: every stored rule from contracts/repositories-and-domain.md, on schema v1.
 
-- [ ] T013 Create `lib/core/database/daos/products_dao.dart`.
+- [X] T013 Create `lib/core/database/daos/products_dao.dart`.
   - One shared SQL base: products, the stock subquery
     `COALESCE((SELECT SUM(qty_delta_milli) FROM stock_movements m WHERE m.product_id = p.id), 0)`,
     a LEFT JOIN of active categories (an archived category reads as NULL, R17), and
@@ -143,7 +143,7 @@ interfaces.
 
   The watch queries use `customSelect(...).watch()` with
   `readsFrom: {products, stockMovements, categories}`.
-- [ ] T014 [P] Create `lib/core/database/daos/stock_movements_dao.dart` with these methods:
+- [X] T014 [P] Create `lib/core/database/daos/stock_movements_dao.dart` with these methods:
   - `stockOf(productId)`;
   - `hasAny(productId)`;
   - `insertOpening(...)` and `insertAdjustment(...)`;
@@ -151,17 +151,17 @@ interfaces.
   - `replayRows(productId)`, ordered `created_at, rowid`.
 
   It never updates and never deletes.
-- [ ] T015 [P] Create `lib/core/database/daos/categories_dao.dart` with these methods:
+- [X] T015 [P] Create `lib/core/database/daos/categories_dao.dart` with these methods:
   - `watchActive()`, which includes the active product count and orders by
     `sort_order, search_key`;
   - `activeBySearchKey`, `maxSortOrder`, `insert`, `rename`, `setArchivedAt`, `setSortOrders`.
-- [ ] T016 Register the three DAOs in `@DriftDatabase(daos: [...])` in
+- [X] T016 Register the three DAOs in `@DriftDatabase(daos: [...])` in
   `lib/core/database/app_database.dart`. Run `dart run build_runner build`, then confirm that
   `drift_schemas/` is unchanged and `schemaVersion` is still 1.
-- [ ] T017 Create `lib/features/products/data/mappers.dart`: row ↔ domain mapping for products,
+- [X] T017 Create `lib/features/products/data/mappers.dart`: row ↔ domain mapping for products,
   categories and movements (`adjustment_reason` ↔ `AdjustmentKind`, MovementType ↔
   StockEntryType). It is the only place that names Drift types.
-- [ ] T018 Create `lib/features/products/data/product_repository_impl.dart`. Each write is one
+- [X] T018 Create `lib/features/products/data/product_repository_impl.dart`. Each write is one
   `TransactionRunner.run`, with writes exactly as listed in data-model.md "Writes":
   - **create**: W1 insert the product; then, if an opening is given, W2 insert OPENING and W3 set
     `avgCost = weightedAverageCost(stockMilli: 0, …)` (R7);
@@ -172,7 +172,7 @@ interfaces.
     and empty becomes NULL (R9);
   - a `SqliteException` UNIQUE failure on barcode maps to `barcodeTaken`;
   - `ProductSaved.nameExistsElsewhere` comes from `activeNameExists`.
-- [ ] T019 [P] Create `lib/features/products/data/inventory_repository_impl.dart`:
+- [X] T019 [P] Create `lib/features/products/data/inventory_repository_impl.dart`:
   - `setOpening`: `hasAny` must be false, else `openingNotAllowed`; then insert OPENING and set
     avgCost.
   - `adjust`, in one transaction:
@@ -183,15 +183,15 @@ interfaces.
   - `history` reads pages.
   - `rebuildAverageCost` replays (R7): OPENING, PURCHASE, SALE_RETURN and SALE_VOID apply WAC,
     and the other types change stock only. It writes the result and returns it.
-- [ ] T020 [P] Create `lib/features/products/data/category_repository_impl.dart`:
+- [X] T020 [P] Create `lib/features/products/data/category_repository_impl.dart`:
   - create and rename check for a duplicate by searchKey among active categories;
   - create uses `sortOrder = max + 1`;
   - `move` swaps with the neighbour and rewrites `sort_order` 0..n-1 for all active categories in
     one transaction;
   - archive sets `archived_at`.
-- [ ] T021 Register the DAOs and the three repositories in `lib/core/di/service_locator.dart`, and
+- [X] T021 Register the DAOs and the three repositories in `lib/core/di/service_locator.dart`, and
   extend `resetDependencies`.
-- [ ] T022 [P] Test `test/features/products/data/product_repository_impl_test.dart` on in-memory
+- [X] T022 [P] Test `test/features/products/data/product_repository_impl_test.dart` on in-memory
   Drift (`NativeDatabase.memory()`, `FixedClock`). Cover every row of the contract table that
   concerns products:
   - rollback: a fake runner or DAO that throws after W2 leaves no product and no movement;
@@ -201,7 +201,7 @@ interfaces.
   - an archived category matches the `none` filter;
   - the duplicate-name flag;
   - avgCost after an opening of 12 at 7.50 is 750.
-- [ ] T023 [P] Test `test/features/products/data/search_and_order_test.dart`:
+- [X] T023 [P] Test `test/features/products/data/search_and_order_test.dart`:
   - "ارز" finds "أرز مصري";
   - an Arabic-digit barcode query finds the Latin barcode;
   - an exact barcode match is first;
@@ -210,7 +210,7 @@ interfaces.
   - the low rule includes threshold-equal and below-zero rows, and excludes rows with no threshold
     and stock ≥ 0;
   - the Home query returns the 5 lowest and a total of 7.
-- [ ] T024 [P] Test `test/features/products/data/inventory_repository_impl_test.dart`:
+- [X] T024 [P] Test `test/features/products/data/inventory_repository_impl_test.dart`:
   - opening once;
   - damage at the limit and at limit + 1 milli;
   - count equal (no row written), count up and count down;
@@ -219,18 +219,18 @@ interfaces.
   - the history page order and the cursor;
   - a property test: 200 random sequences of opening and adjustments with a seeded Random, after
     which the stock equals the sum of movements and `rebuildAverageCost` equals the stored value.
-- [ ] T025 [P] Test `test/features/products/data/category_repository_impl_test.dart`:
+- [X] T025 [P] Test `test/features/products/data/category_repository_impl_test.dart`:
   - duplicates, including folded variants;
   - rename shows on products;
   - move up and down, at the first and last positions;
   - archive keeps the products.
-- [ ] T026 [P] Test `test/features/products/data/performance_test.dart`: seed 2,000 products and
+- [X] T026 [P] Test `test/features/products/data/performance_test.dart`: seed 2,000 products and
   100,000 movements in a batch, then assert that the first emission of `watchSummaries(all)` plus
   one search query complete in under 300 ms (R3). Tag it `performance`, and print the timing.
-- [ ] T027 [P] Add a test in `test/architecture/import_rules_test.dart` (or a new
+- [X] T027 [P] Add a test in `test/architecture/import_rules_test.dart` (or a new
   `test/architecture/no_delete_test.dart`) that fails when any file under `lib/` contains
   `delete(` or a `DELETE` statement, or updates `stock_movements`.
-- [ ] T028 Gate: analyze clean and all tests green; the `drift_schemas/` diff is empty. Commit
+- [X] T028 Gate: analyze clean and all tests green; the `drift_schemas/` diff is empty. Commit
   `feat(002): phase 2 DAOs and repositories`.
 
 ---

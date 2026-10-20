@@ -202,6 +202,21 @@ Iterable<Violation> noLiteralTextInPresentation(SourceFile file, String code) {
   );
 }
 
+/// No hard delete anywhere, and no update of the append-only stock ledger
+/// (constitution III). The v1 triggers refuse both; this keeps code from
+/// trying.
+Iterable<Violation> noDeleteOrMovementUpdate(SourceFile file, String code) =>
+    _matches(
+      'no-delete',
+      file,
+      code,
+      RegExp(
+        r'\bdelete\(|\bdeleteWhere\b|\bDELETE\s+FROM\b|'
+        r'\bUPDATE\s+stock_movements\b|\bupdate\(\s*stockMovements\s*\)',
+        caseSensitive: false,
+      ),
+    );
+
 const List<Rule> allRules = [
   noMaterialOrCupertino,
   layerDirection,
@@ -213,6 +228,7 @@ const List<Rule> allRules = [
   noScreenUtilSp,
   visualsOnlyInTheme,
   noLiteralTextInPresentation,
+  noDeleteOrMovementUpdate,
 ];
 
 List<Violation> check(SourceFile file, [List<Rule> rules = allRules]) {
