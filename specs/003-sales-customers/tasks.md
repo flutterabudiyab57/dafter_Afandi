@@ -41,19 +41,19 @@ is ambiguous.
 
 ## Phase 2: Data (Foundational)
 
-- [ ] T008 `lib/core/database/daos/counters_dao.dart`: `take(DocType)` with `UPDATE … RETURNING`.
-- [ ] T009 `customers_dao.dart`: watchActive(query) with the balance subquery, list order and owes
+- [X] T008 `lib/core/database/daos/counters_dao.dart`: `take(DocType)` with `UPDATE … RETURNING`.
+- [X] T009 `customers_dao.dart`: watchActive(query) with the balance subquery, list order and owes
   filter; watchOne; watchArchived; insert; update; setArchivedAt; activeNameExists.
-- [ ] T010 `customer_ledger_dao.dart`: insert; balanceOf; statementPage(customerId, before, limit)
+- [X] T010 `customer_ledger_dao.dart`: insert; balanceOf; statementPage(customerId, before, limit)
   with the running-balance window and reversed flag; byId; reversalOf(entryId); rowsForInvoice.
-- [ ] T011 `sales_dao.dart`: insertInvoice, insertItem, watchList(query, limit), watchOne (header +
+- [X] T011 `sales_dao.dart`: insertInvoice, insertItem, watchList(query, limit), watchOne (header +
   customer name), items(invoiceId), setVoided; plus `stock_movements_dao` `saleMovementsOf`.
-- [ ] T012 Register the DAOs; `dart run build_runner build`; confirm `drift_schemas/` unchanged and
+- [X] T012 Register the DAOs; `dart run build_runner build`; confirm `drift_schemas/` unchanged and
   schemaVersion 1.
-- [ ] T013 `lib/features/customers/data/customer_repository_impl.dart` + mappers (R12, R13).
-- [ ] T014 `lib/features/sales/data/sales_repository_impl.dart` (R10, R11) + mappers.
-- [ ] T015 DI in `service_locator.dart`.
-- [ ] T016 [P] Tests in `test/features/customers/data/` and `test/features/sales/data/`:
+- [X] T013 `lib/features/customers/data/customer_repository_impl.dart` + mappers (R12, R13).
+- [X] T014 `lib/features/sales/data/sales_repository_impl.dart` (R10, R11) + mappers.
+- [X] T015 DI in `service_locator.dart`.
+- [X] T016 [P] Tests in `test/features/customers/data/` and `test/features/sales/data/`:
   create/update/archive/restore, opening balance ±, statement running balance and paging,
   receive and cancel payment (cannot cancel twice, cannot cancel a sale payment), sale W1–W6 for
   walk-in, cash with customer, partial, credit; shortage needs acknowledgement; archived product or
@@ -61,7 +61,7 @@ is ambiguous.
   consecutive and unchanged after a forced rollback; property test of random sales, payments,
   cancels and voids (balance = Σ ledger, stock = Σ movements, avgCost = replay); 2,000-product
   search timing reused from 002.
-- [ ] T017 Gate. Commit `feat(003): phase 2 data`.
+- [X] T017 Gate. Commit `feat(003): phase 2 data`.
 
 ## Phase 3: Cubits
 

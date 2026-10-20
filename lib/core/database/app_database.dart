@@ -4,7 +4,11 @@ import '../utils/clock.dart';
 import '../utils/id.dart';
 import 'converters/utc_millis_converter.dart';
 import 'daos/categories_dao.dart';
+import 'daos/counters_dao.dart';
+import 'daos/customer_ledger_dao.dart';
+import 'daos/customers_dao.dart';
 import 'daos/products_dao.dart';
+import 'daos/sales_dao.dart';
 import 'daos/settings_dao.dart';
 import 'daos/stock_movements_dao.dart';
 import 'schema_constants.dart';
@@ -52,7 +56,16 @@ part 'app_database.g.dart';
     SupplierLedger,
     Expenses,
   ],
-  daos: [SettingsDao, ProductsDao, CategoriesDao, StockMovementsDao],
+  daos: [
+    SettingsDao,
+    ProductsDao,
+    CategoriesDao,
+    StockMovementsDao,
+    CountersDao,
+    CustomersDao,
+    CustomerLedgerDao,
+    SalesDao,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor, this._ids, this._clock);

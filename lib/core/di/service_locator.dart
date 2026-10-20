@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../features/customers/data/customer_repository_impl.dart';
+import '../../features/customers/domain/customer_repository.dart';
 import '../../features/products/data/category_repository_impl.dart';
 import '../../features/products/data/inventory_repository_impl.dart';
 import '../../features/products/data/product_repository_impl.dart';
@@ -8,6 +10,8 @@ import '../../features/products/domain/category_repository.dart';
 import '../../features/products/domain/inventory_repository.dart';
 import '../../features/products/domain/product_repository.dart';
 import '../../features/products/presentation/products_cubits.dart';
+import '../../features/sales/data/sales_repository_impl.dart';
+import '../../features/sales/domain/sales_repository.dart';
 import '../../features/settings/data/package_info_app_version_source.dart';
 import '../../features/settings/data/settings_repository_impl.dart';
 import '../../features/settings/domain/app_settings.dart';
@@ -18,7 +22,11 @@ import '../../features/settings/presentation/cubits/app_preferences_cubit.dart';
 import '../../features/settings/presentation/cubits/shop_profile_form_cubit.dart';
 import '../database/app_database.dart';
 import '../database/daos/categories_dao.dart';
+import '../database/daos/counters_dao.dart';
+import '../database/daos/customer_ledger_dao.dart';
+import '../database/daos/customers_dao.dart';
 import '../database/daos/products_dao.dart';
+import '../database/daos/sales_dao.dart';
 import '../database/daos/settings_dao.dart';
 import '../database/daos/stock_movements_dao.dart';
 import '../database/transaction_runner.dart';
@@ -80,6 +88,35 @@ Future<void> configureDependencies({
     ..registerLazySingleton<CategoryRepository>(
       () => CategoryRepositoryImpl(
         sl<CategoriesDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<CountersDao>(() => sl<AppDatabase>().countersDao)
+    ..registerLazySingleton<CustomersDao>(() => sl<AppDatabase>().customersDao)
+    ..registerLazySingleton<CustomerLedgerDao>(
+      () => sl<AppDatabase>().customerLedgerDao,
+    )
+    ..registerLazySingleton<SalesDao>(() => sl<AppDatabase>().salesDao)
+    ..registerLazySingleton<CustomerRepository>(
+      () => CustomerRepositoryImpl(
+        sl<CustomersDao>(),
+        sl<CustomerLedgerDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<SalesRepository>(
+      () => SalesRepositoryImpl(
+        sl<SalesDao>(),
+        sl<ProductsDao>(),
+        sl<StockMovementsDao>(),
+        sl<CustomersDao>(),
+        sl<CustomerLedgerDao>(),
+        sl<CountersDao>(),
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),

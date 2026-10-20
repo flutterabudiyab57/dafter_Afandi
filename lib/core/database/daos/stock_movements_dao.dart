@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../app_database.dart';
+import '../tables/enums.dart';
 import '../tables/stock_movements_table.dart';
 
 part 'stock_movements_dao.g.dart';
@@ -40,6 +41,15 @@ class StockMovementsDao extends DatabaseAccessor<AppDatabase>
     ).getSingle();
     return row.read<int>('e') != 0;
   }
+
+  /// The SALE movement written for sale line [saleItemId].
+  Future<StockMovementRow?> saleMovementOf(String saleItemId) =>
+      (select(stockMovements)..where(
+            (m) =>
+                m.saleItemId.equals(saleItemId) &
+                m.movementType.equalsValue(MovementType.SALE),
+          ))
+          .getSingleOrNull();
 
   Future<void> insertMovement(StockMovementsCompanion row) =>
       into(stockMovements).insert(row);
