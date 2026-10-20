@@ -104,7 +104,7 @@ void main() {
       cubit.submit();
       expect(
         cubit.state.errorFor(ProductField.openingQty),
-        const QuantityInvalid(ProductField.openingQty),
+        const QuantityRequired(ProductField.openingQty),
       );
       cubit
         ..qtyChanged('2.5')

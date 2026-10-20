@@ -100,7 +100,7 @@ void main() {
             tester,
             find.widgetWithText(FilledButton, l10n.saveAction),
           );
-          expect(find.text(l10n.errorQuantityInvalid), findsOneWidget);
+          expect(find.text(l10n.errorQuantityRequired), findsOneWidget);
           await type(tester, l10n.productOpeningQtyLabel, '3');
           await tapVisible(
             tester,

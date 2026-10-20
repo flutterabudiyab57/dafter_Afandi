@@ -78,6 +78,14 @@ final class PriceTooLarge extends ProductFieldError {
   List<Object?> get props => [field, maxPiasters];
 }
 
+/// Empty or zero where a quantity is needed (the later opening stock).
+final class QuantityRequired extends ProductFieldError {
+  const QuantityRequired(this.field);
+
+  @override
+  final ProductField field;
+}
+
 /// Not a number, negative, or more than 3 decimals.
 final class QuantityInvalid extends ProductFieldError {
   const QuantityInvalid(this.field);

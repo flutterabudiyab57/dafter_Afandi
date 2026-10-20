@@ -121,7 +121,7 @@ class OpeningStockCubit extends Cubit<OpeningStockState> {
       case Ok(value: null):
         emit(
           state.copyWith(
-            errors: const [QuantityInvalid(ProductField.openingQty)],
+            errors: const [QuantityRequired(ProductField.openingQty)],
           ),
         );
       case Ok(value: final OpeningStock opening):

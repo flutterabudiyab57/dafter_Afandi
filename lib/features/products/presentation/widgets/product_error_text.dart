@@ -23,6 +23,7 @@ extension ProductErrorText on BuildContext {
     PriceTooLarge(:final maxPiasters) => _l10n.errorPriceTooLarge(
       money(maxPiasters),
     ),
+    QuantityRequired() => _l10n.errorQuantityRequired,
     QuantityInvalid() => _l10n.errorQuantityInvalid,
     QuantityNotWhole() => _l10n.errorQuantityNotWhole,
     QuantityTooLarge(:final maxMilli) => _l10n.errorQuantityTooLarge(
