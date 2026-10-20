@@ -1022,6 +1022,12 @@ abstract class AppLocalizations {
   /// **'اسم قسم جديد'**
   String get categoryAddHint;
 
+  /// Label of the category name field in the rename dialog.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم القسم'**
+  String get categoryNameLabel;
+
   /// Button that adds the typed category.
   ///
   /// In ar, this message translates to:

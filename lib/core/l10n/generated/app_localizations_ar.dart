@@ -536,6 +536,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get categoryAddHint => 'اسم قسم جديد';
 
   @override
+  String get categoryNameLabel => 'اسم القسم';
+
+  @override
   String get categoryAddAction => 'إضافة';
 
   @override

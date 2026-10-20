@@ -154,6 +154,7 @@
   "adjustSaved": "Saved. Stock is now {qty}.",
   "categoriesTitle": "Categories",
   "categoryAddHint": "New category name",
+  "categoryNameLabel": "Category name",
   "categoryAddAction": "Add",
   "categoryRename": "Rename",
   "categoryMoveUp": "Move up",

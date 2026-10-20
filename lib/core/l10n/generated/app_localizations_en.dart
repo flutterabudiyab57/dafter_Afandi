@@ -536,6 +536,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categoryAddHint => 'New category name';
 
   @override
+  String get categoryNameLabel => 'Category name';
+
+  @override
   String get categoryAddAction => 'Add';
 
   @override

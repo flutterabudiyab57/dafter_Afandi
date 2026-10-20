@@ -710,6 +710,10 @@
   "@categoryAddHint": {
     "description": "Hint of the add category field."
   },
+  "categoryNameLabel": "اسم القسم",
+  "@categoryNameLabel": {
+    "description": "Label of the category name field in the rename dialog."
+  },
   "categoryAddAction": "إضافة",
   "@categoryAddAction": {
     "description": "Button that adds the typed category."

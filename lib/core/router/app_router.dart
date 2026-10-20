@@ -10,6 +10,7 @@ import '../../features/products/domain/product_query.dart';
 import '../../features/products/presentation/cubits/product_form_cubit.dart';
 import '../../features/products/presentation/products_cubits.dart';
 import '../../features/products/presentation/screens/archived_products_screen.dart';
+import '../../features/products/presentation/screens/categories_screen.dart';
 import '../../features/products/presentation/screens/opening_stock_screen.dart';
 import '../../features/products/presentation/screens/product_details_screen.dart';
 import '../../features/products/presentation/screens/product_form_screen.dart';
@@ -24,7 +25,6 @@ import '../../features/settings/presentation/cubits/shop_profile_form_cubit.dart
 import '../../features/settings/presentation/data_safety_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/settings/presentation/shop_profile_edit_screen.dart';
-import '../l10n/generated/app_localizations.dart';
 import '../widgets/app_shell_scaffold.dart';
 import 'route_names.dart';
 import 'stream_listenable.dart';
@@ -202,23 +202,13 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
     ),
     GoRoute(
       path: 'categories',
-      builder: (context, state) => _Pending((l10n) => l10n.categoriesTitle),
+      builder: (context, state) => BlocProvider(
+        create: (_) => products.categories(),
+        child: const CategoriesScreen(),
+      ),
     ),
   ],
 );
-
-/// A titled, empty page for a products screen that a later phase of 002
-/// fills in.
-class _Pending extends StatelessWidget {
-  const _Pending(this.title);
-
-  final String Function(AppLocalizations l10n) title;
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(title(AppLocalizations.of(context)))),
-  );
-}
 
 /// The redirect matrix, separate so it can be tested on its own.
 String? firstRunRedirect(String location, bool onboardingCompleted) {

@@ -471,13 +471,13 @@ count and damage.
 **Independent test**: two categories, reorder and rename them, archive one; its products appear
 under "No category".
 
-- [ ] T069 [US5] Create `lib/features/products/presentation/screens/categories_screen.dart`:
+- [X] T069 [US5] Create `lib/features/products/presentation/screens/categories_screen.dart`:
   - an add field at the top;
   - each row shows the name and `categoryProductCount`, with Rename (a dialog), Move up and Move
     down (spoken labels, disabled at the ends), and Archive (with `categoryArchiveConfirm`);
   - errors (duplicate, too long) appear inline.
   - Wire `/home/categories`.
-- [ ] T070 [P] [US5] Widget tests in
+- [X] T070 [P] [US5] Widget tests in
   `test/features/products/presentation/categories_screen_test.dart` for US5 scenarios 1–4:
   - a folded duplicate is blocked;
   - a rename shows on products;
@@ -485,7 +485,7 @@ under "No category".
   - the order is used by the filter chips and the form picker.
 
   Run in ar and en, at 100% and 200%.
-- [ ] T071 Gate: analyze clean and all tests green. Commit `feat(002): phase 7 categories`.
+- [X] T071 Gate: analyze clean and all tests green. Commit `feat(002): phase 7 categories`.
 
 ---
 
