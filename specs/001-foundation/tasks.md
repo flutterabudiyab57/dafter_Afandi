@@ -173,11 +173,11 @@ independent, so all tasks are [P].
 
 **Purpose**: all 17 tables from data-model.md, plus triggers, seeds and migrations from v1.
 
-- [ ] T024 [P] `lib/core/database/schema_constants.dart`: `const int kSchemaVersion = 1;`,
+- [X] T024 [P] `lib/core/database/schema_constants.dart`: `const int kSchemaVersion = 1;`,
   `const int kAppApplicationId = 0x44414641;`, `const String kDatabaseFileName = 'daftar_afandi.sqlite';`.
-- [ ] T025 [P] `lib/core/database/converters/utc_millis_converter.dart`: a `TypeConverter<DateTime, int>`
+- [X] T025 [P] `lib/core/database/converters/utc_millis_converter.dart`: a `TypeConverter<DateTime, int>`
   that stores UTC epoch milliseconds and rejects non-UTC input.
-- [ ] T026 [P] `lib/core/database/tables/enums.dart`: Dart enums for `textEnum`, with these exact values:
+- [X] T026 [P] `lib/core/database/tables/enums.dart`: Dart enums for `textEnum`, with these exact values:
   - LocaleCode `ar`, `en`;
   - DigitStylePreference `follow`, `arabic`, `latin`;
   - NegativeStockPolicy `warn`, `block`;
@@ -189,7 +189,7 @@ independent, so all tasks are [P].
   - CustomerEntryType `OPENING_BALANCE`, `SALE`, `PAYMENT_RECEIVED`, `SALE_RETURN`, `REFUND_PAID`,
     `SALE_VOID`, `ADJUSTMENT`, `REVERSAL`;
   - SupplierEntryType `OPENING_BALANCE`, `PURCHASE`, `PAYMENT_MADE`, `PURCHASE_VOID`, `ADJUSTMENT`, `REVERSAL`.
-- [ ] T027 [P] Tables `lib/core/database/tables/app_settings_table.dart` and `counters_table.dart`, exactly per
+- [X] T027 [P] Tables `lib/core/database/tables/app_settings_table.dart` and `counters_table.dart`, exactly per
   data-model.md:
   - app_settings:
     - `singleton INTEGER DEFAULT 1 UNIQUE CHECK (singleton = 1)`;
@@ -201,7 +201,7 @@ independent, so all tasks are [P].
     - table CHECK `onboardingCompletedAt IS NULL OR (shopName IS NOT NULL AND length(trim(shopName)) BETWEEN 1 AND 60)`;
     - no `pinHash` or `pinSalt`.
   - counters: `docType` UNIQUE, `nextValue INTEGER CHECK (nextValue >= 1)`, `createdAt`, `updatedAt`.
-- [ ] T028 [P] Master tables in `lib/core/database/tables/`: `categories_table.dart`, `products_table.dart`,
+- [X] T028 [P] Master tables in `lib/core/database/tables/`: `categories_table.dart`, `products_table.dart`,
   `customers_table.dart`, `suppliers_table.dart`, `expense_categories_table.dart`. Columns and CHECKs per
   data-model.md:
   - products:
@@ -211,7 +211,7 @@ independent, so all tasks are [P].
   - customers and suppliers: `name`, `searchKey`, `phone`, `address` and `note` nullable; **no** `creditLimitPiasters`;
   - every master table has `createdAt`, `updatedAt` and `archivedAt` (nullable);
   - every FK is `ON DELETE RESTRICT`.
-- [ ] T029 [P] Sales tables in `lib/core/database/tables/`:
+- [X] T029 [P] Sales tables in `lib/core/database/tables/`:
   - `sales_invoices_table.dart`:
     - `number` UNIQUE; `customerId` FK nullable;
     - `discountPiasters DEFAULT 0`; `paymentMethod NOT NULL DEFAULT 'cash'`;
@@ -227,28 +227,28 @@ independent, so all tasks are [P].
     - `refundPaidPiasters` 0..total, and `= total OR customerId IS NOT NULL`;
     - `paymentMethod NOT NULL DEFAULT 'cash'`; no voidedAt;
   - `sale_return_items_table.dart`: `qtyMilli > 0`.
-- [ ] T030 [P] Purchase tables: `lib/core/database/tables/purchase_invoices_table.dart` and `purchase_items_table.dart`.
+- [X] T030 [P] Purchase tables: `lib/core/database/tables/purchase_invoices_table.dart` and `purchase_items_table.dart`.
   - purchase_invoices: `paymentMethod NOT NULL DEFAULT 'cash'`, `updatedAt`, `voidedAt`, `voidReason`;
     CHECKs mirror sales, including `paid = total OR supplierId IS NOT NULL`;
   - purchase_items: `productNameSnapshot`, `UNIQUE(purchaseInvoiceId, lineNo)`, `qtyMilli > 0`,
     `netLineCostPiasters`, `avgCostBeforePiasters`, `avgCostAfterPiasters`.
-- [ ] T031 [P] `lib/core/database/tables/stock_movements_table.dart`:
+- [X] T031 [P] `lib/core/database/tables/stock_movements_table.dart`:
   - `qtyDeltaMilli CHECK != 0`;
   - the per-type CHECK table from data-model.md, exactly (OPENING +, no source; PURCHASE purchaseItemId +;
     PURCHASE_VOID purchaseItemId + reversesMovementId −; SALE saleItemId −; SALE_RETURN saleReturnItemId +;
     SALE_VOID saleItemId + reversesMovementId +; ADJUSTMENT adjustmentReason ±);
   - `adjustmentReason IS NOT NULL` only when the type is ADJUSTMENT;
   - `reversesMovementId` is a self-FK.
-- [ ] T032 [P] Ledger tables: `lib/core/database/tables/customer_ledger_table.dart` and `supplier_ledger_table.dart`.
+- [X] T032 [P] Ledger tables: `lib/core/database/tables/customer_ledger_table.dart` and `supplier_ledger_table.dart`.
   - `amountPiasters CHECK != 0`; `receiptNumber` / `paymentNumber` nullable, partial UNIQUE;
     `reversesEntryId` self-FK;
   - **nullable** `paymentMethod`;
   - customer CHECK `(entryType IN ('PAYMENT_RECEIVED','REFUND_PAID')) = (paymentMethod IS NOT NULL)`;
   - supplier CHECK `(entryType = 'PAYMENT_MADE') = (paymentMethod IS NOT NULL)` (deviation D2).
-- [ ] T033 [P] `lib/core/database/tables/expenses_table.dart`: `number` UNIQUE, `expenseCategoryId` FK NOT NULL,
+- [X] T033 [P] `lib/core/database/tables/expenses_table.dart`: `number` UNIQUE, `expenseCategoryId` FK NOT NULL,
   `amountPiasters CHECK > 0`, `spentAt`, `note`, `createdAt`, `updatedAt`, `voidedAt`, `voidReason`.
   No paymentMethod.
-- [ ] T034 `lib/core/database/schema_sql.dart`: one ordered list of SQL strings. It contains:
+- [X] T034 `lib/core/database/schema_sql.dart`: one ordered list of SQL strings. It contains:
   - all indexes from data-model.md, including the partial UNIQUEs on searchKey, barcode,
     receiptNumber and paymentNumber;
   - `trg_<table>_no_delete` on all 17 tables;
@@ -258,11 +258,11 @@ independent, so all tasks are [P].
     `OLD.voidedAt IS NOT NULL OR NEW.voidedAt IS NULL OR NEW.voidReason IS NULL`, or when any other
     column changes (`NEW.x IS NOT OLD.x`);
   - `trg_sale_return_items_qty_ceiling`.
-- [ ] T035 [P] `lib/core/database/transaction_runner.dart`: an interface `TransactionRunner { Future<T> run<T>(Future<T> Function() action); }`
+- [X] T035 [P] `lib/core/database/transaction_runner.dart`: an interface `TransactionRunner { Future<T> run<T>(Future<T> Function() action); }`
   and a `DriftTransactionRunner(AppDatabase)`.
-- [ ] T036 [P] `lib/core/database/daos/settings_dao.dart`: `getSingleton()`, `watchSingleton()`, and
+- [X] T036 [P] `lib/core/database/daos/settings_dao.dart`: `getSingleton()`, `watchSingleton()`, and
   `updateSingleton(companion)`, which asserts that exactly 1 row is affected. It has no insert and no delete.
-- [ ] T037 `lib/core/database/app_database.dart`:
+- [X] T037 `lib/core/database/app_database.dart`:
   - `@DriftDatabase` with all 17 tables and `SettingsDao`; `schemaVersion => kSchemaVersion`;
   - the constructor takes `(QueryExecutor, IdGenerator, Clock)`;
   - `onCreate`, in order: `PRAGMA application_id = kAppApplicationId`, `createAll()`, the `schema_sql.dart`
@@ -275,38 +275,38 @@ independent, so all tasks are [P].
   - verify whether Drift 2.35.1 runs `onCreate` in a transaction, and wrap it explicitly if not (risk K4).
 
   Also `lib/core/database/schema_errors.dart` with `SchemaTooNewException`.
-- [ ] T038 [P] `lib/core/database/connection.dart`: `QueryExecutor openAppDatabaseExecutor()` =
+- [X] T038 [P] `lib/core/database/connection.dart`: `QueryExecutor openAppDatabaseExecutor()` =
   `driftDatabase(name: 'daftar_afandi', native: DriftNativeOptions(databaseDirectory: getApplicationSupportDirectory))`.
-- [ ] T039 Run `dart run build_runner build --delete-conflicting-outputs`, then `dart run drift_dev make-migrations`.
+- [X] T039 Run `dart run build_runner build --delete-conflicting-outputs`, then `dart run drift_dev make-migrations`.
   Confirm that `drift_schemas/app_database/drift_schema_v1.json` and the files under `test/drift/` were created,
   and report the generated file names.
-- [ ] T040 [P] `test/core/database/schema_test.dart` (temp-file DB) checks:
+- [X] T040 [P] `test/core/database/schema_test.dart` (temp-file DB) checks:
   - all 17 tables exist;
   - `PRAGMA application_id` = 0x44414641; `user_version` = 1;
   - `journal_mode` = `delete`; `foreign_keys` = 1.
-- [ ] T041 [P] `test/core/database/seeds_test.dart` checks:
+- [X] T041 [P] `test/core/database/seeds_test.dart` checks:
   - 6 counters rows with `nextValue` 1;
   - exactly one app_settings row: `localeCode` `ar`, `digitStyle` `follow`, NULL `shopName` and
     `onboardingCompletedAt`, a UUID v7 `deviceId`;
   - a second app_settings insert fails.
-- [ ] T042 [P] `test/core/database/triggers_test.dart` checks:
+- [X] T042 [P] `test/core/database/triggers_test.dart` checks:
   - DELETE aborts on every table;
   - UPDATE aborts on every immutable table;
   - a voidable header accepts exactly one void (NULL → set, together with `updatedAt`) and rejects
     re-void, un-void and any other column change;
   - the sale-return qty ceiling aborts over-returns.
-- [ ] T043 [P] `test/core/database/trigger_coverage_test.dart`: for each immutable and voidable table, read
+- [X] T043 [P] `test/core/database/trigger_coverage_test.dart`: for each immutable and voidable table, read
   `PRAGMA table_info` and assert that every non-void column name appears in its trigger SQL (meta-test, research R14).
-- [ ] T044 [P] `test/core/database/constraints_test.dart` covers each CHECK in data-model.md:
+- [X] T044 [P] `test/core/database/constraints_test.dart` covers each CHECK in data-model.md:
   - app_settings onboarded without a name is rejected, and a 61-code-point name is rejected;
   - a phone with letters is rejected;
   - each stock_movements per-type rule;
   - ledger paymentMethod required exactly on payment rows;
   - sales/purchase header money CHECKs;
   - expenses `amountPiasters > 0`.
-- [ ] T045 [P] `test/core/database/counters_test.dart`: `UPDATE counters SET nextValue = nextValue + 1 … RETURNING nextValue - 1`
+- [X] T045 [P] `test/core/database/counters_test.dart`: `UPDATE counters SET nextValue = nextValue + 1 … RETURNING nextValue - 1`
   returns 1, 2, 3 in a transaction; a rolled-back transaction doesn't consume a number.
-- [ ] T046 Phase gate: `flutter analyze` and `flutter test` green, including the generated `test/drift/` tests.
+- [X] T046 Phase gate: `flutter analyze` and `flutter test` green, including the generated `test/drift/` tests.
   Report and STOP.
 
 **Checkpoint**: the whole MVP schema exists and is protected by triggers.
