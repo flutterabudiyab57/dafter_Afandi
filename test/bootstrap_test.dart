@@ -11,6 +11,7 @@ import 'package:daftar_afandi/core/utils/clock.dart';
 import 'package:daftar_afandi/core/utils/id.dart';
 import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
+import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:daftar_afandi/features/settings/domain/app_version.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
@@ -74,7 +75,7 @@ void main() {
     expect(
       shown.single,
       isA<App>()
-          .having((a) => a.locale, 'locale', const Locale('ar'))
+          .having((a) => a.preferences.state.locale, 'locale', AppLocale.ar)
           .having((a) => a.appVersion.display, 'version', '1.0.0 (1)'),
     );
     expect(executorCalls, 1);

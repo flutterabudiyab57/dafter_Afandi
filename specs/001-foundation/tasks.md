@@ -487,61 +487,61 @@ independent, so all tasks are [P].
 show the same shop data. On Android and iOS (target-platform override in tests) the data screen
 shows the matching text.
 
-- [ ] T087 [P] [US1] `lib/core/router/route_names.dart`: path constants `/welcome`, `/onboarding/shop`,
+- [X] T087 [P] [US1] `lib/core/router/route_names.dart`: path constants `/welcome`, `/onboarding/shop`,
   `/onboarding/data`, `/home`, `/sales`, `/parties`, `/purchases`, `/reports`, `/settings`, `/settings/shop`,
   `/settings/data`. Also `lib/core/router/stream_listenable.dart` (adapts a `Stream` to a `Listenable`).
-- [ ] T088 [US1] `lib/core/router/app_router.dart`: `GoRouter createAppRouter(AppPreferencesCubit prefs)`:
+- [X] T088 [US1] `lib/core/router/app_router.dart`: `GoRouter createAppRouter(AppPreferencesCubit prefs)`:
   - `initialLocation: '/welcome'`;
   - a single `redirect` that implements the contract's matrix (not onboarded → only `/welcome` and
     `/onboarding/*`; onboarded → never those, go to `/home`), with `refreshListenable` driven by the cubit stream;
   - the onboarding routes are under a `ShellRoute` that provides one `ShopProfileFormCubit(mode: onboarding)`
     for both steps;
   - a `/home` route to a temporary `HomeScreen` (completed in Phase 8).
-- [ ] T089 [P] [US1] `lib/core/widgets/digit_style_scope.dart`: an `InheritedWidget` holding the effective
+- [X] T089 [P] [US1] `lib/core/widgets/digit_style_scope.dart`: an `InheritedWidget` holding the effective
   `DigitStyle`, with `context.digits(String latin)` → `applyDigitStyle`.
   Also `lib/core/widgets/code_point_length_formatter.dart`, a `TextInputFormatter` that limits to N code points.
-- [ ] T090 [US1] Update `lib/app.dart`:
+- [X] T090 [US1] Update `lib/app.dart`:
   - a `BlocProvider<AppPreferencesCubit>` above `MaterialApp.router`;
   - `locale` from the cubit state; `DigitStyleScope` from `effectiveDigitStyle`;
   - the router from `createAppRouter`;
   - content wrapped in a centered `ConstrainedBox(maxWidth: context.tokens.maxContentWidth)` builder.
-- [ ] T091 [US1] `lib/features/onboarding/presentation/welcome_screen.dart`:
+- [X] T091 [US1] `lib/features/onboarding/presentation/welcome_screen.dart`:
   - the logo (`Image.asset('assets/images/logo.png')`) inside `Semantics(label: l10n.logoSemantics)`;
   - `appName`, `welcomeTitle` and `welcomeBody`;
   - a visible Arabic / English `SegmentedButton` that calls `AppPreferencesCubit.changeLocale` immediately;
   - Continue → `/onboarding/shop`;
   - scrollable at 200% text; tokens only.
-- [ ] T092 [US1] `lib/features/onboarding/presentation/shop_details_step_screen.dart`:
+- [X] T092 [US1] `lib/features/onboarding/presentation/shop_details_step_screen.dart`:
   - name field with `CodePointLengthFormatter(60)`;
   - phone field: optional, `TextInputType.phone`, accepts Arabic and Latin digits;
   - errors from `ShopProfileFormCubit` mapped to the ARB keys `errorShopNameRequired`, `errorShopNameTooLong`,
     `errorPhoneInvalid`, `errorPhoneTooShort` and `errorPhoneTooLong`;
   - Continue calls `validate()` and navigates to `/onboarding/data` only when valid.
-- [ ] T093 [US2] `lib/features/settings/presentation/data_safety_screen.dart`:
+- [X] T093 [US2] `lib/features/settings/presentation/data_safety_screen.dart`:
   - `DataSafetyScreen({required DataSafetyMode mode})` (`onboarding` / `settings`);
   - body `dataSafetyLocalOnly`, plus `dataSafetyAndroidBackup` when `defaultTargetPlatform == TargetPlatform.android`,
     or `dataSafetyIosManual` when `iOS`;
   - in onboarding mode: Finish → `ShopProfileFormCubit.submit()`. On success the redirect goes to `/home`;
     on failure it shows `errorSaveFailed` and keeps the inputs;
   - in settings mode: a back button only.
-- [ ] T094 [P] [US1] `test/core/router/router_redirect_test.dart`: the redirect matrix for every route in both states,
+- [X] T094 [P] [US1] `test/core/router/router_redirect_test.dart`: the redirect matrix for every route in both states,
   and a restart while not onboarded lands on `/welcome`.
-- [ ] T095 [P] [US1] `test/features/onboarding/welcome_screen_test.dart`:
+- [X] T095 [P] [US1] `test/features/onboarding/welcome_screen_test.dart`:
   - the default is Arabic and RTL even with the platform locale `en`;
   - tapping English switches immediately and persists (repository mock verify);
   - the logo semantics label is present in both languages.
-- [ ] T096 [P] [US1] `test/features/onboarding/shop_details_step_screen_test.dart`:
+- [X] T096 [P] [US1] `test/features/onboarding/shop_details_step_screen_test.dart`:
   - empty and spaces-only names block Continue, with the message in the active language;
   - a 61st code point can't be typed;
   - an empty phone is allowed; `٠١٠ ١٢٣٤-٥٦٧٨` is accepted.
-- [ ] T097 [P] [US2] `test/features/settings/data_safety_screen_test.dart`: `debugDefaultTargetPlatformOverride` android
+- [X] T097 [P] [US2] `test/features/settings/data_safety_screen_test.dart`: `debugDefaultTargetPlatformOverride` android
   → Android text, iOS → iOS text, in ar and en; settings mode has no Finish.
-- [ ] T098 [US1] `test/features/onboarding/onboarding_flow_test.dart` (in-memory DB, real repository):
+- [X] T098 [US1] `test/features/onboarding/onboarding_flow_test.dart` (in-memory DB, real repository):
   - the full flow ends on Home with `onboardingCompletedAt` set;
   - an interrupted flow, after re-pump, restarts at `/welcome` in the language chosen before;
   - every onboarding screen at `TextScaler.linear(2.0)` in light and dark, ar and en, shows no
     overflow (no `FlutterError` overflow reported).
-- [ ] T099 Phase gate: `flutter analyze` and `flutter test` green; run the app on the Android emulator and
+- [X] T099 Phase gate: `flutter analyze` and `flutter test` green; run the app on the Android emulator and
   report the first-run time. Report and STOP.
 
 **Checkpoint**: MVP: first run works end to end and persists (US1 and US2).

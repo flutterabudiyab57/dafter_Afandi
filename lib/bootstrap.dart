@@ -16,6 +16,8 @@ import 'core/widgets/update_required_app.dart';
 import 'features/settings/domain/app_settings.dart';
 import 'features/settings/domain/app_version.dart';
 import 'features/settings/domain/settings_repository.dart';
+import 'features/settings/presentation/cubits/app_preferences_cubit.dart';
+import 'features/settings/presentation/cubits/shop_profile_form_cubit.dart';
 
 /// Starts the app (contracts/startup-guard.md). The schema guard runs before
 /// any database object or DI registration exists, so a newer or foreign file
@@ -75,7 +77,14 @@ Future<void> bootstrap({
     return;
   }
 
-  runAppFn(App(locale: Locale(settings.locale.name), appVersion: version));
+  runAppFn(
+    App(
+      preferences: sl<AppPreferencesCubit>(param1: settings),
+      appVersion: version,
+      shopProfileForm: (mode, initial) =>
+          sl<ShopProfileFormCubit>(param1: mode, param2: initial),
+    ),
+  );
 }
 
 Future<void> _releaseDatabase() async {
