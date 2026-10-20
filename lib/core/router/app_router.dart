@@ -25,6 +25,7 @@ import '../../features/products/presentation/screens/stock_adjustment_screen.dar
 import '../../features/purchases/presentation/purchases_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
+import '../../features/sales/presentation/screens/invoice_screen.dart';
 import '../../features/sales/presentation/screens/new_sale_screen.dart';
 import '../../features/sales/presentation/screens/sales_list_screen.dart';
 import '../../features/settings/domain/shop_profile.dart';
@@ -237,6 +238,13 @@ GoRoute _salesRoute(SalesCubits sales) => GoRoute(
           productPicker: sales.productPicker,
           customerPicker: sales.customerPicker,
         ),
+      ),
+    ),
+    GoRoute(
+      path: ':id',
+      builder: (context, state) => BlocProvider(
+        create: (_) => sales.invoice(state.pathParameters['id']!),
+        child: const InvoiceScreen(),
       ),
     ),
   ],

@@ -99,11 +99,11 @@ is ambiguous.
 
 ## Phase 6: Invoices, payments, voids — US3, US5, US6
 
-- [ ] T033 SalesListScreen (search, unpaid filter, show more) and InvoiceScreen with Void dialog.
-- [ ] T034 PaymentScreen and Cancel payment on statement rows; tapping a sale row opens the
+- [X] T033 SalesListScreen (search, unpaid filter, show more) and InvoiceScreen with Void dialog.
+- [X] T034 PaymentScreen and Cancel payment on statement rows; tapping a sale row opens the
   invoice.
-- [ ] T035 [P] Widget tests US3 1–4, US5 1–3, US6 1–6.
-- [ ] T036 Gate. Commit `feat(003): phase 6 invoices, payments and voids`.
+- [X] T035 [P] Widget tests US3 1–4, US5 1–3, US6 1–6.
+- [X] T036 Gate. Commit `feat(003): phase 6 invoices, payments and voids`.
 
 ## Phase 7: Polish
 
