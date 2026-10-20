@@ -25,7 +25,8 @@ import '../../features/products/presentation/screens/stock_adjustment_screen.dar
 import '../../features/purchases/presentation/purchases_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
-import '../../features/sales/presentation/sales_screen.dart';
+import '../../features/sales/presentation/screens/new_sale_screen.dart';
+import '../../features/sales/presentation/screens/sales_list_screen.dart';
 import '../../features/settings/domain/shop_profile.dart';
 import '../../features/settings/presentation/cubits/app_preferences_cubit.dart';
 import '../../features/settings/presentation/cubits/shop_profile_form_cubit.dart';
@@ -96,7 +97,7 @@ GoRouter createAppRouter(
         ),
         branches: [
           StatefulShellBranch(routes: [_homeRoute(products)]),
-          section(RoutePaths.sales, const SalesScreen()),
+          StatefulShellBranch(routes: [_salesRoute(sales)]),
           StatefulShellBranch(routes: [_partiesRoute(customers, sales)]),
           section(RoutePaths.purchases, const PurchasesScreen()),
           section(RoutePaths.reports, const ReportsScreen()),
@@ -214,6 +215,28 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
       builder: (context, state) => BlocProvider(
         create: (_) => products.categories(),
         child: const CategoriesScreen(),
+      ),
+    ),
+  ],
+);
+
+/// The Sales section: the invoice list, a new sale and one invoice (003
+/// research R15).
+GoRoute _salesRoute(SalesCubits sales) => GoRoute(
+  path: RoutePaths.sales,
+  builder: (context, state) => BlocProvider(
+    create: (_) => sales.salesList(),
+    child: const SalesListScreen(),
+  ),
+  routes: [
+    GoRoute(
+      path: 'new',
+      builder: (context, state) => BlocProvider(
+        create: (_) => sales.sale(),
+        child: NewSaleScreen(
+          productPicker: sales.productPicker,
+          customerPicker: sales.customerPicker,
+        ),
       ),
     ),
   ],

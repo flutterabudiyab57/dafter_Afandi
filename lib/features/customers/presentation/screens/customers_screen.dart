@@ -38,6 +38,9 @@ class _CustomersScreenState extends State<CustomersScreen> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
+        // Section roots stay alive in the shell; a shared default tag
+        // would clash during page transitions.
+        heroTag: null,
         icon: const Icon(Icons.person_add_alt),
         label: Text(l10n.customerAddTitle),
         onPressed: () => context.push(RoutePaths.customerNew),

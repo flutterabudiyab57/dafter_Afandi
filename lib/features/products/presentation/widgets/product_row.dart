@@ -10,9 +10,12 @@ import 'unit_label.dart';
 /// One product in a list: name, sale price, stock and marks. Tapping opens
 /// its details. The details wrap, so nothing is cut at 200% text.
 class ProductRow extends StatelessWidget {
-  const ProductRow({required this.summary, super.key});
+  const ProductRow({required this.summary, this.onTap, super.key});
 
   final ProductSummary summary;
+
+  /// Replaces opening the details, e.g. to pick the product for a sale.
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +46,8 @@ class ProductRow extends StatelessWidget {
           ),
         ],
       ),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () => context.push(RoutePaths.productDetails(p.id)),
+      trailing: onTap == null ? const Icon(Icons.chevron_right) : null,
+      onTap: onTap ?? () => context.push(RoutePaths.productDetails(p.id)),
     );
   }
 }

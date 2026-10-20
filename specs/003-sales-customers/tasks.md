@@ -89,13 +89,13 @@ is ambiguous.
 
 ## Phase 5: New sale — US1, US2 (P1)
 
-- [ ] T028 NewSaleScreen: lines with quantity, price and discount fields; totals; invoice
+- [X] T028 NewSaleScreen: lines with quantity, price and discount fields; totals; invoice
   discount; customer chip; paid now; method chips; Save; leave guard; shortage dialog; snackbar
   with the number.
-- [ ] T029 ProductPickerPage and CustomerPickerPage (quick add).
-- [ ] T030 Sales section root: invoice list placeholder replaced in Phase 6; New sale button.
-- [ ] T031 [P] Widget tests US1 1–7 and US2 1–5.
-- [ ] T032 Gate. Commit `feat(003): phase 5 new sale`.
+- [X] T029 ProductPickerPage and CustomerPickerPage (quick add).
+- [X] T030 Sales section root: invoice list placeholder replaced in Phase 6; New sale button.
+- [X] T031 [P] Widget tests US1 1–7 and US2 1–5.
+- [X] T032 Gate. Commit `feat(003): phase 5 new sale`.
 
 ## Phase 6: Invoices, payments, voids — US3, US5, US6
 

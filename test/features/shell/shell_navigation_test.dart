@@ -69,7 +69,7 @@ void main() {
     );
 
     testWidgets(
-      '${locale.name}: Home and Parties show content; the others their placeholder',
+      '${locale.name}: Home, Sales and Parties show content; the others a placeholder',
       (tester) async {
         await open(tester);
         for (final (index, (path, title, body)) in sections.indexed) {
@@ -85,6 +85,12 @@ void main() {
             expect(find.text(l10n.homeProductsAction), findsOneWidget);
             expect(find.text(l10n.homeCategoriesAction), findsOneWidget);
             expect(find.text(l10n.lowStockCardTitle), findsOneWidget);
+            continue;
+          }
+          if (path == RoutePaths.sales) {
+            // The invoice list since 003.
+            expect(find.text(l10n.salesNewAction), findsOneWidget);
+            expect(find.text(l10n.salesListEmpty), findsOneWidget);
             continue;
           }
           if (path == RoutePaths.parties) {
