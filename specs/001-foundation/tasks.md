@@ -366,41 +366,41 @@ independent, so all tasks are [P].
 
 **Purpose**: every visual token in `lib/core/theme`, the bundled font, full ARB files, and the app root.
 
-- [ ] T056 ASK the human before downloading. Then download from
+- [X] T056 ASK the human before downloading. Then download from
   `https://raw.githubusercontent.com/google/fonts/main/ofl/ibmplexsansarabic/`:
   - `IBMPlexSansArabic-Regular.ttf` (235,924 B), `-Medium.ttf` (242,100 B), `-SemiBold.ttf` (244,616 B),
     `-Bold.ttf` (246,992 B) and `OFL.txt` (4,456 B), into `assets/fonts/`;
   - verify each byte size, and report SHA-256 values.
-- [ ] T057 [P] Verify `assets/images/logo.png` exists (placed by the owner, A5) and record its dimensions
+- [X] T057 [P] Verify `assets/images/logo.png` exists (placed by the owner, A5) and record its dimensions
   (expected 799×1024 RGBA, 897,908 B). Copy nothing; never read any file from another project.
-- [ ] T058 Add to the `pubspec.yaml` `flutter:` section:
+- [X] T058 Add to the `pubspec.yaml` `flutter:` section:
   - `assets: [assets/images/logo.png, assets/fonts/OFL.txt]`;
   - `fonts: - family: IBMPlexSansArabic` with weights 400/500/600/700 mapped to the four files.
 
   Run `flutter pub get`.
-- [ ] T059 Verify glyph coverage with a throwaway scratchpad script (fontTools, if it's installed; otherwise
+- [X] T059 Verify glyph coverage with a throwaway scratchpad script (fontTools, if it's installed; otherwise
   report that it was skipped): `0-9`, `٠-٩`, `A-Z`, `a-z`, `+`, `٫` (U+066B), `٬` (U+066C), `ج`, `.`, `م`
   in all four files. Report the results.
-- [ ] T060 [P] `lib/core/theme/app_colors.dart`: `lightScheme` and `darkScheme` =
+- [X] T060 [P] `lib/core/theme/app_colors.dart`: `lightScheme` and `darkScheme` =
   `ColorScheme.fromSeed(seedColor: Color(0xFF326CE9), brightness: …)`, plus a `ThemeExtension` for any
   extra semantic colors (none required yet).
-- [ ] T061 [P] `lib/core/theme/app_typography.dart`: a `TextTheme` built with `fontFamily: 'IBMPlexSansArabic'`,
+- [X] T061 [P] `lib/core/theme/app_typography.dart`: a `TextTheme` built with `fontFamily: 'IBMPlexSansArabic'`,
   sizes in logical px, weights limited to 400/500/600/700. Never `.sp`.
-- [ ] T062 [P] `lib/core/theme/app_spacing.dart` and `app_radii.dart`:
+- [X] T062 [P] `lib/core/theme/app_spacing.dart` and `app_radii.dart`:
   - design-px values (xs 4, sm 8, md 16, lg 24, xl 32; radii sm 8, md 12, lg 16);
   - a scale helper = `ScreenUtil().scaleWidth.clamp(0.85, 1.20)`;
   - `maxContentWidth = 600`.
-- [ ] T063 `lib/core/theme/app_tokens.dart`: `AppTokens extends ThemeExtension<AppTokens>` (spacing, radii,
+- [X] T063 `lib/core/theme/app_tokens.dart`: `AppTokens extends ThemeExtension<AppTokens>` (spacing, radii,
   maxContentWidth) with `copyWith`/`lerp`, plus a `BuildContext.tokens` extension.
   Also `lib/core/theme/app_theme.dart`: `ThemeData appLightTheme()` / `appDarkTheme()` using the colors,
   typography and tokens.
-- [ ] T064 [P] `lib/core/theme/font_license.dart`: `registerFontLicenses()` adds
+- [X] T064 [P] `lib/core/theme/font_license.dart`: `registerFontLicenses()` adds
   `LicenseEntryWithLineBreaks(['IBM Plex Sans Arabic'], await rootBundle.loadString('assets/fonts/OFL.txt'))`
   to `LicenseRegistry`. Call it from `bootstrap()` step 1.
-- [ ] T065 Fill `lib/core/l10n/arb/app_ar.arb` (template, with `@key` descriptions) and `app_en.arb` with **every**
+- [X] T065 Fill `lib/core/l10n/arb/app_ar.arb` (template, with `@key` descriptions) and `app_en.arb` with **every**
   key listed in contracts/routes-and-screens.md. The Arabic text is natural Egyptian-friendly MSA. No
   string mentions a tax receipt or tax invoice (FR-017). Run `flutter gen-l10n`.
-- [ ] T066 `lib/app.dart`: `App` is a material_ui `MaterialApp.router` with:
+- [X] T066 `lib/app.dart`: `App` is a material_ui `MaterialApp.router` with:
   - `localizationsDelegates: [AppLocalizations.delegate, ...GlobalMaterialLocalizations.delegates]`;
   - `supportedLocales: [Locale('ar'), Locale('en')]`, `locale` from a parameter for now;
   - `theme`/`darkTheme` from `app_theme.dart` and `themeMode: ThemeMode.system`;
@@ -409,15 +409,15 @@ independent, so all tasks are [P].
 
   Also switch the T053 success path to `App`, and update `UpdateRequiredApp` and `StartupErrorApp` to use the
   theme and tokens.
-- [ ] T067 [P] `test/app/delegates_test.dart`: with locale `ar`, `MaterialLocalizations.of(context)` (material_ui)
+- [X] T067 [P] `test/app/delegates_test.dart`: with locale `ar`, `MaterialLocalizations.of(context)` (material_ui)
   returns Arabic strings (e.g. `okButtonLabel`), and the widget tree uses material_ui's type.
-- [ ] T068 [P] `test/app/text_scale_test.dart`: pump `App` inside `MediaQuery(textScaler: TextScaler.linear(2.0))`
+- [X] T068 [P] `test/app/text_scale_test.dart`: pump `App` inside `MediaQuery(textScaler: TextScaler.linear(2.0))`
   and assert that `MediaQuery.textScalerOf` under the router is still 2.0 (FR-016).
-- [ ] T069 [P] `test/l10n/arb_test.dart`: the two ARB files have identical key sets and no empty values; neither
+- [X] T069 [P] `test/l10n/arb_test.dart`: the two ARB files have identical key sets and no empty values; neither
   contains "tax receipt", "tax invoice", "فاتورة ضريبية" or "إيصال ضريبي".
-- [ ] T070 [P] `test/core/theme/theme_test.dart`: light and dark schemes derive from 0xFF326CE9; `AppTokens` is
+- [X] T070 [P] `test/core/theme/theme_test.dart`: light and dark schemes derive from 0xFF326CE9; `AppTokens` is
   present in both themes; the font family is `IBMPlexSansArabic`.
-- [ ] T071 Phase gate: `flutter analyze` and `flutter test` green. Report and STOP.
+- [X] T071 Phase gate: `flutter analyze` and `flutter test` green. Report and STOP.
 
 **Checkpoint**: the app root is ready; screens can now be built using only tokens and ARB strings.
 

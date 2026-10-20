@@ -55,3 +55,20 @@ dependency_overrides:
 flutter:
   generate: true
   uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+    - assets/fonts/OFL.txt
+
+  # Only the four weights the typography uses (400/500/600/700).
+  fonts:
+    - family: IBMPlexSansArabic
+      fonts:
+        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexSansArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
+          weight: 700

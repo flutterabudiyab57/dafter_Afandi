@@ -5,11 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'app.dart';
 import 'core/database/connection.dart';
 import 'core/database/daos/settings_dao.dart';
 import 'core/database/schema_errors.dart';
 import 'core/database/schema_guard.dart';
+import 'core/database/tables/enums.dart';
 import 'core/di/service_locator.dart';
+import 'core/theme/font_license.dart';
 import 'core/widgets/startup_error_app.dart';
 import 'core/widgets/update_required_app.dart';
 
@@ -24,6 +27,7 @@ Future<void> bootstrap({
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  registerFontLicenses();
 
   final Directory dir;
   final SchemaInspection inspection;
@@ -48,12 +52,13 @@ Future<void> bootstrap({
       break;
   }
 
+  final LocaleCode localeCode;
   try {
     await configureDependencies(
       executor: (executorFactory ?? openAppDatabaseExecutor)(dir),
     );
     // The first query opens the file and runs onCreate or onUpgrade.
-    await sl<SettingsDao>().getSingleton();
+    localeCode = (await sl<SettingsDao>().getSingleton()).localeCode;
   } on SchemaTooNewException {
     await _releaseDatabase();
     runAppFn(const UpdateRequiredApp(kind: UpdateRequiredKind.tooNew));
@@ -64,7 +69,7 @@ Future<void> bootstrap({
     return;
   }
 
-  runAppFn(const _PlaceholderApp());
+  runAppFn(App(locale: Locale(localeCode.name)));
 }
 
 Future<void> _releaseDatabase() async {
@@ -73,15 +78,5 @@ Future<void> _releaseDatabase() async {
   } on Object {
     // Closing a database that failed to open can throw too; the error screen
     // is shown either way.
-  }
-}
-
-/// Temporary root until Phase 5 adds `App`.
-class _PlaceholderApp extends StatelessWidget {
-  const _PlaceholderApp();
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(home: Scaffold());
   }
 }

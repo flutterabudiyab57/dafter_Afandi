@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:daftar_afandi/app.dart';
 import 'package:daftar_afandi/bootstrap.dart';
 import 'package:daftar_afandi/core/database/app_database.dart';
 import 'package:daftar_afandi/core/database/connection.dart';
@@ -70,7 +71,7 @@ void main() {
 
     expect(
       shown.single,
-      isNot(anyOf(isA<UpdateRequiredApp>(), isA<StartupErrorApp>())),
+      isA<App>().having((a) => a.locale, 'locale', const Locale('ar')),
     );
     expect(executorCalls, 1);
     expect(dbFile.existsSync(), isTrue);
@@ -82,10 +83,7 @@ void main() {
     await createV1File();
     await run();
 
-    expect(
-      shown.single,
-      isNot(anyOf(isA<UpdateRequiredApp>(), isA<StartupErrorApp>())),
-    );
+    expect(shown.single, isA<App>());
     expect(executorCalls, 1);
   });
 

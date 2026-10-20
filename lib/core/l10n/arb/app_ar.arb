@@ -4,6 +4,209 @@
   "@appName": {
     "description": "Application name shown in the app and on the welcome screen."
   },
+  "welcomeTitle": "أهلًا بك في دفتر أفندي",
+  "@welcomeTitle": {
+    "description": "Welcome screen title."
+  },
+  "welcomeBody": "دفترك لحسابات المحل: المبيعات والمشتريات والعملاء والموردين، كلها على هاتفك وتعمل بدون إنترنت.",
+  "@welcomeBody": {
+    "description": "Short introduction on the welcome screen."
+  },
+  "languageArabic": "العربية",
+  "@languageArabic": {
+    "description": "The Arabic language option. Always written in Arabic."
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "The English language option. Always written in English."
+  },
+  "continueAction": "متابعة",
+  "@continueAction": {
+    "description": "Button that moves to the next first-run step."
+  },
+  "shopDetailsTitle": "بيانات المحل",
+  "@shopDetailsTitle": {
+    "description": "Title of the shop details step and the shop edit screen."
+  },
+  "shopNameLabel": "اسم المحل",
+  "@shopNameLabel": {
+    "description": "Label of the required shop name field."
+  },
+  "shopPhoneLabel": "رقم هاتف المحل",
+  "@shopPhoneLabel": {
+    "description": "Label of the optional shop phone field."
+  },
+  "shopPhoneOptionalHint": "اختياري. يظهر على الفواتير التي تشاركها.",
+  "@shopPhoneOptionalHint": {
+    "description": "Helper text under the shop phone field."
+  },
+  "errorShopNameRequired": "اكتب اسم المحل.",
+  "@errorShopNameRequired": {
+    "description": "Error when the shop name is empty or only spaces."
+  },
+  "errorShopNameTooLong": "اسم المحل لا يزيد على {max} حرفًا.",
+  "@errorShopNameTooLong": {
+    "description": "Error when the shop name is too long. {max} is the limit, already in the active digit style.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPhoneInvalid": "رقم الهاتف يقبل الأرقام فقط، مع علامة + في أوله إن لزم.",
+  "@errorPhoneInvalid": {
+    "description": "Error when the phone has characters other than digits and a leading +."
+  },
+  "errorPhoneTooShort": "رقم الهاتف لا يقل عن {min} أرقام.",
+  "@errorPhoneTooShort": {
+    "description": "Error when the phone has too few digits. {min} is already in the active digit style.",
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPhoneTooLong": "رقم الهاتف لا يزيد على {max} رقمًا.",
+  "@errorPhoneTooLong": {
+    "description": "Error when the phone has too many digits. {max} is already in the active digit style.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSaveFailed": "تعذّر الحفظ. بياناتك المكتوبة ما زالت هنا، حاول مرة أخرى.",
+  "@errorSaveFailed": {
+    "description": "Shown when writing settings fails. The typed values are kept."
+  },
+  "dataSafetyTitle": "عن بياناتك",
+  "@dataSafetyTitle": {
+    "description": "Title of the data and backup explanation screen."
+  },
+  "dataSafetyLocalOnly": "بياناتك محفوظة على هذا الهاتف فقط، ولا تُرسل إلى أي خادم.",
+  "@dataSafetyLocalOnly": {
+    "description": "Explains that data lives only on the device."
+  },
+  "dataSafetyAndroidBackup": "إذا كان النسخ الاحتياطي مفعّلًا في إعدادات الهاتف، يحفظ أندرويد نسخة من بياناتك في حساب Google الخاص بك تلقائيًا، فتعود إذا أعدت تثبيت التطبيق بنفس الحساب.",
+  "@dataSafetyAndroidBackup": {
+    "description": "Android-only backup explanation."
+  },
+  "dataSafetyIosManual": "على آيفون لا يتم النسخ الاحتياطي تلقائيًا. ستتمكن من تصدير نسخة احتياطية بنفسك في تحديث قادم، فاحرص على ذلك بانتظام.",
+  "@dataSafetyIosManual": {
+    "description": "iOS-only backup explanation."
+  },
+  "finishAction": "ابدأ",
+  "@finishAction": {
+    "description": "Button that finishes the first run."
+  },
+  "navHome": "الرئيسية",
+  "@navHome": {
+    "description": "Bottom navigation: Home."
+  },
+  "navSales": "المبيعات",
+  "@navSales": {
+    "description": "Bottom navigation: Sales."
+  },
+  "navParties": "العملاء والموردين",
+  "@navParties": {
+    "description": "Bottom navigation: Customers and suppliers."
+  },
+  "navPurchases": "المشتريات",
+  "@navPurchases": {
+    "description": "Bottom navigation: Purchases."
+  },
+  "navReports": "التقارير",
+  "@navReports": {
+    "description": "Bottom navigation: Reports."
+  },
+  "placeholderHomeTitle": "الرئيسية",
+  "@placeholderHomeTitle": {
+    "description": "Home placeholder title."
+  },
+  "placeholderHomeBody": "هنا سترى ملخص يومك: المبيعات والمصروفات والنقدية، والتنبيهات المهمة.",
+  "@placeholderHomeBody": {
+    "description": "Home placeholder body."
+  },
+  "placeholderSalesTitle": "المبيعات",
+  "@placeholderSalesTitle": {
+    "description": "Sales placeholder title."
+  },
+  "placeholderSalesBody": "هنا ستسجّل فواتير البيع والمرتجعات وتشاركها مع عملائك.",
+  "@placeholderSalesBody": {
+    "description": "Sales placeholder body."
+  },
+  "placeholderPartiesTitle": "العملاء والموردين",
+  "@placeholderPartiesTitle": {
+    "description": "Customers and suppliers placeholder title."
+  },
+  "placeholderPartiesBody": "هنا ستتابع عملاءك ومورديك، وما لك وما عليك مع كل واحد منهم.",
+  "@placeholderPartiesBody": {
+    "description": "Customers and suppliers placeholder body."
+  },
+  "placeholderPurchasesTitle": "المشتريات",
+  "@placeholderPurchasesTitle": {
+    "description": "Purchases placeholder title."
+  },
+  "placeholderPurchasesBody": "هنا ستسجّل فواتير الشراء من الموردين، فيتحدّث المخزون والتكلفة تلقائيًا.",
+  "@placeholderPurchasesBody": {
+    "description": "Purchases placeholder body."
+  },
+  "placeholderReportsTitle": "التقارير",
+  "@placeholderReportsTitle": {
+    "description": "Reports placeholder title."
+  },
+  "placeholderReportsBody": "هنا ستجد تقارير المبيعات والأرباح والمخزون والمصروفات.",
+  "@placeholderReportsBody": {
+    "description": "Reports placeholder body."
+  },
+  "settingsTitle": "الإعدادات",
+  "@settingsTitle": {
+    "description": "Settings screen title."
+  },
+  "settingsShopDetails": "بيانات المحل",
+  "@settingsShopDetails": {
+    "description": "Settings row that opens the shop details editor."
+  },
+  "settingsLanguage": "اللغة",
+  "@settingsLanguage": {
+    "description": "Settings row for the app language."
+  },
+  "settingsDigitStyle": "شكل الأرقام",
+  "@settingsDigitStyle": {
+    "description": "Settings row for the digit style."
+  },
+  "digitStyleFollowLanguage": "حسب اللغة",
+  "@digitStyleFollowLanguage": {
+    "description": "Digit style option: follow the language."
+  },
+  "digitStyleArabic": "أرقام عربية (٠١٢٣)",
+  "@digitStyleArabic": {
+    "description": "Digit style option: Arabic-Indic digits. The sample digits stay as written."
+  },
+  "digitStyleLatin": "أرقام لاتينية (0123)",
+  "@digitStyleLatin": {
+    "description": "Digit style option: Latin digits. The sample digits stay as written."
+  },
+  "settingsAboutData": "عن بياناتك",
+  "@settingsAboutData": {
+    "description": "Settings row that opens the data and backup explanation."
+  },
+  "settingsAppVersion": "إصدار التطبيق",
+  "@settingsAppVersion": {
+    "description": "Settings row showing the app version."
+  },
+  "saveAction": "حفظ",
+  "@saveAction": {
+    "description": "Save button."
+  },
+  "openSettingsSemantics": "فتح الإعدادات",
+  "@openSettingsSemantics": {
+    "description": "Spoken label of the settings button in the app bar."
+  },
+  "logoSemantics": "شعار دفتر أفندي",
+  "@logoSemantics": {
+    "description": "Spoken label of the app logo."
+  },
   "updateRequiredTitle": "يلزم تحديث التطبيق",
   "@updateRequiredTitle": {
     "description": "Title of the blocking screen shown when the stored data cannot be opened by this app version."
