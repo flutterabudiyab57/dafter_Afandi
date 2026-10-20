@@ -49,6 +49,10 @@ final class AppTokens extends ThemeExtension<AppTokens> {
   /// Padding around a screen's scrollable content.
   EdgeInsets get pagePadding => EdgeInsets.all(spaceLg);
 
+  /// Padding of a small header above a group of list rows.
+  EdgeInsetsDirectional get sectionHeaderPadding =>
+      EdgeInsetsDirectional.only(start: spaceMd, end: spaceMd, top: spaceSm);
+
   @override
   AppTokens copyWith({
     double? spaceXs,

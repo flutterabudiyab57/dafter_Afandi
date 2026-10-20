@@ -556,52 +556,52 @@ shows the matching text.
 **Independent Test**: tap all five sections in ar and en; change every setting, relaunch, and confirm
 each setting is kept and applied (shop name as typed, version in Latin digits).
 
-- [ ] T100 [P] [US3] `lib/core/widgets/section_placeholder.dart`: `SectionPlaceholder({required IconData icon, required String title, required String body})`.
+- [X] T100 [P] [US3] `lib/core/widgets/section_placeholder.dart`: `SectionPlaceholder({required IconData icon, required String title, required String body})`.
   Tokens only, scrollable, no sample data.
-- [ ] T101 [US3] `lib/core/widgets/app_shell_scaffold.dart`:
+- [X] T101 [US3] `lib/core/widgets/app_shell_scaffold.dart`:
   - takes a `StatefulNavigationShell` and shows a `NavigationBar` with 5 destinations (labels `navHome`,
     `navSales`, `navParties`, `navPurchases`, `navReports`, in that order);
   - an app bar with a settings `IconButton` (`tooltip`/semantics `openSettingsSemantics`) that pushes `/settings`.
-- [ ] T102 [P] [US3] Placeholder screens, each a `SectionPlaceholder` with its own `placeholder…Title/Body` keys:
+- [X] T102 [P] [US3] Placeholder screens, each a `SectionPlaceholder` with its own `placeholder…Title/Body` keys:
   - `lib/features/home/presentation/home_screen.dart` (replaces the temporary one);
   - `lib/features/sales/presentation/sales_screen.dart`;
   - `lib/features/customers/presentation/parties_screen.dart`;
   - `lib/features/purchases/presentation/purchases_screen.dart`;
   - `lib/features/reports/presentation/reports_screen.dart`.
-- [ ] T103 [US3] In `lib/core/router/app_router.dart`, add a `StatefulShellRoute.indexedStack` with 5 branches
+- [X] T103 [US3] In `lib/core/router/app_router.dart`, add a `StatefulShellRoute.indexedStack` with 5 branches
   (`/home`, `/sales`, `/parties`, `/purchases`, `/reports`) using `AppShellScaffold`, keeping the redirects.
-- [ ] T104 [US4] `lib/features/settings/presentation/settings_screen.dart`, with only these rows:
+- [X] T104 [US4] `lib/features/settings/presentation/settings_screen.dart`, with only these rows:
   - Shop details: name exactly as typed, phone via `ltrIsolate(context.digits(phone))`; opens `/settings/shop`;
   - Language: ar/en, via `changeLocale`;
   - Digit style: `digitStyleFollowLanguage` / `digitStyleArabic` (٠١٢٣) / `digitStyleLatin` (0123), via
     `changeDigitStyle`;
   - About your data: opens `/settings/data`;
   - App version: read-only `ltrIsolate(appVersion.display)`, **never** passed through `context.digits`.
-- [ ] T105 [US4] `lib/features/settings/presentation/shop_profile_edit_screen.dart`:
+- [X] T105 [US4] `lib/features/settings/presentation/shop_profile_edit_screen.dart`:
   - uses `ShopProfileFormCubit(mode: settings)`, pre-filled from the settings;
   - the same fields and formatters as T092;
   - Save is blocked on an invalid name, and the stored name is kept;
   - on success it pops.
-- [ ] T106 [US4] Add the `/settings`, `/settings/shop` and `/settings/data` routes (`DataSafetyScreen(mode: settings)`) in
+- [X] T106 [US4] Add the `/settings`, `/settings/shop` and `/settings/data` routes (`DataSafetyScreen(mode: settings)`) in
   `lib/core/router/app_router.dart`, pushed above the shell.
-- [ ] T107 [P] [US3] `test/features/shell/shell_navigation_test.dart`:
+- [X] T107 [P] [US3] `test/features/shell/shell_navigation_test.dart`:
   - destinations are in the exact order; Home sits at the right edge in RTL and the left in LTR;
   - the selected destination is marked;
   - each section shows its own placeholder text and no list or sample data.
-- [ ] T108 [P] [US4] `test/features/settings/settings_screen_test.dart`:
+- [X] T108 [P] [US4] `test/features/settings/settings_screen_test.dart`:
   - a language switch rebuilds to English LTR with no restart;
   - follow-language digits are Arabic-Indic in ar and Latin in en;
   - an explicit digit style survives a language switch, and choosing follow restores the default;
   - shop name `محل 23` renders exactly as typed under both digit styles while the phone follows the style;
   - the version renders `1.0.0 (1)` in Latin under Arabic-Indic.
-- [ ] T109 [P] [US4] `test/features/settings/shop_profile_edit_screen_test.dart`: clearing the name blocks Save and keeps
+- [X] T109 [P] [US4] `test/features/settings/shop_profile_edit_screen_test.dart`: clearing the name blocks Save and keeps
   the old name; a valid edit persists through a temp-file DB reopen.
-- [ ] T110 [P] [US4] `test/app/semantics_labels_test.dart`: for every screen in ar and en, every tappable widget and the
+- [X] T110 [P] [US4] `test/app/semantics_labels_test.dart`: for every screen in ar and en, every tappable widget and the
   logo has a non-empty semantics label (`SemanticsTester` / `tester.getSemantics`), per FR-020 and SC-008.
-- [ ] T111 [P] [US3] `test/app/layout_stress_test.dart`: every screen (onboarding, the 5 sections, settings, shop edit,
+- [X] T111 [P] [US3] `test/app/layout_stress_test.dart`: every screen (onboarding, the 5 sections, settings, shop edit,
   data, blocking apps) at 375×812 and 800×1280, `TextScaler.linear(2.0)`, light and dark, ar and en, with
   no overflow errors (SC-002).
-- [ ] T112 Phase gate: `flutter analyze` and `flutter test` green; spot-check on the emulator. Report and STOP.
+- [X] T112 Phase gate: `flutter analyze` and `flutter test` green; spot-check on the emulator. Report and STOP.
 
 **Checkpoint**: all in-app stories (US1–US4) work.
 

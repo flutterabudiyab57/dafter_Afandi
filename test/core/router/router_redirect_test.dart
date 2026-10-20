@@ -10,7 +10,16 @@ const List<String> _firstRun = [
   RoutePaths.onboardingShop,
   RoutePaths.onboardingData,
 ];
-const List<String> _afterFirstRun = [RoutePaths.home];
+const List<String> _afterFirstRun = [
+  RoutePaths.home,
+  RoutePaths.sales,
+  RoutePaths.parties,
+  RoutePaths.purchases,
+  RoutePaths.reports,
+  RoutePaths.settings,
+  RoutePaths.settingsShop,
+  RoutePaths.settingsData,
+];
 
 void main() {
   group('firstRunRedirect matrix', () {
@@ -80,6 +89,10 @@ void main() {
     ) async {
       await pumpApp(tester, FakeSettingsRepository(kOnboardedSettings));
       expect(currentPath(tester), RoutePaths.home);
+      for (final path in _afterFirstRun) {
+        await goTo(tester, path);
+        expect(currentPath(tester), path);
+      }
       for (final path in _firstRun) {
         await goTo(tester, path);
         expect(currentPath(tester), RoutePaths.home, reason: path);
