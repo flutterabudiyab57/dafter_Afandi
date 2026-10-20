@@ -65,17 +65,17 @@ is ambiguous.
 
 ## Phase 3: Cubits
 
-- [ ] T018 Customers cubits: CustomersListCubit (debounced search, owes filter), CustomerFormCubit
+- [X] T018 Customers cubits: CustomersListCubit (debounced search, owes filter), CustomerFormCubit
   (create/edit, same-name notice), CustomerDetailsCubit (archive, restore), StatementCubit (pages,
   reload on change), PaymentCubit (credit notice, save), ArchivedCustomersCubit,
   CustomerPickerCubit (search, quick add).
-- [ ] T019 Sales cubits: SaleCubit (draft edits, submit → shortage confirm → saved, reset),
+- [X] T019 Sales cubits: SaleCubit (draft edits, submit → shortage confirm → saved, reset),
   ProductPickerCubit (search, exact barcode), SalesListCubit (search, unpaid, show more),
   InvoiceCubit (watch, void).
-- [ ] T020 Bundles `CustomersCubits` / `SalesCubits` with app impls; fakes in
+- [X] T020 Bundles `CustomersCubits` / `SalesCubits` with app impls; fakes in
   `test/helpers/fake_sales.dart` (FakeSalesStore sharing the products fake store).
-- [ ] T021 [P] bloc tests for every cubit.
-- [ ] T022 Gate. Commit `feat(003): phase 3 cubits`.
+- [X] T021 [P] bloc tests for every cubit.
+- [X] T022 Gate. Commit `feat(003): phase 3 cubits`.
 
 ## Phase 4: Customers UI — US4 (P2)
 

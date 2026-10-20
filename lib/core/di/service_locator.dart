@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/customers/data/customer_repository_impl.dart';
 import '../../features/customers/domain/customer_repository.dart';
+import '../../features/customers/presentation/customers_cubits.dart';
 import '../../features/products/data/category_repository_impl.dart';
 import '../../features/products/data/inventory_repository_impl.dart';
 import '../../features/products/data/product_repository_impl.dart';
@@ -12,6 +13,7 @@ import '../../features/products/domain/product_repository.dart';
 import '../../features/products/presentation/products_cubits.dart';
 import '../../features/sales/data/sales_repository_impl.dart';
 import '../../features/sales/domain/sales_repository.dart';
+import '../../features/sales/presentation/sales_cubits.dart';
 import '../../features/settings/data/package_info_app_version_source.dart';
 import '../../features/settings/data/settings_repository_impl.dart';
 import '../../features/settings/domain/app_settings.dart';
@@ -123,6 +125,8 @@ Future<void> configureDependencies({
       ),
     )
     ..registerLazySingleton<ProductsCubits>(() => AppProductsCubits(sl))
+    ..registerLazySingleton<CustomersCubits>(() => AppCustomersCubits(sl))
+    ..registerLazySingleton<SalesCubits>(() => AppSalesCubits(sl))
     ..registerSingleton<AppVersionSource>(
       versionSource ?? const PackageInfoAppVersionSource(),
     )
