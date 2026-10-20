@@ -418,6 +418,11 @@ final class FakeCustomerRepository implements CustomerRepository {
   }
 
   @override
+  Stream<void> watchStatementChanges(String customerId) => _s
+      ._watch(() => _s._ledger.where((r) => r.customerId == customerId).length)
+      .distinct();
+
+  @override
   Future<Result<int, PaymentError>> receivePayment(
     String customerId,
     PaymentRequest request,
@@ -444,6 +449,7 @@ final class FakeCustomerRepository implements CustomerRepository {
     String entryId,
     String reason,
   ) async {
+    if (validateReason(reason) is Err) return const Err(PaymentReasonInvalid());
     final row = _s._ledger.where((r) => r.id == entryId).firstOrNull;
     if (row == null ||
         row.type != LedgerEntryType.payment ||
@@ -519,6 +525,7 @@ final class FakeSalesRepository implements SalesRepository {
 
   @override
   Future<Result<void, VoidError>> voidSale(String id, String reason) async {
+    if (validateReason(reason) is Err) return const Err(VoidReasonInvalid());
     final stored = _s._sales
         .where((x) => x.invoice.summary.id == id)
         .firstOrNull;

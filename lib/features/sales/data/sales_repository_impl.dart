@@ -16,6 +16,7 @@ import '../../../core/utils/money.dart';
 import '../../../core/utils/quantity.dart';
 import '../../../core/utils/result.dart';
 import '../../customers/data/customer_mappers.dart';
+import '../../customers/domain/payment.dart';
 import '../domain/sale.dart';
 import '../domain/sale_draft.dart';
 import '../domain/sale_errors.dart';
@@ -219,11 +220,18 @@ final class SalesRepositoryImpl implements SalesRepository {
   @override
   Future<Result<void, VoidError>> voidSale(String id, String reason) =>
       _tx.run(() async {
+        final String trimmed;
+        switch (validateReason(reason)) {
+          case Ok(:final value):
+            trimmed = value;
+          case Err():
+            return const Err(VoidReasonInvalid());
+        }
         final invoice = await _sales.byId(id);
         if (invoice == null) return const Err(InvoiceNotFound());
         if (invoice.voidedAt != null) return const Err(AlreadyVoided());
         final now = _clock.nowUtc();
-        await _sales.setVoided(id, reason, now);
+        await _sales.setVoided(id, trimmed, now);
 
         for (final item in await _sales.items(id)) {
           final sale = await _movements.saleMovementOf(item.id);
@@ -276,7 +284,7 @@ final class SalesRepositoryImpl implements SalesRepository {
                 amountPiasters: -row.amountPiasters,
                 salesInvoiceId: Value(id),
                 reversesEntryId: Value(row.id),
-                note: Value(reason),
+                note: Value(trimmed),
                 createdAt: now,
               ),
             );

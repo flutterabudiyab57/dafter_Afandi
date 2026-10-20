@@ -146,3 +146,8 @@ final class InvoiceNotFound extends VoidError {
 final class AlreadyVoided extends VoidError {
   const AlreadyVoided();
 }
+
+/// The reason is empty or longer than allowed (FR-008a).
+final class VoidReasonInvalid extends VoidError {
+  const VoidReasonInvalid();
+}

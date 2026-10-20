@@ -114,6 +114,34 @@ void main() {
       expect(c.state.saveError, const ProductUnavailable('شاي'));
       await c.close();
     });
+
+    test('a typed paid amount resets when the total changes', () async {
+      final c = sale()
+        ..addProduct(store.products.summary(tea)!)
+        ..customerChanged(const SaleCustomer(id: 'k1', name: 'أحمد'))
+        ..paidChanged('12.50');
+      expect(c.state.draft.paidPiasters, 1250);
+      expect(c.state.draft.remaining, 0);
+
+      // A second tea raises the total; paid follows it instead of leaving
+      // 12.50 owed on the customer's account.
+      c.addProduct(store.products.summary(tea)!);
+      expect(c.state.draft.total, 2500);
+      expect(c.state.draft.paidPiasters, isNull);
+      expect(c.state.draft.paid, 2500);
+      expect(c.state.draft.remaining, 0);
+
+      // A partial amount typed for the new total stays while the total
+      // does not change.
+      c
+        ..paidChanged('10')
+        ..methodChanged(PaymentMethod.wallet);
+      expect(c.state.draft.paidPiasters, 1000);
+      c.invoiceDiscountChanged('5');
+      expect(c.state.draft.total, 2000);
+      expect(c.state.draft.paidPiasters, isNull);
+      await c.close();
+    });
   });
 
   group('lists', () {

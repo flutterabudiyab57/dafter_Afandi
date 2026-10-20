@@ -9,7 +9,9 @@ import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/sale.dart';
+import '../../domain/sale_errors.dart';
 import '../cubits/sales_list_cubit.dart';
+import '../widgets/sale_text.dart';
 
 /// One saved invoice with every line and amount (US3, FR-010), and Void
 /// (US6). Titled as a sales invoice, never a tax document.
@@ -146,10 +148,12 @@ class _Body extends StatelessWidget {
           amount(l10n.salePaidLabel, s.paidPiasters),
           if (s.remainingPiasters > 0)
             amount(l10n.saleRemaining, s.remainingPiasters),
-          ListTile(
-            title: Text(l10n.saleMethodLabel),
-            subtitle: Text(context.methodLabel(invoice.method)),
-          ),
+          // Nothing was paid on a full-credit sale, so it has no method.
+          if (s.paidPiasters > 0)
+            ListTile(
+              title: Text(l10n.saleMethodLabel),
+              subtitle: Text(context.methodLabel(invoice.method)),
+            ),
           if (voidedAt == null)
             Padding(
               padding: EdgeInsetsDirectional.all(tokens.spaceMd),
@@ -178,8 +182,18 @@ class _Body extends StatelessWidget {
       action: l10n.invoiceVoidAction,
     );
     if (reason == null) return;
-    if (await cubit.voidSale(reason) == null) {
+    final VoidError? error;
+    try {
+      error = await cubit.voidSale(reason);
+    } on Object {
+      // The transaction rolled back, so nothing changed.
+      messenger.showSnackBar(SnackBar(content: Text(l10n.errorActionFailed)));
+      rethrow;
+    }
+    if (error == null) {
       messenger.showSnackBar(SnackBar(content: Text(l10n.invoiceVoided)));
+    } else if (context.mounted) {
+      messenger.showSnackBar(SnackBar(content: Text(context.voidError(error))));
     }
   }
 }

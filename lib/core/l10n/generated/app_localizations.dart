@@ -1502,6 +1502,30 @@ abstract class AppLocalizations {
   /// **'هذه الفاتورة غير موجودة.'**
   String get invoiceNotFound;
 
+  /// Void refused: the invoice was already voided.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذه الفاتورة ملغاة بالفعل.'**
+  String get invoiceAlreadyVoided;
+
+  /// Cancel refused: the payment was already cancelled.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذه الدفعة ملغاة بالفعل.'**
+  String get paymentAlreadyCancelled;
+
+  /// Cancel refused: the payment was made with a sale.
+  ///
+  /// In ar, this message translates to:
+  /// **'دفعة الفاتورة لا تُلغى وحدها. ألغِ الفاتورة نفسها.'**
+  String get paymentNotCancellable;
+
+  /// An unexpected failure while voiding or cancelling; nothing was saved.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر إتمام العملية. لم يتغيّر شيء، حاول مرة أخرى.'**
+  String get errorActionFailed;
+
   /// Void or cancel without a reason.
   ///
   /// In ar, this message translates to:

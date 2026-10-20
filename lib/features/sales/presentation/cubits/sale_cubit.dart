@@ -220,7 +220,16 @@ class SaleCubit extends Cubit<SaleState> {
   SaleStatus? get _editingStatus =>
       state.status == SaleStatus.failed ? SaleStatus.editing : null;
 
-  void _update(SaleDraft draft, {List<String> clear = const []}) {
+  void _update(SaleDraft edited, {List<String> clear = const []}) {
+    var draft = edited;
+    // A typed "paid now" belongs to the total it was typed for. When the
+    // total changes it goes back to "pay all", so an edit never turns a
+    // cash sale into credit without the owner typing a new amount.
+    if (state.draft.paidPiasters != null &&
+        draft.paidPiasters != null &&
+        draft.total != state.draft.total) {
+      draft = draft.withPaid(null);
+    }
     final inputErrors = {...state.inputErrors}
       ..removeWhere((k, _) => clear.contains(k));
     emit(

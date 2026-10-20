@@ -63,3 +63,8 @@ final class PaymentNotCancellable extends PaymentError {
 final class PaymentAlreadyCancelled extends PaymentError {
   const PaymentAlreadyCancelled();
 }
+
+/// The cancel reason is empty or longer than allowed (FR-016a).
+final class PaymentReasonInvalid extends PaymentError {
+  const PaymentReasonInvalid();
+}

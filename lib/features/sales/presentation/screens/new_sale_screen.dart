@@ -239,12 +239,15 @@ class _BodyState extends State<_Body> {
     ].whereType<String>().toList();
 
     return BlocListener<SaleCubit, SaleState>(
-      // A saved sale empties the fields for the next one.
+      // A saved sale empties the fields for the next one; a paid amount
+      // reset by a new total (SaleCubit._update) empties the paid field.
       listenWhen: (a, b) =>
-          a.status != b.status && b.status == SaleStatus.saved,
-      listener: (_, _) {
-        _invoiceDiscount.clear();
+          (a.status != b.status && b.status == SaleStatus.saved) ||
+          (a.draft.paidPiasters != null && b.draft.paidPiasters == null),
+      listener: (_, s) {
         _paid.clear();
+        if (s.status != SaleStatus.saved) return;
+        _invoiceDiscount.clear();
         _barcode.clear();
       },
       child: SafeArea(

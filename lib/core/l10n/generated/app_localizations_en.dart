@@ -814,6 +814,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invoiceNotFound => 'This invoice doesn’t exist.';
 
   @override
+  String get invoiceAlreadyVoided => 'This invoice is already voided.';
+
+  @override
+  String get paymentAlreadyCancelled => 'This payment is already cancelled.';
+
+  @override
+  String get paymentNotCancellable =>
+      'A payment made with a sale can’t be cancelled on its own. Void the invoice instead.';
+
+  @override
+  String get errorActionFailed =>
+      'Couldn’t finish. Nothing changed; try again.';
+
+  @override
   String get errorReasonRequired => 'Write the reason.';
 
   @override

@@ -813,6 +813,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get invoiceNotFound => 'هذه الفاتورة غير موجودة.';
 
   @override
+  String get invoiceAlreadyVoided => 'هذه الفاتورة ملغاة بالفعل.';
+
+  @override
+  String get paymentAlreadyCancelled => 'هذه الدفعة ملغاة بالفعل.';
+
+  @override
+  String get paymentNotCancellable =>
+      'دفعة الفاتورة لا تُلغى وحدها. ألغِ الفاتورة نفسها.';
+
+  @override
+  String get errorActionFailed =>
+      'تعذّر إتمام العملية. لم يتغيّر شيء، حاول مرة أخرى.';
+
+  @override
   String get errorReasonRequired => 'اكتب السبب.';
 
   @override

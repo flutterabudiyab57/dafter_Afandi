@@ -47,6 +47,14 @@ class CustomerLedgerDao extends DatabaseAccessor<AppDatabase>
     return row.read<int>('s');
   }
 
+  /// How many rows [customerId] has. The ledger is append-only, so a new
+  /// value means the statement changed, even when the balance did not.
+  Stream<int> watchCountOf(String customerId) => customSelect(
+    'SELECT COUNT(*) AS n FROM customer_ledger WHERE customer_id = ?1',
+    variables: [Variable<String>(customerId)],
+    readsFrom: {customerLedger},
+  ).watchSingle().map((row) => row.read<int>('n'));
+
   /// Whether a row reverses [entryId].
   Future<bool> isReversed(String entryId) async {
     final row = await customSelect(

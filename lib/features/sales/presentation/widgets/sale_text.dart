@@ -48,6 +48,12 @@ extension SaleText on BuildContext {
     DuplicateLine() => null,
   };
 
+  String voidError(VoidError e) => switch (e) {
+    InvoiceNotFound() => _l10n.invoiceNotFound,
+    AlreadyVoided() => _l10n.invoiceAlreadyVoided,
+    VoidReasonInvalid() => _l10n.errorReasonRequired,
+  };
+
   String? saveError(SaleSaveError e) => switch (e) {
     ProductUnavailable(:final name) => _l10n.errorProductUnavailable(name),
     CustomerUnavailable() => _l10n.errorCustomerUnavailable,

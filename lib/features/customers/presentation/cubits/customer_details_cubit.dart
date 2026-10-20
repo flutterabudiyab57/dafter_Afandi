@@ -67,17 +67,29 @@ final class StatementState extends Equatable {
 /// payment from it (FR-016a).
 class StatementCubit extends Cubit<StatementState> {
   StatementCubit(this._repository, this.customerId, {this.pageSize = 50})
-    : super(const StatementState());
+    : super(const StatementState()) {
+    // The first value is the current state, which the caller loads; every
+    // later one is a new account row, e.g. from a void on another screen.
+    _sub = _repository
+        .watchStatementChanges(customerId)
+        .skip(1)
+        .listen((_) => load(), onError: addError);
+  }
 
   final CustomerRepository _repository;
   final String customerId;
   final int pageSize;
+  late final StreamSubscription<void> _sub;
 
-  /// Loads the first page again, e.g. after the balance changed.
+  /// Bumped by [load], so a page read before a reload is dropped.
+  var _generation = 0;
+
+  /// Loads the first page again.
   Future<void> load() async {
+    final generation = ++_generation;
     emit(StatementState(entries: state.entries, hasMore: state.hasMore));
     final page = await _repository.statement(customerId, limit: pageSize);
-    if (isClosed) return;
+    if (isClosed || generation != _generation) return;
     emit(
       StatementState(
         entries: page,
@@ -89,13 +101,14 @@ class StatementCubit extends Cubit<StatementState> {
 
   Future<void> loadMore() async {
     if (state.loading || !state.hasMore || state.entries.isEmpty) return;
+    final generation = _generation;
     emit(StatementState(entries: state.entries, hasMore: true));
     final page = await _repository.statement(
       customerId,
       before: state.entries.last.cursor,
       limit: pageSize,
     );
-    if (isClosed) return;
+    if (isClosed || generation != _generation) return;
     emit(
       StatementState(
         entries: [...state.entries, ...page],
@@ -112,5 +125,11 @@ class StatementCubit extends Cubit<StatementState> {
       Ok() => null,
       Err(:final error) => error,
     };
+  }
+
+  @override
+  Future<void> close() async {
+    await _sub.cancel();
+    return super.close();
   }
 }

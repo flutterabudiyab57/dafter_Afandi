@@ -10,6 +10,7 @@ import '../../../products/presentation/widgets/unit_label.dart';
 import '../../../sales/presentation/cubits/sales_list_cubit.dart';
 import '../../../sales/presentation/widgets/sale_row.dart';
 import '../../domain/customer.dart';
+import '../../domain/customer_errors.dart';
 import '../../domain/ledger_entry.dart';
 import '../cubits/customer_details_cubit.dart';
 import '../widgets/customer_text.dart';
@@ -63,69 +64,66 @@ class _Details extends StatelessWidget {
     );
 
     // A column, not a lazy list, so every row exists at any text size.
-    return BlocListener<CustomerDetailsCubit, CustomerDetailsState>(
-      listenWhen: (a, b) => a.summary != b.summary,
-      listener: (context, _) => context.read<StatementCubit>().load(),
-      child: SingleChildScrollView(
-        padding: EdgeInsetsDirectional.only(bottom: tokens.spaceXl),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsetsDirectional.only(
-                start: tokens.spaceMd,
-                end: tokens.spaceMd,
-                top: tokens.spaceMd,
-              ),
-              child: Wrap(
-                spacing: tokens.spaceSm,
-                runSpacing: tokens.spaceXs,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  Text(c.name, style: theme.textTheme.headlineSmall),
-                  if (c.archived) Chip(label: Text(l10n.customerArchivedBadge)),
-                ],
+    // The statement reloads itself on every new account row.
+    return SingleChildScrollView(
+      padding: EdgeInsetsDirectional.only(bottom: tokens.spaceXl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.only(
+              start: tokens.spaceMd,
+              end: tokens.spaceMd,
+              top: tokens.spaceMd,
+            ),
+            child: Wrap(
+              spacing: tokens.spaceSm,
+              runSpacing: tokens.spaceXs,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(c.name, style: theme.textTheme.headlineSmall),
+                if (c.archived) Chip(label: Text(l10n.customerArchivedBadge)),
+              ],
+            ),
+          ),
+          ListTile(
+            title: Text(l10n.customerBalanceLabel),
+            subtitle: Text(
+              context.balance(b),
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: b > 0 ? theme.colorScheme.error : null,
               ),
             ),
+          ),
+          if (c.phone != null)
             ListTile(
-              title: Text(l10n.customerBalanceLabel),
-              subtitle: Text(
-                context.balance(b),
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: b > 0 ? theme.colorScheme.error : null,
-                ),
-              ),
+              title: Text(l10n.customerPhoneLabel),
+              subtitle: Text(ltrIsolate(c.phone!)),
             ),
-            if (c.phone != null)
-              ListTile(
-                title: Text(l10n.customerPhoneLabel),
-                subtitle: Text(ltrIsolate(c.phone!)),
-              ),
-            if (c.address != null)
-              ListTile(
-                title: Text(l10n.customerAddressLabel),
-                subtitle: Text(c.address!),
-              ),
-            if (c.note != null)
-              ListTile(
-                title: Text(l10n.customerNoteLabel),
-                subtitle: Text(c.note!),
-              ),
-            Padding(
-              padding: EdgeInsetsDirectional.symmetric(
-                horizontal: tokens.spaceMd,
-                vertical: tokens.spaceSm,
-              ),
-              child: _Actions(summary: summary),
+          if (c.address != null)
+            ListTile(
+              title: Text(l10n.customerAddressLabel),
+              subtitle: Text(c.address!),
             ),
-            const Divider(),
-            section(l10n.statementTitle),
-            const _Statement(),
-            const Divider(),
-            section(l10n.customerInvoicesTitle),
-            const _Invoices(),
-          ],
-        ),
+          if (c.note != null)
+            ListTile(
+              title: Text(l10n.customerNoteLabel),
+              subtitle: Text(c.note!),
+            ),
+          Padding(
+            padding: EdgeInsetsDirectional.symmetric(
+              horizontal: tokens.spaceMd,
+              vertical: tokens.spaceSm,
+            ),
+            child: _Actions(summary: summary),
+          ),
+          const Divider(),
+          section(l10n.statementTitle),
+          const _Statement(),
+          const Divider(),
+          section(l10n.customerInvoicesTitle),
+          const _Invoices(),
+        ],
       ),
     );
   }
@@ -314,9 +312,22 @@ class _EntryRow extends StatelessWidget {
       action: l10n.paymentCancelAction,
     );
     if (reason == null) return;
-    final error = await statement.cancelPayment(entry.id, reason);
+    final PaymentError? error;
+    try {
+      error = await statement.cancelPayment(entry.id, reason);
+    } on Object {
+      // The transaction rolled back, so nothing changed.
+      messenger.showSnackBar(SnackBar(content: Text(l10n.errorActionFailed)));
+      rethrow;
+    }
+    // The statement reloads after a cancel and may rebuild this row, so
+    // the success message does not need its context.
     if (error == null) {
       messenger.showSnackBar(SnackBar(content: Text(l10n.paymentCancelled)));
+    } else if (context.mounted) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.paymentError(error))),
+      );
     }
   }
 }

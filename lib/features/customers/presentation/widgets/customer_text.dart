@@ -46,8 +46,9 @@ extension CustomerText on BuildContext {
   String paymentError(PaymentError e) => switch (e) {
     PaymentCustomerNotFound() => _l10n.customerNotFound,
     PaymentCustomerArchived() => _l10n.errorCustomerArchived,
-    PaymentNotCancellable() ||
-    PaymentAlreadyCancelled() => _l10n.ledgerCancelled,
+    PaymentNotCancellable() => _l10n.paymentNotCancellable,
+    PaymentAlreadyCancelled() => _l10n.paymentAlreadyCancelled,
+    PaymentReasonInvalid() => _l10n.errorReasonRequired,
   };
 
   /// "Owes 60.00", "In credit 20.00" or "No balance".

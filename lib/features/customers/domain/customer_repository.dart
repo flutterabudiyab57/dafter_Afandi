@@ -38,6 +38,10 @@ abstract interface class CustomerRepository {
     int limit = 50,
   });
 
+  /// Emits whenever [customerId]'s account rows change, including changes
+  /// that leave the balance as it was (a voided cash sale).
+  Stream<void> watchStatementChanges(String customerId);
+
   /// Records a payment and returns its receipt number.
   Future<Result<int, PaymentError>> receivePayment(
     String customerId,

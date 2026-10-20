@@ -157,6 +157,10 @@ final class CustomerRepositoryImpl implements CustomerRepository {
     return rows.map(CustomerMappers.entry).toList();
   }
 
+  @override
+  Stream<void> watchStatementChanges(String customerId) =>
+      _ledger.watchCountOf(customerId).distinct();
+
   /// R1 customer active; W1 CUSTOMER_RECEIPT number; W2 PAYMENT_RECEIVED.
   @override
   Future<Result<int, PaymentError>> receivePayment(
@@ -191,6 +195,13 @@ final class CustomerRepositoryImpl implements CustomerRepository {
     String entryId,
     String reason,
   ) => _tx.run(() async {
+    final String trimmed;
+    switch (validateReason(reason)) {
+      case Ok(:final value):
+        trimmed = value;
+      case Err():
+        return const Err(PaymentReasonInvalid());
+    }
     final row = await _ledger.byId(entryId);
     if (row == null ||
         row.entryType != db.CustomerEntryType.PAYMENT_RECEIVED ||
@@ -207,7 +218,7 @@ final class CustomerRepositoryImpl implements CustomerRepository {
         entryType: db.CustomerEntryType.REVERSAL,
         amountPiasters: -row.amountPiasters,
         reversesEntryId: Value(entryId),
-        note: Value(reason),
+        note: Value(trimmed),
         createdAt: _clock.nowUtc(),
       ),
     );

@@ -208,6 +208,50 @@ void main() {
           expect(find.text(l10n.salesNoMatch), findsOneWidget);
         });
 
+        testWidgets('voiding a cash sale from the customer page refreshes '
+            'the statement', (tester) async {
+          final id = store.seedSale(
+            teaSale(2).withCustomer(SaleCustomer(id: ahmad, name: 'أحمد')),
+          );
+          await open(tester, RoutePaths.customerDetails(ahmad));
+          expect(find.text(l10n.ledgerReversal), findsNothing);
+          expect(find.text(l10n.ledgerCancelled), findsNothing);
+
+          // The payment row belongs to the sale and opens its invoice.
+          await tapVisible(tester, find.text(l10n.ledgerPayment));
+          expect(currentPath(tester), RoutePaths.saleInvoice(id));
+          await tapVisible(tester, find.text(l10n.invoiceVoidAction));
+          await giveReason(tester, l10n.invoiceVoidAction, 'خطأ');
+          expect(find.text(l10n.invoiceVoided), findsOneWidget);
+
+          await tapBack(tester);
+          expect(currentPath(tester), RoutePaths.customerDetails(ahmad));
+          // The balance did not move (−20 and +20), yet the statement shows
+          // the two reversing rows and marks both originals.
+          expect(store.balanceOf(ahmad), 0);
+          expect(find.text(l10n.ledgerReversal), findsOneWidget);
+          final paymentRow = find.ancestor(
+            of: find.text(l10n.ledgerPayment),
+            matching: find.byType(ListTile),
+          );
+          expect(
+            find.descendant(
+              of: paymentRow,
+              matching: find.text(l10n.ledgerCancelled),
+            ),
+            findsOneWidget,
+          );
+        });
+
+        testWidgets('a full-credit invoice shows no payment method', (
+          tester,
+        ) async {
+          final id = store.seedSale(teaSale(2, credit: true));
+          await open(tester, RoutePaths.saleInvoice(id));
+          expect(find.text(l10n.saleMethodLabel), findsNothing);
+          expect(find.text(l10n.methodCash), findsNothing);
+        });
+
         testWidgets('a missing invoice says so', (tester) async {
           await open(tester, RoutePaths.saleInvoice('nope'));
           expect(find.text(l10n.invoiceNotFound), findsOneWidget);

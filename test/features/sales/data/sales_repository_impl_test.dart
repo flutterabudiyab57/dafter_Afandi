@@ -245,6 +245,76 @@ void main() {
     );
   });
 
+  test('void and cancel reasons are checked and trimmed here too', () async {
+    final c = await env.addCustomer('أحمد', opening: '50');
+    final saved = okValue(
+      await env.sales.create(
+        await env.draftFor({
+          tea: one,
+        }, customer: SaleCustomer(id: c, name: 'أحمد')),
+      ),
+    );
+    expect(
+      await env.sales.voidSale(saved.id, '   '),
+      const Err<void, VoidError>(VoidReasonInvalid()),
+    );
+    expect(
+      await env.sales.voidSale(saved.id, 'x' * 201),
+      const Err<void, VoidError>(VoidReasonInvalid()),
+    );
+    // Nothing was written by the refused voids.
+    expect((await env.sales.watchOne(saved.id).first)!.summary.voided, false);
+    expect(await stock(tea), 9000);
+
+    expect(
+      await env.sales.voidSale(saved.id, '  خطأ  '),
+      const Ok<void, VoidError>(null),
+    );
+    expect((await env.sales.watchOne(saved.id).first)!.voidReason, 'خطأ');
+    final voidRows = (await env.statement(c)).where((r) => r.note != null);
+    expect(voidRows.map((r) => r.note).toSet(), {'خطأ'});
+
+    okValue(
+      await env.customers.receivePayment(
+        c,
+        const PaymentRequest(amountPiasters: 500, method: PaymentMethod.cash),
+      ),
+    );
+    final payment = (await env.statement(c)).first;
+    expect(
+      await env.customers.cancelPayment(payment.id, ''),
+      const Err<void, PaymentError>(PaymentReasonInvalid()),
+    );
+    expect((await env.statement(c)).first.reversed, isFalse);
+    expect(
+      await env.customers.cancelPayment(payment.id, ' مكررة '),
+      const Ok<void, PaymentError>(null),
+    );
+    expect((await env.statement(c)).first.note, 'مكررة');
+  });
+
+  test('statement changes fire for a void that keeps the balance', () async {
+    final c = await env.addCustomer('أحمد');
+    final saved = okValue(
+      await env.sales.create(
+        await env.draftFor({
+          tea: one,
+        }, customer: SaleCustomer(id: c, name: 'أحمد')),
+      ),
+    );
+    final changes = <void>[];
+    final sub = env.customers.watchStatementChanges(c).listen(changes.add);
+    await pumpEventQueue();
+    expect(changes, hasLength(1));
+    final balance = (await env.customer(c)).balancePiasters;
+
+    await env.sales.voidSale(saved.id, 'خطأ');
+    await pumpEventQueue();
+    expect((await env.customer(c)).balancePiasters, balance);
+    expect(changes, hasLength(2));
+    await sub.cancel();
+  });
+
   test('the void blends the sale cost into a changed average', () async {
     final saved = okValue(
       await env.sales.create(await env.draftFor({tea: 4 * one})),

@@ -1105,6 +1105,22 @@
   "@invoiceNotFound": {
     "description": "Invoice id not found."
   },
+  "invoiceAlreadyVoided": "هذه الفاتورة ملغاة بالفعل.",
+  "@invoiceAlreadyVoided": {
+    "description": "Void refused: the invoice was already voided."
+  },
+  "paymentAlreadyCancelled": "هذه الدفعة ملغاة بالفعل.",
+  "@paymentAlreadyCancelled": {
+    "description": "Cancel refused: the payment was already cancelled."
+  },
+  "paymentNotCancellable": "دفعة الفاتورة لا تُلغى وحدها. ألغِ الفاتورة نفسها.",
+  "@paymentNotCancellable": {
+    "description": "Cancel refused: the payment was made with a sale."
+  },
+  "errorActionFailed": "تعذّر إتمام العملية. لم يتغيّر شيء، حاول مرة أخرى.",
+  "@errorActionFailed": {
+    "description": "An unexpected failure while voiding or cancelling; nothing was saved."
+  },
   "errorReasonRequired": "اكتب السبب.",
   "@errorReasonRequired": {
     "description": "Void or cancel without a reason."
