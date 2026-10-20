@@ -103,6 +103,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'دفتر أفندي'**
   String get appName;
+
+  /// Title of the blocking screen shown when the stored data cannot be opened by this app version.
+  ///
+  /// In ar, this message translates to:
+  /// **'يلزم تحديث التطبيق'**
+  String get updateRequiredTitle;
+
+  /// Body of the blocking screen when the data was made by a newer app version (FR-018).
+  ///
+  /// In ar, this message translates to:
+  /// **'بياناتك محفوظة بإصدار أحدث من دفتر أفندي. حدّث التطبيق من المتجر لتفتحها. لم يتم تغيير أي شيء في بياناتك.'**
+  String get updateRequiredBody;
+
+  /// Body of the blocking screen when the data file is not a file this app made.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملف البيانات الموجود على هذا الهاتف غير معروف لهذا الإصدار من دفتر أفندي. حدّث التطبيق من المتجر. لم يتم تغيير أي شيء في الملف.'**
+  String get dataUnrecognizedBody;
+
+  /// Body of the screen shown when opening or upgrading the database fails.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر فتح بياناتك. لم يتم تغيير أي شيء فيها. أغلق التطبيق وافتحه مرة أخرى، وإذا تكررت المشكلة حدّث التطبيق من المتجر.'**
+  String get startupErrorBody;
 }
 
 class _AppLocalizationsDelegate

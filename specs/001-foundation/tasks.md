@@ -317,29 +317,29 @@ independent, so all tasks are [P].
 
 **Purpose**: the database is never opened when the file is newer or foreign (contracts/startup-guard.md).
 
-- [ ] T047 `lib/core/database/schema_guard.dart`, pure `dart:io` with no package imports:
+- [X] T047 `lib/core/database/schema_guard.dart`, pure `dart:io` with no package imports:
   - the sealed `SchemaInspection` (`SchemaFresh`, `SchemaOk`, `SchemaTooNew`, `SchemaUnrecognized(reason)`);
   - `FileSchemaGuard.inspect(path)` opens with `FileMode.read`, reads at most the first 100 bytes, and
     implements the decision table in the contract exactly (magic `SQLite format 3\0`, user_version as
     big-endian int32 at offset 60, application_id at offset 68).
-- [ ] T048 [P] `test/core/database/schema_guard_test.dart` builds byte-level fixtures in a temp dir:
+- [X] T048 [P] `test/core/database/schema_guard_test.dart` builds byte-level fixtures in a temp dir:
   - cases: absent, 0 bytes, 50 bytes, bad magic, appId 0x12345678, appId 0 with version 3,
     versions 0/1 → Ok, version 2 → TooNew;
   - each case asserts that the file's bytes, length and modified time are unchanged afterwards, and that
     no `-journal`, `-wal` or `-shm` sibling was created.
-- [ ] T049 Add ARB keys to `lib/core/l10n/arb/app_ar.arb` and `app_en.arb`: `updateRequiredTitle`,
+- [X] T049 Add ARB keys to `lib/core/l10n/arb/app_ar.arb` and `app_en.arb`: `updateRequiredTitle`,
   `updateRequiredBody`, `dataUnrecognizedBody` and `startupErrorBody`, in Arabic and English. The Arabic body
   says that the data was made by a newer version and asks the owner to update the app.
-- [ ] T050 [P] `lib/core/widgets/update_required_app.dart`:
+- [X] T050 [P] `lib/core/widgets/update_required_app.dart`:
   - `UpdateRequiredApp({required UpdateRequiredKind kind})` (`tooNew` / `unrecognized`);
   - a material_ui `MaterialApp` with Arabic locale only and RTL, and the delegates
     `[AppLocalizations.delegate, ...GlobalMaterialLocalizations.delegates]`;
   - one screen with a title and the kind's body; no navigation, no buttons, no data access.
-- [ ] T051 [P] `lib/core/widgets/startup_error_app.dart`: the same shell, showing `startupErrorBody`.
-- [ ] T052 `lib/core/di/service_locator.dart`: `Future<void> configureDependencies({required QueryExecutor executor})`.
+- [X] T051 [P] `lib/core/widgets/startup_error_app.dart`: the same shell, showing `startupErrorBody`.
+- [X] T052 `lib/core/di/service_locator.dart`: `Future<void> configureDependencies({required QueryExecutor executor})`.
   It registers `Clock` (`SystemClock`), `IdGenerator` (`UuidV7Generator`), `AppDatabase`, `TransactionRunner`
   and `SettingsDao` with get_it. Nothing is registered before the guard runs.
-- [ ] T053 `lib/bootstrap.dart`: `Future<void> bootstrap({required void Function(Widget) runAppFn, SchemaGuard? guard,
+- [X] T053 `lib/bootstrap.dart`: `Future<void> bootstrap({required void Function(Widget) runAppFn, SchemaGuard? guard,
   Future<Directory> Function()? supportDir, QueryExecutor Function(Directory)? executorFactory})`. Steps:
   1. portrait lock via `SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])`;
   2. resolve the path;
@@ -350,13 +350,13 @@ independent, so all tasks are [P].
   7. on success, `runAppFn` a temporary placeholder app. Phase 5 replaces it with `App`.
 
   `lib/main.dart` calls `bootstrap(runAppFn: runApp)`.
-- [ ] T054 `test/bootstrap_test.dart` with a temp dir and a fake `runAppFn`:
+- [X] T054 `test/bootstrap_test.dart` with a temp dir and a fake `runAppFn`:
   - fresh → app path chosen and the DB created at `<dir>/daftar_afandi.sqlite`;
   - a real v1 file → app path;
   - the same file with bytes 60–63 patched to `00 00 00 63` → `UpdateRequiredApp` chosen, `executorFactory`
     never called, and the SHA-256 of the file unchanged;
   - a foreign appId → `UpdateRequiredApp(unrecognized)`.
-- [ ] T055 Phase gate: `flutter analyze` and `flutter test` green. Report and STOP.
+- [X] T055 Phase gate: `flutter analyze` and `flutter test` green. Report and STOP.
 
 **Checkpoint**: FR-018 is enforced before any database object exists.
 

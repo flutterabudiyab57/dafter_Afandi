@@ -3,5 +3,21 @@
   "appName": "دفتر أفندي",
   "@appName": {
     "description": "Application name shown in the app and on the welcome screen."
+  },
+  "updateRequiredTitle": "يلزم تحديث التطبيق",
+  "@updateRequiredTitle": {
+    "description": "Title of the blocking screen shown when the stored data cannot be opened by this app version."
+  },
+  "updateRequiredBody": "بياناتك محفوظة بإصدار أحدث من دفتر أفندي. حدّث التطبيق من المتجر لتفتحها. لم يتم تغيير أي شيء في بياناتك.",
+  "@updateRequiredBody": {
+    "description": "Body of the blocking screen when the data was made by a newer app version (FR-018)."
+  },
+  "dataUnrecognizedBody": "ملف البيانات الموجود على هذا الهاتف غير معروف لهذا الإصدار من دفتر أفندي. حدّث التطبيق من المتجر. لم يتم تغيير أي شيء في الملف.",
+  "@dataUnrecognizedBody": {
+    "description": "Body of the blocking screen when the data file is not a file this app made."
+  },
+  "startupErrorBody": "تعذّر فتح بياناتك. لم يتم تغيير أي شيء فيها. أغلق التطبيق وافتحه مرة أخرى، وإذا تكررت المشكلة حدّث التطبيق من المتجر.",
+  "@startupErrorBody": {
+    "description": "Body of the screen shown when opening or upgrading the database fails."
   }
 }

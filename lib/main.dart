@@ -1,15 +1,5 @@
 import 'package:material_ui/material_ui.dart';
 
-void main() {
-  runApp(const DaftarAfandiApp());
-}
+import 'bootstrap.dart';
 
-/// Temporary root widget. Phase 4 replaces it with the bootstrap.
-class DaftarAfandiApp extends StatelessWidget {
-  const DaftarAfandiApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(home: Scaffold());
-  }
-}
+Future<void> main() => bootstrap(runAppFn: runApp);

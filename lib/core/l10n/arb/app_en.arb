@@ -1,4 +1,8 @@
 {
   "@@locale": "en",
-  "appName": "Daftar Afandi"
+  "appName": "Daftar Afandi",
+  "updateRequiredTitle": "Please update the app",
+  "updateRequiredBody": "Your data was saved by a newer version of Daftar Afandi. Update the app from the store to open it. Nothing in your data was changed.",
+  "dataUnrecognizedBody": "The data file on this phone isn't recognized by this version of Daftar Afandi. Update the app from the store. Nothing in the file was changed.",
+  "startupErrorBody": "Your data couldn't be opened. Nothing in it was changed. Close the app and open it again; if the problem continues, update the app from the store."
 }
