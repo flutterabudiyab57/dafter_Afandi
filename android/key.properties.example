@@ -1,0 +1,6 @@
+# Copy to android/key.properties (git-ignored) and fill in your upload key.
+# Never commit the real file or the keystore.
+storePassword=CHANGE_ME
+keyPassword=CHANGE_ME
+keyAlias=upload
+storeFile=C:\\Users\\<you>\\.keystores\\daftar-afandi-upload.jks

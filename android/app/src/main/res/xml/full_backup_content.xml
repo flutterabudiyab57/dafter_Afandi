@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 and lower backup (research R5). Only the database file. -->
+<full-backup-content>
+    <include domain="file" path="daftar_afandi.sqlite" />
+</full-backup-content>

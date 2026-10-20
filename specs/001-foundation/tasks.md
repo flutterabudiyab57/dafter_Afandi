@@ -614,28 +614,28 @@ each setting is kept and applied (shop name as typed, version in Latin digits).
 **Independent Test**: quickstart.md "Android backup and restore": `bmgr backupnow`, uninstall,
 reinstall: Home appears with the same shop details.
 
-- [ ] T113 [P] [US5] Create `android/app/src/main/res/xml/data_extraction_rules.xml` with
+- [X] T113 [P] [US5] Create `android/app/src/main/res/xml/data_extraction_rules.xml` with
   `<cloud-backup disableIfNoEncryptionCapabilities="false">` and `<device-transfer>`, each containing only
   `<include domain="file" path="daftar_afandi.sqlite" />`. There is no `-wal` entry (A1).
-- [ ] T114 [P] [US5] Create `android/app/src/main/res/xml/full_backup_content.xml` with only
+- [X] T114 [P] [US5] Create `android/app/src/main/res/xml/full_backup_content.xml` with only
   `<include domain="file" path="daftar_afandi.sqlite" />`.
-- [ ] T115 [US5] In `android/app/src/main/AndroidManifest.xml`, add to `<application>`:
+- [X] T115 [US5] In `android/app/src/main/AndroidManifest.xml`, add to `<application>`:
   `android:allowBackup="true"`, `android:fullBackupContent="@xml/full_backup_content"` and
   `android:dataExtractionRules="@xml/data_extraction_rules"`.
-- [ ] T116 [P] [US5] `test/platform/android_backup_rules_test.dart`: parse both XML files and the manifest as text, and
+- [X] T116 [P] [US5] `test/platform/android_backup_rules_test.dart`: parse both XML files and the manifest as text, and
   assert that the only included path is `daftar_afandi.sqlite` in domain `file` and that all three manifest
   attributes are present.
-- [ ] T117 [P] [US5] `test/core/database/older_schema_test.dart`: `SchemaOk(0..kSchemaVersion)` proceeds to open, and the
+- [X] T117 [P] [US5] `test/core/database/older_schema_test.dart`: `SchemaOk(0..kSchemaVersion)` proceeds to open, and the
   generated `test/drift/` migration test from T039 runs. Add a TODO comment: from v2 on, the generated stepByStep
   tests cover US5-3.
-- [ ] T118 Portrait lock (FR-019):
+- [X] T118 Portrait lock (FR-019):
   - in `android/app/src/main/AndroidManifest.xml`, add `android:screenOrientation="portrait"` on `MainActivity`,
     and inside `<application>` add
     `<property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true" />`
     (temporary Android 16 opt-out, risk K1);
   - in `ios/Runner/Info.plist`, set `UISupportedInterfaceOrientations` and `UISupportedInterfaceOrientations~ipad`
     to `UIInterfaceOrientationPortrait` only, and add `UIRequiresFullScreen` = true.
-- [ ] T119 [P] Release signing:
+- [X] T119 [P] Release signing:
   - `android/app/build.gradle.kts` loads `android/key.properties` with `java.util.Properties`, if it exists, and defines
     `signingConfigs.create("release")` (storeFile, storePassword, keyAlias, keyPassword);
   - `buildTypes.release` uses it;
@@ -644,13 +644,13 @@ reinstall: Home appears with the same shop details.
   - create `android/key.properties.example` with placeholder values (`storePassword=CHANGE_ME`,
     `keyPassword=CHANGE_ME`, `keyAlias=upload`, `storeFile=C:\\Users\\<you>\\.keystores\\daftar-afandi-upload.jks`);
   - the agent does NOT create a keystore or handle passwords.
-- [ ] T120 Run `flutter build apk --debug` and report the result. Confirm that a release build without
+- [X] T120 Run `flutter build apk --debug` and report the result. Confirm that a release build without
   `key.properties` fails as designed (`flutter build apk --release`); report the error text.
-- [ ] T121 Re-run the lock-file audit from T003 and report any override whose "remove after" date has passed.
+- [X] T121 Re-run the lock-file audit from T003 and report any override whose "remove after" date has passed.
 - [ ] T122 Run quickstart.md on the Android emulator: manual scenarios 1–13, "Android backup and restore",
   and "Newer-data block". Report each result as pass or fail with notes. List the iOS items and release
   signing as not verified on this machine.
-- [ ] T123 Final gate: `flutter analyze` clean, `flutter test` green, `import_rules_test` passing. Report and STOP.
+- [X] T123 Final gate: `flutter analyze` clean, `flutter test` green, `import_rules_test` passing. Report and STOP.
   The human commits.
 
 **Checkpoint**: feature 001 is complete and validated.

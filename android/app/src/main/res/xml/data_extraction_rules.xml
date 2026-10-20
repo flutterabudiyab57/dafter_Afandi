@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ backup (research R5, A1). Only the database file: the
+     rollback journal is transient and there is no -wal file. -->
+<data-extraction-rules>
+    <cloud-backup disableIfNoEncryptionCapabilities="false">
+        <include domain="file" path="daftar_afandi.sqlite" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="file" path="daftar_afandi.sqlite" />
+    </device-transfer>
+</data-extraction-rules>
