@@ -782,5 +782,22 @@
   "productsArchivedEmpty": "لا توجد منتجات مؤرشفة.",
   "@productsArchivedEmpty": {
     "description": "Empty archived products list."
+  },
+  "demoSeedMenu": "أدوات المطور",
+  "@demoSeedMenu": {
+    "description": "Menu of debug-only tools on the archived products screen."
+  },
+  "demoSeedAction": "إضافة منتجات تجريبية",
+  "@demoSeedAction": {
+    "description": "Debug-only action that adds demo products."
+  },
+  "demoSeedDone": "تمت إضافة المنتجات التجريبية: {count}.",
+  "@demoSeedDone": {
+    "description": "After seeding demo products. {count} is the number added, already formatted.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
   }
 }

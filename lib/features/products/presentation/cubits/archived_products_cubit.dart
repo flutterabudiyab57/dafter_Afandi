@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/result.dart';
+import '../../domain/demo_seed.dart';
 import '../../domain/product.dart';
 import '../../domain/product_errors.dart';
 import '../../domain/product_repository.dart';
@@ -37,6 +38,10 @@ class ArchivedProductsCubit extends Cubit<ArchivedProductsState> {
         Ok() => null,
         Err(:final error) => error,
       };
+
+  /// Debug builds only (decision B2): adds demo products, returns how many.
+  Future<int> seedDemo({int count = 2000}) =>
+      seedDemoProducts(_repository, count: count);
 
   @override
   Future<void> close() async {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -10,7 +11,10 @@ import '../widgets/unit_label.dart';
 
 /// Archived products, each with Restore (FR-012, US3).
 class ArchivedProductsScreen extends StatelessWidget {
-  const ArchivedProductsScreen({super.key});
+  const ArchivedProductsScreen({this.debugTools = kDebugMode, super.key});
+
+  /// Shows the demo-seed menu (decision B2). Never true in a release build.
+  final bool debugTools;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,30 @@ class ArchivedProductsScreen extends StatelessWidget {
     final state = context.watch<ArchivedProductsCubit>().state;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.productsArchivedTitle)),
+      appBar: AppBar(
+        title: Text(l10n.productsArchivedTitle),
+        actions: [
+          if (debugTools)
+            PopupMenuButton<void>(
+              tooltip: l10n.demoSeedMenu,
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  onTap: () async {
+                    final messenger = ScaffoldMessenger.of(context);
+                    final added = await cubit.seedDemo();
+                    if (!context.mounted) return;
+                    messenger.showSnackBar(
+                      SnackBar(
+                        content: Text(l10n.demoSeedDone(context.count(added))),
+                      ),
+                    );
+                  },
+                  child: Text(l10n.demoSeedAction),
+                ),
+              ],
+            ),
+        ],
+      ),
       body: !state.loaded
           ? const Center(child: CircularProgressIndicator())
           : state.items.isEmpty

@@ -168,5 +168,8 @@
   "errorCategoryNameTooLong": "The category name can be at most {max} characters.",
   "productsFilterEmpty": "No products match this filter.",
   "productNotFound": "This product doesn't exist.",
-  "productsArchivedEmpty": "No archived products."
+  "productsArchivedEmpty": "No archived products.",
+  "demoSeedMenu": "Developer tools",
+  "demoSeedAction": "Seed demo products",
+  "demoSeedDone": "Added demo products: {count}."
 }

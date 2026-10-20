@@ -494,19 +494,19 @@ under "No category".
 **Purpose**: cross-screen accessibility and layout, the debug seed, and the quickstart on the
 phone.
 
-- [ ] T072 Extend `test/helpers/screens.dart` so `visitEveryScreen` visits every new screen and the
+- [X] T072 Extend `test/helpers/screens.dart` so `visitEveryScreen` visits every new screen and the
   opening dialog with seeded fakes. Then confirm that `test/app/semantics_labels_test.dart` and
   `test/app/layout_stress_test.dart` pass for all of them: every control has a spoken label, and
   nothing overflows at 200% in ar and en, light and dark.
-- [ ] T073 [P] Add the debug-only demo seed (B2). An overflow item "Seed demo products" on
+- [X] T073 [P] Add the debug-only demo seed (B2). An overflow item "Seed demo products" on
   `archived_products_screen.dart` appears only when `kDebugMode`. It calls
   `lib/features/products/data/demo_seed.dart`, which inserts 2,000 products with opening stock
   through `ProductRepository.create`. Test that the item is absent when the debug flag is false
   (inject the flag).
-- [ ] T074 Run the full gate (analyze clean, all tests green) and `flutter build apk --debug`. Then
+- [X] T074 Run the full gate (analyze clean, all tests green) and `flutter build apk --debug`. Then
   install on the connected phone and run the quickstart scenarios that work with the screen
   locked. List the rest for the owner. Never unlock the phone or enter a PIN.
-- [ ] T075 Re-run the T001 lock audit and report it. Mark all tasks [X] in this file. Commit
+- [X] T075 Re-run the T001 lock audit and report it. Mark all tasks [X] in this file. Commit
   `feat(002): phase 8 polish and device check`. Do not push.
 
 ---

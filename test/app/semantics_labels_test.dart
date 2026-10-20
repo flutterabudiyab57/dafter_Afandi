@@ -51,7 +51,7 @@ void main() {
           }
         },
       );
-      expect(screens, 15);
+      expect(screens, 24);
       expect(checked, greaterThan(30), reason: 'the walk found the buttons');
       semantics.dispose();
     });

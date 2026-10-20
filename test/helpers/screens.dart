@@ -1,10 +1,13 @@
+import 'package:daftar_afandi/core/l10n/generated/app_localizations.dart';
 import 'package:daftar_afandi/core/router/route_names.dart';
 import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
+import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'fake_products.dart';
 import 'pump_app.dart';
 
 const List<String> kFirstRunPaths = [
@@ -50,9 +53,32 @@ Future<void> visitEveryScreen(
     return r;
   }
 
+  // Products with every kind of row, so the product screens are not empty.
+  final store = FakeProductsStore();
+  final drinks = store.seedCategory('مشروبات');
+  final tea = store.seedProduct(
+    'شاي العروسة ٢٥٠ جرام',
+    stockMilli: 3000,
+    costPiasters: 900,
+    lowStockMilli: 5000,
+    barcode: '6221234567890',
+    sku: 'T-250',
+    categoryId: drinks,
+  );
+  store.seedEntry(
+    tea,
+    StockEntryType.adjustment,
+    -1000,
+    reason: AdjustmentKind.other,
+    note: 'عبوة مفتوحة',
+  );
+  final sugar = store.seedProduct('سكر');
+  store.seedProduct('قديم', archived: true);
+
   Future<void> pump(bool onboarded) async => pumpApp(
     tester,
     await repo(onboarded),
+    products: FakeProductsCubits(store),
     size: size,
     textScale: textScale,
     brightness: brightness,
@@ -64,10 +90,37 @@ Future<void> visitEveryScreen(
     await check(path);
   }
   await pump(true);
-  for (final path in kOnboardedPaths) {
+  for (final path in [
+    ...kOnboardedPaths,
+    RoutePaths.productsLow,
+    RoutePaths.productNew,
+    RoutePaths.productsArchived,
+    RoutePaths.categories,
+    RoutePaths.productDetails(tea),
+    RoutePaths.productEdit(tea),
+    RoutePaths.productAdjust(tea),
+    RoutePaths.productOpening(sugar),
+  ]) {
     await goTo(tester, path);
     await check(path);
   }
+  // The opening-stock confirmation, still on the opening page.
+  final l10n = lookupAppLocalizations(Locale(locale.name));
+  for (final (label, value) in [
+    (l10n.productOpeningQtyLabel, '12'),
+    (l10n.productOpeningCostLabel, '7.50'),
+  ]) {
+    final field = find.widgetWithText(TextField, label);
+    await tester.ensureVisible(field);
+    await tester.enterText(field, value);
+  }
+  final save = find.widgetWithText(FilledButton, l10n.saveAction);
+  await tester.ensureVisible(save);
+  await tester.tap(save);
+  await tester.pumpAndSettle();
+  await check('opening dialog');
+  await tester.tap(find.text(l10n.backAction));
+  await tester.pumpAndSettle();
   for (final app in kBlockingApps) {
     await tester.pumpWidget(app);
     await tester.pumpAndSettle();

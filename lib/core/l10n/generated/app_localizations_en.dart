@@ -592,4 +592,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get productsArchivedEmpty => 'No archived products.';
+
+  @override
+  String get demoSeedMenu => 'Developer tools';
+
+  @override
+  String get demoSeedAction => 'Seed demo products';
+
+  @override
+  String demoSeedDone(String count) {
+    return 'Added demo products: $count.';
+  }
 }

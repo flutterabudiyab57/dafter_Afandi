@@ -593,4 +593,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get productsArchivedEmpty => 'لا توجد منتجات مؤرشفة.';
+
+  @override
+  String get demoSeedMenu => 'أدوات المطور';
+
+  @override
+  String get demoSeedAction => 'إضافة منتجات تجريبية';
+
+  @override
+  String demoSeedDone(String count) {
+    return 'تمت إضافة المنتجات التجريبية: $count.';
+  }
 }

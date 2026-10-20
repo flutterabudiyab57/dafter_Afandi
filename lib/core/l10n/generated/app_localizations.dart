@@ -1111,6 +1111,24 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد منتجات مؤرشفة.'**
   String get productsArchivedEmpty;
+
+  /// Menu of debug-only tools on the archived products screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدوات المطور'**
+  String get demoSeedMenu;
+
+  /// Debug-only action that adds demo products.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة منتجات تجريبية'**
+  String get demoSeedAction;
+
+  /// After seeding demo products. {count} is the number added, already formatted.
+  ///
+  /// In ar, this message translates to:
+  /// **'تمت إضافة المنتجات التجريبية: {count}.'**
+  String demoSeedDone(String count);
 }
 
 class _AppLocalizationsDelegate
