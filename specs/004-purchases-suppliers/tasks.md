@@ -170,12 +170,14 @@ and balance are back and the purchase shows as voided.
 
 ## Phase 7: Polish
 
-- [ ] T042 Extend `visitEveryScreen` in `test/helpers/screens.dart` with every new screen, picker
+- [X] T042 Extend `visitEveryScreen` in `test/helpers/screens.dart` with every new screen, picker
   and dialog (seeded fakes); update the screen counts in `test/app/`; semantics and 200% layout
   walks pass.
-- [ ] T043 Full gate; `flutter build apk --debug`; quickstart on a phone if connected, otherwise
+- [X] T043 Full gate; `flutter build apk --debug`; quickstart on a phone if connected, otherwise
   list it for the owner.
-- [ ] T044 Re-run the lock audit; mark all tasks; commit `feat(004): phase 7 polish`.
+  Done 2026-10-21: APK built; no phone connected, so the quickstart "On a phone" steps are
+  left for the owner.
+- [X] T044 Re-run the lock audit; mark all tasks; commit `feat(004): phase 7 polish`.
 
 ## Dependencies
 

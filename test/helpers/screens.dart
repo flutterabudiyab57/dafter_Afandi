@@ -5,12 +5,14 @@ import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
+import 'package:daftar_afandi/features/purchases/domain/purchase_draft.dart';
 import 'package:daftar_afandi/features/sales/domain/sale_draft.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'fake_products.dart';
+import 'fake_purchases.dart';
 import 'fake_sales.dart';
 import 'pump_app.dart';
 
@@ -115,12 +117,43 @@ Future<void> visitEveryScreen(
     const PaymentRequest(amountPiasters: 1000, method: PaymentMethod.wallet),
   );
 
+  // Suppliers and purchases of every kind: credit, voided, and a
+  // standalone payment that can be cancelled.
+  final buying = FakePurchasesStore(store);
+  final nour = buying.seedSupplier(
+    'شركة النور للتوريدات',
+    phone: '0223456789',
+    openingPiasters: 30000,
+  );
+  buying.seedSupplier('قديم', archived: true);
+  PurchaseDraft teaPurchase({int? paid}) => const PurchaseDraft()
+      .add(
+        productId: tea,
+        name: 'شاي العروسة ٢٥٠ جرام',
+        unit: UnitType.piece,
+        salePricePiasters: 1000,
+        unitCostPiasters: 900,
+      )
+      .updateLine(tea, qtyMilli: 10000)
+      .withSupplier(PurchaseSupplier(id: nour, name: 'شركة النور للتوريدات'))
+      .withSupplierRef('F-2041')
+      .withPaid(paid);
+  final onCredit = buying.seedPurchase(teaPurchase(paid: 2000));
+  final voidedPurchase = buying.seedPurchase(teaPurchase());
+  await buying.purchases.voidPurchase(voidedPurchase, 'مورد خطأ');
+  await buying.suppliers.pay(
+    nour,
+    const PaymentRequest(amountPiasters: 5000, method: PaymentMethod.instapay),
+  );
+
   Future<void> pump(bool onboarded) async => pumpApp(
     tester,
     await repo(onboarded),
     products: FakeProductsCubits(store),
     customers: FakeCustomersCubits(sales),
     sales: FakeSalesCubits(sales),
+    suppliers: FakeSuppliersCubits(buying),
+    purchases: FakePurchasesCubits(buying),
     size: size,
     textScale: textScale,
     brightness: brightness,
@@ -150,6 +183,15 @@ Future<void> visitEveryScreen(
     RoutePaths.customerDetails(ahmad),
     RoutePaths.customerEdit(ahmad),
     RoutePaths.customerPayment(ahmad),
+    RoutePaths.suppliers,
+    RoutePaths.supplierNew,
+    RoutePaths.suppliersArchived,
+    RoutePaths.supplierDetails(nour),
+    RoutePaths.supplierEdit(nour),
+    RoutePaths.purchasesNew,
+    RoutePaths.purchase(onCredit),
+    RoutePaths.purchase(voidedPurchase),
+    RoutePaths.supplierPayment(nour),
   ]) {
     await goTo(tester, path);
     await check(path);
@@ -202,6 +244,76 @@ Future<void> visitEveryScreen(
   await tap(find.text(l10n.backAction));
   await tapBack(tester);
   await check('discard sale dialog');
+  await tap(find.text(l10n.saleDiscardAction));
+
+  // Paying a supplier more than the shop owes asks first, still on the
+  // payment page.
+  await goTo(tester, RoutePaths.supplierPayment(nour));
+  await tester.enterText(
+    find.widgetWithText(TextField, l10n.paymentAmountLabel),
+    '10000',
+  );
+  await tap(find.widgetWithText(FilledButton, l10n.saveAction));
+  await check('supplier overpay dialog');
+  await tap(find.text(l10n.backAction));
+
+  // The supplier's archive confirmation and cancel-payment reason.
+  await goTo(tester, RoutePaths.supplierDetails(nour));
+  await tap(find.text(l10n.supplierArchiveAction));
+  await check('archive supplier dialog');
+  await tap(find.text(l10n.cancelAction));
+  await tap(find.text(l10n.paymentCancelAction));
+  await check('cancel supplier payment dialog');
+  await tap(find.text(l10n.backAction));
+
+  // The purchase void reason, then the shortage warning: a sale took the
+  // purchased stock.
+  store.seedEntry(tea, StockEntryType.sale, -30000);
+  await goTo(tester, RoutePaths.purchase(onCredit));
+  await tap(find.text(l10n.purchaseVoidAction));
+  await check('purchase void dialog');
+  await tester.enterText(
+    find.widgetWithText(TextField, l10n.reasonLabel),
+    'خطأ',
+  );
+  await tap(find.widgetWithText(FilledButton, l10n.purchaseVoidAction));
+  await check('purchase void shortage dialog');
+  await tap(find.text(l10n.backAction));
+
+  // The new purchase's pickers, quick add, date and discard question.
+  await goTo(tester, RoutePaths.purchasesNew);
+  await tap(find.text(l10n.purchaseSupplierPick));
+  await check('supplier picker');
+  await tapBack(tester);
+  await tap(find.text(l10n.saleAddProductAction));
+  await tester.enterText(
+    find.widgetWithText(TextField, l10n.productsSearchHint),
+    'بن يمني',
+  );
+  await tester.pumpAndSettle();
+  await check('purchase product picker');
+  await tap(find.text(l10n.purchaseAddProductNamed('بن يمني')));
+  await check('quick add product');
+  await tapBack(tester);
+  await tester.enterText(
+    find.widgetWithText(TextField, l10n.productsSearchHint),
+    '',
+  );
+  await tester.pumpAndSettle();
+  await tap(find.text('شاي العروسة ٢٥٠ جرام'));
+  await tap(find.byIcon(Icons.calendar_today));
+  await check('purchase date picker');
+  // Material's own Cancel, the first of the dialog's two actions.
+  await tap(
+    find
+        .descendant(
+          of: find.byType(DatePickerDialog),
+          matching: find.byType(TextButton),
+        )
+        .first,
+  );
+  await tapBack(tester);
+  await check('discard purchase dialog');
   await tap(find.text(l10n.saleDiscardAction));
 
   // The opening-stock confirmation, on the opening page.
