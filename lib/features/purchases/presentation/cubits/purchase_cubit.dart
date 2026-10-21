@@ -5,6 +5,7 @@ import '../../../../core/utils/clock.dart';
 import '../../../../core/utils/result.dart';
 import '../../../customers/domain/payment.dart';
 import '../../../products/domain/product.dart';
+import '../../../products/domain/product_repository.dart';
 import '../../../products/domain/quantity_input.dart';
 import '../../domain/purchase.dart';
 import '../../domain/purchase_draft.dart';
@@ -87,9 +88,11 @@ final class PurchaseState extends Equatable {
 /// The new-purchase screen (US1, US2). Number fields report their text; the
 /// cubit reads it and keeps the draft in integers.
 class PurchaseCubit extends Cubit<PurchaseState> {
-  PurchaseCubit(this._purchases, this._clock) : super(const PurchaseState());
+  PurchaseCubit(this._purchases, this._products, this._clock)
+    : super(const PurchaseState());
 
   final PurchaseRepository _purchases;
+  final ProductRepository _products;
   final Clock _clock;
 
   /// The local date, for the "no future date" rule.
@@ -118,6 +121,14 @@ class PurchaseCubit extends Cubit<PurchaseState> {
       // The quantity field shows the new value, so its old error goes.
       clear: [PurchaseState.inputKey(PurchaseField.qty, p.id)],
     );
+  }
+
+  /// Adds the active product with this exact barcode; false when none.
+  Future<bool> addByBarcode(String code) async {
+    final s = await _products.activeByBarcode(code);
+    if (s == null || isClosed) return false;
+    await addProduct(s);
+    return true;
   }
 
   void remove(String productId) => _update(

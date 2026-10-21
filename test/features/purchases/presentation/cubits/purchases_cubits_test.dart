@@ -67,6 +67,20 @@ void main() {
       await d.close();
     });
 
+    test(
+      'barcode: an active product is added, an unknown one is not',
+      () async {
+        final c = cubits.purchase();
+        expect(await c.addByBarcode('١١١'), isTrue);
+        expect(await c.addByBarcode('111'), isTrue);
+        expect(c.state.draft.lines.single.qtyMilli, 2000);
+        expect(c.state.draft.lines.single.unitCostPiasters, 900);
+        expect(await c.addByBarcode('999'), isFalse);
+        expect(c.state.draft.lines, hasLength(1));
+        await c.close();
+      },
+    );
+
     test('typed numbers: kg decimals, piece fraction, empty qty', () async {
       final c = cubits.purchase();
       await c.addProduct(store.products.summary(tea)!);

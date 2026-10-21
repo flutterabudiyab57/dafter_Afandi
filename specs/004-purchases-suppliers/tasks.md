@@ -136,20 +136,20 @@ anything is ambiguous.
 **Independent test**: "شاي" at 10 in stock and cost 9.00; buy 10 at 11.00 for cash; P-000001 is
 listed, stock 20, average cost 10.00.
 
-- [ ] T031 [US1] NewPurchaseScreen in `lib/features/purchases/presentation/screens/new_purchase_screen.dart`:
+- [X] T031 [US1] NewPurchaseScreen in `lib/features/purchases/presentation/screens/new_purchase_screen.dart`:
   lines with quantity, cost and discount fields, cost notice under the line, totals, invoice
   discount, supplier chip, supplier's invoice number, invoice date picker (no future dates), paid
   now, method chips, note, Save, leave guard, snackbar with the number.
-- [ ] T032 [US1] Quick add product page (name, unit, selling price, optional barcode via
+- [X] T032 [US1] Quick add product page (name, unit, selling price, optional barcode via
   `ProductRepository.create` with no opening stock) reachable from the product picker on purchases
   only (research R13).
-- [ ] T033 [US2] SupplierPickerPage with "Add «name»" quick add in
+- [X] T033 [US2] SupplierPickerPage with "Add «name»" quick add in
   `lib/features/suppliers/presentation/screens/supplier_picker_page.dart`.
-- [ ] T034 [US1] Purchases section root replaces `purchases_screen.dart` placeholder: list
+- [X] T034 [US1] Purchases section root replaces `purchases_screen.dart` placeholder: list
   placeholder replaced in Phase 6, New purchase button.
-- [ ] T035 [P] [US1] [US2] Widget tests US1 scenarios 1–10 and US2 scenarios 1–5 in
+- [X] T035 [P] [US1] [US2] Widget tests US1 scenarios 1–10 and US2 scenarios 1–5 in
   `test/features/purchases/presentation/new_purchase_screen_test.dart`.
-- [ ] T036 [US1] Gate. Commit `feat(004): phase 5 new purchase`.
+- [X] T036 [US1] Gate. Commit `feat(004): phase 5 new purchase`.
 
 ## Phase 6: Purchases, payments, voids — US3, US5, US6
 

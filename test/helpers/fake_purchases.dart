@@ -7,6 +7,7 @@ import 'package:daftar_afandi/core/utils/result.dart';
 import 'package:daftar_afandi/features/customers/domain/ledger_entry.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
+import 'package:daftar_afandi/features/products/presentation/cubits/product_form_cubit.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/product_picker_cubit.dart';
 import 'package:daftar_afandi/features/purchases/domain/purchase.dart';
 import 'package:daftar_afandi/features/purchases/domain/purchase_draft.dart';
@@ -655,11 +656,20 @@ final class FakePurchasesCubits implements PurchasesCubits {
   final FakePurchasesStore store;
 
   @override
-  PurchaseCubit purchase() => PurchaseCubit(store.purchases, store.clock);
+  PurchaseCubit purchase() =>
+      PurchaseCubit(store.purchases, store.products.products, store.clock);
 
   @override
   ProductPickerCubit productPicker() =>
       ProductPickerCubit(store.products.products, debounce: Duration.zero);
+
+  @override
+  ProductFormCubit quickAddProduct(String name) => ProductFormCubit(
+    store.products.products,
+    store.products.categories,
+    mode: ProductFormMode.create,
+    initialName: name,
+  );
 
   @override
   SuppliersListCubit supplierPicker() =>

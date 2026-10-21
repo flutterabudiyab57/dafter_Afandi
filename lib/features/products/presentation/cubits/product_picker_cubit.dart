@@ -46,6 +46,9 @@ class ProductPickerCubit extends Cubit<ProductPickerState> {
   /// The active product whose barcode is exactly [text], for Enter.
   Future<ProductSummary?> exact(String text) => _products.activeByBarcode(text);
 
+  /// A product just added by quick add, to return it as picked.
+  Future<ProductSummary?> byId(String id) => _products.watchSummary(id).first;
+
   void _subscribe() {
     _timer?.cancel();
     unawaited(_sub?.cancel());
