@@ -47,7 +47,7 @@ void fields; ledgers and movements append-only.
 
 **Scale/Scope**: about 11 screens, 2 repositories (+ replay change in InventoryRepository), 3 new
 DAOs (+ methods on stock movements and counters), about 12 cubits, about 120 ARB keys; small
-moves in 003 code (product picker, reason dialog, Parties switch).
+changes in 003 code (product picker move, Parties switch).
 
 ## Constitution Check
 
@@ -78,7 +78,6 @@ moves in 003 code (product picker, reason dialog, Parties switch).
 lib/core/database/daos/{suppliers_dao,supplier_ledger_dao,purchases_dao}.dart   (new)
 lib/core/database/daos/stock_movements_dao.dart     (purchase rows; replay skips voided pairs)
 lib/core/utils/money.dart                           (unchanged helpers reused)
-lib/core/widgets/reason_dialog.dart                 (moved from customers, unchanged)
 lib/features/products/presentation/screens/product_picker_page.dart   (moved from sales; quick add)
 lib/features/suppliers/domain|data|presentation/
 lib/features/purchases/domain|data|presentation/   (replaces the placeholder screen)

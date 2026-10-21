@@ -15,16 +15,16 @@ anything is ambiguous.
 
 ## Phase 1: Domain (Foundational)
 
-- [ ] T001 Run the 14-day lock audit on `pubspec.lock`; report every `dependency_overrides` entry
+- [X] T001 Run the 14-day lock audit on `pubspec.lock`; report every `dependency_overrides` entry
   in `pubspec.yaml` past its "remove after" date. Change nothing without the owner's approval.
-- [ ] T002 [P] Move `lib/features/customers/presentation/widgets/reason_dialog.dart` to
-  `lib/core/widgets/reason_dialog.dart` unchanged and update its imports in customers and sales
-  (research R3).
-- [ ] T003 [P] `lib/features/products/domain/average_cost_replay.dart`: `ReplayMovement
+- [X] T002 [P] Keep `lib/features/customers/presentation/widgets/reason_dialog.dart` where it is
+  (it depends on the customers domain; moving it to `core` would invert the layers); purchases and
+  suppliers import it from customers, as sales does (research R3, updated).
+- [X] T003 [P] `lib/features/products/domain/average_cost_replay.dart`: `ReplayMovement
   {qtyDeltaMilli, inboundCostPiasters?}` and `int replayAverageCost(Iterable<ReplayMovement>)`
   using `weightedAverageCost` (stock ≤ 0 → the inbound row's own cost). Tests in
   `test/features/products/domain/average_cost_replay_test.dart` (research R8).
-- [ ] T004 [P] `lib/features/suppliers/domain/`: `supplier.dart` (Supplier, SupplierSummary,
+- [X] T004 [P] `lib/features/suppliers/domain/`: `supplier.dart` (Supplier, SupplierSummary,
   SupplierQuery {text, owedOnly}), `supplier_errors.dart` (SupplierField, SupplierFieldError,
   SupplierSaveError: SupplierNotFound; SupplierPaymentError: SupplierNotFound, SupplierArchived,
   PaymentNotCancellable, PaymentAlreadyCancelled, PaymentReasonInvalid), `supplier_draft.dart`
@@ -36,7 +36,7 @@ anything is ambiguous.
   `features/customers/domain/payment.dart`), `supplier_entry.dart` (SupplierEntryType,
   SupplierEntry with reversed and cancellable), `supplier_repository.dart` (contract in
   `contracts/repositories-and-screens.md`).
-- [ ] T005 [P] `lib/features/purchases/domain/`: `purchase_draft.dart` (PurchaseLine with qty
+- [X] T005 [P] `lib/features/purchases/domain/`: `purchase_draft.dart` (PurchaseLine with qty
   "0 < qty ≤ 1,000,000,000", whole for piece, unit cost "0 ≤ cost ≤ 1,000,000,000", discount
   "0 ≤ discount ≤ gross", `costNotice` = `lineTotal ≥ lineTotalPiasters(qty, salePrice)`;
   PurchaseDraft with add / set / remove, invoice discount "0 ≤ d ≤ subtotal", shares via
@@ -47,12 +47,12 @@ anything is ambiguous.
   PurchaseItem, PurchaseQuery {text, unpaidOnly, supplierId?}, PurchaseSaved),
   `purchase_repository.dart` (contract, including `lastUnitCost` and
   `voidPurchase(..., {acknowledgeShortage})`).
-- [ ] T006 [P] Tests: `test/features/suppliers/domain/` (draft limits, phone, opening sign,
+- [X] T006 [P] Tests: `test/features/suppliers/domain/` (draft limits, phone, opening sign,
   payment amount) and `test/features/purchases/domain/purchase_draft_test.dart` (rounding half up,
   line and invoice discount limits, shares sum exactly, netLineCost = lineTotal − share, add same
   product raises qty, piece fraction rejected, credit needs supplier, paid > total, future date
   rejected, ref over 50 rejected, cost notice at equal and above the selling price, not below).
-- [ ] T007 Gate: analyze clean, all tests green. Commit `feat(004): phase 1 domain`.
+- [X] T007 Gate: analyze clean, all tests green. Commit `feat(004): phase 1 domain`.
 
 ## Phase 2: Data (Foundational)
 

@@ -48,8 +48,9 @@ purchase repository impl uses DAOs from `core/database/daos` inside its transact
 stock movements, counters, purchases, supplier ledger), like `SalesRepositoryImpl`.
 
 Shared pieces move instead of being copied:
-- `reason_dialog.dart` moves from `customers/presentation/widgets` to `core/widgets` (sales,
-  customers, purchases and suppliers use it);
+- `reason_dialog.dart` stays in `customers/presentation/widgets`: it validates with the customers
+  domain (`validateReason`, `CustomerFieldError`), so moving it to `core` would make core depend on
+  a feature. Purchases and suppliers import it from there, as sales does (decided in Phase 1);
 - the product picker page and its cubit move from `sales/presentation` to
   `products/presentation`, gaining an optional quick-add action (R13).
 

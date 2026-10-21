@@ -125,3 +125,22 @@ inboundCostPiasters?}` (null for movements that do not change the average). Pure
 
 Update supplier, archive and restore are single-row updates of `suppliers`. Quick add of a product
 is 002's product create (research R13), not part of these transactions.
+
+## Appendix: final names (Phase 1)
+
+- Suppliers reuse the customers' field rules instead of copying them: `SupplierDraft.create`
+  returns `Result<SupplierDraft, List<CustomerFieldError>>` (it validates through
+  `CustomerDraft.create`); payments to suppliers use `PaymentRequest` and statement pages use
+  `LedgerCursor`. There is no `SupplierFieldError` or `SupplierPaymentRequest`.
+- `SupplierPaymentError`: PaymentSupplierNotFound, PaymentSupplierArchived,
+  SupplierPaymentNotCancellable, SupplierPaymentAlreadyCancelled, SupplierPaymentReasonInvalid.
+- Purchase rule errors are `PurchaseError` (PurchaseNoLines, PurchaseDuplicateLine,
+  PurchaseQuantityInvalid, PurchaseCostInvalid, PurchaseLineDiscountTooLarge,
+  PurchaseInvoiceDiscountTooLarge, PurchasePaidTooLarge, CreditNeedsSupplier,
+  PurchaseDateInFuture, SupplierRefTooLong, PurchaseNoteTooLong), prefixed so they never clash
+  with the sales errors.
+- `PurchaseSaveError`: PurchaseInvalid(errors), PurchaseProductUnavailable(name),
+  SupplierUnavailable. `PurchaseVoidError`: PurchaseNotFound, PurchaseAlreadyVoided,
+  PurchaseVoidReasonInvalid, VoidStockShortage(items).
+- `PurchaseDraft.invoiceDate` is null for today; `validate({required DateTime today})` takes the
+  local date from the injected clock.
