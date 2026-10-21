@@ -8,11 +8,13 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
+import '../../../customers/presentation/widgets/reason_dialog.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../../purchases/presentation/cubits/purchases_list_cubit.dart';
 import '../../../purchases/presentation/widgets/purchase_row.dart';
 import '../../domain/supplier.dart';
 import '../../domain/supplier_entry.dart';
+import '../../domain/supplier_errors.dart';
 import '../cubits/supplier_details_cubit.dart';
 import '../widgets/supplier_text.dart';
 
@@ -164,6 +166,11 @@ class _Actions extends StatelessWidget {
       spacing: tokens.spaceSm,
       runSpacing: tokens.spaceSm,
       children: [
+        FilledButton.icon(
+          icon: const Icon(Icons.payments_outlined),
+          label: Text(l10n.supplierPayAction),
+          onPressed: () => context.push(RoutePaths.supplierPayment(id)),
+        ),
         OutlinedButton.icon(
           icon: const Icon(Icons.edit_outlined),
           label: Text(l10n.productEditAction),
@@ -261,6 +268,7 @@ class _EntryRow extends StatelessWidget {
     final e = entry;
     final method = e.method;
     final note = e.note;
+    final purchaseId = e.purchaseId;
     return ListTile(
       title: Text(context.supplierLedgerTitle(e)),
       subtitle: Column(
@@ -281,13 +289,55 @@ class _EntryRow extends StatelessWidget {
               context.supplierBalance(e.runningBalancePiasters),
             ),
           ),
+          if (e.cancellable)
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: TextButton.icon(
+                icon: const Icon(Icons.undo),
+                label: Text(l10n.paymentCancelAction),
+                onPressed: () => _cancel(context),
+              ),
+            ),
         ],
       ),
       trailing: Text(
         context.signedMoney(e.amountPiasters),
         style: theme.textTheme.titleSmall,
       ),
+      onTap: purchaseId == null
+          ? null
+          : () => context.push(RoutePaths.purchase(purchaseId)),
     );
+  }
+
+  Future<void> _cancel(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final statement = context.read<SupplierStatementCubit>();
+    final messenger = ScaffoldMessenger.of(context);
+    final reason = await askReason(
+      context,
+      title: l10n.paymentCancelTitle,
+      body: l10n.paymentCancelBody,
+      action: l10n.paymentCancelAction,
+    );
+    if (reason == null) return;
+    final SupplierPaymentError? error;
+    try {
+      error = await statement.cancelPayment(entry.id, reason);
+    } on Object {
+      // The transaction rolled back, so nothing changed.
+      messenger.showSnackBar(SnackBar(content: Text(l10n.errorActionFailed)));
+      rethrow;
+    }
+    // The statement reloads after a cancel and may rebuild this row, so
+    // the success message does not need its context.
+    if (error == null) {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.paymentCancelled)));
+    } else if (context.mounted) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.supplierPaymentError(error))),
+      );
+    }
   }
 }
 

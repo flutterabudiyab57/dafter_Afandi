@@ -1,6 +1,8 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
+import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
@@ -8,7 +10,7 @@ import '../../../suppliers/presentation/widgets/supplier_text.dart';
 import '../../domain/purchase.dart';
 
 /// One purchase in a list: number, invoice date, supplier, total and its
-/// mark (FR-010).
+/// mark (FR-010). Opens the purchase, or calls [onTap] instead.
 class PurchaseRow extends StatelessWidget {
   const PurchaseRow({required this.purchase, this.onTap, super.key});
 
@@ -55,7 +57,7 @@ class PurchaseRow extends StatelessWidget {
           decoration: p.voided ? TextDecoration.lineThrough : null,
         ),
       ),
-      onTap: onTap,
+      onTap: onTap ?? () => context.push(RoutePaths.purchase(p.id)),
     );
   }
 }

@@ -69,7 +69,7 @@ void main() {
     );
 
     testWidgets(
-      '${locale.name}: Home, Sales and Parties show content; the others a placeholder',
+      '${locale.name}: Home, Sales, Parties and Purchases show content; the others a placeholder',
       (tester) async {
         await open(tester);
         for (final (index, (path, title, body)) in sections.indexed) {
@@ -91,6 +91,12 @@ void main() {
             // The invoice list since 003.
             expect(find.text(l10n.salesNewAction), findsOneWidget);
             expect(find.text(l10n.salesListEmpty), findsOneWidget);
+            continue;
+          }
+          if (path == RoutePaths.purchases) {
+            // The purchase list since 004.
+            expect(find.text(l10n.purchasesNewAction), findsOneWidget);
+            expect(find.text(l10n.purchasesListEmpty), findsOneWidget);
             continue;
           }
           if (path == RoutePaths.parties) {

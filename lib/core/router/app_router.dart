@@ -23,8 +23,9 @@ import '../../features/products/presentation/screens/product_form_screen.dart';
 import '../../features/products/presentation/screens/product_list_screen.dart';
 import '../../features/products/presentation/screens/stock_adjustment_screen.dart';
 import '../../features/purchases/presentation/purchases_cubits.dart';
-import '../../features/purchases/presentation/purchases_screen.dart';
 import '../../features/purchases/presentation/screens/new_purchase_screen.dart';
+import '../../features/purchases/presentation/screens/purchase_screen.dart';
+import '../../features/purchases/presentation/screens/purchases_list_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
 import '../../features/sales/presentation/screens/invoice_screen.dart';
@@ -40,6 +41,7 @@ import '../../features/suppliers/presentation/cubits/supplier_form_cubit.dart';
 import '../../features/suppliers/presentation/screens/archived_suppliers_screen.dart';
 import '../../features/suppliers/presentation/screens/supplier_details_screen.dart';
 import '../../features/suppliers/presentation/screens/supplier_form_screen.dart';
+import '../../features/suppliers/presentation/screens/supplier_payment_screen.dart';
 import '../../features/suppliers/presentation/screens/suppliers_screen.dart';
 import '../../features/suppliers/presentation/suppliers_cubits.dart';
 import '../widgets/app_shell_scaffold.dart';
@@ -265,11 +267,14 @@ GoRoute _salesRoute(SalesCubits sales) => GoRoute(
   ],
 );
 
-/// The Purchases section: the section root and a new purchase (004
-/// research R15).
+/// The Purchases section: the purchase list, a new purchase and one
+/// purchase (004 research R15).
 GoRoute _purchasesRoute(PurchasesCubits purchases) => GoRoute(
   path: RoutePaths.purchases,
-  builder: (context, state) => const PurchasesScreen(),
+  builder: (context, state) => BlocProvider(
+    create: (_) => purchases.purchasesList(),
+    child: const PurchasesListScreen(),
+  ),
   routes: [
     GoRoute(
       path: 'new',
@@ -280,6 +285,13 @@ GoRoute _purchasesRoute(PurchasesCubits purchases) => GoRoute(
           quickAddProduct: purchases.quickAddProduct,
           supplierPicker: purchases.supplierPicker,
         ),
+      ),
+    ),
+    GoRoute(
+      path: ':id',
+      builder: (context, state) => BlocProvider(
+        create: (_) => purchases.purchaseView(state.pathParameters['id']!),
+        child: const PurchaseScreen(),
       ),
     ),
   ],
@@ -401,6 +413,13 @@ GoRoute _suppliersRoute(SuppliersCubits suppliers, PurchasesCubits purchases) =>
                   supplierId: state.pathParameters['id'],
                 ),
                 child: const SupplierFormScreen(),
+              ),
+            ),
+            GoRoute(
+              path: 'payment',
+              builder: (context, state) => BlocProvider(
+                create: (_) => suppliers.payment(state.pathParameters['id']!),
+                child: const SupplierPaymentScreen(),
               ),
             ),
           ],

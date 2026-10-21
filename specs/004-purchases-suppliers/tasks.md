@@ -157,16 +157,16 @@ listed, stock 20, average cost 10.00.
 **Independent test**: buy 10 pieces on credit for 100.00, void with a reason; stock, average cost
 and balance are back and the purchase shows as voided.
 
-- [ ] T037 [US3] PurchasesListScreen (search by number, supplier name and supplier's invoice
+- [X] T037 [US3] PurchasesListScreen (search by number, supplier name and supplier's invoice
   number; unpaid filter; show more) and PurchaseScreen (all fields, method only when paid > 0,
   titled "فاتورة شراء" / "Purchase invoice") in `lib/features/purchases/presentation/screens/`.
-- [ ] T038 [US6] Void on PurchaseScreen: reason dialog, then the stock shortage dialog naming each
+- [X] T038 [US6] Void on PurchaseScreen: reason dialog, then the stock shortage dialog naming each
   product and its resulting stock; refusals and unexpected failures in a SnackBar.
-- [ ] T039 [US5] SupplierPaymentScreen and Cancel payment on statement rows; tapping a purchase row
+- [X] T039 [US5] SupplierPaymentScreen and Cancel payment on statement rows; tapping a purchase row
   opens the purchase.
-- [ ] T040 [P] [US3] [US5] [US6] Widget tests US3 1–4, US5 1–3, US6 1–8 in
+- [X] T040 [P] [US3] [US5] [US6] Widget tests US3 1–4, US5 1–3, US6 1–8 in
   `test/features/purchases/presentation/purchases_and_payments_test.dart`.
-- [ ] T041 Gate. Commit `feat(004): phase 6 purchases, payments and voids`.
+- [X] T041 Gate. Commit `feat(004): phase 6 purchases, payments and voids`.
 
 ## Phase 7: Polish
 

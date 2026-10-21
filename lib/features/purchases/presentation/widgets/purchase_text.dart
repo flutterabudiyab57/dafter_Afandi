@@ -60,4 +60,12 @@ extension PurchaseText on BuildContext {
     SupplierUnavailable() => _l10n.errorSupplierUnavailable,
     PurchaseInvalid() => null,
   };
+
+  /// A refusal to void, other than the shortage, which is asked about.
+  String? purchaseVoidError(PurchaseVoidError e) => switch (e) {
+    PurchaseNotFound() => _l10n.purchaseNotFound,
+    PurchaseAlreadyVoided() => _l10n.purchaseAlreadyVoided,
+    PurchaseVoidReasonInvalid() => _l10n.errorReasonRequired,
+    VoidStockShortage() => null,
+  };
 }
