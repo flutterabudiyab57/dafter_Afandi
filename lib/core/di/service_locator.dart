@@ -11,6 +11,8 @@ import '../../features/products/domain/category_repository.dart';
 import '../../features/products/domain/inventory_repository.dart';
 import '../../features/products/domain/product_repository.dart';
 import '../../features/products/presentation/products_cubits.dart';
+import '../../features/purchases/data/purchase_repository_impl.dart';
+import '../../features/purchases/domain/purchase_repository.dart';
 import '../../features/sales/data/sales_repository_impl.dart';
 import '../../features/sales/domain/sales_repository.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
@@ -22,15 +24,20 @@ import '../../features/settings/domain/settings_repository.dart';
 import '../../features/settings/domain/shop_profile.dart';
 import '../../features/settings/presentation/cubits/app_preferences_cubit.dart';
 import '../../features/settings/presentation/cubits/shop_profile_form_cubit.dart';
+import '../../features/suppliers/data/supplier_repository_impl.dart';
+import '../../features/suppliers/domain/supplier_repository.dart';
 import '../database/app_database.dart';
 import '../database/daos/categories_dao.dart';
 import '../database/daos/counters_dao.dart';
 import '../database/daos/customer_ledger_dao.dart';
 import '../database/daos/customers_dao.dart';
 import '../database/daos/products_dao.dart';
+import '../database/daos/purchases_dao.dart';
 import '../database/daos/sales_dao.dart';
 import '../database/daos/settings_dao.dart';
 import '../database/daos/stock_movements_dao.dart';
+import '../database/daos/supplier_ledger_dao.dart';
+import '../database/daos/suppliers_dao.dart';
 import '../database/transaction_runner.dart';
 import '../utils/clock.dart';
 import '../utils/id.dart';
@@ -118,6 +125,34 @@ Future<void> configureDependencies({
         sl<StockMovementsDao>(),
         sl<CustomersDao>(),
         sl<CustomerLedgerDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<SuppliersDao>(() => sl<AppDatabase>().suppliersDao)
+    ..registerLazySingleton<SupplierLedgerDao>(
+      () => sl<AppDatabase>().supplierLedgerDao,
+    )
+    ..registerLazySingleton<PurchasesDao>(() => sl<AppDatabase>().purchasesDao)
+    ..registerLazySingleton<SupplierRepository>(
+      () => SupplierRepositoryImpl(
+        sl<SuppliersDao>(),
+        sl<SupplierLedgerDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<PurchaseRepository>(
+      () => PurchaseRepositoryImpl(
+        sl<PurchasesDao>(),
+        sl<ProductsDao>(),
+        sl<StockMovementsDao>(),
+        sl<SuppliersDao>(),
+        sl<SupplierLedgerDao>(),
         sl<CountersDao>(),
         sl<TransactionRunner>(),
         sl<IdGenerator>(),

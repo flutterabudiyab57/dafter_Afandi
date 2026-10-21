@@ -8,9 +8,12 @@ import 'daos/counters_dao.dart';
 import 'daos/customer_ledger_dao.dart';
 import 'daos/customers_dao.dart';
 import 'daos/products_dao.dart';
+import 'daos/purchases_dao.dart';
 import 'daos/sales_dao.dart';
 import 'daos/settings_dao.dart';
 import 'daos/stock_movements_dao.dart';
+import 'daos/supplier_ledger_dao.dart';
+import 'daos/suppliers_dao.dart';
 import 'schema_constants.dart';
 import 'schema_errors.dart';
 import 'schema_sql.dart';
@@ -65,6 +68,9 @@ part 'app_database.g.dart';
     CustomersDao,
     CustomerLedgerDao,
     SalesDao,
+    SuppliersDao,
+    SupplierLedgerDao,
+    PurchasesDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

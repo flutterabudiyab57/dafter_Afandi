@@ -7,9 +7,9 @@ import '../../../core/database/tables/enums.dart' as db;
 import '../../../core/database/transaction_runner.dart';
 import '../../../core/utils/clock.dart';
 import '../../../core/utils/id.dart';
-import '../../../core/utils/money.dart';
 import '../../../core/utils/result.dart';
 import '../domain/adjustment.dart';
+import '../domain/average_cost_replay.dart';
 import '../domain/inventory_repository.dart';
 import '../domain/product_draft.dart';
 import '../domain/product_errors.dart';
@@ -105,30 +105,21 @@ final class InventoryRepositoryImpl implements InventoryRepository {
     return rows.map(ProductMappers.entry).toList();
   }
 
-  /// Replays the movements oldest first (research R7): cost-bearing inbound
-  /// movements apply the weighted average; everything else changes stock
-  /// only.
+  /// Replays the movements oldest first (004 research R8) and stores the
+  /// result.
   @override
   Future<int> rebuildAverageCost(String productId) => _tx.run(() async {
-    var stock = 0;
-    var avg = 0;
-    for (final m in await _movements.replayRows(productId)) {
-      final row = m.row;
-      if (row.qtyDeltaMilli > 0 &&
-          ProductMappers.isCostBearingInbound(row.movementType)) {
-        avg = weightedAverageCost(
-          stockMilli: stock,
-          avgCostPiasters: avg,
-          inQtyMilli: row.qtyDeltaMilli,
-          inTotalCostPiasters: lineTotalPiasters(
-            row.qtyDeltaMilli,
-            row.unitCostPiasters,
-          ),
-        );
-      }
-      stock += row.qtyDeltaMilli;
-    }
+    final avg = await replayedAverageCost(_movements, productId);
     await _products.setAvgCost(productId, avg, _clock.nowUtc());
     return avg;
   });
 }
+
+/// [productId]'s average cost from its movements, leaving out voided
+/// purchases (004 research R8). Shared with the purchase void.
+Future<int> replayedAverageCost(
+  StockMovementsDao movements,
+  String productId,
+) async => replayAverageCost(
+  (await movements.replayRows(productId)).map(ProductMappers.replay),
+);

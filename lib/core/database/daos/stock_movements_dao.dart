@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 
 import '../app_database.dart';
 import '../tables/enums.dart';
+import '../tables/purchase_items_table.dart';
 import '../tables/stock_movements_table.dart';
 
 part 'stock_movements_dao.g.dart';
@@ -14,9 +15,20 @@ final class OrderedMovement {
   final int rowOrder;
 }
 
+/// A movement as the average-cost replay reads it (004 research R8).
+final class ReplayRow {
+  const ReplayRow(this.row, this.netLineCostPiasters);
+
+  final StockMovementRow row;
+
+  /// For a PURCHASE movement, its line's cost after discounts; null for
+  /// every other type.
+  final int? netLineCostPiasters;
+}
+
 /// The append-only stock ledger: inserts and reads only. Updates and deletes
 /// are refused by triggers, and nothing here issues one.
-@DriftAccessor(tables: [StockMovements])
+@DriftAccessor(tables: [StockMovements, PurchaseItems])
 class StockMovementsDao extends DatabaseAccessor<AppDatabase>
     with _$StockMovementsDaoMixin {
   StockMovementsDao(super.attachedDatabase);
@@ -51,6 +63,15 @@ class StockMovementsDao extends DatabaseAccessor<AppDatabase>
           ))
           .getSingleOrNull();
 
+  /// The PURCHASE movement written for purchase line [purchaseItemId].
+  Future<StockMovementRow?> purchaseMovementOf(String purchaseItemId) =>
+      (select(stockMovements)..where(
+            (m) =>
+                m.purchaseItemId.equals(purchaseItemId) &
+                m.movementType.equalsValue(MovementType.PURCHASE),
+          ))
+          .getSingleOrNull();
+
   Future<void> insertMovement(StockMovementsCompanion row) =>
       into(stockMovements).insert(row);
 
@@ -80,15 +101,30 @@ class StockMovementsDao extends DatabaseAccessor<AppDatabase>
     return rows.map(_read).toList();
   }
 
-  /// Oldest first, for rebuilding the average cost (research R7).
-  Future<List<OrderedMovement>> replayRows(String productId) async {
+  /// Oldest first, for rebuilding the average cost (004 research R8).
+  ///
+  /// A voided purchase is left out as if it had never been recorded: its
+  /// PURCHASE rows and the PURCHASE_VOID rows that reverse them.
+  Future<List<ReplayRow>> replayRows(String productId) async {
     final rows = await customSelect(
-      'SELECT *, rowid AS row_order FROM stock_movements WHERE product_id = ?1 '
-      'ORDER BY created_at ASC, rowid ASC',
+      'SELECT m.*, p.net_line_cost_piasters AS net_line_cost '
+      'FROM stock_movements m '
+      "LEFT JOIN purchase_items p ON m.movement_type = 'PURCHASE' "
+      'AND p.id = m.purchase_item_id '
+      "WHERE m.product_id = ?1 AND m.movement_type != 'PURCHASE_VOID' "
+      "AND NOT (m.movement_type = 'PURCHASE' AND EXISTS("
+      'SELECT 1 FROM stock_movements v WHERE v.reverses_movement_id = m.id)) '
+      'ORDER BY m.created_at ASC, m.rowid ASC',
       variables: [Variable<String>(productId)],
-      readsFrom: {stockMovements},
+      readsFrom: {stockMovements, purchaseItems},
     ).get();
-    return rows.map(_read).toList();
+    return [
+      for (final r in rows)
+        ReplayRow(
+          stockMovements.map(r.data),
+          r.readNullable<int>('net_line_cost'),
+        ),
+    ];
   }
 
   OrderedMovement _read(QueryRow row) =>

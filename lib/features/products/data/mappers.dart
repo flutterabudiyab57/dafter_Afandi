@@ -2,6 +2,8 @@ import '../../../core/database/daos/categories_dao.dart';
 import '../../../core/database/daos/products_dao.dart';
 import '../../../core/database/daos/stock_movements_dao.dart';
 import '../../../core/database/tables/enums.dart' as db;
+import '../../../core/utils/money.dart';
+import '../domain/average_cost_replay.dart';
 import '../domain/category.dart';
 import '../domain/product.dart';
 import '../domain/stock_entry.dart';
@@ -87,4 +89,17 @@ abstract final class ProductMappers {
     db.MovementType.SALE ||
     db.MovementType.ADJUSTMENT => false,
   };
+
+  /// A purchase enters with its line's cost after discounts; other
+  /// cost-bearing rows with quantity × unit cost (004 research R8).
+  static ReplayMovement replay(ReplayRow r) {
+    final m = r.row;
+    return ReplayMovement(
+      qtyDeltaMilli: m.qtyDeltaMilli,
+      inboundCostPiasters: isCostBearingInbound(m.movementType)
+          ? r.netLineCostPiasters ??
+                lineTotalPiasters(m.qtyDeltaMilli, m.unitCostPiasters)
+          : null,
+    );
+  }
 }

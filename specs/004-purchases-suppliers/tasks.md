@@ -56,29 +56,29 @@ anything is ambiguous.
 
 ## Phase 2: Data (Foundational)
 
-- [ ] T008 `lib/core/database/daos/suppliers_dao.dart`: watchActive(query) with the balance
+- [X] T008 `lib/core/database/daos/suppliers_dao.dart`: watchActive(query) with the balance
   subquery, Arabic-first order and owed filter (balance > 0, highest first); watchOne;
   watchArchived; insert; update; setArchivedAt; activeNameExists (research R10).
-- [ ] T009 `lib/core/database/daos/supplier_ledger_dao.dart`: insert; balanceOf; statementPage
+- [X] T009 `lib/core/database/daos/supplier_ledger_dao.dart`: insert; balanceOf; statementPage
   (supplierId, before, limit) with the running-balance window and reversed flag; watchCountOf; byId;
   reversalOf(entryId); rowsForPurchase.
-- [ ] T010 `lib/core/database/daos/purchases_dao.dart`: insertInvoice, insertItem,
+- [X] T010 `lib/core/database/daos/purchases_dao.dart`: insertInvoice, insertItem,
   watchList(query, limit) ordered `invoice_date DESC, number DESC` (search per research R16),
   watchOne (header + supplier name), items(invoiceId), setVoided, lastUnitCost(productId) over
   non-voided invoices by `created_at, rowid`.
-- [ ] T011 `lib/core/database/daos/stock_movements_dao.dart`: `purchaseMovementsOf(invoiceId)`;
+- [X] T011 `lib/core/database/daos/stock_movements_dao.dart`: `purchaseMovementsOf(invoiceId)`;
   `replayRows` skips PURCHASE rows reversed by a PURCHASE_VOID and the PURCHASE_VOID rows, and
   carries `purchase_items.net_line_cost_piasters` for PURCHASE rows (research R8).
-- [ ] T012 `lib/features/products/data/inventory_repository_impl.dart`: `rebuildAverageCost` calls
+- [X] T012 `lib/features/products/data/inventory_repository_impl.dart`: `rebuildAverageCost` calls
   `replayAverageCost`; existing 002 and 003 tests still pass unchanged.
-- [ ] T013 Register the DAOs; `dart run build_runner build`; confirm `drift_schemas/` unchanged and
+- [X] T013 Register the DAOs; `dart run build_runner build`; confirm `drift_schemas/` unchanged and
   schemaVersion 1.
-- [ ] T014 `lib/features/suppliers/data/supplier_repository_impl.dart` + mappers (research R10–R12;
+- [X] T014 `lib/features/suppliers/data/supplier_repository_impl.dart` + mappers (research R10–R12;
   writes C1–C2, P1–P2, X1 in data-model.md).
-- [ ] T015 `lib/features/purchases/data/purchase_repository_impl.dart` + mappers (research R7, R9,
+- [X] T015 `lib/features/purchases/data/purchase_repository_impl.dart` + mappers (research R7, R9,
   R14; writes W1–W7 and V1–V5 in data-model.md).
-- [ ] T016 DI in `lib/core/di/service_locator.dart`.
-- [ ] T017 [P] Tests in `test/features/suppliers/data/` and `test/features/purchases/data/`:
+- [X] T016 DI in `lib/core/di/service_locator.dart`.
+- [X] T017 [P] Tests in `test/features/suppliers/data/` and `test/features/purchases/data/`:
   create/update/archive/restore, opening balance ±, statement running balance and paging, pay and
   cancel (cannot cancel twice, cannot cancel a payment made with a purchase, reason checked and
   trimmed); purchase W1–W7 for no supplier, cash with supplier, partial, credit; WAC per line,
@@ -88,7 +88,7 @@ anything is ambiguous.
   cannot void twice; P- and PY- numbers consecutive and unchanged after a forced rollback; property
   test of random purchases, sales, payments, cancels, voids and adjustments (balance = Σ ledger,
   stock = Σ movements, avgCost = replay); 2,000-product search timing reused from 002.
-- [ ] T018 Gate. Commit `feat(004): phase 2 data`.
+- [X] T018 Gate. Commit `feat(004): phase 2 data`.
 
 ## Phase 3: Cubits
 
