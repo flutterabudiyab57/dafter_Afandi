@@ -4,9 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/result.dart';
-import '../../../products/domain/product.dart';
-import '../../../products/domain/product_query.dart';
-import '../../../products/domain/product_repository.dart';
 import '../../domain/sale.dart';
 import '../../domain/sale_errors.dart';
 import '../../domain/sales_repository.dart';
@@ -143,66 +140,6 @@ class InvoiceCubit extends Cubit<InvoiceState> {
   @override
   Future<void> close() async {
     await _sub.cancel();
-    return super.close();
-  }
-}
-
-final class ProductPickerState extends Equatable {
-  const ProductPickerState({
-    this.text = '',
-    this.items = const [],
-    this.loading = true,
-  });
-
-  final String text;
-  final List<ProductSummary> items;
-  final bool loading;
-
-  @override
-  List<Object?> get props => [text, items, loading];
-}
-
-/// Picks a product for the sale by search (FR-003).
-class ProductPickerCubit extends Cubit<ProductPickerState> {
-  ProductPickerCubit(
-    this._products, {
-    this.debounce = const Duration(milliseconds: 200),
-  }) : super(const ProductPickerState()) {
-    _subscribe();
-  }
-
-  final ProductRepository _products;
-  final Duration debounce;
-  StreamSubscription<List<ProductSummary>>? _sub;
-  Timer? _timer;
-
-  void search(String text) {
-    emit(ProductPickerState(text: text, items: state.items));
-    _timer?.cancel();
-    _timer = Timer(debounce, _subscribe);
-  }
-
-  /// The active product whose barcode is exactly [text], for Enter.
-  Future<ProductSummary?> exact(String text) => _products.activeByBarcode(text);
-
-  void _subscribe() {
-    _timer?.cancel();
-    unawaited(_sub?.cancel());
-    final text = state.text;
-    _sub = _products
-        .watchSummaries(ProductQuery(text: text))
-        .listen(
-          (items) => emit(
-            ProductPickerState(text: text, items: items, loading: false),
-          ),
-          onError: addError,
-        );
-  }
-
-  @override
-  Future<void> close() async {
-    _timer?.cancel();
-    await _sub?.cancel();
     return super.close();
   }
 }

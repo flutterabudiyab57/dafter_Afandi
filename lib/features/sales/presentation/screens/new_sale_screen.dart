@@ -12,11 +12,12 @@ import '../../../customers/presentation/cubits/customers_list_cubit.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../products/domain/product.dart';
 import '../../../products/domain/quantity_input.dart';
+import '../../../products/presentation/cubits/product_picker_cubit.dart';
+import '../../../products/presentation/screens/product_picker_page.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/sale_draft.dart';
 import '../../domain/sale_errors.dart';
 import '../cubits/sale_cubit.dart';
-import '../cubits/sales_list_cubit.dart';
 import '../widgets/sale_text.dart';
 import 'pickers.dart';
 

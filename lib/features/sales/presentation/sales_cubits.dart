@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import '../../customers/domain/customer_repository.dart';
 import '../../customers/presentation/cubits/customers_list_cubit.dart';
 import '../../products/domain/product_repository.dart';
+import '../../products/presentation/cubits/product_picker_cubit.dart';
 import '../domain/sales_repository.dart';
 import 'cubits/sale_cubit.dart';
 import 'cubits/sales_list_cubit.dart';

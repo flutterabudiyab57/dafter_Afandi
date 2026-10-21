@@ -92,23 +92,23 @@ anything is ambiguous.
 
 ## Phase 3: Cubits
 
-- [ ] T019 Suppliers cubits in `lib/features/suppliers/presentation/cubits/`: SuppliersListCubit
+- [X] T019 Suppliers cubits in `lib/features/suppliers/presentation/cubits/`: SuppliersListCubit
   (debounced search, owed filter), SupplierFormCubit (create/edit, same-name notice),
   SupplierDetailsCubit (archive, restore), SupplierStatementCubit (pages, reload on
   `watchStatementChanges`, generation guard), SupplierPaymentCubit ("supplier will owe the shop"
   notice, save), ArchivedSuppliersCubit, SupplierPickerCubit (search, quick add).
-- [ ] T020 Move `ProductPickerPage` and `ProductPickerCubit` from `lib/features/sales/presentation/`
+- [X] T020 Move `ProductPickerPage` and `ProductPickerCubit` from `lib/features/sales/presentation/`
   to `lib/features/products/presentation/` with an optional quick-add action (off for sales);
   update sales imports and tests (research R3, R13).
-- [ ] T021 Purchases cubits in `lib/features/purchases/presentation/cubits/`: PurchaseCubit (draft
+- [X] T021 Purchases cubits in `lib/features/purchases/presentation/cubits/`: PurchaseCubit (draft
   edits, cost prefill from `lastUnitCost` else avgCost, typed paid resets when the total changes as
   in the 003 fix, submit → saved, reset), PurchasesListCubit (search, unpaid, show more),
   PurchaseViewCubit (watch, void → shortage confirm → voided).
-- [ ] T022 Bundles `SuppliersCubits` / `PurchasesCubits` with app impls in
+- [X] T022 Bundles `SuppliersCubits` / `PurchasesCubits` with app impls in
   `lib/features/{suppliers,purchases}/presentation/`; fakes in `test/helpers/fake_purchases.dart`
   (FakePurchasesStore sharing the products fake store).
-- [ ] T023 [P] bloc tests for every cubit in `test/features/{suppliers,purchases}/presentation/cubits/`.
-- [ ] T024 Gate. Commit `feat(004): phase 3 cubits`.
+- [X] T023 [P] bloc tests for every cubit in `test/features/{suppliers,purchases}/presentation/cubits/`.
+- [X] T024 Gate. Commit `feat(004): phase 3 cubits`.
 
 ## Phase 4: Suppliers UI — US4 (P2)
 

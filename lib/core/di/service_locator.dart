@@ -13,6 +13,7 @@ import '../../features/products/domain/product_repository.dart';
 import '../../features/products/presentation/products_cubits.dart';
 import '../../features/purchases/data/purchase_repository_impl.dart';
 import '../../features/purchases/domain/purchase_repository.dart';
+import '../../features/purchases/presentation/purchases_cubits.dart';
 import '../../features/sales/data/sales_repository_impl.dart';
 import '../../features/sales/domain/sales_repository.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
@@ -26,6 +27,7 @@ import '../../features/settings/presentation/cubits/app_preferences_cubit.dart';
 import '../../features/settings/presentation/cubits/shop_profile_form_cubit.dart';
 import '../../features/suppliers/data/supplier_repository_impl.dart';
 import '../../features/suppliers/domain/supplier_repository.dart';
+import '../../features/suppliers/presentation/suppliers_cubits.dart';
 import '../database/app_database.dart';
 import '../database/daos/categories_dao.dart';
 import '../database/daos/counters_dao.dart';
@@ -162,6 +164,8 @@ Future<void> configureDependencies({
     ..registerLazySingleton<ProductsCubits>(() => AppProductsCubits(sl))
     ..registerLazySingleton<CustomersCubits>(() => AppCustomersCubits(sl))
     ..registerLazySingleton<SalesCubits>(() => AppSalesCubits(sl))
+    ..registerLazySingleton<SuppliersCubits>(() => AppSuppliersCubits(sl))
+    ..registerLazySingleton<PurchasesCubits>(() => AppPurchasesCubits(sl))
     ..registerSingleton<AppVersionSource>(
       versionSource ?? const PackageInfoAppVersionSource(),
     )

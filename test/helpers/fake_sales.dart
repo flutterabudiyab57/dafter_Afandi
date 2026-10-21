@@ -14,6 +14,7 @@ import 'package:daftar_afandi/features/customers/presentation/cubits/customers_l
 import 'package:daftar_afandi/features/customers/presentation/cubits/payment_cubit.dart';
 import 'package:daftar_afandi/features/customers/presentation/customers_cubits.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
+import 'package:daftar_afandi/features/products/presentation/cubits/product_picker_cubit.dart';
 import 'package:daftar_afandi/features/sales/domain/sale.dart';
 import 'package:daftar_afandi/features/sales/domain/sale_draft.dart';
 import 'package:daftar_afandi/features/sales/domain/sale_errors.dart';
