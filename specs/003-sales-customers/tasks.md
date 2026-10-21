@@ -107,11 +107,11 @@ is ambiguous.
 
 ## Phase 7: Polish
 
-- [ ] T037 Extend `visitEveryScreen` with every new screen and dialog (seeded fakes); semantics and
+- [X] T037 Extend `visitEveryScreen` with every new screen and dialog (seeded fakes); semantics and
   200% layout walks pass.
-- [ ] T038 Full gate; `flutter build apk --debug`; quickstart on a phone if connected, otherwise
+- [X] T038 Full gate; `flutter build apk --debug`; quickstart on a phone if connected, otherwise
   list it for the owner.
-- [ ] T039 Re-run the lock audit; mark all tasks; commit `feat(003): phase 7 polish`.
+- [X] T039 Re-run the lock audit; mark all tasks; commit `feat(003): phase 7 polish`.
 
 ## Dependencies
 

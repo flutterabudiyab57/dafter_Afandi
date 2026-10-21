@@ -27,7 +27,7 @@ void main() {
               expect(tester.takeException(), isNull, reason: screen);
             },
           );
-          expect(screens, 24);
+          expect(screens, 40);
         });
       }
     }
