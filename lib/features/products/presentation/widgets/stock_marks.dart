@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/product.dart';
 
 /// The low-stock and below-zero marks of a product, each an icon with a
@@ -26,7 +27,7 @@ class StockMarks extends StatelessWidget {
         else if (summary.isLow)
           Icon(
             Icons.warning_amber_rounded,
-            color: colors.tertiary,
+            color: context.appColors.owes,
             semanticLabel: l10n.markLowStock,
           ),
       ],

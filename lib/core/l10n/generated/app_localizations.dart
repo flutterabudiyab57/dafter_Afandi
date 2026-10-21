@@ -1879,6 +1879,408 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'العميل مؤرشف؛ استعده أولًا.'**
   String get errorCustomerArchived;
+
+  /// Parties switch: the customers list.
+  ///
+  /// In ar, this message translates to:
+  /// **'العملاء'**
+  String get partiesCustomersTab;
+
+  /// Parties switch: the suppliers list.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموردون'**
+  String get partiesSuppliersTab;
+
+  /// Suppliers list title.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموردون'**
+  String get suppliersTitle;
+
+  /// Supplier search field.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابحث بالاسم أو رقم الهاتف'**
+  String get suppliersSearchHint;
+
+  /// Filter: suppliers the shop owes.
+  ///
+  /// In ar, this message translates to:
+  /// **'مستحق لهم'**
+  String get suppliersFilterOwed;
+
+  /// Empty supplier list.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد موردون بعد.'**
+  String get suppliersEmpty;
+
+  /// Search or filter found nothing.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد موردون مطابقون.'**
+  String get suppliersNoMatch;
+
+  /// Add supplier button and form title.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة مورد'**
+  String get supplierAddTitle;
+
+  /// Adds a supplier with the searched name.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة «{name}»'**
+  String supplierAddNamed(String name);
+
+  /// Archived suppliers screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموردون المؤرشفون'**
+  String get suppliersArchivedTitle;
+
+  /// Empty archived list.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد موردون مؤرشفون.'**
+  String get suppliersArchivedEmpty;
+
+  /// Edit form title.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل المورد'**
+  String get supplierEditTitle;
+
+  /// Name field.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم المورد'**
+  String get supplierNameLabel;
+
+  /// Opening balance help.
+  ///
+  /// In ar, this message translates to:
+  /// **'إذا كان للمورد حساب قبل استخدام التطبيق. لا يمكن تغييره بعد الحفظ.'**
+  String get supplierOpeningHint;
+
+  /// Opening direction: positive.
+  ///
+  /// In ar, this message translates to:
+  /// **'المحل مدين للمورد'**
+  String get supplierOpeningOwed;
+
+  /// Opening direction: negative.
+  ///
+  /// In ar, this message translates to:
+  /// **'المورد مدين للمحل'**
+  String get supplierOpeningInShopFavour;
+
+  /// Same-name notice.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم الحفظ. يوجد مورد آخر بالاسم نفسه.'**
+  String get supplierNameExistsNotice;
+
+  /// Supplier page title.
+  ///
+  /// In ar, this message translates to:
+  /// **'المورد'**
+  String get supplierDetailsTitle;
+
+  /// Balance the shop owes the supplier.
+  ///
+  /// In ar, this message translates to:
+  /// **'مستحق له {amount}'**
+  String supplierBalanceOwed(String amount);
+
+  /// Balance the supplier owes the shop.
+  ///
+  /// In ar, this message translates to:
+  /// **'عليه للمحل {amount}'**
+  String supplierBalanceInShopFavour(String amount);
+
+  /// Opens the payment screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'دفع للمورد'**
+  String get supplierPayAction;
+
+  /// Archive button.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة المورد'**
+  String get supplierArchiveAction;
+
+  /// Archive confirmation, zero balance.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة المورد؟ تبقى مشترياته وكشف حسابه ويمكن استعادته.'**
+  String get supplierArchiveConfirm;
+
+  /// Archive confirmation with a non-zero balance.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة المورد؟ رصيده {balance} يبقى كما هو، ومشترياته وكشف حسابه تبقى ويمكن استعادته.'**
+  String supplierArchiveConfirmBalance(String balance);
+
+  /// After restoring.
+  ///
+  /// In ar, this message translates to:
+  /// **'تمت استعادة المورد.'**
+  String get supplierRestored;
+
+  /// Unknown supplier id.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا المورد غير موجود.'**
+  String get supplierNotFound;
+
+  /// Supplier page: their purchases.
+  ///
+  /// In ar, this message translates to:
+  /// **'المشتريات'**
+  String get supplierPurchasesTitle;
+
+  /// Name empty.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل اسم المورد.'**
+  String get errorSupplierNameRequired;
+
+  /// Payment to an archived supplier.
+  ///
+  /// In ar, this message translates to:
+  /// **'المورد مؤرشف؛ استعده أولًا.'**
+  String get errorSupplierArchived;
+
+  /// Statement row for a purchase.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة شراء {number}'**
+  String ledgerPurchase(String number);
+
+  /// Statement row for a purchase void.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة شراء ملغاة {number}'**
+  String ledgerPurchaseVoid(String number);
+
+  /// Cancel refused.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن إلغاء دفعة تمت مع فاتورة شراء وحدها. ألغِ الفاتورة بدلًا من ذلك.'**
+  String get supplierPaymentNotCancellable;
+
+  /// Payment screen title.
+  ///
+  /// In ar, this message translates to:
+  /// **'دفع للمورد'**
+  String get supplierPaymentTitle;
+
+  /// Overpay confirmation title.
+  ///
+  /// In ar, this message translates to:
+  /// **'أكثر من المستحق'**
+  String get supplierOverpayTitle;
+
+  /// Overpay confirmation body.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيصبح المورد مدينًا للمحل بمبلغ {amount}.'**
+  String supplierOverpayBody(String amount);
+
+  /// Opens a new purchase.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة شراء جديدة'**
+  String get purchasesNewAction;
+
+  /// Empty purchase list.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد فواتير شراء بعد.'**
+  String get purchasesListEmpty;
+
+  /// Search found nothing.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد فواتير شراء مطابقة.'**
+  String get purchasesNoMatch;
+
+  /// Purchase search field.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابحث برقم الفاتورة أو المورد أو رقم فاتورة المورد'**
+  String get purchasesSearchHint;
+
+  /// A purchase without a supplier.
+  ///
+  /// In ar, this message translates to:
+  /// **'بدون مورد'**
+  String get purchaseNoSupplier;
+
+  /// New purchase screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة شراء جديدة'**
+  String get purchaseNewTitle;
+
+  /// Cost field.
+  ///
+  /// In ar, this message translates to:
+  /// **'تكلفة الوحدة'**
+  String get purchaseCostLabel;
+
+  /// Notice under a line; does not block saving.
+  ///
+  /// In ar, this message translates to:
+  /// **'التكلفة تساوي سعر البيع أو تزيد عليه.'**
+  String get purchaseCostNotice;
+
+  /// Remove-line button label.
+  ///
+  /// In ar, this message translates to:
+  /// **'إزالة {name} من الفاتورة'**
+  String purchaseRemoveLine(String name);
+
+  /// Supplier chip.
+  ///
+  /// In ar, this message translates to:
+  /// **'المورد'**
+  String get purchaseSupplierLabel;
+
+  /// Supplier picker title.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر موردًا'**
+  String get purchaseSupplierPick;
+
+  /// Supplier reference field.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم فاتورة المورد'**
+  String get purchaseSupplierRefLabel;
+
+  /// Invoice date field.
+  ///
+  /// In ar, this message translates to:
+  /// **'تاريخ الفاتورة'**
+  String get purchaseDateLabel;
+
+  /// Save button.
+  ///
+  /// In ar, this message translates to:
+  /// **'حفظ فاتورة الشراء'**
+  String get purchaseSaveAction;
+
+  /// After saving. {number} is like P-000001.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حفظ فاتورة الشراء {number}.'**
+  String purchaseSaved(String number);
+
+  /// Leave guard title.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل فاتورة الشراء؟'**
+  String get purchaseDiscardTitle;
+
+  /// Leave guard: stay.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة الفاتورة'**
+  String get purchaseKeepAction;
+
+  /// Quick add from the product picker.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة «{name}» كمنتج جديد'**
+  String purchaseAddProductNamed(String name);
+
+  /// Quick add product form title.
+  ///
+  /// In ar, this message translates to:
+  /// **'منتج جديد'**
+  String get purchaseQuickAddTitle;
+
+  /// Paid less than the total without a supplier.
+  ///
+  /// In ar, this message translates to:
+  /// **'الشراء الآجل أو الدفع الجزئي يحتاج إلى مورد.'**
+  String get errorCreditNeedsSupplier;
+
+  /// Future date.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن أن يكون تاريخ الفاتورة بعد اليوم.'**
+  String get errorPurchaseDateInFuture;
+
+  /// Archived product on save.
+  ///
+  /// In ar, this message translates to:
+  /// **'«{name}» لم يعد متاحًا؛ أزله من الفاتورة.'**
+  String errorPurchaseProductUnavailable(String name);
+
+  /// Archived supplier on save.
+  ///
+  /// In ar, this message translates to:
+  /// **'المورد لم يعد متاحًا؛ اختر غيره.'**
+  String get errorSupplierUnavailable;
+
+  /// Purchase screen title.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة شراء {number}'**
+  String purchaseTitle(String number);
+
+  /// Void button.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء الفاتورة'**
+  String get purchaseVoidAction;
+
+  /// Void dialog title.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء فاتورة الشراء؟'**
+  String get purchaseVoidTitle;
+
+  /// Void dialog body.
+  ///
+  /// In ar, this message translates to:
+  /// **'يعود المخزون ومتوسط التكلفة ورصيد المورد إلى ما كانت عليه قبل الشراء. لا يمكن التراجع عن ذلك.'**
+  String get purchaseVoidBody;
+
+  /// After voiding.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إلغاء فاتورة الشراء.'**
+  String get purchaseVoided;
+
+  /// Unknown purchase id.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة الشراء هذه غير موجودة.'**
+  String get purchaseNotFound;
+
+  /// Void refused.
+  ///
+  /// In ar, this message translates to:
+  /// **'فاتورة الشراء هذه ملغاة بالفعل.'**
+  String get purchaseAlreadyVoided;
+
+  /// One product that would go below zero.
+  ///
+  /// In ar, this message translates to:
+  /// **'{name}: {stock} بعد الإلغاء'**
+  String voidShortageLine(String name, String stock);
+
+  /// Confirms a void that takes stock below zero.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء على أي حال'**
+  String get voidShortageConfirm;
 }
 
 class _AppLocalizationsDelegate

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:daftar_afandi/core/utils/arabic_normalize.dart';
 import 'package:daftar_afandi/core/utils/clock.dart';
+import 'package:daftar_afandi/core/utils/digits.dart';
 import 'package:daftar_afandi/core/utils/result.dart';
 import 'package:daftar_afandi/features/customers/domain/ledger_entry.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
@@ -166,12 +167,14 @@ final class FakePurchasesStore {
     SupplierQuery q = const SupplierQuery(),
   ]) {
     final key = q.normalizedText;
+    // Only the digits, in Latin, as the real repository matches phones.
+    final phone = normalizeDigits(q.text).replaceAll(RegExp('[^0-9]'), '');
     final list = [
       for (final s in _suppliers.values)
         if (!s.archived &&
             (key.isEmpty ||
                 arabicNormalize(s.name).contains(key) ||
-                (s.phone ?? '').contains(q.text)))
+                (phone.isNotEmpty && (s.phone ?? '').contains(phone))))
           supplier(s.id)!,
     ];
     if (q.owedOnly) {

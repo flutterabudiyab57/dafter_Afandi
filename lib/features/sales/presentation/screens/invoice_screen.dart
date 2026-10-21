@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
@@ -89,7 +90,7 @@ class _Body extends StatelessWidget {
                   invoice.voidReason ?? '',
                 ),
                 style: theme.textTheme.titleSmall?.copyWith(
-                  color: theme.colorScheme.error,
+                  color: context.appColors.voided,
                 ),
               ),
             ),

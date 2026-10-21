@@ -4,11 +4,13 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
 import '../../domain/customer.dart';
 import '../cubits/customers_list_cubit.dart';
 import '../widgets/customer_text.dart';
+import '../widgets/parties_switch.dart';
 
 /// The Parties section root: customers with search, the owes filter and
 /// their balances (US4, FR-014).
@@ -34,7 +36,6 @@ class _CustomersScreenState extends State<CustomersScreen> {
     final tokens = context.tokens;
     final cubit = context.read<CustomersListCubit>();
     final state = context.watch<CustomersListCubit>().state;
-    final theme = Theme.of(context);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
@@ -56,10 +57,10 @@ class _CustomersScreenState extends State<CustomersScreen> {
             ),
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    l10n.customersTitle,
-                    style: theme.textTheme.titleLarge,
+                const Expanded(
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: PartiesSwitch(suppliers: false),
                   ),
                 ),
                 IconButton(
@@ -162,7 +163,11 @@ class CustomerRow extends StatelessWidget {
           context.balance(b),
           textAlign: TextAlign.end,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: b > 0 ? theme.colorScheme.error : null,
+            color: b > 0
+                ? context.appColors.owes
+                : b < 0
+                ? context.appColors.credit
+                : null,
           ),
         ),
       ),

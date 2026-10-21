@@ -11,10 +11,12 @@ import 'core/theme/app_tokens.dart';
 import 'core/widgets/digit_style_scope.dart';
 import 'features/customers/presentation/customers_cubits.dart';
 import 'features/products/presentation/products_cubits.dart';
+import 'features/purchases/presentation/purchases_cubits.dart';
 import 'features/sales/presentation/sales_cubits.dart';
 import 'features/settings/domain/app_settings.dart';
 import 'features/settings/domain/app_version.dart';
 import 'features/settings/presentation/cubits/app_preferences_cubit.dart';
+import 'features/suppliers/presentation/suppliers_cubits.dart';
 
 /// The app root: settings state, locale, digit style, themes and the router.
 class App extends StatefulWidget {
@@ -25,6 +27,8 @@ class App extends StatefulWidget {
     required this.products,
     required this.customers,
     required this.sales,
+    required this.suppliers,
+    required this.purchases,
     super.key,
   });
 
@@ -43,6 +47,10 @@ class App extends StatefulWidget {
   final CustomersCubits customers;
   final SalesCubits sales;
 
+  /// Builds the suppliers and purchases screens' cubits (004 research R17).
+  final SuppliersCubits suppliers;
+  final PurchasesCubits purchases;
+
   @override
   State<App> createState() => _AppState();
 }
@@ -54,6 +62,8 @@ class _AppState extends State<App> {
     products: widget.products,
     customers: widget.customers,
     sales: widget.sales,
+    suppliers: widget.suppliers,
+    purchases: widget.purchases,
   );
 
   @override

@@ -67,6 +67,14 @@ extension ProductFormatting on BuildContext {
     return '${ltrIsolate('+$number')} ${unitShort(AppLocalizations.of(this), unit)}';
   }
 
+  /// A local calendar date as "2026/10/20", kept left-to-right.
+  String date(DateTime local) {
+    String two(int v) => v.toString().padLeft(2, '0');
+    return ltrIsolate(
+      digits('${local.year}/${two(local.month)}/${two(local.day)}'),
+    );
+  }
+
   /// A UTC time as local "2026/10/20 14:05", kept left-to-right.
   String dateTime(DateTime utc) {
     final t = utc.toLocal();

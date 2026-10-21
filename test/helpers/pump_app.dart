@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:daftar_afandi/app.dart';
 import 'package:daftar_afandi/features/customers/presentation/customers_cubits.dart';
 import 'package:daftar_afandi/features/products/presentation/products_cubits.dart';
+import 'package:daftar_afandi/features/purchases/presentation/purchases_cubits.dart';
 import 'package:daftar_afandi/features/sales/presentation/sales_cubits.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:daftar_afandi/features/settings/domain/app_settings.dart';
@@ -11,11 +12,13 @@ import 'package:daftar_afandi/features/settings/domain/settings_repository.dart'
 import 'package:daftar_afandi/features/settings/domain/shop_profile.dart';
 import 'package:daftar_afandi/features/settings/presentation/cubits/app_preferences_cubit.dart';
 import 'package:daftar_afandi/features/settings/presentation/cubits/shop_profile_form_cubit.dart';
+import 'package:daftar_afandi/features/suppliers/presentation/suppliers_cubits.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'fake_products.dart';
+import 'fake_purchases.dart';
 import 'fake_sales.dart';
 
 const AppVersion kTestVersion = AppVersion(name: '1.0.0', build: '1');
@@ -110,6 +113,8 @@ Future<void> pumpApp(
   ProductsCubits? products,
   CustomersCubits? customers,
   SalesCubits? sales,
+  SuppliersCubits? suppliers,
+  PurchasesCubits? purchases,
 }) async {
   tester.view
     ..devicePixelRatio = 1
@@ -135,6 +140,8 @@ Future<void> pumpApp(
       products: products ?? FakeProductsCubits(),
       customers: customers ?? FakeCustomersCubits(),
       sales: sales ?? FakeSalesCubits(),
+      suppliers: suppliers ?? FakeSuppliersCubits(),
+      purchases: purchases ?? FakePurchasesCubits(),
     ),
   );
   await tester.pumpAndSettle();

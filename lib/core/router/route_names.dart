@@ -35,9 +35,28 @@ abstract final class RoutePaths {
   static String customerEdit(String id) => '$parties/customers/$id/edit';
   static String customerPayment(String id) => '$parties/customers/$id/payment';
 
-  /// The five section roots, where the shell shows its own app bar.
-  static bool isSectionRoot(String path) =>
-      const {home, sales, parties, purchases, reports}.contains(path);
+  // Suppliers, a second root of the Parties branch (004 research R15).
+  static const String suppliers = '/parties/suppliers';
+  static const String supplierNew = '/parties/suppliers/new';
+  static const String suppliersArchived = '/parties/suppliers/archived';
+  static String supplierDetails(String id) => '$suppliers/$id';
+  static String supplierEdit(String id) => '$suppliers/$id/edit';
+  static String supplierPayment(String id) => '$suppliers/$id/payment';
+
+  // Purchases, under the Purchases branch.
+  static const String purchasesNew = '/purchases/new';
+  static String purchase(String id) => '$purchases/$id';
+
+  /// The section roots, where the shell shows its own app bar. Parties
+  /// has two: customers and suppliers.
+  static bool isSectionRoot(String path) => const {
+    home,
+    sales,
+    parties,
+    suppliers,
+    purchases,
+    reports,
+  }.contains(path);
 
   /// The first-run routes: the only ones allowed before onboarding, and
   /// never shown after it.

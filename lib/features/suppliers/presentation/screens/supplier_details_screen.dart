@@ -1,0 +1,328 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
+
+import '../../../../core/l10n/generated/app_localizations.dart';
+import '../../../../core/router/route_names.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/utils/digits.dart';
+import '../../../customers/presentation/widgets/customer_text.dart';
+import '../../../products/presentation/widgets/unit_label.dart';
+import '../../../purchases/presentation/cubits/purchases_list_cubit.dart';
+import '../../../purchases/presentation/widgets/purchase_row.dart';
+import '../../domain/supplier.dart';
+import '../../domain/supplier_entry.dart';
+import '../cubits/supplier_details_cubit.dart';
+import '../widgets/supplier_text.dart';
+
+/// One supplier: details, balance, actions, statement and purchases (US4).
+class SupplierDetailsScreen extends StatelessWidget {
+  const SupplierDetailsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.supplierDetailsTitle)),
+      body: BlocBuilder<SupplierDetailsCubit, SupplierDetailsState>(
+        builder: (context, state) {
+          if (!state.loaded) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final s = state.summary;
+          if (s == null) return Center(child: Text(l10n.supplierNotFound));
+          return _Details(summary: s);
+        },
+      ),
+    );
+  }
+}
+
+class _Details extends StatelessWidget {
+  const _Details({required this.summary});
+
+  final SupplierSummary summary;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final tokens = context.tokens;
+    final theme = Theme.of(context);
+    final s = summary.supplier;
+    final b = summary.balancePiasters;
+
+    Widget section(String title) => Padding(
+      padding: tokens.sectionHeaderPadding,
+      child: Text(
+        title,
+        style: theme.textTheme.titleSmall?.copyWith(
+          color: theme.colorScheme.primary,
+        ),
+      ),
+    );
+
+    // A column, not a lazy list, so every row exists at any text size.
+    // The statement reloads itself on every new account row.
+    return SingleChildScrollView(
+      padding: EdgeInsetsDirectional.only(bottom: tokens.spaceXl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.only(
+              start: tokens.spaceMd,
+              end: tokens.spaceMd,
+              top: tokens.spaceMd,
+            ),
+            child: Wrap(
+              spacing: tokens.spaceSm,
+              runSpacing: tokens.spaceXs,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(s.name, style: theme.textTheme.headlineSmall),
+                if (s.archived) Chip(label: Text(l10n.customerArchivedBadge)),
+              ],
+            ),
+          ),
+          ListTile(
+            title: Text(l10n.customerBalanceLabel),
+            subtitle: Text(
+              context.supplierBalance(b),
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: b > 0
+                    ? context.appColors.owes
+                    : b < 0
+                    ? context.appColors.credit
+                    : null,
+              ),
+            ),
+          ),
+          if (s.phone != null)
+            ListTile(
+              title: Text(l10n.customerPhoneLabel),
+              subtitle: Text(ltrIsolate(s.phone!)),
+            ),
+          if (s.address != null)
+            ListTile(
+              title: Text(l10n.customerAddressLabel),
+              subtitle: Text(s.address!),
+            ),
+          if (s.note != null)
+            ListTile(
+              title: Text(l10n.customerNoteLabel),
+              subtitle: Text(s.note!),
+            ),
+          Padding(
+            padding: EdgeInsetsDirectional.symmetric(
+              horizontal: tokens.spaceMd,
+              vertical: tokens.spaceSm,
+            ),
+            child: _Actions(summary: summary),
+          ),
+          const Divider(),
+          section(l10n.statementTitle),
+          const _Statement(),
+          const Divider(),
+          section(l10n.supplierPurchasesTitle),
+          const _Purchases(),
+        ],
+      ),
+    );
+  }
+}
+
+class _Actions extends StatelessWidget {
+  const _Actions({required this.summary});
+
+  final SupplierSummary summary;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final tokens = context.tokens;
+    final cubit = context.read<SupplierDetailsCubit>();
+    final id = summary.supplier.id;
+
+    if (summary.supplier.archived) {
+      return Align(
+        alignment: AlignmentDirectional.centerStart,
+        child: FilledButton.icon(
+          icon: const Icon(Icons.unarchive_outlined),
+          label: Text(l10n.customerRestoreAction),
+          onPressed: () async {
+            final messenger = ScaffoldMessenger.of(context);
+            await cubit.restore();
+            messenger.showSnackBar(
+              SnackBar(content: Text(l10n.supplierRestored)),
+            );
+          },
+        ),
+      );
+    }
+    return Wrap(
+      spacing: tokens.spaceSm,
+      runSpacing: tokens.spaceSm,
+      children: [
+        OutlinedButton.icon(
+          icon: const Icon(Icons.edit_outlined),
+          label: Text(l10n.productEditAction),
+          onPressed: () => context.push(RoutePaths.supplierEdit(id)),
+        ),
+        TextButton.icon(
+          icon: const Icon(Icons.archive_outlined),
+          label: Text(l10n.supplierArchiveAction),
+          onPressed: () async {
+            if (await _confirmArchive(context)) await cubit.archive();
+          },
+        ),
+      ],
+    );
+  }
+
+  Future<bool> _confirmArchive(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final b = summary.balancePiasters;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (dialog) => AlertDialog(
+        content: SingleChildScrollView(
+          child: Text(
+            b == 0
+                ? l10n.supplierArchiveConfirm
+                : l10n.supplierArchiveConfirmBalance(
+                    context.supplierBalance(b),
+                  ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialog).pop(false),
+            child: Text(l10n.cancelAction),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialog).pop(true),
+            child: Text(l10n.supplierArchiveAction),
+          ),
+        ],
+      ),
+    );
+    return ok ?? false;
+  }
+}
+
+class _Statement extends StatelessWidget {
+  const _Statement();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final tokens = context.tokens;
+    return BlocBuilder<SupplierStatementCubit, SupplierStatementState>(
+      builder: (context, state) {
+        if (state.entries.isEmpty) {
+          return Padding(
+            padding: EdgeInsetsDirectional.all(tokens.spaceMd),
+            child: state.loading
+                ? const Center(child: CircularProgressIndicator())
+                : Text(l10n.statementEmpty),
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (final e in state.entries) _EntryRow(entry: e),
+            if (state.hasMore)
+              Padding(
+                padding: EdgeInsetsDirectional.all(tokens.spaceSm),
+                child: OutlinedButton(
+                  onPressed: state.loading
+                      ? null
+                      : context.read<SupplierStatementCubit>().loadMore,
+                  child: Text(l10n.listShowMore),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _EntryRow extends StatelessWidget {
+  const _EntryRow({required this.entry});
+
+  final SupplierEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final e = entry;
+    final method = e.method;
+    final note = e.note;
+    return ListTile(
+      title: Text(context.supplierLedgerTitle(e)),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(context.dateTime(e.at)),
+          if (method != null) Text(context.methodLabel(method)),
+          if (note != null && note.isNotEmpty) Text(note),
+          if (e.reversed)
+            Text(
+              l10n.ledgerCancelled,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.outline,
+              ),
+            ),
+          Text(
+            l10n.ledgerBalanceAfter(
+              context.supplierBalance(e.runningBalancePiasters),
+            ),
+          ),
+        ],
+      ),
+      trailing: Text(
+        context.signedMoney(e.amountPiasters),
+        style: theme.textTheme.titleSmall,
+      ),
+    );
+  }
+}
+
+class _Purchases extends StatelessWidget {
+  const _Purchases();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final tokens = context.tokens;
+    return BlocBuilder<PurchasesListCubit, PurchasesListState>(
+      builder: (context, state) {
+        if (state.items.isEmpty) {
+          return Padding(
+            padding: EdgeInsetsDirectional.all(tokens.spaceMd),
+            child: state.loading
+                ? const Center(child: CircularProgressIndicator())
+                : Text(l10n.purchasesListEmpty),
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (final p in state.items) PurchaseRow(purchase: p),
+            if (state.hasMore)
+              Padding(
+                padding: EdgeInsetsDirectional.all(tokens.spaceSm),
+                child: OutlinedButton(
+                  onPressed: context.read<PurchasesListCubit>().showMore,
+                  child: Text(l10n.listShowMore),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}

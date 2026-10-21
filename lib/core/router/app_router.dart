@@ -22,6 +22,7 @@ import '../../features/products/presentation/screens/product_details_screen.dart
 import '../../features/products/presentation/screens/product_form_screen.dart';
 import '../../features/products/presentation/screens/product_list_screen.dart';
 import '../../features/products/presentation/screens/stock_adjustment_screen.dart';
+import '../../features/purchases/presentation/purchases_cubits.dart';
 import '../../features/purchases/presentation/purchases_screen.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
@@ -34,6 +35,12 @@ import '../../features/settings/presentation/cubits/shop_profile_form_cubit.dart
 import '../../features/settings/presentation/data_safety_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/settings/presentation/shop_profile_edit_screen.dart';
+import '../../features/suppliers/presentation/cubits/supplier_form_cubit.dart';
+import '../../features/suppliers/presentation/screens/archived_suppliers_screen.dart';
+import '../../features/suppliers/presentation/screens/supplier_details_screen.dart';
+import '../../features/suppliers/presentation/screens/supplier_form_screen.dart';
+import '../../features/suppliers/presentation/screens/suppliers_screen.dart';
+import '../../features/suppliers/presentation/suppliers_cubits.dart';
 import '../widgets/app_shell_scaffold.dart';
 import 'route_names.dart';
 import 'stream_listenable.dart';
@@ -53,6 +60,8 @@ GoRouter createAppRouter(
   required ProductsCubits products,
   required CustomersCubits customers,
   required SalesCubits sales,
+  required SuppliersCubits suppliers,
+  required PurchasesCubits purchases,
 }) {
   StatefulShellBranch section(String path, Widget screen) =>
       StatefulShellBranch(
@@ -99,7 +108,12 @@ GoRouter createAppRouter(
         branches: [
           StatefulShellBranch(routes: [_homeRoute(products)]),
           StatefulShellBranch(routes: [_salesRoute(sales)]),
-          StatefulShellBranch(routes: [_partiesRoute(customers, sales)]),
+          StatefulShellBranch(
+            routes: [
+              _partiesRoute(customers, sales),
+              _suppliersRoute(suppliers, purchases),
+            ],
+          ),
           section(RoutePaths.purchases, const PurchasesScreen()),
           section(RoutePaths.reports, const ReportsScreen()),
         ],
@@ -312,6 +326,66 @@ GoRoute _partiesRoute(CustomersCubits customers, SalesCubits sales) => GoRoute(
     ),
   ],
 );
+
+/// The Parties section's second root: suppliers and the pages below them
+/// (004 research R15). A sibling of '/parties', so the switch replaces the
+/// list instead of stacking it.
+GoRoute _suppliersRoute(SuppliersCubits suppliers, PurchasesCubits purchases) =>
+    GoRoute(
+      path: RoutePaths.suppliers,
+      builder: (context, state) => BlocProvider(
+        create: (_) => suppliers.suppliersList(),
+        child: const SuppliersScreen(),
+      ),
+      routes: [
+        // Before ':id', so these never match as ids.
+        GoRoute(
+          path: 'new',
+          builder: (context, state) => BlocProvider(
+            create: (_) => suppliers.supplierForm(
+              mode: SupplierFormMode.create,
+              initialName: state.extra is String ? state.extra! as String : '',
+            ),
+            child: const SupplierFormScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'archived',
+          builder: (context, state) => BlocProvider(
+            create: (_) => suppliers.archivedSuppliers(),
+            child: const ArchivedSuppliersScreen(),
+          ),
+        ),
+        GoRoute(
+          path: ':id',
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (_) => suppliers.supplierDetails(id)),
+                BlocProvider(create: (_) => suppliers.statement(id)..load()),
+                BlocProvider(
+                  create: (_) => purchases.purchasesList(supplierId: id),
+                ),
+              ],
+              child: const SupplierDetailsScreen(),
+            );
+          },
+          routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (context, state) => BlocProvider(
+                create: (_) => suppliers.supplierForm(
+                  mode: SupplierFormMode.edit,
+                  supplierId: state.pathParameters['id'],
+                ),
+                child: const SupplierFormScreen(),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
 
 /// The redirect matrix, separate so it can be tested on its own.
 String? firstRunRedirect(String location, bool onboardingCompleted) {

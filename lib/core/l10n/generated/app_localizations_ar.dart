@@ -1029,4 +1029,238 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorCustomerArchived => 'العميل مؤرشف؛ استعده أولًا.';
+
+  @override
+  String get partiesCustomersTab => 'العملاء';
+
+  @override
+  String get partiesSuppliersTab => 'الموردون';
+
+  @override
+  String get suppliersTitle => 'الموردون';
+
+  @override
+  String get suppliersSearchHint => 'ابحث بالاسم أو رقم الهاتف';
+
+  @override
+  String get suppliersFilterOwed => 'مستحق لهم';
+
+  @override
+  String get suppliersEmpty => 'لا يوجد موردون بعد.';
+
+  @override
+  String get suppliersNoMatch => 'لا يوجد موردون مطابقون.';
+
+  @override
+  String get supplierAddTitle => 'إضافة مورد';
+
+  @override
+  String supplierAddNamed(String name) {
+    return 'إضافة «$name»';
+  }
+
+  @override
+  String get suppliersArchivedTitle => 'الموردون المؤرشفون';
+
+  @override
+  String get suppliersArchivedEmpty => 'لا يوجد موردون مؤرشفون.';
+
+  @override
+  String get supplierEditTitle => 'تعديل المورد';
+
+  @override
+  String get supplierNameLabel => 'اسم المورد';
+
+  @override
+  String get supplierOpeningHint =>
+      'إذا كان للمورد حساب قبل استخدام التطبيق. لا يمكن تغييره بعد الحفظ.';
+
+  @override
+  String get supplierOpeningOwed => 'المحل مدين للمورد';
+
+  @override
+  String get supplierOpeningInShopFavour => 'المورد مدين للمحل';
+
+  @override
+  String get supplierNameExistsNotice => 'تم الحفظ. يوجد مورد آخر بالاسم نفسه.';
+
+  @override
+  String get supplierDetailsTitle => 'المورد';
+
+  @override
+  String supplierBalanceOwed(String amount) {
+    return 'مستحق له $amount';
+  }
+
+  @override
+  String supplierBalanceInShopFavour(String amount) {
+    return 'عليه للمحل $amount';
+  }
+
+  @override
+  String get supplierPayAction => 'دفع للمورد';
+
+  @override
+  String get supplierArchiveAction => 'أرشفة المورد';
+
+  @override
+  String get supplierArchiveConfirm =>
+      'أرشفة المورد؟ تبقى مشترياته وكشف حسابه ويمكن استعادته.';
+
+  @override
+  String supplierArchiveConfirmBalance(String balance) {
+    return 'أرشفة المورد؟ رصيده $balance يبقى كما هو، ومشترياته وكشف حسابه تبقى ويمكن استعادته.';
+  }
+
+  @override
+  String get supplierRestored => 'تمت استعادة المورد.';
+
+  @override
+  String get supplierNotFound => 'هذا المورد غير موجود.';
+
+  @override
+  String get supplierPurchasesTitle => 'المشتريات';
+
+  @override
+  String get errorSupplierNameRequired => 'أدخل اسم المورد.';
+
+  @override
+  String get errorSupplierArchived => 'المورد مؤرشف؛ استعده أولًا.';
+
+  @override
+  String ledgerPurchase(String number) {
+    return 'فاتورة شراء $number';
+  }
+
+  @override
+  String ledgerPurchaseVoid(String number) {
+    return 'فاتورة شراء ملغاة $number';
+  }
+
+  @override
+  String get supplierPaymentNotCancellable =>
+      'لا يمكن إلغاء دفعة تمت مع فاتورة شراء وحدها. ألغِ الفاتورة بدلًا من ذلك.';
+
+  @override
+  String get supplierPaymentTitle => 'دفع للمورد';
+
+  @override
+  String get supplierOverpayTitle => 'أكثر من المستحق';
+
+  @override
+  String supplierOverpayBody(String amount) {
+    return 'سيصبح المورد مدينًا للمحل بمبلغ $amount.';
+  }
+
+  @override
+  String get purchasesNewAction => 'فاتورة شراء جديدة';
+
+  @override
+  String get purchasesListEmpty => 'لا توجد فواتير شراء بعد.';
+
+  @override
+  String get purchasesNoMatch => 'لا توجد فواتير شراء مطابقة.';
+
+  @override
+  String get purchasesSearchHint =>
+      'ابحث برقم الفاتورة أو المورد أو رقم فاتورة المورد';
+
+  @override
+  String get purchaseNoSupplier => 'بدون مورد';
+
+  @override
+  String get purchaseNewTitle => 'فاتورة شراء جديدة';
+
+  @override
+  String get purchaseCostLabel => 'تكلفة الوحدة';
+
+  @override
+  String get purchaseCostNotice => 'التكلفة تساوي سعر البيع أو تزيد عليه.';
+
+  @override
+  String purchaseRemoveLine(String name) {
+    return 'إزالة $name من الفاتورة';
+  }
+
+  @override
+  String get purchaseSupplierLabel => 'المورد';
+
+  @override
+  String get purchaseSupplierPick => 'اختر موردًا';
+
+  @override
+  String get purchaseSupplierRefLabel => 'رقم فاتورة المورد';
+
+  @override
+  String get purchaseDateLabel => 'تاريخ الفاتورة';
+
+  @override
+  String get purchaseSaveAction => 'حفظ فاتورة الشراء';
+
+  @override
+  String purchaseSaved(String number) {
+    return 'تم حفظ فاتورة الشراء $number.';
+  }
+
+  @override
+  String get purchaseDiscardTitle => 'تجاهل فاتورة الشراء؟';
+
+  @override
+  String get purchaseKeepAction => 'متابعة الفاتورة';
+
+  @override
+  String purchaseAddProductNamed(String name) {
+    return 'إضافة «$name» كمنتج جديد';
+  }
+
+  @override
+  String get purchaseQuickAddTitle => 'منتج جديد';
+
+  @override
+  String get errorCreditNeedsSupplier =>
+      'الشراء الآجل أو الدفع الجزئي يحتاج إلى مورد.';
+
+  @override
+  String get errorPurchaseDateInFuture =>
+      'لا يمكن أن يكون تاريخ الفاتورة بعد اليوم.';
+
+  @override
+  String errorPurchaseProductUnavailable(String name) {
+    return '«$name» لم يعد متاحًا؛ أزله من الفاتورة.';
+  }
+
+  @override
+  String get errorSupplierUnavailable => 'المورد لم يعد متاحًا؛ اختر غيره.';
+
+  @override
+  String purchaseTitle(String number) {
+    return 'فاتورة شراء $number';
+  }
+
+  @override
+  String get purchaseVoidAction => 'إلغاء الفاتورة';
+
+  @override
+  String get purchaseVoidTitle => 'إلغاء فاتورة الشراء؟';
+
+  @override
+  String get purchaseVoidBody =>
+      'يعود المخزون ومتوسط التكلفة ورصيد المورد إلى ما كانت عليه قبل الشراء. لا يمكن التراجع عن ذلك.';
+
+  @override
+  String get purchaseVoided => 'تم إلغاء فاتورة الشراء.';
+
+  @override
+  String get purchaseNotFound => 'فاتورة الشراء هذه غير موجودة.';
+
+  @override
+  String get purchaseAlreadyVoided => 'فاتورة الشراء هذه ملغاة بالفعل.';
+
+  @override
+  String voidShortageLine(String name, String stock) {
+    return '$name: $stock بعد الإلغاء';
+  }
+
+  @override
+  String get voidShortageConfirm => 'إلغاء على أي حال';
 }

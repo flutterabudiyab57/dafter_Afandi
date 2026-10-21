@@ -116,19 +116,19 @@ anything is ambiguous.
 **Independent test**: add a supplier with an opening balance of 1,000.00 owed by the shop, buy
 400.00 on credit (seeded), and see 1,400.00 in the list and both rows in the statement.
 
-- [ ] T025 [US4] ARB keys (ar + en) for all of 004 in `lib/core/l10n/arb/app_ar.arb` and
+- [X] T025 [US4] ARB keys (ar + en) for all of 004 in `lib/core/l10n/arb/app_ar.arb` and
   `app_en.arb`; run `flutter gen-l10n`.
-- [ ] T026 [US4] Routes in `lib/core/router/route_names.dart` and `app_router.dart` (research R15)
+- [X] T026 [US4] Routes in `lib/core/router/route_names.dart` and `app_router.dart` (research R15)
   and wiring through App, bootstrap and `test/helpers/pump_app.dart`.
-- [ ] T027 [US4] Customers / Suppliers switch on `CustomersScreen` and `SuppliersScreen`
+- [X] T027 [US4] Customers / Suppliers switch on `CustomersScreen` and `SuppliersScreen`
   (`lib/features/customers/presentation/screens/customers_screen.dart`,
   `lib/features/suppliers/presentation/screens/suppliers_screen.dart`).
-- [ ] T028 [US4] SuppliersScreen, SupplierFormScreen, SupplierDetailsScreen (balance, actions,
+- [X] T028 [US4] SuppliersScreen, SupplierFormScreen, SupplierDetailsScreen (balance, actions,
   statement section, purchases list), ArchivedSuppliersScreen in
   `lib/features/suppliers/presentation/screens/`.
-- [ ] T029 [P] [US4] Widget tests US4 scenarios 1–7 in ar/en at 100/200% in
+- [X] T029 [P] [US4] Widget tests US4 scenarios 1–7 in ar/en at 100/200% in
   `test/features/suppliers/presentation/suppliers_screens_test.dart`.
-- [ ] T030 [US4] Gate. Commit `feat(004): phase 4 suppliers`.
+- [X] T030 [US4] Gate. Commit `feat(004): phase 4 suppliers`.
 
 ## Phase 5: New purchase — US1, US2 (P1)
 

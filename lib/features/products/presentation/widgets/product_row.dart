@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/router/route_names.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../domain/product.dart';
 import 'stock_marks.dart';
@@ -21,8 +22,10 @@ class ProductRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = summary.product;
     final tokens = context.tokens;
-    final stockColor = summary.isLow
+    final stockColor = summary.isBelowZero
         ? Theme.of(context).colorScheme.error
+        : summary.isLow
+        ? context.appColors.owes
         : null;
     return ListTile(
       title: Text(p.name),

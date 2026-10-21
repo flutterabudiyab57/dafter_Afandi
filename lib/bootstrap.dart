@@ -15,12 +15,14 @@ import 'core/widgets/startup_error_app.dart';
 import 'core/widgets/update_required_app.dart';
 import 'features/customers/presentation/customers_cubits.dart';
 import 'features/products/presentation/products_cubits.dart';
+import 'features/purchases/presentation/purchases_cubits.dart';
 import 'features/sales/presentation/sales_cubits.dart';
 import 'features/settings/domain/app_settings.dart';
 import 'features/settings/domain/app_version.dart';
 import 'features/settings/domain/settings_repository.dart';
 import 'features/settings/presentation/cubits/app_preferences_cubit.dart';
 import 'features/settings/presentation/cubits/shop_profile_form_cubit.dart';
+import 'features/suppliers/presentation/suppliers_cubits.dart';
 
 /// Starts the app (contracts/startup-guard.md). The schema guard runs before
 /// any database object or DI registration exists, so a newer or foreign file
@@ -89,6 +91,8 @@ Future<void> bootstrap({
       products: sl<ProductsCubits>(),
       customers: sl<CustomersCubits>(),
       sales: sl<SalesCubits>(),
+      suppliers: sl<SuppliersCubits>(),
+      purchases: sl<PurchasesCubits>(),
     ),
   );
 }

@@ -16,5 +16,8 @@ ThemeData _theme(ColorScheme scheme, double scale) => ThemeData(
     bodyColor: scheme.onSurface,
     displayColor: scheme.onSurface,
   ),
-  extensions: [AppTokens.scaled(scale), const AppColors()],
+  extensions: [
+    AppTokens.scaled(scale),
+    scheme.brightness == Brightness.dark ? AppColors.dark : AppColors.light,
+  ],
 );

@@ -9,5 +9,11 @@ const String saleNumberPrefix = 'S-';
 /// Customer receipts.
 const String receiptNumberPrefix = 'RC-';
 
+/// Purchase invoices (004 research R4).
+const String purchaseNumberPrefix = 'P-';
+
+/// Standalone payments to suppliers.
+const String supplierPaymentNumberPrefix = 'PY-';
+
 String formatDocNumber(String prefix, int number) =>
     '$prefix${number.toString().padLeft(6, '0')}';

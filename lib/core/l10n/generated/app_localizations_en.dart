@@ -1032,4 +1032,241 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorCustomerArchived =>
       'The customer is archived; restore them first.';
+
+  @override
+  String get partiesCustomersTab => 'Customers';
+
+  @override
+  String get partiesSuppliersTab => 'Suppliers';
+
+  @override
+  String get suppliersTitle => 'Suppliers';
+
+  @override
+  String get suppliersSearchHint => 'Search by name or phone';
+
+  @override
+  String get suppliersFilterOwed => 'Shop owes them';
+
+  @override
+  String get suppliersEmpty => 'No suppliers yet.';
+
+  @override
+  String get suppliersNoMatch => 'No matching suppliers.';
+
+  @override
+  String get supplierAddTitle => 'Add supplier';
+
+  @override
+  String supplierAddNamed(String name) {
+    return 'Add “$name”';
+  }
+
+  @override
+  String get suppliersArchivedTitle => 'Archived suppliers';
+
+  @override
+  String get suppliersArchivedEmpty => 'No archived suppliers.';
+
+  @override
+  String get supplierEditTitle => 'Edit supplier';
+
+  @override
+  String get supplierNameLabel => 'Supplier name';
+
+  @override
+  String get supplierOpeningHint =>
+      'If the supplier had an account before you used the app. It can’t be changed after saving.';
+
+  @override
+  String get supplierOpeningOwed => 'Shop owes the supplier';
+
+  @override
+  String get supplierOpeningInShopFavour => 'Supplier owes the shop';
+
+  @override
+  String get supplierNameExistsNotice =>
+      'Saved. Another supplier has the same name.';
+
+  @override
+  String get supplierDetailsTitle => 'Supplier';
+
+  @override
+  String supplierBalanceOwed(String amount) {
+    return 'Shop owes $amount';
+  }
+
+  @override
+  String supplierBalanceInShopFavour(String amount) {
+    return 'Owes the shop $amount';
+  }
+
+  @override
+  String get supplierPayAction => 'Pay supplier';
+
+  @override
+  String get supplierArchiveAction => 'Archive supplier';
+
+  @override
+  String get supplierArchiveConfirm =>
+      'Archive this supplier? Their purchases and statement stay and you can restore them.';
+
+  @override
+  String supplierArchiveConfirmBalance(String balance) {
+    return 'Archive this supplier? Their balance ($balance) stays, as do their purchases and statement; you can restore them.';
+  }
+
+  @override
+  String get supplierRestored => 'Supplier restored.';
+
+  @override
+  String get supplierNotFound => 'This supplier doesn’t exist.';
+
+  @override
+  String get supplierPurchasesTitle => 'Purchases';
+
+  @override
+  String get errorSupplierNameRequired => 'Enter the supplier name.';
+
+  @override
+  String get errorSupplierArchived =>
+      'The supplier is archived; restore them first.';
+
+  @override
+  String ledgerPurchase(String number) {
+    return 'Purchase $number';
+  }
+
+  @override
+  String ledgerPurchaseVoid(String number) {
+    return 'Voided purchase $number';
+  }
+
+  @override
+  String get supplierPaymentNotCancellable =>
+      'A payment made with a purchase can’t be cancelled on its own. Void the purchase instead.';
+
+  @override
+  String get supplierPaymentTitle => 'Pay supplier';
+
+  @override
+  String get supplierOverpayTitle => 'More than the shop owes';
+
+  @override
+  String supplierOverpayBody(String amount) {
+    return 'The supplier will then owe the shop $amount.';
+  }
+
+  @override
+  String get purchasesNewAction => 'New purchase';
+
+  @override
+  String get purchasesListEmpty => 'No purchases yet.';
+
+  @override
+  String get purchasesNoMatch => 'No matching purchases.';
+
+  @override
+  String get purchasesSearchHint =>
+      'Search by number, supplier or their invoice number';
+
+  @override
+  String get purchaseNoSupplier => 'No supplier';
+
+  @override
+  String get purchaseNewTitle => 'New purchase';
+
+  @override
+  String get purchaseCostLabel => 'Unit cost';
+
+  @override
+  String get purchaseCostNotice => 'The cost is at or above the selling price.';
+
+  @override
+  String purchaseRemoveLine(String name) {
+    return 'Remove $name from the purchase';
+  }
+
+  @override
+  String get purchaseSupplierLabel => 'Supplier';
+
+  @override
+  String get purchaseSupplierPick => 'Pick a supplier';
+
+  @override
+  String get purchaseSupplierRefLabel => 'Supplier’s invoice number';
+
+  @override
+  String get purchaseDateLabel => 'Invoice date';
+
+  @override
+  String get purchaseSaveAction => 'Save purchase';
+
+  @override
+  String purchaseSaved(String number) {
+    return 'Purchase $number saved.';
+  }
+
+  @override
+  String get purchaseDiscardTitle => 'Discard this purchase?';
+
+  @override
+  String get purchaseKeepAction => 'Keep editing';
+
+  @override
+  String purchaseAddProductNamed(String name) {
+    return 'Add “$name” as a new product';
+  }
+
+  @override
+  String get purchaseQuickAddTitle => 'New product';
+
+  @override
+  String get errorCreditNeedsSupplier =>
+      'Credit or part payment needs a supplier.';
+
+  @override
+  String get errorPurchaseDateInFuture =>
+      'The invoice date can’t be after today.';
+
+  @override
+  String errorPurchaseProductUnavailable(String name) {
+    return '“$name” is no longer available; remove it from the purchase.';
+  }
+
+  @override
+  String get errorSupplierUnavailable =>
+      'The supplier is no longer available; pick another.';
+
+  @override
+  String purchaseTitle(String number) {
+    return 'Purchase invoice $number';
+  }
+
+  @override
+  String get purchaseVoidAction => 'Void purchase';
+
+  @override
+  String get purchaseVoidTitle => 'Void this purchase?';
+
+  @override
+  String get purchaseVoidBody =>
+      'Stock, average cost and the supplier’s balance go back to before the purchase. This cannot be undone.';
+
+  @override
+  String get purchaseVoided => 'Purchase voided.';
+
+  @override
+  String get purchaseNotFound => 'This purchase doesn’t exist.';
+
+  @override
+  String get purchaseAlreadyVoided => 'This purchase is already voided.';
+
+  @override
+  String voidShortageLine(String name, String stock) {
+    return '$name: $stock after the void';
+  }
+
+  @override
+  String get voidShortageConfirm => 'Void anyway';
 }
