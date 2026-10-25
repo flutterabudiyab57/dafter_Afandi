@@ -380,21 +380,21 @@ and one on Android.
 
 ## Phase 7: Polish (US5, cross-cutting)
 
-- [ ] T062 `test/helpers/screens.dart` (`visitEveryScreen`): add the empty, no-results, load-failed
+- [X] T062 `test/helpers/screens.dart` (`visitEveryScreen`): add the empty, no-results, load-failed
   and banner states using the failing and seeded fakes, plus the starting app. Update the counts in
   `test/app/semantics_labels_test.dart`, `layout_stress_test.dart` and `text_scale_test.dart`.
-- [ ] T063 Run the every-screen walks in both themes (add a dark pass if the walks only run light).
+- [X] T063 Run the every-screen walks in both themes (add a dark pass if the walks only run light).
   Fix any overflow, missing label or unreadable pair (US5-1, FR-022, SC-001).
-- [ ] T064 [P] Sweep the code:
+- [X] T064 [P] Sweep the code:
   - `grep -rn "SnackBar(\|AlertDialog(" lib/features` returns nothing;
   - no list has a bare spinner except pickers;
   - every save button is a `SaveButton`;
   - every status mark is a `StatusBadge` (SC-003).
-- [ ] T065 [P] Run `test/architecture/import_rules_test.dart` and `test/l10n/arb_test.dart`, and
+- [X] T065 [P] Run `test/architecture/import_rules_test.dart` and `test/l10n/arb_test.dart`, and
   confirm no new `Color(`/`TextStyle(`/left/right outside `core/theme`.
-- [ ] T066 Build the debug APK with `flutter build apk --debug`. If a phone is connected, run the
+- [X] T066 Build the debug APK with `flutter build apk --debug`. If a phone is connected, run the
   quickstart phone steps 1–9. If not, list them for the owner.
-- [ ] T067 Final gate: analyze clean, full suite green, APK built. Commit `feat(005): phase 7
+- [X] T067 Final gate: analyze clean, full suite green, APK built. Commit `feat(005): phase 7
   polish`. Never push.
 
 ## Dependencies

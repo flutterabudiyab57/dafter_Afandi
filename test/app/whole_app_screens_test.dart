@@ -53,11 +53,7 @@ void main() {
         'title and text, no overflow (US4-1, US4-2)', (tester) async {
       await phone(tester, textScale: 2, brightness: brightness);
       for (final (app, kind, title) in [
-        (
-          const StartupErrorApp(),
-          AppIllustration.errorDatabase,
-          ar.appName,
-        ),
+        (const StartupErrorApp(), AppIllustration.errorDatabase, ar.appName),
         (
           const UpdateRequiredApp(kind: UpdateRequiredKind.tooNew),
           AppIllustration.updateRequired,

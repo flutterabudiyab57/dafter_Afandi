@@ -335,6 +335,44 @@ Future<void> visitEveryScreen(
   await check('opening dialog');
   await tester.tap(find.text(l10n.backAction));
   await tester.pumpAndSettle();
+
+  // 005 states: no results, a failed load, a failed save and the
+  // unsaved-changes question.
+  await goTo(tester, RoutePaths.products);
+  await tester.enterText(
+    find.widgetWithText(TextField, l10n.productsSearchHint),
+    'zzz',
+  );
+  await tester.pump(const Duration(milliseconds: 250));
+  await tester.pumpAndSettle();
+  expect(find.text(l10n.searchEmptyTitle), findsOneWidget);
+  await check('no results');
+  sales.failNextWatch = StateError('db');
+  await goTo(tester, RoutePaths.parties);
+  expect(find.text(l10n.loadFailedTitle), findsOneWidget);
+  await check('load failed');
+  await goTo(tester, RoutePaths.productNew);
+  for (final (label, value) in [
+    (l10n.productNameLabel, 'بن'),
+    (l10n.productPriceLabel, '5'),
+  ]) {
+    final field = find.widgetWithText(TextField, label);
+    await tester.ensureVisible(field);
+    await tester.enterText(field, value);
+  }
+  // Let the focused field finish scrolling into view: a scrolling page
+  // ignores taps.
+  await tester.pumpAndSettle();
+  store.failNextWrite = StateError('disk full');
+  await tap(find.widgetWithText(FilledButton, l10n.saveAction));
+  expect(find.text(l10n.errorSaveFailed), findsOneWidget);
+  await check('save failed banner');
+  await tapBack(tester);
+  expect(find.text(l10n.discardChangesTitle), findsOneWidget);
+  await check('unsaved changes dialog');
+  await tester.tap(find.text(l10n.discardAction));
+  await tester.pumpAndSettle();
+
   for (final app in kBlockingApps) {
     await tester.pumpWidget(app);
     // The starting app's progress bar never settles.

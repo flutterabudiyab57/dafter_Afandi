@@ -361,12 +361,18 @@ class _Invoices extends StatelessWidget {
     final tokens = context.tokens;
     return BlocBuilder<SalesListCubit, SalesListState>(
       builder: (context, state) {
+        final loadState = listLoadState(
+          context,
+          loadFailed: state.loadFailed,
+          loading: state.loading,
+          empty: state.items.isEmpty,
+          onRetry: context.read<SalesListCubit>().retry,
+        );
+        if (loadState != null) return loadState;
         if (state.items.isEmpty) {
           return Padding(
             padding: EdgeInsetsDirectional.all(tokens.spaceMd),
-            child: state.loading
-                ? const Center(child: CircularProgressIndicator())
-                : Text(l10n.salesListEmpty),
+            child: Text(l10n.salesListEmpty),
           );
         }
         return Column(

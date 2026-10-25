@@ -363,12 +363,18 @@ class _Purchases extends StatelessWidget {
     final tokens = context.tokens;
     return BlocBuilder<PurchasesListCubit, PurchasesListState>(
       builder: (context, state) {
+        final loadState = listLoadState(
+          context,
+          loadFailed: state.loadFailed,
+          loading: state.loading,
+          empty: state.items.isEmpty,
+          onRetry: context.read<PurchasesListCubit>().retry,
+        );
+        if (loadState != null) return loadState;
         if (state.items.isEmpty) {
           return Padding(
             padding: EdgeInsetsDirectional.all(tokens.spaceMd),
-            child: state.loading
-                ? const Center(child: CircularProgressIndicator())
-                : Text(l10n.purchasesListEmpty),
+            child: Text(l10n.purchasesListEmpty),
           );
         }
         return Column(
