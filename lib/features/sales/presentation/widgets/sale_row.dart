@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/status_badge.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/sale.dart';
@@ -37,13 +37,9 @@ class SaleRow extends StatelessWidget {
         children: [
           Text(context.dateTime(sale.at)),
           if (mark != null)
-            Text(
-              mark,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: sale.voided
-                    ? context.appColors.voided
-                    : context.appColors.owes,
-              ),
+            StatusBadge(
+              label: mark,
+              tone: sale.voided ? BadgeTone.voided : BadgeTone.owes,
             ),
         ],
       ),

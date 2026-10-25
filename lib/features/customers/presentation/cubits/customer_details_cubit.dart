@@ -52,6 +52,7 @@ final class StatementState extends Equatable {
     this.entries = const [],
     this.hasMore = false,
     this.loading = true,
+    this.loadFailed = false,
   });
 
   /// Newest first.
@@ -59,8 +60,11 @@ final class StatementState extends Equatable {
   final bool hasMore;
   final bool loading;
 
+  /// The first page could not be read; `load` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [entries, hasMore, loading];
+  List<Object?> get props => [entries, hasMore, loading, loadFailed];
 }
 
 /// A customer's statement in pages (FR-015, research R9), and cancelling a
@@ -88,7 +92,22 @@ class StatementCubit extends Cubit<StatementState> {
   Future<void> load() async {
     final generation = ++_generation;
     emit(StatementState(entries: state.entries, hasMore: state.hasMore));
-    final page = await _repository.statement(customerId, limit: pageSize);
+    final List<LedgerEntry> page;
+    try {
+      page = await _repository.statement(customerId, limit: pageSize);
+    } on Object catch (error, stack) {
+      if (isClosed || generation != _generation) return;
+      emit(
+        StatementState(
+          entries: state.entries,
+          hasMore: state.hasMore,
+          loading: false,
+          loadFailed: true,
+        ),
+      );
+      addError(error, stack);
+      return;
+    }
     if (isClosed || generation != _generation) return;
     emit(
       StatementState(
@@ -103,11 +122,26 @@ class StatementCubit extends Cubit<StatementState> {
     if (state.loading || !state.hasMore || state.entries.isEmpty) return;
     final generation = _generation;
     emit(StatementState(entries: state.entries, hasMore: true));
-    final page = await _repository.statement(
-      customerId,
-      before: state.entries.last.cursor,
-      limit: pageSize,
-    );
+    final List<LedgerEntry> page;
+    try {
+      page = await _repository.statement(
+        customerId,
+        before: state.entries.last.cursor,
+        limit: pageSize,
+      );
+    } on Object catch (error, stack) {
+      if (isClosed || generation != _generation) return;
+      emit(
+        StatementState(
+          entries: state.entries,
+          hasMore: state.hasMore,
+          loading: false,
+          loadFailed: false,
+        ),
+      );
+      addError(error, stack);
+      return;
+    }
     if (isClosed || generation != _generation) return;
     emit(
       StatementState(

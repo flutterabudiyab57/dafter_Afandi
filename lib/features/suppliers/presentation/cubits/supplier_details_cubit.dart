@@ -52,6 +52,7 @@ final class SupplierStatementState extends Equatable {
     this.entries = const [],
     this.hasMore = false,
     this.loading = true,
+    this.loadFailed = false,
   });
 
   /// Newest first.
@@ -59,8 +60,11 @@ final class SupplierStatementState extends Equatable {
   final bool hasMore;
   final bool loading;
 
+  /// The first page could not be read; `load` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [entries, hasMore, loading];
+  List<Object?> get props => [entries, hasMore, loading, loadFailed];
 }
 
 /// A supplier's statement in pages (FR-016, research R10), and cancelling a
@@ -93,7 +97,22 @@ class SupplierStatementCubit extends Cubit<SupplierStatementState> {
     emit(
       SupplierStatementState(entries: state.entries, hasMore: state.hasMore),
     );
-    final page = await _repository.statement(supplierId, limit: pageSize);
+    final List<SupplierEntry> page;
+    try {
+      page = await _repository.statement(supplierId, limit: pageSize);
+    } on Object catch (error, stack) {
+      if (isClosed || generation != _generation) return;
+      emit(
+        SupplierStatementState(
+          entries: state.entries,
+          hasMore: state.hasMore,
+          loading: false,
+          loadFailed: true,
+        ),
+      );
+      addError(error, stack);
+      return;
+    }
     if (isClosed || generation != _generation) return;
     emit(
       SupplierStatementState(
@@ -108,11 +127,26 @@ class SupplierStatementCubit extends Cubit<SupplierStatementState> {
     if (state.loading || !state.hasMore || state.entries.isEmpty) return;
     final generation = _generation;
     emit(SupplierStatementState(entries: state.entries, hasMore: true));
-    final page = await _repository.statement(
-      supplierId,
-      before: state.entries.last.cursor,
-      limit: pageSize,
-    );
+    final List<SupplierEntry> page;
+    try {
+      page = await _repository.statement(
+        supplierId,
+        before: state.entries.last.cursor,
+        limit: pageSize,
+      );
+    } on Object catch (error, stack) {
+      if (isClosed || generation != _generation) return;
+      emit(
+        SupplierStatementState(
+          entries: state.entries,
+          hasMore: state.hasMore,
+          loading: false,
+          loadFailed: false,
+        ),
+      );
+      addError(error, stack);
+      return;
+    }
     if (isClosed || generation != _generation) return;
     emit(
       SupplierStatementState(

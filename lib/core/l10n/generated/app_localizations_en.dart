@@ -1327,4 +1327,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openingDataLabel => 'Opening your data…';
+
+  @override
+  String get productArchivedMessage => 'Product archived.';
+
+  @override
+  String get customerArchivedMessage => 'Customer archived.';
+
+  @override
+  String get supplierArchivedMessage => 'Supplier archived.';
+
+  @override
+  String get loadFailedTitle => 'Couldn’t show the data';
+
+  @override
+  String get loadFailedBody => 'Nothing in your data changed. Try again.';
 }

@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/quantity.dart';
+import '../../../../core/widgets/list_load_state.dart';
 import '../../domain/stock_entry.dart';
 import '../cubits/product_details_cubit.dart';
 import '../cubits/stock_history_cubit.dart';
@@ -27,12 +28,18 @@ class StockHistorySection extends StatelessWidget {
       listener: (context, _) => context.read<StockHistoryCubit>().load(),
       child: BlocBuilder<StockHistoryCubit, StockHistoryState>(
         builder: (context, state) {
+          final loadState = listLoadState(
+            context,
+            loadFailed: state.loadFailed,
+            loading: state.loading,
+            empty: state.entries.isEmpty,
+            onRetry: context.read<StockHistoryCubit>().load,
+          );
+          if (loadState != null) return loadState;
           if (state.entries.isEmpty) {
             return Padding(
               padding: EdgeInsetsDirectional.all(tokens.spaceMd),
-              child: state.loading
-                  ? const Center(child: CircularProgressIndicator())
-                  : Text(l10n.historyEmpty),
+              child: Text(l10n.historyEmpty),
             );
           }
           return Column(

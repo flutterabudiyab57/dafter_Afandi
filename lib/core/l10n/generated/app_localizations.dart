@@ -2389,6 +2389,36 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'جارٍ فتح بياناتك…'**
   String get openingDataLabel;
+
+  /// Bottom message after archiving a product; offers Undo.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُرشف المنتج.'**
+  String get productArchivedMessage;
+
+  /// Bottom message after archiving a customer; offers Undo.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُرشف العميل.'**
+  String get customerArchivedMessage;
+
+  /// Bottom message after archiving a supplier; offers Undo.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُرشف المورد.'**
+  String get supplierArchivedMessage;
+
+  /// Title when a list could not load.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر عرض البيانات'**
+  String get loadFailedTitle;
+
+  /// Body when a list could not load.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يتغيّر شيء في بياناتك. حاول مرة أخرى.'**
+  String get loadFailedBody;
 }
 
 class _AppLocalizationsDelegate

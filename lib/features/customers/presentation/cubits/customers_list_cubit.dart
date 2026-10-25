@@ -14,6 +14,7 @@ final class CustomersListState extends Equatable {
     this.query = const CustomerQuery(),
     this.items = const [],
     this.loading = true,
+    this.loadFailed = false,
   });
 
   final CustomerQuery query;
@@ -22,18 +23,23 @@ final class CustomersListState extends Equatable {
   /// True until the first result for the current query arrives.
   final bool loading;
 
+  /// The stream failed; [retry] tries again (research R7).
+  final bool loadFailed;
+
   CustomersListState copyWith({
     CustomerQuery? query,
     List<CustomerSummary>? items,
     bool? loading,
+    bool? loadFailed,
   }) => CustomersListState(
     query: query ?? this.query,
     items: items ?? this.items,
     loading: loading ?? this.loading,
+    loadFailed: loadFailed ?? this.loadFailed,
   );
 
   @override
-  List<Object?> get props => [query, items, loading];
+  List<Object?> get props => [query, items, loading, loadFailed];
 }
 
 /// The customer list and the sale's customer picker (FR-014). Typing waits
@@ -55,6 +61,14 @@ class CustomersListCubit extends Cubit<CustomersListState> {
     emit(state.copyWith(query: state.query.copyWith(text: text)));
     _timer?.cancel();
     _timer = Timer(debounce, _subscribe);
+  }
+
+  /// Drops the search text and the filter.
+  void clearSearch() {
+    emit(
+      state.copyWith(query: state.query.copyWith(text: '', owesOnly: false)),
+    );
+    _subscribe();
   }
 
   void toggleOwes() {
@@ -85,13 +99,21 @@ class CustomersListCubit extends Cubit<CustomersListState> {
   void _subscribe() {
     _timer?.cancel();
     unawaited(_sub?.cancel());
-    emit(state.copyWith(loading: true));
+    emit(state.copyWith(loading: true, loadFailed: false));
     _sub = _repository
         .watchActive(state.query)
         .listen(
           (items) => emit(state.copyWith(items: items, loading: false)),
-          onError: addError,
+          onError: _failed,
         );
+  }
+
+  /// Subscribes again after a failed load.
+  void retry() => _subscribe();
+
+  void _failed(Object error, StackTrace stack) {
+    emit(state.copyWith(loading: false, loadFailed: true));
+    addError(error, stack);
   }
 
   @override
@@ -103,33 +125,58 @@ class CustomersListCubit extends Cubit<CustomersListState> {
 }
 
 final class ArchivedCustomersState extends Equatable {
-  const ArchivedCustomersState({this.items = const [], this.loaded = false});
+  const ArchivedCustomersState({
+    this.items = const [],
+    this.loaded = false,
+    this.loadFailed = false,
+  });
 
   final List<CustomerSummary> items;
   final bool loaded;
 
+  /// The stream failed; the cubit's `retry` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [items, loaded];
+  List<Object?> get props => [items, loaded, loadFailed];
 }
 
 /// Archived customers, each with Restore (FR-017).
 class ArchivedCustomersCubit extends Cubit<ArchivedCustomersState> {
   ArchivedCustomersCubit(this._repository)
     : super(const ArchivedCustomersState()) {
-    _sub = _repository.watchArchived().listen(
-      (items) => emit(ArchivedCustomersState(items: items, loaded: true)),
-      onError: addError,
-    );
+    _subscribe();
   }
 
   final CustomerRepository _repository;
-  late final StreamSubscription<List<CustomerSummary>> _sub;
+  StreamSubscription<List<CustomerSummary>>? _sub;
 
   Future<void> restore(String id) => _repository.restore(id);
 
+  /// Subscribes again after a failed load.
+  void retry() => _subscribe();
+
+  void _subscribe() {
+    unawaited(_sub?.cancel());
+    if (state.loadFailed) emit(ArchivedCustomersState(items: state.items));
+    _sub = _repository.watchArchived().listen(
+      (items) => emit(ArchivedCustomersState(items: items, loaded: true)),
+      onError: (Object error, StackTrace stack) {
+        emit(
+          ArchivedCustomersState(
+            items: state.items,
+            loaded: true,
+            loadFailed: true,
+          ),
+        );
+        addError(error, stack);
+      },
+    );
+  }
+
   @override
   Future<void> close() async {
-    await _sub.cancel();
+    await _sub?.cancel();
     return super.close();
   }
 }

@@ -35,18 +35,13 @@ class ProductRow extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(context.money(p.salePricePiasters)),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              StockMarks(summary: summary),
-              if (summary.isLow) SizedBox(width: tokens.spaceXs),
-              Text(
-                context.quantity(summary.stockMilli, p.unit),
-                style: TextTheme.of(context).bodyMedium
-                    ?.copyWith(color: stockColor),
-              ),
-            ],
+          Text(
+            context.quantity(summary.stockMilli, p.unit),
+            style: TextTheme.of(context).bodyMedium
+                ?.copyWith(color: stockColor),
           ),
+          if (summary.isLow || summary.isBelowZero)
+            StockMarks(summary: summary),
         ],
       ),
       trailing: onTap == null ? const Icon(Icons.chevron_right) : null,

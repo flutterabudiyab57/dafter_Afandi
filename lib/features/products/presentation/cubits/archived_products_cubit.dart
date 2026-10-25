@@ -10,27 +10,31 @@ import '../../domain/product_errors.dart';
 import '../../domain/product_repository.dart';
 
 final class ArchivedProductsState extends Equatable {
-  const ArchivedProductsState({this.items = const [], this.loaded = false});
+  const ArchivedProductsState({
+    this.items = const [],
+    this.loaded = false,
+    this.loadFailed = false,
+  });
 
   final List<ProductSummary> items;
   final bool loaded;
 
+  /// The stream failed; the cubit's `retry` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [items, loaded];
+  List<Object?> get props => [items, loaded, loadFailed];
 }
 
 /// Archived products, each with Restore (FR-012).
 class ArchivedProductsCubit extends Cubit<ArchivedProductsState> {
   ArchivedProductsCubit(this._repository)
     : super(const ArchivedProductsState()) {
-    _subscription = _repository.watchArchived().listen(
-      (items) => emit(ArchivedProductsState(items: items, loaded: true)),
-      onError: addError,
-    );
+    _subscribe();
   }
 
   final ProductRepository _repository;
-  late final StreamSubscription<List<ProductSummary>> _subscription;
+  StreamSubscription<List<ProductSummary>>? _subscription;
 
   /// Returns the error to show, or null when the product is restored.
   Future<RestoreError?> restore(String id) async =>
@@ -43,9 +47,30 @@ class ArchivedProductsCubit extends Cubit<ArchivedProductsState> {
   Future<int> seedDemo({int count = 2000}) =>
       seedDemoProducts(_repository, count: count);
 
+  /// Subscribes again after a failed load.
+  void retry() => _subscribe();
+
+  void _subscribe() {
+    unawaited(_subscription?.cancel());
+    if (state.loadFailed) emit(ArchivedProductsState(items: state.items));
+    _subscription = _repository.watchArchived().listen(
+      (items) => emit(ArchivedProductsState(items: items, loaded: true)),
+      onError: (Object error, StackTrace stack) {
+        emit(
+          ArchivedProductsState(
+            items: state.items,
+            loaded: true,
+            loadFailed: true,
+          ),
+        );
+        addError(error, stack);
+      },
+    );
+  }
+
   @override
   Future<void> close() async {
-    await _subscription.cancel();
+    await _subscription?.cancel();
     return super.close();
   }
 }

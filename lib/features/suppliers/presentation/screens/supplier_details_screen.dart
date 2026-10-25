@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -7,6 +9,8 @@ import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
+import '../../../../core/widgets/list_load_state.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
@@ -153,11 +157,10 @@ class _Actions extends StatelessWidget {
           icon: const Icon(Icons.unarchive_outlined),
           label: Text(l10n.customerRestoreAction),
           onPressed: () async {
-            final messenger = ScaffoldMessenger.of(context);
             await cubit.restore();
-            messenger.showSnackBar(
-              SnackBar(content: Text(l10n.supplierRestored)),
-            );
+            if (context.mounted) {
+              showAppSnackBar(context, l10n.supplierRestored);
+            }
           },
         ),
       );
@@ -180,7 +183,17 @@ class _Actions extends StatelessWidget {
           icon: const Icon(Icons.archive_outlined),
           label: Text(l10n.supplierArchiveAction),
           onPressed: () async {
-            if (await _confirmArchive(context)) await cubit.archive();
+            if (!await _confirmArchive(context)) return;
+            await cubit.archive();
+            if (!context.mounted) return;
+            // The cubit restores by its own id, even after this screen is
+            // gone (FR-004).
+            showAppSnackBar(
+              context,
+              l10n.supplierArchivedMessage,
+              actionLabel: l10n.undoAction,
+              onAction: () => unawaited(cubit.restore()),
+            );
           },
         ),
       ],
@@ -227,12 +240,18 @@ class _Statement extends StatelessWidget {
     final tokens = context.tokens;
     return BlocBuilder<SupplierStatementCubit, SupplierStatementState>(
       builder: (context, state) {
+        final loadState = listLoadState(
+          context,
+          loadFailed: state.loadFailed,
+          loading: state.loading,
+          empty: state.entries.isEmpty,
+          onRetry: context.read<SupplierStatementCubit>().load,
+        );
+        if (loadState != null) return loadState;
         if (state.entries.isEmpty) {
           return Padding(
             padding: EdgeInsetsDirectional.all(tokens.spaceMd),
-            child: state.loading
-                ? const Center(child: CircularProgressIndicator())
-                : Text(l10n.statementEmpty),
+            child: Text(l10n.statementEmpty),
           );
         }
         return Column(

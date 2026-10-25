@@ -5,6 +5,9 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_illustration.dart';
+import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/list_load_state.dart';
 import '../cubits/purchases_list_cubit.dart';
 import '../widgets/purchase_row.dart';
 
@@ -78,35 +81,52 @@ class _PurchasesListScreenState extends State<PurchasesListScreen> {
             ),
           ),
           Expanded(
-            child: state.loading && state.items.isEmpty
-                ? const Center(child: CircularProgressIndicator())
-                : state.items.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: tokens.pagePadding,
-                      child: Text(
-                        filtered
-                            ? l10n.purchasesNoMatch
-                            : l10n.purchasesListEmpty,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
-                : ListView.builder(
-                    padding: EdgeInsetsDirectional.only(
-                      bottom: tokens.spaceXl * 3,
-                    ),
-                    itemCount: state.items.length + (state.hasMore ? 1 : 0),
-                    itemBuilder: (context, i) => i < state.items.length
-                        ? PurchaseRow(purchase: state.items[i])
-                        : Padding(
-                            padding: EdgeInsetsDirectional.all(tokens.spaceSm),
-                            child: OutlinedButton(
-                              onPressed: cubit.showMore,
-                              child: Text(l10n.listShowMore),
-                            ),
-                          ),
-                  ),
+            child:
+                listLoadState(
+                  context,
+                  loadFailed: state.loadFailed,
+                  loading: state.loading,
+                  empty: state.items.isEmpty,
+                  onRetry: cubit.retry,
+                ) ??
+                (state.items.isEmpty
+                    ? filtered
+                          ? searchEmptyState(
+                              context,
+                              message: l10n.purchasesNoMatch,
+                              onClear: () {
+                                _search.clear();
+                                cubit.clearSearch();
+                              },
+                            )
+                          : EmptyState(
+                              illustration: AppIllustration.emptyPurchases,
+                              title: l10n.purchasesEmptyTitle,
+                              message: l10n.purchasesEmptyBody,
+                              action: FilledButton.icon(
+                                icon: const Icon(Icons.add),
+                                label: Text(l10n.purchasesNewAction),
+                                onPressed: () =>
+                                    context.push(RoutePaths.purchasesNew),
+                              ),
+                            )
+                    : ListView.builder(
+                        padding: EdgeInsetsDirectional.only(
+                          bottom: tokens.spaceXl * 3,
+                        ),
+                        itemCount: state.items.length + (state.hasMore ? 1 : 0),
+                        itemBuilder: (context, i) => i < state.items.length
+                            ? PurchaseRow(purchase: state.items[i])
+                            : Padding(
+                                padding: EdgeInsetsDirectional.all(
+                                  tokens.spaceSm,
+                                ),
+                                child: OutlinedButton(
+                                  onPressed: cubit.showMore,
+                                  child: Text(l10n.listShowMore),
+                                ),
+                              ),
+                      )),
           ),
         ],
       ),

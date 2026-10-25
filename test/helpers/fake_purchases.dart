@@ -86,11 +86,32 @@ final class FakePurchasesStore {
 
   void _changed() => _changes.add(null);
 
+  /// When set, the next watch stream fails with it (then it is cleared).
+  Object? failNextWatch;
+
+  /// When set, the next paged read (history, statement) throws it (then it
+  /// is cleared).
+  Object? failNextRead;
+
+  void _read() {
+    final failure = failNextRead;
+    if (failure != null) {
+      failNextRead = null;
+      throw failure;
+    }
+  }
+
   Stream<T> _watch<T>(T Function() read) {
     StreamSubscription<void>? changes;
     late final StreamController<T> controller;
     controller = StreamController<T>(
       onListen: () {
+        final failure = failNextWatch;
+        if (failure != null) {
+          failNextWatch = null;
+          controller.addError(failure);
+          return;
+        }
         changes = _changes.stream.listen((_) => controller.add(read()));
         controller.add(read());
       },
@@ -415,6 +436,7 @@ final class FakeSupplierRepository implements SupplierRepository {
     LedgerCursor? before,
     int limit = 50,
   }) async {
+    _s._read();
     final all = _s.statementOf(supplierId);
     final start = before == null
         ? 0

@@ -15,6 +15,7 @@ final class ProductListState extends Equatable {
     this.items = const [],
     this.categories = const [],
     this.loading = true,
+    this.loadFailed = false,
   });
 
   final ProductQuery query;
@@ -26,20 +27,25 @@ final class ProductListState extends Equatable {
   /// True until the first result for the current query arrives.
   final bool loading;
 
+  /// The stream failed; [retry] tries again (research R7).
+  final bool loadFailed;
+
   ProductListState copyWith({
     ProductQuery? query,
     List<ProductSummary>? items,
     List<Category>? categories,
     bool? loading,
+    bool? loadFailed,
   }) => ProductListState(
     query: query ?? this.query,
     items: items ?? this.items,
     categories: categories ?? this.categories,
     loading: loading ?? this.loading,
+    loadFailed: loadFailed ?? this.loadFailed,
   );
 
   @override
-  List<Object?> get props => [query, items, categories, loading];
+  List<Object?> get props => [query, items, categories, loading, loadFailed];
 }
 
 /// The product list with search and filters (FR-008–FR-010). Typing waits
@@ -78,6 +84,12 @@ class ProductListCubit extends Cubit<ProductListState> {
     _subscribe();
   }
 
+  /// Drops the search text and every filter.
+  void clearSearch() {
+    emit(state.copyWith(query: const ProductQuery()));
+    _subscribe();
+  }
+
   void toggleLow() {
     emit(
       state.copyWith(
@@ -91,13 +103,21 @@ class ProductListCubit extends Cubit<ProductListState> {
     _timer?.cancel();
     final query = state.query;
     unawaited(_itemsSub?.cancel());
-    emit(state.copyWith(loading: true));
+    emit(state.copyWith(loading: true, loadFailed: false));
     _itemsSub = _products
         .watchSummaries(query)
         .listen(
           (items) => emit(state.copyWith(items: items, loading: false)),
-          onError: addError,
+          onError: _failed,
         );
+  }
+
+  /// Subscribes again after a failed load.
+  void retry() => _subscribe();
+
+  void _failed(Object error, StackTrace stack) {
+    emit(state.copyWith(loading: false, loadFailed: true));
+    addError(error, stack);
   }
 
   @override

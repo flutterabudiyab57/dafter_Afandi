@@ -3,7 +3,10 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_illustration.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/list_load_state.dart';
 import '../../domain/category.dart';
 import '../../domain/product_errors.dart';
 import '../cubits/categories_cubit.dart';
@@ -21,9 +24,14 @@ class CategoriesScreen extends StatelessWidget {
       appBar: AppBar(title: Text(l10n.categoriesTitle)),
       body: BlocBuilder<CategoriesCubit, CategoriesState>(
         builder: (context, state) {
-          if (!state.loaded) {
-            return const Center(child: CircularProgressIndicator());
-          }
+          final loadState = listLoadState(
+            context,
+            loadFailed: state.loadFailed,
+            loading: !state.loaded,
+            empty: state.categories.isEmpty,
+            onRetry: context.read<CategoriesCubit>().retry,
+          );
+          if (loadState != null) return loadState;
           final list = state.categories;
           return SingleChildScrollView(
             padding: EdgeInsetsDirectional.only(bottom: context.tokens.spaceXl),
@@ -32,9 +40,9 @@ class CategoriesScreen extends StatelessWidget {
               children: [
                 const _AddField(),
                 if (list.isEmpty)
-                  Padding(
-                    padding: context.tokens.pagePadding,
-                    child: Text(l10n.categoriesEmpty),
+                  EmptyState(
+                    illustration: AppIllustration.emptyProducts,
+                    title: l10n.categoriesEmpty,
                   ),
                 for (final (i, c) in list.indexed)
                   _CategoryRow(

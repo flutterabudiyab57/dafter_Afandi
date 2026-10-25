@@ -4,9 +4,12 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
+import '../../../../core/widgets/app_illustration.dart';
+import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/list_load_state.dart';
+import '../../../../core/widgets/status_badge.dart';
 import '../../domain/customer.dart';
 import '../cubits/customers_list_cubit.dart';
 import '../widgets/customer_text.dart';
@@ -99,7 +102,15 @@ class _CustomersScreenState extends State<CustomersScreen> {
               ),
             ),
           ),
-          Expanded(child: _Body(state: state)),
+          Expanded(
+            child: _Body(
+              state: state,
+              onClear: () {
+                _search.clear();
+                cubit.clearSearch();
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -107,26 +118,40 @@ class _CustomersScreenState extends State<CustomersScreen> {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({required this.state});
+  const _Body({required this.state, required this.onClear});
 
   final CustomersListState state;
+  final VoidCallback onClear;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    if (state.loading && state.items.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    final loadState = listLoadState(
+      context,
+      loadFailed: state.loadFailed,
+      loading: state.loading,
+      empty: state.items.isEmpty,
+      onRetry: context.read<CustomersListCubit>().retry,
+    );
+    if (loadState != null) return loadState;
     if (state.items.isEmpty) {
       final filtered =
           state.query.text.trim().isNotEmpty || state.query.owesOnly;
-      return Center(
-        child: Padding(
-          padding: context.tokens.pagePadding,
-          child: Text(
-            filtered ? l10n.customersNoMatch : l10n.customersEmpty,
-            textAlign: TextAlign.center,
-          ),
+      if (filtered) {
+        return searchEmptyState(
+          context,
+          message: l10n.customersNoMatch,
+          onClear: onClear,
+        );
+      }
+      return EmptyState(
+        illustration: AppIllustration.emptyCustomers,
+        title: l10n.customersEmptyTitle,
+        message: l10n.customersEmptyBody,
+        action: FilledButton.icon(
+          icon: const Icon(Icons.person_add_alt),
+          label: Text(l10n.customerAddTitle),
+          onPressed: () => context.push(RoutePaths.customerNew),
         ),
       );
     }
@@ -148,7 +173,6 @@ class CustomerRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final c = summary.customer;
     final b = summary.balancePiasters;
     return ListTile(
@@ -158,17 +182,16 @@ class CustomerRow extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: MediaQuery.sizeOf(context).width * 0.4,
         ),
-        child: Text(
-          context.balance(b),
-          textAlign: TextAlign.end,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: b > 0
-                ? context.appColors.owes
-                : b < 0
-                ? context.appColors.credit
-                : null,
-          ),
-        ),
+        child: b == 0
+            ? Text(context.balance(b), textAlign: TextAlign.end)
+            : Align(
+                alignment: AlignmentDirectional.centerEnd,
+                widthFactor: 1,
+                child: StatusBadge(
+                  label: context.balance(b),
+                  tone: b > 0 ? BadgeTone.owes : BadgeTone.credit,
+                ),
+              ),
       ),
       onTap: onTap ?? () => context.push(RoutePaths.customerDetails(c.id)),
     );

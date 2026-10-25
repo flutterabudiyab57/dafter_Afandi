@@ -3,8 +3,8 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/status_badge.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../../suppliers/presentation/widgets/supplier_text.dart';
 import '../../domain/purchase.dart';
@@ -41,13 +41,9 @@ class PurchaseRow extends StatelessWidget {
           Text(context.date(p.invoiceDate)),
           if (p.supplierRef != null) Text(p.supplierRef!),
           if (mark != null)
-            Text(
-              mark,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: p.voided
-                    ? context.appColors.voided
-                    : context.appColors.owes,
-              ),
+            StatusBadge(
+              label: mark,
+              tone: p.voided ? BadgeTone.voided : BadgeTone.owes,
             ),
         ],
       ),

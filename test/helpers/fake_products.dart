@@ -71,11 +71,32 @@ final class FakeProductsStore {
   void _changed() => _changes.add(null);
 
   /// The current value on listen, then a new one after every change.
+  /// When set, the next watch stream fails with it (then it is cleared).
+  Object? failNextWatch;
+
+  /// When set, the next paged read (history, statement) throws it (then it
+  /// is cleared).
+  Object? failNextRead;
+
+  void _read() {
+    final failure = failNextRead;
+    if (failure != null) {
+      failNextRead = null;
+      throw failure;
+    }
+  }
+
   Stream<T> _watch<T>(T Function() read) {
     StreamSubscription<void>? changes;
     late final StreamController<T> controller;
     controller = StreamController<T>(
       onListen: () {
+        final failure = failNextWatch;
+        if (failure != null) {
+          failNextWatch = null;
+          controller.addError(failure);
+          return;
+        }
         changes = _changes.stream.listen((_) => controller.add(read()));
         controller.add(read());
       },
@@ -489,6 +510,7 @@ final class FakeInventoryRepository implements InventoryRepository {
     StockEntryCursor? before,
     int limit = 50,
   }) async {
+    _s._read();
     final newestFirst = (_s._history[productId] ?? const <StockEntry>[])
         .reversed
         .toList();

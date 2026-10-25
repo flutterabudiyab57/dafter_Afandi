@@ -381,5 +381,10 @@
   "keepEditingAction": "Keep editing",
   "creditNeedsCustomerTitle": "Choose a customer for a credit sale",
   "chooseAction": "Choose",
-  "openingDataLabel": "Opening your data…"
+  "openingDataLabel": "Opening your data…",
+  "productArchivedMessage": "Product archived.",
+  "customerArchivedMessage": "Customer archived.",
+  "supplierArchivedMessage": "Supplier archived.",
+  "loadFailedTitle": "Couldn’t show the data",
+  "loadFailedBody": "Nothing in your data changed. Try again."
 }

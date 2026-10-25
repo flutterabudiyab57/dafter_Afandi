@@ -14,12 +14,16 @@ final class SalesListState extends Equatable {
     this.items = const [],
     this.limit = SalesListCubit.pageSize,
     this.loading = true,
+    this.loadFailed = false,
   });
 
   final SaleQuery query;
   final List<SaleSummary> items;
   final int limit;
   final bool loading;
+
+  /// The stream failed; [retry] tries again (research R7).
+  final bool loadFailed;
 
   /// A full page came back, so there may be more.
   bool get hasMore => items.length >= limit;
@@ -29,15 +33,17 @@ final class SalesListState extends Equatable {
     List<SaleSummary>? items,
     int? limit,
     bool? loading,
+    bool? loadFailed,
   }) => SalesListState(
     query: query ?? this.query,
     items: items ?? this.items,
     limit: limit ?? this.limit,
     loading: loading ?? this.loading,
+    loadFailed: loadFailed ?? this.loadFailed,
   );
 
   @override
-  List<Object?> get props => [query, items, limit, loading];
+  List<Object?> get props => [query, items, limit, loading, loadFailed];
 }
 
 /// The invoice list (FR-009): search, unpaid filter, and Show more.
@@ -68,6 +74,17 @@ class SalesListCubit extends Cubit<SalesListState> {
     _timer = Timer(debounce, _subscribe);
   }
 
+  /// Drops the search text and the filter.
+  void clearSearch() {
+    emit(
+      state.copyWith(
+        query: state.query.copyWith(text: '', unpaidOnly: false),
+        limit: pageSize,
+      ),
+    );
+    _subscribe();
+  }
+
   void toggleUnpaid() {
     emit(
       state.copyWith(
@@ -87,13 +104,21 @@ class SalesListCubit extends Cubit<SalesListState> {
   void _subscribe() {
     _timer?.cancel();
     unawaited(_sub?.cancel());
-    emit(state.copyWith(loading: true));
+    emit(state.copyWith(loading: true, loadFailed: false));
     _sub = _repository
         .watchList(state.query, limit: state.limit)
         .listen(
           (items) => emit(state.copyWith(items: items, loading: false)),
-          onError: addError,
+          onError: _failed,
         );
+  }
+
+  /// Subscribes again after a failed load.
+  void retry() => _subscribe();
+
+  void _failed(Object error, StackTrace stack) {
+    emit(state.copyWith(loading: false, loadFailed: true));
+    addError(error, stack);
   }
 
   @override

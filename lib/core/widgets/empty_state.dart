@@ -23,7 +23,12 @@ class EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     final textTheme = Theme.of(context).textTheme;
-    final padding = tokens.pagePadding;
+    // Room under the content for a floating button, so it never covers
+    // the action at large text sizes.
+    final fab = Scaffold.maybeOf(context)?.hasFloatingActionButton ?? false;
+    final padding = tokens.pagePadding.copyWith(
+      bottom: fab ? tokens.spaceXl * 3 : null,
+    );
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         padding: padding,

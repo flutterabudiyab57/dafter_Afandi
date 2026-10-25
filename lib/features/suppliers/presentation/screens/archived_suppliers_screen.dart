@@ -2,6 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
+import '../../../../core/widgets/app_illustration.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
+import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/list_load_state.dart';
 import '../cubits/suppliers_list_cubit.dart';
 import 'suppliers_screen.dart';
 
@@ -16,35 +20,46 @@ class ArchivedSuppliersScreen extends StatelessWidget {
     final state = context.watch<ArchivedSuppliersCubit>().state;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.suppliersArchivedTitle)),
-      body: !state.loaded
-          ? const Center(child: CircularProgressIndicator())
-          : state.items.isEmpty
-          ? Center(child: Text(l10n.suppliersArchivedEmpty))
-          : ListView(
-              children: [
-                for (final s in state.items)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SupplierRow(summary: s),
-                      Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: TextButton(
-                          onPressed: () async {
-                            final messenger = ScaffoldMessenger.of(context);
-                            await cubit.restore(s.supplier.id);
-                            messenger.showSnackBar(
-                              SnackBar(content: Text(l10n.supplierRestored)),
-                            );
-                          },
-                          child: Text(l10n.customerRestoreAction),
-                        ),
+      body:
+          listLoadState(
+            context,
+            loadFailed: state.loadFailed,
+            loading: !state.loaded,
+            empty: state.items.isEmpty,
+            onRetry: cubit.retry,
+          ) ??
+          (state.items.isEmpty
+              ? EmptyState(
+                  illustration: AppIllustration.emptyArchive,
+                  title: l10n.suppliersArchivedEmpty,
+                )
+              : ListView(
+                  children: [
+                    for (final s in state.items)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SupplierRow(summary: s),
+                          Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: TextButton(
+                              onPressed: () async {
+                                await cubit.restore(s.supplier.id);
+                                if (context.mounted) {
+                                  showAppSnackBar(
+                                    context,
+                                    l10n.supplierRestored,
+                                  );
+                                }
+                              },
+                              child: Text(l10n.customerRestoreAction),
+                            ),
+                          ),
+                          const Divider(height: 1),
+                        ],
                       ),
-                      const Divider(height: 1),
-                    ],
-                  ),
-              ],
-            ),
+                  ],
+                )),
     );
   }
 }

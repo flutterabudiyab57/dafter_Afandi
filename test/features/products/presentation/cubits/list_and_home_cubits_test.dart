@@ -72,15 +72,15 @@ void main() {
         );
         final cubit = LowStockCubit(store.products);
         addTearDown(cubit.close);
-        expect(cubit.state, isNull);
+        expect(cubit.state.snapshot, isNull);
         await pumpEventQueue();
-        expect(cubit.state!.totalCount, 1);
-        expect(cubit.state!.items.single.product.id, id);
+        expect(cubit.state.snapshot!.totalCount, 1);
+        expect(cubit.state.snapshot!.items.single.product.id, id);
 
         await store.products.archive(id);
         await pumpEventQueue();
-        expect(cubit.state!.totalCount, 0);
-        expect(cubit.state!.hasAnyProduct, isFalse);
+        expect(cubit.state.snapshot!.totalCount, 0);
+        expect(cubit.state.snapshot!.hasAnyProduct, isFalse);
       },
     );
   });

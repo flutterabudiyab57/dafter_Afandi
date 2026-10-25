@@ -65,7 +65,7 @@ void main() {
         testWidgets('add with phone: listed with no balance', (tester) async {
           final store = FakeSalesStore();
           await open(tester, store, RoutePaths.parties);
-          expect(find.text(l10n.customersEmpty), findsOneWidget);
+          expect(find.text(l10n.customersEmptyTitle), findsOneWidget);
           await tapVisible(tester, find.byType(FloatingActionButton));
           expect(currentPath(tester), RoutePaths.customerNew);
           await type(tester, l10n.customerNameLabel, 'محمد');

@@ -19,7 +19,7 @@ class LowStockCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final tokens = context.tokens;
     final theme = Theme.of(context);
-    final snapshot = context.watch<LowStockCubit>().state;
+    final state = context.watch<LowStockCubit>().state;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -37,7 +37,30 @@ class LowStockCard extends StatelessWidget {
               style: theme.textTheme.titleMedium,
             ),
           ),
-          ..._body(context, l10n, snapshot),
+          if (state.loadFailed)
+            _failed(context, l10n)
+          else
+            ..._body(context, l10n, state.snapshot),
+        ],
+      ),
+    );
+  }
+
+  Widget _failed(BuildContext context, AppLocalizations l10n) {
+    final tokens = context.tokens;
+    return Padding(
+      padding: EdgeInsetsDirectional.all(tokens.spaceMd),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.loadFailedTitle),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton(
+              onPressed: context.read<LowStockCubit>().retry,
+              child: Text(l10n.retryAction),
+            ),
+          ),
         ],
       ),
     );

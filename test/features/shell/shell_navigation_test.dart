@@ -95,14 +95,15 @@ void main() {
           }
           if (path == RoutePaths.purchases) {
             // The purchase list since 004.
-            expect(find.text(l10n.purchasesNewAction), findsOneWidget);
-            expect(find.text(l10n.purchasesListEmpty), findsOneWidget);
+            // The button and the empty state's action.
+            expect(find.text(l10n.purchasesNewAction), findsWidgets);
+            expect(find.text(l10n.purchasesEmptyTitle), findsOneWidget);
             continue;
           }
           if (path == RoutePaths.parties) {
             // The customer list since 003.
             expect(find.text(l10n.customersTitle), findsOneWidget);
-            expect(find.text(l10n.customersEmpty), findsOneWidget);
+            expect(find.text(l10n.customersEmptyTitle), findsOneWidget);
             continue;
           }
           expect(find.text(body), findsOneWidget);

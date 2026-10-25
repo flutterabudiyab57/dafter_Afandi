@@ -173,10 +173,10 @@ archiving offers undo.
 Searching "zzz" shows no results, and "مسح البحث" clears it. A failing stream shows "إعادة
 المحاولة". Archiving "شاي" offers "تراجع", which brings it back.
 
-- [ ] T027 [US2] Add the five R13 keys approved on 2026-10-22: `productArchivedMessage`,
+- [X] T027 [US2] Add the five R13 keys approved on 2026-10-22: `productArchivedMessage`,
   `customerArchivedMessage`, `supplierArchivedMessage`, `loadFailedTitle` and `loadFailedBody` to
   both ARB files with the texts in research R13. Run `flutter gen-l10n`.
-- [ ] T028 [US2] Add `loadFailed` (bool, in props) and `retry()` to the list cubits (research R7;
+- [X] T028 [US2] Add `loadFailed` (bool, in props) and `retry()` to the list cubits (research R7;
   data-model "List cubits: load state").
   - **On a stream error:** set `loadFailed: true, loading: false`, then still call `addError`.
   - **`retry()`:** clears the flag, sets `loading`, and subscribes again.
@@ -192,26 +192,26 @@ Searching "zzz" shows no results, and "مسح البحث" clears it. A failing s
       statement in `supplier_details_cubit.dart` (in `lib/features/suppliers/presentation/cubits/`);
     - `purchases_list_cubit.dart` (in `lib/features/purchases/presentation/cubits/`).
   - **Pickers:** leave them as they are.
-- [ ] T029 [P] [US2] Cubit tests next to each cubit's existing test (bloc_test):
+- [X] T029 [P] [US2] Cubit tests next to each cubit's existing test (bloc_test):
   - error → `loadFailed`;
   - `retry()` → loading → loaded;
   - a query change clears the flag.
-- [ ] T030 [US2] Fakes: add a way to make a watch stream fail to the in-memory stores in
+- [X] T030 [US2] Fakes: add a way to make a watch stream fail to the in-memory stores in
   `test/helpers/fake_products.dart`, `fake_sales.dart` and `fake_purchases.dart`, and to the
   customers and suppliers fakes. For example `store.failNextWatch()`. Follow the existing
   `onCancel` rule (no cancel future from a broadcast stream).
-- [ ] T031 [US2] Products list (`lib/features/products/presentation/screens/product_list_screen.dart`):
+- [X] T031 [US2] Products list (`lib/features/products/presentation/screens/product_list_screen.dart`):
   - **States, in order:** `LoadFailedView` → `SkeletonList` while loading with no items →
     `EmptyState` (`emptyProducts`, `productsEmpty`, `productsEmptyAction` opening the form) → the
     list.
   - **Search or filter with no items:** `EmptyState` (`emptySearch`, `searchEmptyTitle`,
     `productsFilterEmpty`, a `searchClearAction` button that clears the text and the filter).
-- [ ] T032 [US3] `lib/features/products/presentation/widgets/stock_marks.dart` and `product_row.dart`:
+- [X] T032 [US3] `lib/features/products/presentation/widgets/stock_marks.dart` and `product_row.dart`:
   - **Marks:** the icon-only marks become `StatusBadge`. Low stock is `BadgeTone.owes` +
     `markLowStock`; below zero is `BadgeTone.error` + the existing below-zero word.
   - **Text scale:** at 200% the badge wraps under the title.
   - **Semantics:** the row's semantics label still names the mark once.
-- [ ] T033 [US1] Archive undo (research R6, FR-004): after a successful archive call
+- [X] T033 [US1] Archive undo (research R6, FR-004): after a successful archive call
   `showAppSnackBar` with `undoAction` and an action that restores that record's id through the
   same cubit's restore path.
   - **Products:** `product_details_screen.dart` uses `productArchivedMessage`.
@@ -219,36 +219,36 @@ Searching "zzz" shows no results, and "مسح البحث" clears it. A failing s
   - **Suppliers:** `supplier_details_screen.dart` uses `supplierArchivedMessage`.
   - **Leaving the screen:** the undo targets the captured id and the bundle's cubit, not the
     screen's, so it still restores the right record after the screen is left (edge case).
-- [ ] T034 [P] [US2] Archived lists: `archived_products_screen.dart`, `archived_customers_screen.dart`
+- [X] T034 [P] [US2] Archived lists: `archived_products_screen.dart`, `archived_customers_screen.dart`
   and `archived_suppliers_screen.dart`.
   - **Empty:** `EmptyState(emptyArchive)` with the existing empty keys.
   - **Loading and failure:** skeleton and load-failed.
   - **Restore:** success `showAppSnackBar`.
   - **Barcode taken:** `errorRestoreBarcodeTaken` shows as an error `StatusBanner` at the top.
-- [ ] T035 [P] [US2] Categories (`categories_screen.dart`): empty `EmptyState(emptyProducts,
+- [X] T035 [P] [US2] Categories (`categories_screen.dart`): empty `EmptyState(emptyProducts,
   categoriesEmpty)`, skeleton and load-failed. Saves show success snackbars through
   `showAppSnackBar`.
-- [ ] T036 [P] [US2] Stock history (`lib/features/products/presentation/widgets/stock_history_section.dart`):
+- [X] T036 [P] [US2] Stock history (`lib/features/products/presentation/widgets/stock_history_section.dart`):
   - **Empty:** keeps the `historyEmpty` text.
   - **Loading and failure:** skeleton rows and load-failed with retry.
   - **Below zero:** rows read the error colour with a word.
-- [ ] T037 [P] [US2] Sales list (`sales_list_screen.dart`, `widgets/sale_row.dart`):
+- [X] T037 [P] [US2] Sales list (`sales_list_screen.dart`, `widgets/sale_row.dart`):
   - **States:** empty `EmptyState(emptySales, salesListEmpty)`, search no-results, skeleton and
     load-failed.
   - **Badges:** the voided, credit and partly-paid marks become `StatusBadge` (`voided`, `owes`,
     `credit` tones with the existing words).
-- [ ] T038 [P] [US2] Customers and suppliers lists (`customers_screen.dart`, `suppliers_screen.dart`):
+- [X] T038 [P] [US2] Customers and suppliers lists (`customers_screen.dart`, `suppliers_screen.dart`):
   - **Empty:** `EmptyState(emptyCustomers, customersEmptyTitle, customersEmptyBody, add action)`,
     and the same for suppliers.
   - **Other states:** search or filter no-results, skeleton and load-failed.
   - **Balances:** keep their amount and gain an `owes` / `credit` badge with the existing words.
-- [ ] T039 [P] [US2] Purchases list (`purchases_list_screen.dart`, `widgets/purchase_row.dart`):
+- [X] T039 [P] [US2] Purchases list (`purchases_list_screen.dart`, `widgets/purchase_row.dart`):
   - **States:** empty `EmptyState(emptyPurchases, purchasesEmptyTitle, purchasesEmptyBody, new
     purchase action)`, no-results, skeleton and load-failed.
   - **Badges:** credit, partial and voided become badges.
-- [ ] T040 [P] [US2] Customer and supplier statements (`customer_details_screen.dart`,
+- [X] T040 [P] [US2] Customer and supplier statements (`customer_details_screen.dart`,
   `supplier_details_screen.dart`): load-failed with retry on the statement section.
-- [ ] T041 [US2] Screen tests for T031–T040 in ar and en at 1.0 and 2.0:
+- [X] T041 [US2] Screen tests for T031–T040 in ar and en at 1.0 and 2.0:
   - each empty list shows its own illustration and never another's (US2-3);
   - no-results and clear (US2-2);
   - load-failed and retry;
@@ -257,7 +257,7 @@ Searching "zzz" shows no results, and "مسح البحث" clears it. A failing s
   - archive → "تراجع" → the record is back (US1-1);
   - the last item archived → empty state at once (edge case).
   Update existing tests whose icon finders become word finders.
-- [ ] T042 Gate: analyze clean and all tests green. Commit `feat(005): phase 4 lists`.
+- [X] T042 Gate: analyze clean and all tests green. Commit `feat(005): phase 4 lists`.
 
 ## Phase 5: Forms (US1, US3)
 

@@ -85,7 +85,7 @@ void main() {
           await open(tester, store, RoutePaths.parties);
           await tapVisible(tester, find.text(l10n.partiesSuppliersTab));
           expect(currentPath(tester), RoutePaths.suppliers);
-          expect(find.text(l10n.suppliersEmpty), findsOneWidget);
+          expect(find.text(l10n.suppliersEmptyTitle), findsOneWidget);
 
           await tapVisible(tester, find.byType(FloatingActionButton));
           expect(currentPath(tester), RoutePaths.supplierNew);
@@ -102,7 +102,7 @@ void main() {
           // And back to customers.
           await tapVisible(tester, find.text(l10n.partiesCustomersTab));
           expect(currentPath(tester), RoutePaths.parties);
-          expect(find.text(l10n.customersEmpty), findsOneWidget);
+          expect(find.text(l10n.customersEmptyTitle), findsOneWidget);
         });
 
         testWidgets('opening owed by the shop, or in its favour (US4-2)', (

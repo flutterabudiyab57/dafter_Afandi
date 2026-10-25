@@ -5,6 +5,9 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_illustration.dart';
+import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/list_load_state.dart';
 import '../../domain/product_query.dart';
 import '../cubits/product_list_cubit.dart';
 import '../widgets/product_row.dart';
@@ -72,7 +75,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
             ),
           ),
           _Filters(state: state),
-          Expanded(child: _Body(state: state)),
+          Expanded(
+            child: _Body(
+              state: state,
+              onClear: () {
+                _search.clear();
+                cubit.clearSearch();
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -127,15 +138,21 @@ class _Filters extends StatelessWidget {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({required this.state});
+  const _Body({required this.state, required this.onClear});
 
   final ProductListState state;
+  final VoidCallback onClear;
 
   @override
   Widget build(BuildContext context) {
-    if (state.loading && state.items.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    final loadState = listLoadState(
+      context,
+      loadFailed: state.loadFailed,
+      loading: state.loading,
+      empty: state.items.isEmpty,
+      onRetry: context.read<ProductListCubit>().retry,
+    );
+    if (loadState != null) return loadState;
     if (state.items.isNotEmpty) {
       return ListView.builder(
         // Room for the floating button over the last row.
@@ -144,14 +161,15 @@ class _Body extends StatelessWidget {
         itemBuilder: (context, i) => ProductRow(summary: state.items[i]),
       );
     }
-    return _Empty(query: state.query);
+    return _Empty(query: state.query, onClear: onClear);
   }
 }
 
 class _Empty extends StatelessWidget {
-  const _Empty({required this.query});
+  const _Empty({required this.query, required this.onClear});
 
   final ProductQuery query;
+  final VoidCallback onClear;
 
   @override
   Widget build(BuildContext context) {
@@ -160,48 +178,42 @@ class _Empty extends StatelessWidget {
     final text = query.text.trim();
     final filtered = query.lowOnly || query.categoryFilter is! AllCategories;
 
-    final (String message, Widget? action) = switch ((text, filtered)) {
-      ('', false) => (
-        l10n.productsEmpty,
-        FilledButton.icon(
+    if (text.isEmpty && !filtered) {
+      return EmptyState(
+        illustration: AppIllustration.emptyProducts,
+        title: l10n.productsEmpty,
+        action: FilledButton.icon(
           icon: const Icon(Icons.add),
           label: Text(l10n.productsEmptyAction),
           onPressed: () => context.push(RoutePaths.productNew),
         ),
-      ),
-      ('', true) => (l10n.productsFilterEmpty, null),
-      _ => (
-        l10n.productsNoMatch(text),
-        FilledButton.icon(
-          icon: const Icon(Icons.add),
-          label: Text(l10n.productsAddNamed(text)),
-          onPressed: () => context.push(RoutePaths.productNew, extra: text),
-        ),
-      ),
-    };
-
-    return SingleChildScrollView(
-      padding: tokens.pagePadding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: tokens.spaceXl),
-          ExcludeSemantics(
-            child: Icon(
-              Icons.inventory_2_outlined,
-              size: tokens.spaceXl * 2,
-              color: Theme.of(context).colorScheme.primary,
+      );
+    }
+    final clear = OutlinedButton(
+      onPressed: onClear,
+      child: Text(l10n.searchClearAction),
+    );
+    return EmptyState(
+      illustration: AppIllustration.emptySearch,
+      title: l10n.searchEmptyTitle,
+      message: text.isEmpty
+          ? l10n.productsFilterEmpty
+          : l10n.productsNoMatch(text),
+      action: text.isEmpty
+          ? clear
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                FilledButton.icon(
+                  icon: const Icon(Icons.add),
+                  label: Text(l10n.productsAddNamed(text)),
+                  onPressed: () =>
+                      context.push(RoutePaths.productNew, extra: text),
+                ),
+                SizedBox(height: tokens.spaceSm),
+                clear,
+              ],
             ),
-          ),
-          SizedBox(height: tokens.spaceLg),
-          Text(
-            message,
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-          ),
-          if (action != null) ...[SizedBox(height: tokens.spaceLg), action],
-        ],
-      ),
     );
   }
 }

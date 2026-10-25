@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -6,6 +8,8 @@ import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
+import '../../../../core/widgets/status_banner.dart';
 import '../../domain/product.dart';
 import '../cubits/product_details_cubit.dart';
 import '../widgets/product_error_text.dart';
@@ -24,8 +28,10 @@ class ProductDetailsScreen extends StatelessWidget {
       listenWhen: (a, b) =>
           b.restoreError != null && a.restoreError != b.restoreError,
       listener: (context, state) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.restoreError(state.restoreError!))),
+        showAppSnackBar(
+          context,
+          context.restoreError(state.restoreError!),
+          tone: StatusTone.error,
         );
         context.read<ProductDetailsCubit>().clearMessage();
       },
@@ -157,11 +163,8 @@ class _Actions extends StatelessWidget {
           icon: const Icon(Icons.unarchive_outlined),
           label: Text(l10n.productRestoreAction),
           onPressed: () async {
-            final messenger = ScaffoldMessenger.of(context);
-            if (await cubit.restore()) {
-              messenger.showSnackBar(
-                SnackBar(content: Text(l10n.productRestored)),
-              );
+            if (await cubit.restore() && context.mounted) {
+              showAppSnackBar(context, l10n.productRestored);
             }
           },
         ),
@@ -192,7 +195,17 @@ class _Actions extends StatelessWidget {
           icon: const Icon(Icons.archive_outlined),
           label: Text(l10n.productArchiveAction),
           onPressed: () async {
-            if (await _confirmArchive(context)) await cubit.archive();
+            if (!await _confirmArchive(context)) return;
+            await cubit.archive();
+            if (!context.mounted) return;
+            // The cubit restores by its own id, even after this screen is
+            // gone (FR-004).
+            showAppSnackBar(
+              context,
+              l10n.productArchivedMessage,
+              actionLabel: l10n.undoAction,
+              onAction: () => unawaited(cubit.restore()),
+            );
           },
         ),
       ],

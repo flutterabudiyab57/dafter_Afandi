@@ -1824,5 +1824,25 @@
   "openingDataLabel": "جارٍ فتح بياناتك…",
   "@openingDataLabel": {
     "description": "Shown while the app opens the database."
+  },
+  "productArchivedMessage": "أُرشف المنتج.",
+  "@productArchivedMessage": {
+    "description": "Bottom message after archiving a product; offers Undo."
+  },
+  "customerArchivedMessage": "أُرشف العميل.",
+  "@customerArchivedMessage": {
+    "description": "Bottom message after archiving a customer; offers Undo."
+  },
+  "supplierArchivedMessage": "أُرشف المورد.",
+  "@supplierArchivedMessage": {
+    "description": "Bottom message after archiving a supplier; offers Undo."
+  },
+  "loadFailedTitle": "تعذّر عرض البيانات",
+  "@loadFailedTitle": {
+    "description": "Title when a list could not load."
+  },
+  "loadFailedBody": "لم يتغيّر شيء في بياناتك. حاول مرة أخرى.",
+  "@loadFailedBody": {
+    "description": "Body when a list could not load."
   }
 }

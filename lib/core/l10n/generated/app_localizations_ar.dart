@@ -1319,4 +1319,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get openingDataLabel => 'جارٍ فتح بياناتك…';
+
+  @override
+  String get productArchivedMessage => 'أُرشف المنتج.';
+
+  @override
+  String get customerArchivedMessage => 'أُرشف العميل.';
+
+  @override
+  String get supplierArchivedMessage => 'أُرشف المورد.';
+
+  @override
+  String get loadFailedTitle => 'تعذّر عرض البيانات';
+
+  @override
+  String get loadFailedBody => 'لم يتغيّر شيء في بياناتك. حاول مرة أخرى.';
 }
