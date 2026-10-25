@@ -60,7 +60,6 @@ class _PurchasesListScreenState extends State<PurchasesListScreen> {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: l10n.purchasesSearchHint,
-                border: const OutlineInputBorder(),
               ),
             ),
           ),

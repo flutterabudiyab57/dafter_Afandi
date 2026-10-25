@@ -82,7 +82,6 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: l10n.suppliersSearchHint,
-                border: const OutlineInputBorder(),
               ),
             ),
           ),

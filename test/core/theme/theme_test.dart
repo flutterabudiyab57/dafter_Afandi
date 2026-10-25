@@ -58,6 +58,30 @@ void main() {
         (colors.credit, colors.creditContainer),
         (colors.credit, scheme.surface),
         (colors.voided, colors.voidedContainer),
+        for (final (tone, onTone, container, onContainer) in [
+          (
+            colors.success,
+            colors.onSuccess,
+            colors.successContainer,
+            colors.onSuccessContainer,
+          ),
+          (
+            colors.warning,
+            colors.onWarning,
+            colors.warningContainer,
+            colors.onWarningContainer,
+          ),
+          (
+            colors.info,
+            colors.onInfo,
+            colors.infoContainer,
+            colors.onInfoContainer,
+          ),
+        ]) ...[
+          (onTone, tone),
+          (onContainer, container),
+          (tone, scheme.surface),
+        ],
       ];
       for (final (fg, bg) in pairs) {
         expect(
@@ -98,6 +122,54 @@ void main() {
     for (final style in styles) {
       expect(allowed, contains(style!.fontWeight));
     }
+  });
+
+  test('the feedback tones match the handoff palette', () {
+    expect(AppColors.light.success, const Color(0xFF1E6A66));
+    expect(AppColors.light.onWarningContainer, const Color(0xFF4A2700));
+    expect(AppColors.light.info, const Color(0xFF35597A));
+    expect(AppColors.dark.successContainer, const Color(0xFF0E3B38));
+    expect(AppColors.dark.onWarning, const Color(0xFF452B00));
+    expect(AppColors.dark.onInfoContainer, const Color(0xFFD6E6F5));
+    final mid = AppColors.light.lerp(AppColors.dark, 0.5);
+    expect(
+      mid.info,
+      Color.lerp(AppColors.light.info, AppColors.dark.info, 0.5),
+    );
+    final copy = AppColors.light.copyWith(warning: AppPalette.fez);
+    expect(copy.warning, AppPalette.fez);
+    expect(copy.success, AppColors.light.success);
+  });
+
+  test('component themes are set once in both themes', () {
+    for (final theme in [appLightTheme(), appDarkTheme()]) {
+      final scheme = theme.colorScheme;
+      final tokens = theme.extension<AppTokens>()!;
+      expect(theme.snackBarTheme.backgroundColor, scheme.inverseSurface);
+      expect(theme.snackBarTheme.behavior, SnackBarBehavior.floating);
+      final dialogShape = theme.dialogTheme.shape! as RoundedRectangleBorder;
+      expect(dialogShape.borderRadius, BorderRadius.circular(tokens.radiusXl));
+      final minSize = theme.filledButtonTheme.style!.minimumSize!.resolve({});
+      expect(minSize!.height, 48);
+      expect(theme.cardTheme.elevation, 0);
+      expect(theme.cardTheme.color, scheme.surfaceContainerLowest);
+      expect(theme.inputDecorationTheme.filled, isTrue);
+      expect(theme.inputDecorationTheme.errorMaxLines, 3);
+      expect(theme.appBarTheme.centerTitle, isFalse);
+    }
+  });
+
+  test('the new tokens scale with the design factor', () {
+    final base = AppTokens.scaled();
+    expect(base.radiusXl, 28);
+    expect(base.illustrationWidth, 192);
+    final scaled = AppTokens.scaled(1.2);
+    expect(scaled.radiusXl, closeTo(33.6, 1e-9));
+    expect(scaled.illustrationWidth, closeTo(230.4, 1e-9));
+    expect(base.lerp(scaled, 0.5).illustrationWidth, closeTo(211.2, 1e-9));
+    final dialogShape =
+        appLightTheme(scale: 1.2).dialogTheme.shape! as RoundedRectangleBorder;
+    expect(dialogShape.borderRadius, BorderRadius.circular(scaled.radiusXl));
   });
 
   test('tokens scale spacing but never the content width', () {

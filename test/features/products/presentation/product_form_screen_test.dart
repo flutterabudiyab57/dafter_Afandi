@@ -49,6 +49,15 @@ void main() {
           await tester.pump();
         }
 
+        // The focused field may still be scrolling its caret into view, and
+        // a scrolling list ignores taps, so settle before tapping the chip.
+        Future<void> pickUnit(WidgetTester tester, String unit) async {
+          await tester.pumpAndSettle();
+          await tester.ensureVisible(find.text(unit));
+          await tester.tap(find.text(unit));
+          await tester.pump();
+        }
+
         Future<void> save(WidgetTester tester) async {
           final button = find.widgetWithText(FilledButton, l10n.saveAction);
           await tester.ensureVisible(button);
@@ -72,7 +81,7 @@ void main() {
             'stock 0', (tester) async {
           final store = await open(tester);
           await type(tester, l10n.productNameLabel, 'أرز مصري');
-          await tester.tap(find.text(l10n.unitKg));
+          await pickUnit(tester, l10n.unitKg);
           await type(tester, l10n.productPriceLabel, '25');
           await save(tester);
           expect(store.writes, ['create أرز مصري']);
@@ -129,7 +138,7 @@ void main() {
         ) async {
           final store = await open(tester);
           await type(tester, l10n.productNameLabel, 'دقيق');
-          await tester.tap(find.text(l10n.unitKg));
+          await pickUnit(tester, l10n.unitKg);
           await type(tester, l10n.productPriceLabel, '20');
           await type(tester, l10n.productOpeningQtyLabel, '2.375');
           await tester.enterText(field(l10n.productOpeningQtyLabel), '2.3755');

@@ -31,7 +31,6 @@ class SupplierPickerPage extends StatelessWidget {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: l10n.suppliersSearchHint,
-                border: const OutlineInputBorder(),
               ),
             ),
           ),

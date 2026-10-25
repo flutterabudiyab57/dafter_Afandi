@@ -60,7 +60,6 @@ class _SalesListScreenState extends State<SalesListScreen> {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: l10n.salesSearchHint,
-                border: const OutlineInputBorder(),
               ),
             ),
           ),

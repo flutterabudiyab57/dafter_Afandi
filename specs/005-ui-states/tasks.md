@@ -29,18 +29,18 @@ where a mark moves from an icon to a word, the test looks for the word.
 
 **Goal**: the three feedback tones, the two new tokens and the component themes, set once.
 
-- [ ] T001 Run the 14-day lock audit on `pubspec.lock`. Report every `dependency_overrides` entry in
+- [X] T001 Run the 14-day lock audit on `pubspec.lock`. Report every `dependency_overrides` entry in
   `pubspec.yaml` that is past its "remove after" date. Change nothing without the owner's approval.
-- [ ] T002 [P] `lib/core/theme/app_colors.dart`: add the twelve fields `success`, `onSuccess`,
+- [X] T002 [P] `lib/core/theme/app_colors.dart`: add the twelve fields `success`, `onSuccess`,
   `successContainer`, `onSuccessContainer`, `warning`, `onWarning`, `warningContainer`,
   `onWarningContainer`, `info`, `onInfo`, `infoContainer`, `onInfoContainer`.
   - Put them next to `owes`/`credit`/`voided`, with `copyWith` and `lerp` entries.
   - Light and dark hex values go in `AppPalette`, exactly as in handoff 3.1.
   - No existing value changes (research R1).
-- [ ] T003 [P] `lib/core/theme/app_radii.dart` `xl = 28`, `lib/core/theme/app_spacing.dart`
+- [X] T003 [P] `lib/core/theme/app_radii.dart` `xl = 28`, `lib/core/theme/app_spacing.dart`
   `illustration = 192`, and `lib/core/theme/app_tokens.dart` `radiusXl` and `illustrationWidth`.
   Both scale through `AppTokens.scaled()` (research R2).
-- [ ] T004 `lib/core/theme/app_theme.dart` `_theme(scheme, scale)`: add the component themes of
+- [X] T004 `lib/core/theme/app_theme.dart` `_theme(scheme, scale)`: add the component themes of
   handoff 3.3 with the values given there, with radii read from `AppRadii` × scale (research R3):
   - `filledButtonTheme`, `outlinedButtonTheme` and `textButtonTheme`;
   - `inputDecorationTheme`;
@@ -51,17 +51,17 @@ where a mark moves from an icon to a word, the test looks for the word.
   - `floatingActionButtonTheme`;
   - `cardTheme`;
   - `appBarTheme`.
-- [ ] T005 Remove per-widget styling that now repeats the theme, such as `border:
+- [X] T005 Remove per-widget styling that now repeats the theme, such as `border:
   OutlineInputBorder()` on search and form fields and per-button `minimumSize`. Find it with
   `grep -rn "OutlineInputBorder\|minimumSize\|StadiumBorder" lib/features lib/core/widgets`. Keep
   any styling that differs on purpose, and list it in the gate report.
-- [ ] T006 `test/core/theme/theme_test.dart`, in both themes:
+- [X] T006 `test/core/theme/theme_test.dart`, in both themes:
   - every new pair is ≥ 4.5:1: `on…` on its fill, `on…Container` on its container, and the tone
     on `surface`;
   - a few component themes read back: snackbar background = `inverseSurface`, dialog shape radius
     = `radiusXl`, filled button minimum height 48, card elevation 0;
   - the new tokens scale.
-- [ ] T007 Gate: `flutter analyze` clean and `flutter test` green. Report any test that changed
+- [X] T007 Gate: `flutter analyze` clean and `flutter test` green. Report any test that changed
   because the look changed. Commit `feat(005): phase 1 theme`.
 
 ## Phase 2: Assets (Foundational)

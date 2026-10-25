@@ -10,6 +10,9 @@ abstract final class AppSpacing {
 
   /// Height of the logo on the welcome and blocking screens.
   static const double logo = 120;
+
+  /// Width of an empty-state illustration; height is width × 200 / 240.
+  static const double illustration = 192;
 }
 
 /// Content is capped and centered on tablets and in landscape (FR-019, K1).

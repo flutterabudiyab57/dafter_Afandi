@@ -31,7 +31,6 @@ class CustomerPickerPage extends StatelessWidget {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: l10n.customersSearchHint,
-                border: const OutlineInputBorder(),
               ),
             ),
           ),

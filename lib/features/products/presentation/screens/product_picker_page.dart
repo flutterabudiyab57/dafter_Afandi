@@ -46,7 +46,6 @@ class ProductPickerPage extends StatelessWidget {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: l10n.productsSearchHint,
-                border: const OutlineInputBorder(),
               ),
             ),
           ),

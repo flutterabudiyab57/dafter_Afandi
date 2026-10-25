@@ -27,6 +27,24 @@ abstract final class AppPalette {
   static const Color nightFez = Color(0xFFF0A49A);
   static const Color nightAmber = Color(0xFFF2B872);
   static const Color nightTeal = Color(0xFF7FCFC8);
+
+  // Feedback tones (handoff 3.1). Success and warning reuse teal and amber.
+  static const Color onSuccessContainer = Color(0xFF0B3A37);
+  static const Color onWarningContainer = Color(0xFF4A2700);
+  static const Color info = Color(0xFF35597A);
+  static const Color infoContainer = Color(0xFFE1EAF2);
+  static const Color onInfoContainer = Color(0xFF12304A);
+
+  static const Color nightOnSuccess = Color(0xFF003734);
+  static const Color nightSuccessContainer = Color(0xFF0E3B38);
+  static const Color nightOnSuccessContainer = Color(0xFFA6EFE8);
+  static const Color nightOnWarning = Color(0xFF452B00);
+  static const Color nightWarningContainer = Color(0xFF4A2A05);
+  static const Color nightOnWarningContainer = Color(0xFFFFDDB3);
+  static const Color nightInfo = Color(0xFFA9C8E6);
+  static const Color nightOnInfo = Color(0xFF0B2740);
+  static const Color nightInfoContainer = Color(0xFF1D3346);
+  static const Color nightOnInfoContainer = Color(0xFFD6E6F5);
 }
 
 const ColorScheme lightScheme = ColorScheme(
@@ -115,6 +133,18 @@ final class AppColors extends ThemeExtension<AppColors> {
     required this.creditContainer,
     required this.voided,
     required this.voidedContainer,
+    required this.success,
+    required this.onSuccess,
+    required this.successContainer,
+    required this.onSuccessContainer,
+    required this.warning,
+    required this.onWarning,
+    required this.warningContainer,
+    required this.onWarningContainer,
+    required this.info,
+    required this.onInfo,
+    required this.infoContainer,
+    required this.onInfoContainer,
     required this.ornament,
   });
 
@@ -125,6 +155,18 @@ final class AppColors extends ThemeExtension<AppColors> {
     creditContainer: AppPalette.tealSoft,
     voided: AppPalette.ink2,
     voidedContainer: AppPalette.graySoft,
+    success: AppPalette.teal,
+    onSuccess: Color(0xFFFFFFFF),
+    successContainer: AppPalette.tealSoft,
+    onSuccessContainer: AppPalette.onSuccessContainer,
+    warning: AppPalette.amber,
+    onWarning: Color(0xFFFFFFFF),
+    warningContainer: AppPalette.amberSoft,
+    onWarningContainer: AppPalette.onWarningContainer,
+    info: AppPalette.info,
+    onInfo: Color(0xFFFFFFFF),
+    infoContainer: AppPalette.infoContainer,
+    onInfoContainer: AppPalette.onInfoContainer,
     ornament: AppPalette.gold,
   );
 
@@ -135,6 +177,18 @@ final class AppColors extends ThemeExtension<AppColors> {
     creditContainer: Color(0xFF0E3B38),
     voided: Color(0xFFB9B2A8),
     voidedContainer: Color(0xFF2E2C33),
+    success: AppPalette.nightTeal,
+    onSuccess: AppPalette.nightOnSuccess,
+    successContainer: AppPalette.nightSuccessContainer,
+    onSuccessContainer: AppPalette.nightOnSuccessContainer,
+    warning: AppPalette.nightAmber,
+    onWarning: AppPalette.nightOnWarning,
+    warningContainer: AppPalette.nightWarningContainer,
+    onWarningContainer: AppPalette.nightOnWarningContainer,
+    info: AppPalette.nightInfo,
+    onInfo: AppPalette.nightOnInfo,
+    infoContainer: AppPalette.nightInfoContainer,
+    onInfoContainer: AppPalette.nightOnInfoContainer,
     ornament: Color(0xFFD4B47A),
   );
 
@@ -150,6 +204,24 @@ final class AppColors extends ThemeExtension<AppColors> {
   final Color voided;
   final Color voidedContainer;
 
+  /// Saved, paid, done (handoff 3.1).
+  final Color success;
+  final Color onSuccess;
+  final Color successContainer;
+  final Color onSuccessContainer;
+
+  /// Needs attention, nothing lost.
+  final Color warning;
+  final Color onWarning;
+  final Color warningContainer;
+  final Color onWarningContainer;
+
+  /// Tips and rules.
+  final Color info;
+  final Color onInfo;
+  final Color infoContainer;
+  final Color onInfoContainer;
+
   /// Gold lines and small decoration only, never text.
   final Color ornament;
 
@@ -161,6 +233,18 @@ final class AppColors extends ThemeExtension<AppColors> {
     Color? creditContainer,
     Color? voided,
     Color? voidedContainer,
+    Color? success,
+    Color? onSuccess,
+    Color? successContainer,
+    Color? onSuccessContainer,
+    Color? warning,
+    Color? onWarning,
+    Color? warningContainer,
+    Color? onWarningContainer,
+    Color? info,
+    Color? onInfo,
+    Color? infoContainer,
+    Color? onInfoContainer,
     Color? ornament,
   }) => AppColors(
     owes: owes ?? this.owes,
@@ -169,6 +253,18 @@ final class AppColors extends ThemeExtension<AppColors> {
     creditContainer: creditContainer ?? this.creditContainer,
     voided: voided ?? this.voided,
     voidedContainer: voidedContainer ?? this.voidedContainer,
+    success: success ?? this.success,
+    onSuccess: onSuccess ?? this.onSuccess,
+    successContainer: successContainer ?? this.successContainer,
+    onSuccessContainer: onSuccessContainer ?? this.onSuccessContainer,
+    warning: warning ?? this.warning,
+    onWarning: onWarning ?? this.onWarning,
+    warningContainer: warningContainer ?? this.warningContainer,
+    onWarningContainer: onWarningContainer ?? this.onWarningContainer,
+    info: info ?? this.info,
+    onInfo: onInfo ?? this.onInfo,
+    infoContainer: infoContainer ?? this.infoContainer,
+    onInfoContainer: onInfoContainer ?? this.onInfoContainer,
     ornament: ornament ?? this.ornament,
   );
 
@@ -183,6 +279,18 @@ final class AppColors extends ThemeExtension<AppColors> {
       creditContainer: l(creditContainer, other.creditContainer),
       voided: l(voided, other.voided),
       voidedContainer: l(voidedContainer, other.voidedContainer),
+      success: l(success, other.success),
+      onSuccess: l(onSuccess, other.onSuccess),
+      successContainer: l(successContainer, other.successContainer),
+      onSuccessContainer: l(onSuccessContainer, other.onSuccessContainer),
+      warning: l(warning, other.warning),
+      onWarning: l(onWarning, other.onWarning),
+      warningContainer: l(warningContainer, other.warningContainer),
+      onWarningContainer: l(onWarningContainer, other.onWarningContainer),
+      info: l(info, other.info),
+      onInfo: l(onInfo, other.onInfo),
+      infoContainer: l(infoContainer, other.infoContainer),
+      onInfoContainer: l(onInfoContainer, other.onInfoContainer),
       ornament: l(ornament, other.ornament),
     );
   }

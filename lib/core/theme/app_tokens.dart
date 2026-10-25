@@ -17,8 +17,10 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     required this.radiusSm,
     required this.radiusMd,
     required this.radiusLg,
+    required this.radiusXl,
     required this.maxContentWidth,
     required this.logoHeight,
+    required this.illustrationWidth,
   });
 
   /// Design values times [scale] (see `designScale()`).
@@ -31,8 +33,10 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     radiusSm: AppRadii.sm * scale,
     radiusMd: AppRadii.md * scale,
     radiusLg: AppRadii.lg * scale,
+    radiusXl: AppRadii.xl * scale,
     maxContentWidth: kMaxContentWidth,
     logoHeight: AppSpacing.logo * scale,
+    illustrationWidth: AppSpacing.illustration * scale,
   );
 
   final double spaceXs;
@@ -43,8 +47,10 @@ final class AppTokens extends ThemeExtension<AppTokens> {
   final double radiusSm;
   final double radiusMd;
   final double radiusLg;
+  final double radiusXl;
   final double maxContentWidth;
   final double logoHeight;
+  final double illustrationWidth;
 
   /// Padding around a screen's scrollable content.
   EdgeInsets get pagePadding => EdgeInsets.all(spaceLg);
@@ -63,8 +69,10 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     double? radiusSm,
     double? radiusMd,
     double? radiusLg,
+    double? radiusXl,
     double? maxContentWidth,
     double? logoHeight,
+    double? illustrationWidth,
   }) => AppTokens(
     spaceXs: spaceXs ?? this.spaceXs,
     spaceSm: spaceSm ?? this.spaceSm,
@@ -74,8 +82,10 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     radiusSm: radiusSm ?? this.radiusSm,
     radiusMd: radiusMd ?? this.radiusMd,
     radiusLg: radiusLg ?? this.radiusLg,
+    radiusXl: radiusXl ?? this.radiusXl,
     maxContentWidth: maxContentWidth ?? this.maxContentWidth,
     logoHeight: logoHeight ?? this.logoHeight,
+    illustrationWidth: illustrationWidth ?? this.illustrationWidth,
   );
 
   @override
@@ -91,8 +101,10 @@ final class AppTokens extends ThemeExtension<AppTokens> {
       radiusSm: l(radiusSm, other.radiusSm),
       radiusMd: l(radiusMd, other.radiusMd),
       radiusLg: l(radiusLg, other.radiusLg),
+      radiusXl: l(radiusXl, other.radiusXl),
       maxContentWidth: l(maxContentWidth, other.maxContentWidth),
       logoHeight: l(logoHeight, other.logoHeight),
+      illustrationWidth: l(illustrationWidth, other.illustrationWidth),
     );
   }
 }

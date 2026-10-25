@@ -82,7 +82,6 @@ class _CustomersScreenState extends State<CustomersScreen> {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: l10n.customersSearchHint,
-                border: const OutlineInputBorder(),
               ),
             ),
           ),
