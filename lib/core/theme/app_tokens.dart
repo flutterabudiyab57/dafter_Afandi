@@ -21,6 +21,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     required this.maxContentWidth,
     required this.logoHeight,
     required this.illustrationWidth,
+    required this.emptyStateWidth,
   });
 
   /// Design values times [scale] (see `designScale()`).
@@ -37,6 +38,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     maxContentWidth: kMaxContentWidth,
     logoHeight: AppSpacing.logo * scale,
     illustrationWidth: AppSpacing.illustration * scale,
+    emptyStateWidth: AppSpacing.emptyState * scale,
   );
 
   final double spaceXs;
@@ -51,6 +53,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
   final double maxContentWidth;
   final double logoHeight;
   final double illustrationWidth;
+  final double emptyStateWidth;
 
   /// Padding around a screen's scrollable content.
   EdgeInsets get pagePadding => EdgeInsets.all(spaceLg);
@@ -73,6 +76,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     double? maxContentWidth,
     double? logoHeight,
     double? illustrationWidth,
+    double? emptyStateWidth,
   }) => AppTokens(
     spaceXs: spaceXs ?? this.spaceXs,
     spaceSm: spaceSm ?? this.spaceSm,
@@ -86,6 +90,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
     maxContentWidth: maxContentWidth ?? this.maxContentWidth,
     logoHeight: logoHeight ?? this.logoHeight,
     illustrationWidth: illustrationWidth ?? this.illustrationWidth,
+    emptyStateWidth: emptyStateWidth ?? this.emptyStateWidth,
   );
 
   @override
@@ -105,6 +110,7 @@ final class AppTokens extends ThemeExtension<AppTokens> {
       maxContentWidth: l(maxContentWidth, other.maxContentWidth),
       logoHeight: l(logoHeight, other.logoHeight),
       illustrationWidth: l(illustrationWidth, other.illustrationWidth),
+      emptyStateWidth: l(emptyStateWidth, other.emptyStateWidth),
     );
   }
 }

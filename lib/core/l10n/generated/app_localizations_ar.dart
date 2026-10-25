@@ -1263,4 +1263,60 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get voidShortageConfirm => 'إلغاء على أي حال';
+
+  @override
+  String get customersEmptyTitle => 'لا يوجد عملاء بعد';
+
+  @override
+  String get customersEmptyBody =>
+      'أضف عميلًا لتسجّل البيع الآجل وتتابع ما عليه.';
+
+  @override
+  String get suppliersEmptyTitle => 'لا يوجد موردون بعد';
+
+  @override
+  String get suppliersEmptyBody => 'أضف موردًا لتسجّل مشترياتك وما عليك له.';
+
+  @override
+  String get purchasesEmptyTitle => 'لا توجد مشتريات بعد';
+
+  @override
+  String get purchasesEmptyBody =>
+      'سجّل أول شراء ليزيد المخزون وتُحسب التكلفة.';
+
+  @override
+  String get searchEmptyTitle => 'لا توجد نتائج';
+
+  @override
+  String get searchClearAction => 'مسح البحث';
+
+  @override
+  String get retryAction => 'إعادة المحاولة';
+
+  @override
+  String get undoAction => 'تراجع';
+
+  @override
+  String get savingLabel => 'جارٍ الحفظ…';
+
+  @override
+  String get discardChangesTitle => 'تجاهل التغييرات؟';
+
+  @override
+  String get discardChangesBody => 'لم تُحفظ التغييرات. إذا خرجت الآن فستضيع.';
+
+  @override
+  String get discardAction => 'تجاهل';
+
+  @override
+  String get keepEditingAction => 'متابعة التعديل';
+
+  @override
+  String get creditNeedsCustomerTitle => 'اختر عميلًا للبيع الآجل';
+
+  @override
+  String get chooseAction => 'اختيار';
+
+  @override
+  String get openingDataLabel => 'جارٍ فتح بياناتك…';
 }

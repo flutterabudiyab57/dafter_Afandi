@@ -95,10 +95,10 @@ where a mark moves from an icon to a word, the test looks for the word.
 
 **Goal**: the building blocks of contracts/ui-components.md, tested alone, plus the approved texts.
 
-- [ ] T014 `lib/core/l10n/arb/app_ar.arb` and `app_en.arb`: add the 18 approved keys of handoff 7,
+- [X] T014 `lib/core/l10n/arb/app_ar.arb` and `app_en.arb`: add the 18 approved keys of handoff 7,
   with the exact texts. Leave out `reportsEmptyBody` (deferred, research R12). Run
   `flutter gen-l10n`.
-- [ ] T015 [P] `lib/core/widgets/status_banner.dart`: `enum StatusTone { success, warning, error,
+- [X] T015 [P] `lib/core/widgets/status_banner.dart`: `enum StatusTone { success, warning, error,
   info }` and `StatusBanner({required tone, required title, message, actionLabel, onAction})`.
   - **Colors:** the tone's container and on-container colors; error uses
     `colorScheme.errorContainer` / `onErrorContainer`.
@@ -107,47 +107,47 @@ where a mark moves from an icon to a word, the test looks for the word.
   - **Semantics:** `Semantics(liveRegion: true)`.
   - **Text scale:** the action wraps under the text at 200%.
   - **Tone values:** one `StatusToneColors` lookup that the other widgets reuse.
-- [ ] T016 [P] `lib/core/widgets/app_snack_bar.dart`: `showAppSnackBar(context, message, {tone =
+- [X] T016 [P] `lib/core/widgets/app_snack_bar.dart`: `showAppSnackBar(context, message, {tone =
   StatusTone.success, actionLabel, onAction})`. It calls `hideCurrentSnackBar()` first, shows for
   4 s (10 s with an action), and has a 24 px dot in the tone's container color with the
   on-container glyph. The floating style comes from the theme (research R6).
-- [ ] T017 [P] `lib/core/widgets/status_badge.dart`: `enum BadgeTone { success, owes, credit,
+- [X] T017 [P] `lib/core/widgets/status_badge.dart`: `enum BadgeTone { success, owes, credit,
   error, voided, neutral }` and `StatusBadge({required label, required tone, icon})`.
   - **Look:** stadium shape; 12/600 label from the type scale; directional padding 4/10.
   - **Icon:** each tone has a default icon.
   - **Text scale:** the label wraps and never ellipsizes mid-word.
-- [ ] T018 [P] `lib/core/widgets/empty_state.dart`: `EmptyState({required illustration, required
+- [X] T018 [P] `lib/core/widgets/empty_state.dart`: `EmptyState({required illustration, required
   title, message, action})`. It is centered with a maximum width of 360 × scale, and scrolls at
   200%.
-- [ ] T019 [P] `lib/core/widgets/result_view.dart`: `ResultView({required illustration, required
+- [X] T019 [P] `lib/core/widgets/result_view.dart`: `ResultView({required illustration, required
   title, required message, primary, secondary})`. It is full screen, scrolls at 200%, and both
   buttons are optional.
-- [ ] T020 [P] `lib/core/widgets/skeleton_list.dart`: `SkeletonList({rows = 4})`.
+- [X] T020 [P] `lib/core/widgets/skeleton_list.dart`: `SkeletonList({rows = 4})`.
   - **Delay:** nothing shows for the first 300 ms (a `Timer` cancelled on dispose).
   - **Rows:** rows of the real list-row height in `surfaceContainerHighest`.
   - **Shimmer:** a slow shimmer, none under `MediaQuery.disableAnimationsOf(context)`.
   - **Semantics:** excluded from semantics.
-- [ ] T021 [P] `lib/core/widgets/load_failed_view.dart`: `LoadFailedView({required title,
+- [X] T021 [P] `lib/core/widgets/load_failed_view.dart`: `LoadFailedView({required title,
   required message, required retryLabel, required onRetry})`, built as an `EmptyState` with
   `errorGeneric` and an outlined retry button.
-- [ ] T022 [P] `lib/core/widgets/confirm_dialog.dart`: `Future<bool?> showConfirmDialog(context,
+- [X] T022 [P] `lib/core/widgets/confirm_dialog.dart`: `Future<bool?> showConfirmDialog(context,
   {required tone, required title, required message, required confirmLabel, required cancelLabel,
   destructive = false})`.
   - **Icon:** the tone icon above the title.
   - **Buttons:** cancel is a `TextButton`. Confirm is a `FilledButton`, in error colors when
     `destructive`, and is placed last.
   - **Return value:** null when dismissed.
-- [ ] T023 [P] `lib/core/widgets/save_button.dart`: `SaveButton({required label, required
+- [X] T023 [P] `lib/core/widgets/save_button.dart`: `SaveButton({required label, required
   savingLabel, required saving, required onPressed})`. While `saving` it shows an 18 px
   `CircularProgressIndicator` and `savingLabel`, and `onPressed` is null.
-- [ ] T024 [P] `lib/core/widgets/unsaved_changes_guard.dart`: `UnsavedChangesGuard({required
+- [X] T024 [P] `lib/core/widgets/unsaved_changes_guard.dart`: `UnsavedChangesGuard({required
   dirty, required child})`.
   - **Wrapper:** `PopScope(canPop: !dirty)`.
   - **On a blocked pop:** it shows `showConfirmDialog` in the warning tone with
     `discardChangesTitle` / `discardChangesBody`, `keepEditingAction` / `discardAction`, and
     `destructive: true`.
   - **Leaving:** it pops only on `true`.
-- [ ] T025 Tests in `test/core/widgets/`, one file per widget, each in ar and en at 1.0 and 2.0
+- [X] T025 Tests in `test/core/widgets/`, one file per widget, each in ar and en at 1.0 and 2.0
   with no overflow:
   - the banner is a live region and shows the icon for each tone;
   - a second `showAppSnackBar` replaces the first, and the durations are 4 s and 10 s;
@@ -159,7 +159,7 @@ where a mark moves from an icon to a word, the test looks for the word.
   - `SaveButton` ignores taps while saving (SC-004);
   - the guard leaves at once when clean, asks when dirty, stays on "متابعة التعديل" and leaves on
     "تجاهل".
-- [ ] T026 Gate: analyze clean, all tests green, and `test/l10n/arb_test.dart` green. Commit
+- [X] T026 Gate: analyze clean, all tests green, and `test/l10n/arb_test.dart` green. Commit
   `feat(005): phase 3 shared widgets`.
 
 **Checkpoint**: phases 4, 5 and 6 can start.

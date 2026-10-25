@@ -1752,5 +1752,77 @@
   "voidShortageConfirm": "إلغاء على أي حال",
   "@voidShortageConfirm": {
     "description": "Confirms a void that takes stock below zero."
+  },
+  "customersEmptyTitle": "لا يوجد عملاء بعد",
+  "@customersEmptyTitle": {
+    "description": "Title of the empty customers list."
+  },
+  "customersEmptyBody": "أضف عميلًا لتسجّل البيع الآجل وتتابع ما عليه.",
+  "@customersEmptyBody": {
+    "description": "Body of the empty customers list."
+  },
+  "suppliersEmptyTitle": "لا يوجد موردون بعد",
+  "@suppliersEmptyTitle": {
+    "description": "Title of the empty suppliers list."
+  },
+  "suppliersEmptyBody": "أضف موردًا لتسجّل مشترياتك وما عليك له.",
+  "@suppliersEmptyBody": {
+    "description": "Body of the empty suppliers list."
+  },
+  "purchasesEmptyTitle": "لا توجد مشتريات بعد",
+  "@purchasesEmptyTitle": {
+    "description": "Title of the empty purchases list."
+  },
+  "purchasesEmptyBody": "سجّل أول شراء ليزيد المخزون وتُحسب التكلفة.",
+  "@purchasesEmptyBody": {
+    "description": "Body of the empty purchases list."
+  },
+  "searchEmptyTitle": "لا توجد نتائج",
+  "@searchEmptyTitle": {
+    "description": "Title when a search or filter matches nothing."
+  },
+  "searchClearAction": "مسح البحث",
+  "@searchClearAction": {
+    "description": "Clears the search text and filters."
+  },
+  "retryAction": "إعادة المحاولة",
+  "@retryAction": {
+    "description": "Retries loading a list that failed."
+  },
+  "undoAction": "تراجع",
+  "@undoAction": {
+    "description": "Undoes the last action from a bottom message."
+  },
+  "savingLabel": "جارٍ الحفظ…",
+  "@savingLabel": {
+    "description": "Save button label while saving."
+  },
+  "discardChangesTitle": "تجاهل التغييرات؟",
+  "@discardChangesTitle": {
+    "description": "Asked when leaving a form with unsaved changes."
+  },
+  "discardChangesBody": "لم تُحفظ التغييرات. إذا خرجت الآن فستضيع.",
+  "@discardChangesBody": {
+    "description": "Body of the discard-changes question."
+  },
+  "discardAction": "تجاهل",
+  "@discardAction": {
+    "description": "Leaves the form and drops the changes."
+  },
+  "keepEditingAction": "متابعة التعديل",
+  "@keepEditingAction": {
+    "description": "Stays on the form."
+  },
+  "creditNeedsCustomerTitle": "اختر عميلًا للبيع الآجل",
+  "@creditNeedsCustomerTitle": {
+    "description": "Warning banner title on a credit sale with no customer."
+  },
+  "chooseAction": "اختيار",
+  "@chooseAction": {
+    "description": "Opens a picker from a banner."
+  },
+  "openingDataLabel": "جارٍ فتح بياناتك…",
+  "@openingDataLabel": {
+    "description": "Shown while the app opens the database."
   }
 }

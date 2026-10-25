@@ -2281,6 +2281,114 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'إلغاء على أي حال'**
   String get voidShortageConfirm;
+
+  /// Title of the empty customers list.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد عملاء بعد'**
+  String get customersEmptyTitle;
+
+  /// Body of the empty customers list.
+  ///
+  /// In ar, this message translates to:
+  /// **'أضف عميلًا لتسجّل البيع الآجل وتتابع ما عليه.'**
+  String get customersEmptyBody;
+
+  /// Title of the empty suppliers list.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد موردون بعد'**
+  String get suppliersEmptyTitle;
+
+  /// Body of the empty suppliers list.
+  ///
+  /// In ar, this message translates to:
+  /// **'أضف موردًا لتسجّل مشترياتك وما عليك له.'**
+  String get suppliersEmptyBody;
+
+  /// Title of the empty purchases list.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد مشتريات بعد'**
+  String get purchasesEmptyTitle;
+
+  /// Body of the empty purchases list.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل أول شراء ليزيد المخزون وتُحسب التكلفة.'**
+  String get purchasesEmptyBody;
+
+  /// Title when a search or filter matches nothing.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد نتائج'**
+  String get searchEmptyTitle;
+
+  /// Clears the search text and filters.
+  ///
+  /// In ar, this message translates to:
+  /// **'مسح البحث'**
+  String get searchClearAction;
+
+  /// Retries loading a list that failed.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعادة المحاولة'**
+  String get retryAction;
+
+  /// Undoes the last action from a bottom message.
+  ///
+  /// In ar, this message translates to:
+  /// **'تراجع'**
+  String get undoAction;
+
+  /// Save button label while saving.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ الحفظ…'**
+  String get savingLabel;
+
+  /// Asked when leaving a form with unsaved changes.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل التغييرات؟'**
+  String get discardChangesTitle;
+
+  /// Body of the discard-changes question.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تُحفظ التغييرات. إذا خرجت الآن فستضيع.'**
+  String get discardChangesBody;
+
+  /// Leaves the form and drops the changes.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل'**
+  String get discardAction;
+
+  /// Stays on the form.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة التعديل'**
+  String get keepEditingAction;
+
+  /// Warning banner title on a credit sale with no customer.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر عميلًا للبيع الآجل'**
+  String get creditNeedsCustomerTitle;
+
+  /// Opens a picker from a banner.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختيار'**
+  String get chooseAction;
+
+  /// Shown while the app opens the database.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ فتح بياناتك…'**
+  String get openingDataLabel;
 }
 
 class _AppLocalizationsDelegate

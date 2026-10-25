@@ -1269,4 +1269,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voidShortageConfirm => 'Void anyway';
+
+  @override
+  String get customersEmptyTitle => 'No customers yet';
+
+  @override
+  String get customersEmptyBody =>
+      'Add a customer to record credit sales and track what they owe.';
+
+  @override
+  String get suppliersEmptyTitle => 'No suppliers yet';
+
+  @override
+  String get suppliersEmptyBody =>
+      'Add a supplier to record purchases and what you owe them.';
+
+  @override
+  String get purchasesEmptyTitle => 'No purchases yet';
+
+  @override
+  String get purchasesEmptyBody =>
+      'Record your first purchase to add stock and track cost.';
+
+  @override
+  String get searchEmptyTitle => 'No results';
+
+  @override
+  String get searchClearAction => 'Clear search';
+
+  @override
+  String get retryAction => 'Try again';
+
+  @override
+  String get undoAction => 'Undo';
+
+  @override
+  String get savingLabel => 'Saving…';
+
+  @override
+  String get discardChangesTitle => 'Discard changes?';
+
+  @override
+  String get discardChangesBody =>
+      'Your changes are not saved. If you leave now they will be lost.';
+
+  @override
+  String get discardAction => 'Discard';
+
+  @override
+  String get keepEditingAction => 'Keep editing';
+
+  @override
+  String get creditNeedsCustomerTitle => 'Choose a customer for a credit sale';
+
+  @override
+  String get chooseAction => 'Choose';
+
+  @override
+  String get openingDataLabel => 'Opening your data…';
 }

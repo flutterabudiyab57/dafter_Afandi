@@ -13,6 +13,9 @@ abstract final class AppSpacing {
 
   /// Width of an empty-state illustration; height is width × 200 / 240.
   static const double illustration = 192;
+
+  /// Widest an empty state's text column may grow.
+  static const double emptyState = 360;
 }
 
 /// Content is capped and centered on tablets and in landscape (FR-019, K1).
