@@ -1,6 +1,7 @@
 import 'package:daftar_afandi/core/l10n/generated/app_localizations.dart';
 import 'package:daftar_afandi/core/router/route_names.dart';
 import 'package:daftar_afandi/core/utils/quantity.dart';
+import 'package:daftar_afandi/core/widgets/starting_app.dart';
 import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
@@ -35,6 +36,7 @@ const List<String> kOnboardedPaths = [
 ];
 
 const List<Widget> kBlockingApps = [
+  StartingApp(),
   UpdateRequiredApp(kind: UpdateRequiredKind.tooNew),
   UpdateRequiredApp(kind: UpdateRequiredKind.unrecognized),
   StartupErrorApp(),
@@ -335,7 +337,12 @@ Future<void> visitEveryScreen(
   await tester.pumpAndSettle();
   for (final app in kBlockingApps) {
     await tester.pumpWidget(app);
-    await tester.pumpAndSettle();
+    // The starting app's progress bar never settles.
+    if (app is StartingApp) {
+      await tester.pump(const Duration(milliseconds: 100));
+    } else {
+      await tester.pumpAndSettle();
+    }
     await check(app.toString());
   }
 }

@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/l10n/generated/app_localizations.dart';
 import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/app_illustration.dart';
 import '../../../core/widgets/save_button.dart';
 import '../../../core/widgets/status_banner.dart';
 import 'cubits/shop_profile_form_cubit.dart';
@@ -22,11 +23,8 @@ class DataSafetyScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final tokens = context.tokens;
     final textTheme = Theme.of(context).textTheme;
-    final platformText = switch (defaultTargetPlatform) {
-      TargetPlatform.android => l10n.dataSafetyAndroidBackup,
-      TargetPlatform.iOS => l10n.dataSafetyIosManual,
-      _ => null,
-    };
+    final ios = defaultTargetPlatform == TargetPlatform.iOS;
+    final android = defaultTargetPlatform == TargetPlatform.android;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.dataSafetyTitle)),
@@ -36,10 +34,23 @@ class DataSafetyScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(l10n.dataSafetyLocalOnly, style: textTheme.bodyLarge),
-              if (platformText != null) ...[
+              const Center(child: Illustration(AppIllustration.dataSafety)),
+              SizedBox(height: tokens.spaceLg),
+              StatusBanner(
+                tone: StatusTone.info,
+                title: l10n.dataSafetyLocalOnly,
+              ),
+              if (android) ...[
                 SizedBox(height: tokens.spaceMd),
-                Text(platformText, style: textTheme.bodyLarge),
+                Text(l10n.dataSafetyAndroidBackup, style: textTheme.bodyLarge),
+              ],
+              // iOS has no automatic backup of this data, so it warns.
+              if (ios) ...[
+                SizedBox(height: tokens.spaceMd),
+                StatusBanner(
+                  tone: StatusTone.warning,
+                  title: l10n.dataSafetyIosManual,
+                ),
               ],
               if (mode == DataSafetyMode.onboarding) ...[
                 SizedBox(height: tokens.spaceXl),

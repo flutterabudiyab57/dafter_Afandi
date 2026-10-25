@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../theme/app_tokens.dart';
+import 'app_illustration.dart';
 
 /// What a section will hold, shown until the feature arrives (FR-009).
 /// No sample data.
@@ -9,12 +10,16 @@ class SectionPlaceholder extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.body,
+    this.illustration,
     super.key,
   });
 
   final IconData icon;
   final String title;
   final String body;
+
+  /// Shown instead of [icon] when given.
+  final AppIllustration? illustration;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +31,16 @@ class SectionPlaceholder extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: tokens.spaceXl),
-          ExcludeSemantics(
-            child: Icon(
-              icon,
-              size: tokens.spaceXl * 2,
-              color: theme.colorScheme.primary,
+          if (illustration case final kind?)
+            Center(child: Illustration(kind))
+          else
+            ExcludeSemantics(
+              child: Icon(
+                icon,
+                size: tokens.spaceXl * 2,
+                color: theme.colorScheme.primary,
+              ),
             ),
-          ),
           SizedBox(height: tokens.spaceLg),
           Text(
             title,

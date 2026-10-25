@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../core/l10n/generated/app_localizations.dart';
 import '../../../core/router/route_names.dart';
 import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/app_illustration.dart';
 import '../../settings/domain/app_locale.dart';
 import '../../settings/presentation/cubits/app_preferences_cubit.dart';
 
@@ -44,6 +45,8 @@ class WelcomeScreen extends StatelessWidget {
                 style: textTheme.headlineMedium,
                 textAlign: TextAlign.center,
               ),
+              SizedBox(height: tokens.spaceLg),
+              const Center(child: Illustration(AppIllustration.welcome)),
               SizedBox(height: tokens.spaceLg),
               Text(
                 l10n.welcomeTitle,

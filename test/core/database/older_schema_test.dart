@@ -82,7 +82,7 @@ void main() {
       versionSource: _Version(),
     );
 
-    expect(shown.single, isA<App>());
+    expect(shown.last, isA<App>());
     final db = sl<AppDatabase>();
     final tables = await db
         .customSelect(

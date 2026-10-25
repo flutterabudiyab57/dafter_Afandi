@@ -9,6 +9,7 @@ import 'package:daftar_afandi/core/database/schema_constants.dart';
 import 'package:daftar_afandi/core/di/service_locator.dart';
 import 'package:daftar_afandi/core/utils/clock.dart';
 import 'package:daftar_afandi/core/utils/id.dart';
+import 'package:daftar_afandi/core/widgets/starting_app.dart';
 import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
@@ -73,7 +74,7 @@ void main() {
     await run();
 
     expect(
-      shown.single,
+      shown.last,
       isA<App>()
           .having((a) => a.preferences.state.locale, 'locale', AppLocale.ar)
           .having((a) => a.appVersion.display, 'version', '1.0.0 (1)'),
@@ -88,7 +89,10 @@ void main() {
     await createV1File();
     await run();
 
-    expect(shown.single, isA<App>());
+    expect(shown.last, isA<App>());
+    // The starting screen comes first, then the app replaces it.
+    expect(shown, hasLength(2));
+    expect(shown.first, isA<StartingApp>());
     expect(executorCalls, 1);
   });
 
@@ -102,7 +106,7 @@ void main() {
 
       await run();
 
-      expect(shown.single, updateRequired(UpdateRequiredKind.tooNew));
+      expect(shown.last, updateRequired(UpdateRequiredKind.tooNew));
       expect(executorCalls, 0);
       expect(sl.isRegistered<AppDatabase>(), isFalse);
       expect(dbFile.readAsBytesSync(), before);
@@ -117,7 +121,7 @@ void main() {
 
     await run();
 
-    expect(shown.single, updateRequired(UpdateRequiredKind.unrecognized));
+    expect(shown.last, updateRequired(UpdateRequiredKind.unrecognized));
     expect(executorCalls, 0);
     expect(dbFile.readAsBytesSync(), before);
   });
@@ -133,7 +137,7 @@ void main() {
         ),
       );
 
-      expect(shown.single, isA<StartupErrorApp>());
+      expect(shown.last, isA<StartupErrorApp>());
       expect(sl.isRegistered<AppDatabase>(), isFalse);
     },
   );
@@ -145,7 +149,7 @@ void main() {
       executorFactory: executorFactory,
     );
 
-    expect(shown.single, isA<StartupErrorApp>());
+    expect(shown.last, isA<StartupErrorApp>());
     expect(executorCalls, 0);
   });
 

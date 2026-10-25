@@ -340,33 +340,33 @@ finished.
 its illustration, title and text in ar at 200% in both themes. Data safety shows two banners on iOS
 and one on Android.
 
-- [ ] T054 [US4] `lib/core/widgets/starting_app.dart` (new): `StartingApp` on `BlockingAppShell`
+- [X] T054 [US4] `lib/core/widgets/starting_app.dart` (new): `StartingApp` on `BlockingAppShell`
   (Arabic, RTL) with the logo `assets/images/logo.png`, a `LinearProgressIndicator` and
   `openingDataLabel`. `lib/bootstrap.dart` runs it with `runApp` before opening the database, then
   replaces it with the real app or a blocking app. The native splash is unchanged (research R12).
-- [ ] T055 [P] [US4] `lib/core/widgets/startup_error_app.dart` and `update_required_app.dart`:
+- [X] T055 [P] [US4] `lib/core/widgets/startup_error_app.dart` and `update_required_app.dart`:
   - **Startup error:** content through `ResultView` with `errorDatabase`, the existing title and
     `startupErrorBody`, and its existing action if any.
   - **Update required:** `updateRequired` with `updateRequiredTitle` / `updateRequiredBody`.
   - **Check:** `lib/core/widgets/blocking_app_shell.dart` must provide the theme (light and dark)
     so the illustration switches.
-- [ ] T056 [P] [US4] `lib/features/onboarding/presentation/welcome_screen.dart`: `Illustration(welcome)`
+- [X] T056 [P] [US4] `lib/features/onboarding/presentation/welcome_screen.dart`: `Illustration(welcome)`
   above the title, inside the scroll view.
-- [ ] T057 [P] [US4] `lib/features/settings/presentation/data_safety_screen.dart`:
+- [X] T057 [P] [US4] `lib/features/settings/presentation/data_safety_screen.dart`:
   - `Illustration(dataSafety)`;
   - an info `StatusBanner` with `dataSafetyLocalOnly`;
   - on iOS only (`defaultTargetPlatform == TargetPlatform.iOS`), a warning banner with
     `dataSafetyIosManual`.
   Existing texts are reused.
-- [ ] T058 [P] [US3] Home (`lib/features/home/presentation/home_screen.dart`,
+- [X] T058 [P] [US3] Home (`lib/features/home/presentation/home_screen.dart`,
   `lib/features/products/presentation/widgets/low_stock_card.dart`):
   - **Low stock:** the card becomes a warning `StatusBanner` with `lowStockCount` and a
     `lowStockSeeAll` action that opens the filtered product list. It is hidden when the count is 0.
   - **Summary card:** gets radiusXl and a skeleton while loading.
-- [ ] T059 [P] [US4] Reports (`lib/features/reports/presentation/reports_screen.dart`,
+- [X] T059 [P] [US4] Reports (`lib/features/reports/presentation/reports_screen.dart`,
   `lib/core/widgets/section_placeholder.dart`): the placeholder gains `Illustration(emptyReports)`
   and keeps its current text. Do not add `reportsEmptyBody`.
-- [ ] T060 [US4] Tests:
+- [X] T060 [US4] Tests:
   - **Starting app:** `test/core/widgets/starting_app_test.dart` shows the logo, the progress bar
     and the text.
   - **Blocking apps:** `startup_error_app` and `update_required_app` tests at 200%, in light and
@@ -375,7 +375,7 @@ and one on Android.
   - **Data safety:** the banners with `debugDefaultTargetPlatformOverride` set to iOS and to
     Android (US4-3).
   - **Home:** the banner opens the filtered list (US3-1).
-- [ ] T061 Gate: analyze clean and all tests green. Commit `feat(005): phase 6 whole-app screens`
+- [X] T061 Gate: analyze clean and all tests green. Commit `feat(005): phase 6 whole-app screens`
  .
 
 ## Phase 7: Polish (US5, cross-cutting)

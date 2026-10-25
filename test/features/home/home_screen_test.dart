@@ -78,8 +78,10 @@ void main() {
           final count = find.text(l10n.lowStockCount(7, countText));
           expect(count, findsOneWidget);
 
-          await tester.ensureVisible(count);
-          await tester.tap(count);
+          // The warning banner carries the count and "See all" (US3-1).
+          final seeAll = find.text(l10n.lowStockSeeAll);
+          await tester.ensureVisible(seeAll);
+          await tester.tap(seeAll);
           await tester.pumpAndSettle();
           expect(routerOf(tester).state.uri.toString(), RoutePaths.productsLow);
           // The list is filtered to low stock.

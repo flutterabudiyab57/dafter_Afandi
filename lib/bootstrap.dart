@@ -11,6 +11,7 @@ import 'core/database/schema_errors.dart';
 import 'core/database/schema_guard.dart';
 import 'core/di/service_locator.dart';
 import 'core/theme/font_license.dart';
+import 'core/widgets/starting_app.dart';
 import 'core/widgets/startup_error_app.dart';
 import 'core/widgets/update_required_app.dart';
 import 'features/customers/presentation/customers_cubits.dart';
@@ -37,6 +38,8 @@ Future<void> bootstrap({
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   registerFontLicenses();
+  // Replaced below by the app or a blocking app (research R12).
+  runAppFn(const StartingApp());
 
   final Directory dir;
   final SchemaInspection inspection;

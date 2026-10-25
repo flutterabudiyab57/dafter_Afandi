@@ -51,7 +51,7 @@ void main() {
           }
         },
       );
-      expect(screens, 59);
+      expect(screens, 60); // 005 adds the starting app.
       expect(checked, greaterThan(30), reason: 'the walk found the buttons');
       semantics.dispose();
     });
@@ -68,8 +68,8 @@ void main() {
           if (screen == '/welcome') {
             expect(find.bySemanticsLabel(label), findsOneWidget);
           }
-          if (screen.contains('App')) {
-            // The blocking apps are Arabic only.
+          if (screen == 'StartingApp') {
+            // The starting app is Arabic only.
             expect(find.bySemanticsLabel('شعار دفتر أفندي'), findsOneWidget);
           }
         },

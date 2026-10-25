@@ -27,7 +27,7 @@ void main() {
               expect(tester.takeException(), isNull, reason: screen);
             },
           );
-          expect(screens, 59);
+          expect(screens, 60); // 005 adds the starting app.
         });
       }
     }

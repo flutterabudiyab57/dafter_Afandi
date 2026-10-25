@@ -20,6 +20,7 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const LowStockBanner(),
           FilledButton.icon(
             icon: const Icon(Icons.inventory_2_outlined),
             label: Text(l10n.homeProductsAction),

@@ -1,6 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'app_illustration.dart';
 import 'blocking_app_shell.dart';
+import 'result_view.dart';
 
 enum UpdateRequiredKind { tooNew, unrecognized }
 
@@ -13,11 +15,14 @@ class UpdateRequiredApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlockingAppShell(
-      title: (l10n) => l10n.updateRequiredTitle,
-      body: (l10n) => switch (kind) {
-        UpdateRequiredKind.tooNew => l10n.updateRequiredBody,
-        UpdateRequiredKind.unrecognized => l10n.dataUnrecognizedBody,
-      },
+      builder: (context, l10n) => ResultView(
+        illustration: AppIllustration.updateRequired,
+        title: l10n.updateRequiredTitle,
+        message: switch (kind) {
+          UpdateRequiredKind.tooNew => l10n.updateRequiredBody,
+          UpdateRequiredKind.unrecognized => l10n.dataUnrecognizedBody,
+        },
+      ),
     );
   }
 }
