@@ -57,6 +57,8 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/fonts/OFL.txt
+    - assets/illustrations/light/
+    - assets/illustrations/dark/
 
   # Only the four weights the typography uses (400/500/600/700).
   fonts:

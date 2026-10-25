@@ -68,27 +68,27 @@ where a mark moves from an icon to a word, the test looks for the word.
 
 **Goal**: the 19 illustrations ship in light and dark at 1x, 2x and 3x and follow the theme.
 
-- [ ] T008 Copy the PNGs, keeping the `2.0x/` and `3.0x/` folders, 114 files in all:
+- [X] T008 Copy the PNGs, keeping the `2.0x/` and `3.0x/` folders, 114 files in all:
   - `docs/design/assets/illustrations/png/light/` → `assets/illustrations/light/`;
   - `docs/design/assets/illustrations/png/dark/` → `assets/illustrations/dark/`.
   Do not copy the SVGs.
-- [ ] T009 `pubspec.yaml`: list `assets/illustrations/light/` and `assets/illustrations/dark/`
+- [X] T009 `pubspec.yaml`: list `assets/illustrations/light/` and `assets/illustrations/dark/`
   under `flutter: assets:` (approved, Q3). Touch nothing else in the file.
-- [ ] T010 `lib/core/widgets/app_illustration.dart` (research R4):
+- [X] T010 `lib/core/widgets/app_illustration.dart` (research R4):
   - **Enum:** `enum AppIllustration` with the 19 values in data-model order, and
     `String assetPath(Brightness)`, which returns `assets/illustrations/{light|dark}/<snake_case>.png`.
   - **Widget:** `Illustration(this.kind, {super.key, this.width})`. Width defaults to
     `context.tokens.illustrationWidth` and height = width × 200 / 240. It shows the image with
     `Image.asset`, `excludeFromSemantics: true`, and an `errorBuilder` that returns a `SizedBox` of
     the same size.
-- [ ] T011 [P] `test/core/assets/illustrations_test.dart`: every value has its light and dark file
+- [X] T011 [P] `test/core/assets/illustrations_test.dart`: every value has its light and dark file
   at 1x, `2.0x/` and `3.0x/` on disk (`File(...).existsSync()`).
-- [ ] T012 [P] `test/core/widgets/app_illustration_test.dart`:
+- [X] T012 [P] `test/core/widgets/app_illustration_test.dart`:
   - the light path shows in the light theme and the dark path in the dark theme;
   - the image is excluded from semantics;
   - a missing asset renders an empty box of the same size with no exception;
   - `assetPath` gives the snake_case name for `emptyProducts` and `warningLowStock`.
-- [ ] T013 Gate: analyze clean and all tests green. Commit `feat(005): phase 2 illustrations`
+- [X] T013 Gate: analyze clean and all tests green. Commit `feat(005): phase 2 illustrations`
  .
 
 ## Phase 3: Shared widgets (Foundational)
