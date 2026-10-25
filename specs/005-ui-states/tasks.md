@@ -268,24 +268,24 @@ behave the same in every form.
 shows "جارٍ الحفظ…" and can't be tapped twice. Credit with no customer shows a warning banner with
 "اختيار". Back on a changed form asks "تجاهل التغييرات؟", and on an unchanged form it leaves at once.
 
-- [ ] T043 [US3] `hasUnsavedChanges` getter (research R9; data-model "Form cubits"): true when a
+- [X] T043 [US3] `hasUnsavedChanges` getter (research R9; data-model "Form cubits"): true when a
   field differs from the snapshot taken when the form became editable (after loading in edit
   mode), and false once saved.
   - **Cubits:** `product_form_cubit.dart`, `opening_stock_cubit.dart`,
     `stock_adjustment_cubit.dart`, `customer_form_cubit.dart`, `payment_cubit.dart`,
     `supplier_form_cubit.dart`, `supplier_payment_cubit.dart` and `shop_profile_form_cubit.dart`.
   - **Tests:** bloc tests for unchanged, changed, changed back and saved.
-- [ ] T044 [US3] Wrap those forms' screens in `UnsavedChangesGuard(dirty: cubit.hasUnsavedChanges)`:
+- [X] T044 [US3] Wrap those forms' screens in `UnsavedChangesGuard(dirty: cubit.hasUnsavedChanges)`:
   - product form, opening stock and stock adjustment;
   - customer form and payment;
   - supplier form and payment;
   - shop profile edit.
   New sale and new purchase keep `hasUnsavedLines` and their own wording, and only move their
   dialog to `showConfirmDialog` (warning, destructive).
-- [ ] T045 [US1] Replace each form's `FilledButton(onPressed: saving ? null : …)` with
+- [X] T045 [US1] Replace each form's `FilledButton(onPressed: saving ? null : …)` with
   `SaveButton(label, savingLabel: l10n.savingLabel, saving, onPressed)`. The forms are those in
   T044, plus new sale, new purchase, quick add product and onboarding shop details.
-- [ ] T046 [US1] Save errors become an error `StatusBanner` at the top of the form, replacing the
+- [X] T046 [US1] Save errors become an error `StatusBanner` at the top of the form, replacing the
   red text above Save (research R11). The page scrolls to the top when a save fails, and the typed
   values stay.
   - **Errors:** `errorSaveFailed`, and product, customer or supplier no longer available.
@@ -293,20 +293,20 @@ shows "جارٍ الحفظ…" and can't be tapped twice. Credit with no custome
     `customer_text.dart`, `supplier_text.dart` and `shop_profile_error_text.dart` keep producing
     the strings; only where they are shown changes.
   - **Field errors:** they stay under their fields.
-- [ ] T047 [US3] New sale (`new_sale_screen.dart`): `errorCreditNeedsCustomer` and
+- [X] T047 [US3] New sale (`new_sale_screen.dart`): `errorCreditNeedsCustomer` and
   `errorPaidTooLarge` show as a warning `StatusBanner` at the top. They still show their field
   error.
   - **Credit with no customer:** title `creditNeedsCustomerTitle`, action `chooseAction`, which
     opens the customer picker.
   - **Empty sale:** `saleEmpty` stays inline.
-- [ ] T048 [US3] New purchase (`new_purchase_screen.dart`): the same as T047 with the supplier and
+- [X] T048 [US3] New purchase (`new_purchase_screen.dart`): the same as T047 with the supplier and
   its picker, reusing `chooseAction`.
-- [ ] T049 [US1] Move every remaining `SnackBar(` call to `showAppSnackBar` with a tone (success for
+- [X] T049 [US1] Move every remaining `SnackBar(` call to `showAppSnackBar` with a tone (success for
   saves, payments, adjustments, voids and restores; error for failures). The calls are in the 17
   files from `grep -rln "SnackBar(" lib`. After this, that grep finds only
   `lib/core/widgets/app_snack_bar.dart`. `saleSaved` keeps its flow: snackbar, then the invoice
   (Q2).
-- [ ] T050 [US1] Move confirmation dialogs to `showConfirmDialog`, with the destructive choice last:
+- [X] T050 [US1] Move confirmation dialogs to `showConfirmDialog`, with the destructive choice last:
   - **Void dialogs:** the invoice and purchase void (`invoice_screen.dart`, `purchase_screen.dart`)
     use the error tone and `destructive: true`, with `invoiceVoidTitle`/`invoiceVoidBody` and the
     purchase equivalents.
@@ -317,10 +317,10 @@ shows "جارٍ الحفظ…" and can't be tapped twice. Credit with no custome
     and the categories dialog. Their texts stay.
   - **After voiding:** a snackbar, then the voided banner in the `voided` tone on the invoice and
     the purchase.
-- [ ] T051 [US1] Stock adjustment: `adjustSaved` shows as a success snackbar (or the banner the
+- [X] T051 [US1] Stock adjustment: `adjustSaved` shows as a success snackbar (or the banner the
   handoff names, if the screen stays open). Opening stock does the same with its existing saved
   key.
-- [ ] T052 Screen tests in ar and en at 1.0 and 2.0:
+- [X] T052 Screen tests in ar and en at 1.0 and 2.0:
   - **Saving:** a failed save keeps values and shows the top banner (US1-3); the save button shows
     "جارٍ الحفظ…" and a second tap does nothing (US1-4, SC-004).
   - **Void:** the dialog's destructive choice is last and the voided banner shows (US1-5).
@@ -329,7 +329,7 @@ shows "جارٍ الحفظ…" and can't be tapped twice. Credit with no custome
   - **Unsaved changes:** a changed form asks and an unchanged one leaves (US3-4).
   - **New purchase:** the discard prompt still works.
   All existing 003 and 004 flow tests stay green.
-- [ ] T053 Gate: analyze clean and all tests green. Commit `feat(005): phase 5 forms`.
+- [X] T053 Gate: analyze clean and all tests green. Commit `feat(005): phase 5 forms`.
 
 ## Phase 6: Whole-app screens (US4, US3 home)
 

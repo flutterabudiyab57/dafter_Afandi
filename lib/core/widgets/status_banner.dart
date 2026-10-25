@@ -144,3 +144,45 @@ class StatusBanner extends StatelessWidget {
     );
   }
 }
+
+/// The banner on a voided invoice or purchase, in the voided colors.
+class VoidedBanner extends StatelessWidget {
+  const VoidedBanner({required this.text, super.key});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = context.tokens;
+    final colors = context.appColors;
+    return Semantics(
+      container: true,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.voidedContainer,
+          borderRadius: BorderRadius.circular(tokens.radiusMd),
+        ),
+        child: Padding(
+          padding: EdgeInsetsDirectional.symmetric(
+            horizontal: tokens.spaceMd,
+            vertical: tokens.spaceMd * 14 / 16,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ExcludeSemantics(child: Icon(Icons.block, color: colors.voided)),
+              SizedBox(width: tokens.spaceSm + tokens.spaceXs),
+              Expanded(
+                child: Text(
+                  text,
+                  style: Theme.of(context).textTheme.titleSmall
+                      ?.copyWith(color: colors.voided),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

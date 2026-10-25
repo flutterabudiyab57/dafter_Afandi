@@ -4,6 +4,8 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../core/l10n/generated/app_localizations.dart';
 import '../../../core/theme/app_tokens.dart';
+import '../../../core/widgets/save_button.dart';
+import '../../../core/widgets/status_banner.dart';
 import 'cubits/shop_profile_form_cubit.dart';
 
 enum DataSafetyMode { onboarding, settings }
@@ -68,18 +70,14 @@ class _FinishButton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (status == ShopProfileFormStatus.failed) ...[
-          Text(
-            l10n.errorSaveFailed,
-            style: Theme.of(context).textTheme.bodyMedium
-                ?.copyWith(color: Theme.of(context).colorScheme.error),
-          ),
+          StatusBanner(tone: StatusTone.error, title: l10n.errorSaveFailed),
           SizedBox(height: tokens.spaceMd),
         ],
-        FilledButton(
-          onPressed: saving
-              ? null
-              : () => context.read<ShopProfileFormCubit>().submit(),
-          child: Text(l10n.finishAction),
+        SaveButton(
+          label: l10n.finishAction,
+          savingLabel: l10n.savingLabel,
+          saving: saving,
+          onPressed: () => context.read<ShopProfileFormCubit>().submit(),
         ),
       ],
     );

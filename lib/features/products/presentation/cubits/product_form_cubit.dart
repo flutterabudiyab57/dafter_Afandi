@@ -171,6 +171,40 @@ class ProductFormCubit extends Cubit<ProductFormState> {
     if (mode == ProductFormMode.edit) unawaited(_load());
   }
 
+  /// The field values when the form became editable (research R9).
+  Object? _baseline;
+
+  /// True when a field differs from when the form became editable, until
+  /// it is saved (research R9).
+  bool get hasUnsavedChanges =>
+      state.status != ProductFormStatus.saved &&
+      _baseline != null &&
+      _fields(state) != _baseline;
+
+  static Object _fields(ProductFormState s) => (
+    s.name,
+    s.unit,
+    s.price,
+    s.categoryId,
+    s.barcode,
+    s.sku,
+    s.lowStock,
+    s.openingQty,
+    s.openingCost,
+  );
+
+  @override
+  void onChange(Change<ProductFormState> change) {
+    super.onChange(change);
+    // Create mode opens editable; edit mode once the record is read.
+    if (_baseline != null) return;
+    if (change.currentState.status != ProductFormStatus.loading) {
+      _baseline = _fields(change.currentState);
+    } else if (change.nextState.status != ProductFormStatus.loading) {
+      _baseline = _fields(change.nextState);
+    }
+  }
+
   final ProductRepository _products;
   final CategoryRepository _categories;
   final ProductFormMode mode;

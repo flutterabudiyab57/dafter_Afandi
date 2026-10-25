@@ -4,8 +4,14 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/status_banner.dart';
+import '../../../../core/widgets/unsaved_changes_guard.dart';
 import '../../../customers/domain/customer_errors.dart';
 import '../../../customers/domain/payment.dart';
 import '../../../customers/presentation/cubits/customers_list_cubit.dart';
@@ -24,23 +30,28 @@ class SupplierPaymentScreen extends StatelessWidget {
     return BlocListener<SupplierPaymentCubit, SupplierPaymentState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: _onStatus,
-      child: Scaffold(
-        appBar: AppBar(title: Text(l10n.supplierPaymentTitle)),
-        body: BlocBuilder<SupplierPaymentCubit, SupplierPaymentState>(
-          buildWhen: (a, b) =>
-              (a.status == SupplierPaymentStatus.loading) !=
-                  (b.status == SupplierPaymentStatus.loading) ||
-              (a.status == SupplierPaymentStatus.notFound) !=
-                  (b.status == SupplierPaymentStatus.notFound),
-          builder: (context, state) => switch (state.status) {
-            SupplierPaymentStatus.loading => const Center(
-              child: CircularProgressIndicator(),
+      child: BlocBuilder<SupplierPaymentCubit, SupplierPaymentState>(
+        builder: (context, _) => UnsavedChangesGuard(
+          dirty: context.read<SupplierPaymentCubit>().hasUnsavedChanges,
+          child: Scaffold(
+            appBar: AppBar(title: Text(l10n.supplierPaymentTitle)),
+            body: BlocBuilder<SupplierPaymentCubit, SupplierPaymentState>(
+              buildWhen: (a, b) =>
+                  (a.status == SupplierPaymentStatus.loading) !=
+                      (b.status == SupplierPaymentStatus.loading) ||
+                  (a.status == SupplierPaymentStatus.notFound) !=
+                      (b.status == SupplierPaymentStatus.notFound),
+              builder: (context, state) => switch (state.status) {
+                SupplierPaymentStatus.loading => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                SupplierPaymentStatus.notFound => Center(
+                  child: Text(l10n.supplierNotFound),
+                ),
+                _ => const _Form(),
+              },
             ),
-            SupplierPaymentStatus.notFound => Center(
-              child: Text(l10n.supplierNotFound),
-            ),
-            _ => const _Form(),
-          },
+          ),
         ),
       ),
     );
@@ -54,28 +65,15 @@ class SupplierPaymentScreen extends StatelessWidget {
     final cubit = context.read<SupplierPaymentCubit>();
     switch (state.status) {
       case SupplierPaymentStatus.confirmOverpay:
-        final ok = await showDialog<bool>(
-          context: context,
-          builder: (dialog) => AlertDialog(
-            title: Text(l10n.supplierOverpayTitle),
-            content: SingleChildScrollView(
-              child: Text(
-                l10n.supplierOverpayBody(
-                  context.money(state.supplierOwesAfterPiasters),
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialog).pop(false),
-                child: Text(l10n.backAction),
-              ),
-              FilledButton(
-                onPressed: () => Navigator.of(dialog).pop(true),
-                child: Text(l10n.confirmAction),
-              ),
-            ],
+        final ok = await showConfirmDialog(
+          context,
+          tone: StatusTone.warning,
+          title: l10n.supplierOverpayTitle,
+          message: l10n.supplierOverpayBody(
+            context.money(state.supplierOwesAfterPiasters),
           ),
+          confirmLabel: l10n.confirmAction,
+          cancelLabel: l10n.backAction,
         );
         if (ok ?? false) {
           await cubit.confirmOverpay();
@@ -83,13 +81,10 @@ class SupplierPaymentScreen extends StatelessWidget {
           cubit.cancelOverpay();
         }
       case SupplierPaymentStatus.saved:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.paymentSaved(
-                context.supplierPaymentNumber(state.paymentNumber!),
-              ),
-            ),
+        showAppSnackBar(
+          context,
+          l10n.paymentSaved(
+            context.supplierPaymentNumber(state.paymentNumber!),
           ),
         );
         context.pop();
@@ -138,6 +133,15 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (refusal != null ||
+                state.status == SupplierPaymentStatus.failed) ...[
+              FormErrorBanner(
+                title: refusal == null
+                    ? l10n.errorSaveFailed
+                    : context.supplierPaymentError(refusal),
+              ),
+              gap,
+            ],
             Text(state.supplierName, style: theme.textTheme.titleLarge),
             SizedBox(height: tokens.spaceXs),
             Text(
@@ -182,23 +186,11 @@ class _FormState extends State<_Form> {
               ),
             ),
             SizedBox(height: tokens.spaceXl),
-            if (refusal != null ||
-                state.status == SupplierPaymentStatus.failed) ...[
-              Text(
-                refusal == null
-                    ? l10n.errorSaveFailed
-                    : context.supplierPaymentError(refusal),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              gap,
-            ],
-            FilledButton(
-              onPressed: state.status == SupplierPaymentStatus.saving
-                  ? null
-                  : _cubit.submit,
-              child: Text(l10n.saveAction),
+            SaveButton(
+              label: l10n.saveAction,
+              savingLabel: l10n.savingLabel,
+              saving: state.status == SupplierPaymentStatus.saving,
+              onPressed: _cubit.submit,
             ),
           ],
         ),

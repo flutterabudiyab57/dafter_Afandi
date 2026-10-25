@@ -4,6 +4,7 @@ import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/result.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/status_banner.dart';
 import '../../domain/customer_errors.dart';
 import '../../domain/payment.dart';
 import 'customer_text.dart';
@@ -57,7 +58,12 @@ class _ReasonDialogState extends State<_ReasonDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    // The same look as showConfirmDialog: the error tone, as a void or a
+    // cancel cannot be undone, with the destructive choice last.
+    final tone = StatusToneColors.of(context, StatusTone.error);
     return AlertDialog(
+      icon: ExcludeSemantics(child: Icon(tone.icon, color: tone.fill)),
       title: Text(widget.title),
       content: SingleChildScrollView(
         child: Column(
@@ -92,7 +98,14 @@ class _ReasonDialogState extends State<_ReasonDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.backAction),
         ),
-        FilledButton(onPressed: _submit, child: Text(widget.action)),
+        FilledButton(
+          onPressed: _submit,
+          style: FilledButton.styleFrom(
+            backgroundColor: scheme.error,
+            foregroundColor: scheme.onError,
+          ),
+          child: Text(widget.action),
+        ),
       ],
     );
   }

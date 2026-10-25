@@ -5,8 +5,13 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/status_banner.dart';
+import '../../../../core/widgets/unsaved_changes_guard.dart';
 import '../../../customers/domain/customer_errors.dart';
 import '../../../customers/presentation/cubits/customers_list_cubit.dart';
 import '../cubits/supplier_form_cubit.dart';
@@ -27,8 +32,10 @@ class SupplierFormScreen extends StatelessWidget {
           a.status != b.status && b.status == SupplierFormStatus.saved,
       listener: (context, state) {
         if (state.nameExistsElsewhere) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.supplierNameExistsNotice)),
+          showAppSnackBar(
+            context,
+            l10n.supplierNameExistsNotice,
+            tone: StatusTone.warning,
           );
         }
         if (create) {
@@ -37,25 +44,32 @@ class SupplierFormScreen extends StatelessWidget {
           context.pop();
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(create ? l10n.supplierAddTitle : l10n.supplierEditTitle),
-        ),
-        body: BlocBuilder<SupplierFormCubit, SupplierFormState>(
-          buildWhen: (a, b) =>
-              (a.status == SupplierFormStatus.loading) !=
-                  (b.status == SupplierFormStatus.loading) ||
-              (a.status == SupplierFormStatus.notFound) !=
-                  (b.status == SupplierFormStatus.notFound),
-          builder: (context, state) => switch (state.status) {
-            SupplierFormStatus.loading => const Center(
-              child: CircularProgressIndicator(),
+      child: BlocBuilder<SupplierFormCubit, SupplierFormState>(
+        builder: (context, _) => UnsavedChangesGuard(
+          dirty: context.read<SupplierFormCubit>().hasUnsavedChanges,
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                create ? l10n.supplierAddTitle : l10n.supplierEditTitle,
+              ),
             ),
-            SupplierFormStatus.notFound => Center(
-              child: Text(l10n.supplierNotFound),
+            body: BlocBuilder<SupplierFormCubit, SupplierFormState>(
+              buildWhen: (a, b) =>
+                  (a.status == SupplierFormStatus.loading) !=
+                      (b.status == SupplierFormStatus.loading) ||
+                  (a.status == SupplierFormStatus.notFound) !=
+                      (b.status == SupplierFormStatus.notFound),
+              builder: (context, state) => switch (state.status) {
+                SupplierFormStatus.loading => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                SupplierFormStatus.notFound => Center(
+                  child: Text(l10n.supplierNotFound),
+                ),
+                _ => const _Form(),
+              },
             ),
-            _ => const _Form(),
-          },
+          ),
         ),
       ),
     );
@@ -105,6 +119,10 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (state.status == SupplierFormStatus.failed) ...[
+              FormErrorBanner(title: l10n.errorSaveFailed),
+              gap,
+            ],
             TextField(
               controller: _name,
               onChanged: _cubit.nameChanged,
@@ -196,20 +214,11 @@ class _FormState extends State<_Form> {
               ),
             ],
             SizedBox(height: tokens.spaceXl),
-            if (state.status == SupplierFormStatus.failed) ...[
-              Text(
-                l10n.errorSaveFailed,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              gap,
-            ],
-            FilledButton(
-              onPressed: state.status == SupplierFormStatus.saving
-                  ? null
-                  : _cubit.submit,
-              child: Text(l10n.saveAction),
+            SaveButton(
+              label: l10n.saveAction,
+              savingLabel: l10n.savingLabel,
+              saving: state.status == SupplierFormStatus.saving,
+              onPressed: _cubit.submit,
             ),
           ],
         ),

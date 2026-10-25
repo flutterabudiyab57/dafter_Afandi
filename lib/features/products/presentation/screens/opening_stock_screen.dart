@@ -5,7 +5,10 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/unsaved_changes_guard.dart';
 import '../../domain/product_errors.dart';
 import '../cubits/opening_stock_cubit.dart';
 import '../widgets/opening_confirm_dialog.dart';
@@ -22,16 +25,21 @@ class OpeningStockScreen extends StatelessWidget {
     return BlocListener<OpeningStockCubit, OpeningStockState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: _onStatus,
-      child: Scaffold(
-        appBar: AppBar(title: Text(l10n.productSetOpeningAction)),
-        body: BlocBuilder<OpeningStockCubit, OpeningStockState>(
-          buildWhen: (a, b) =>
-              (a.status == OpeningStockStatus.loading) !=
-              (b.status == OpeningStockStatus.loading),
-          builder: (context, state) =>
-              state.status == OpeningStockStatus.loading
-              ? const Center(child: CircularProgressIndicator())
-              : const _Form(),
+      child: BlocBuilder<OpeningStockCubit, OpeningStockState>(
+        builder: (context, _) => UnsavedChangesGuard(
+          dirty: context.read<OpeningStockCubit>().hasUnsavedChanges,
+          child: Scaffold(
+            appBar: AppBar(title: Text(l10n.productSetOpeningAction)),
+            body: BlocBuilder<OpeningStockCubit, OpeningStockState>(
+              buildWhen: (a, b) =>
+                  (a.status == OpeningStockStatus.loading) !=
+                  (b.status == OpeningStockStatus.loading),
+              builder: (context, state) =>
+                  state.status == OpeningStockStatus.loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : const _Form(),
+            ),
+          ),
         ),
       ),
     );
@@ -101,6 +109,10 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (state.status == OpeningStockStatus.failed) ...[
+              FormErrorBanner(title: l10n.errorSaveFailed),
+              gap,
+            ],
             Text(l10n.productOpeningHint, style: theme.textTheme.bodyMedium),
             gap,
             QuantityField(
@@ -118,20 +130,11 @@ class _FormState extends State<_Form> {
               textInputAction: TextInputAction.done,
             ),
             SizedBox(height: tokens.spaceXl),
-            if (state.status == OpeningStockStatus.failed) ...[
-              Text(
-                l10n.errorSaveFailed,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              gap,
-            ],
-            FilledButton(
-              onPressed: state.status == OpeningStockStatus.saving
-                  ? null
-                  : _cubit.submit,
-              child: Text(l10n.saveAction),
+            SaveButton(
+              label: l10n.saveAction,
+              savingLabel: l10n.savingLabel,
+              saving: state.status == OpeningStockStatus.saving,
+              onPressed: _cubit.submit,
             ),
           ],
         ),

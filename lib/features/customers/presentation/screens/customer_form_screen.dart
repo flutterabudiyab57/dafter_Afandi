@@ -5,8 +5,13 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/status_banner.dart';
+import '../../../../core/widgets/unsaved_changes_guard.dart';
 import '../../domain/customer_errors.dart';
 import '../cubits/customer_form_cubit.dart';
 import '../cubits/customers_list_cubit.dart';
@@ -27,8 +32,10 @@ class CustomerFormScreen extends StatelessWidget {
           a.status != b.status && b.status == CustomerFormStatus.saved,
       listener: (context, state) {
         if (state.nameExistsElsewhere) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.customerNameExistsNotice)),
+          showAppSnackBar(
+            context,
+            l10n.customerNameExistsNotice,
+            tone: StatusTone.warning,
           );
         }
         if (create) {
@@ -37,25 +44,32 @@ class CustomerFormScreen extends StatelessWidget {
           context.pop();
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(create ? l10n.customerAddTitle : l10n.customerEditTitle),
-        ),
-        body: BlocBuilder<CustomerFormCubit, CustomerFormState>(
-          buildWhen: (a, b) =>
-              (a.status == CustomerFormStatus.loading) !=
-                  (b.status == CustomerFormStatus.loading) ||
-              (a.status == CustomerFormStatus.notFound) !=
-                  (b.status == CustomerFormStatus.notFound),
-          builder: (context, state) => switch (state.status) {
-            CustomerFormStatus.loading => const Center(
-              child: CircularProgressIndicator(),
+      child: BlocBuilder<CustomerFormCubit, CustomerFormState>(
+        builder: (context, _) => UnsavedChangesGuard(
+          dirty: context.read<CustomerFormCubit>().hasUnsavedChanges,
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                create ? l10n.customerAddTitle : l10n.customerEditTitle,
+              ),
             ),
-            CustomerFormStatus.notFound => Center(
-              child: Text(l10n.customerNotFound),
+            body: BlocBuilder<CustomerFormCubit, CustomerFormState>(
+              buildWhen: (a, b) =>
+                  (a.status == CustomerFormStatus.loading) !=
+                      (b.status == CustomerFormStatus.loading) ||
+                  (a.status == CustomerFormStatus.notFound) !=
+                      (b.status == CustomerFormStatus.notFound),
+              builder: (context, state) => switch (state.status) {
+                CustomerFormStatus.loading => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                CustomerFormStatus.notFound => Center(
+                  child: Text(l10n.customerNotFound),
+                ),
+                _ => const _Form(),
+              },
             ),
-            _ => const _Form(),
-          },
+          ),
         ),
       ),
     );
@@ -105,6 +119,10 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (state.status == CustomerFormStatus.failed) ...[
+              FormErrorBanner(title: l10n.errorSaveFailed),
+              gap,
+            ],
             TextField(
               controller: _name,
               onChanged: _cubit.nameChanged,
@@ -196,20 +214,11 @@ class _FormState extends State<_Form> {
               ),
             ],
             SizedBox(height: tokens.spaceXl),
-            if (state.status == CustomerFormStatus.failed) ...[
-              Text(
-                l10n.errorSaveFailed,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              gap,
-            ],
-            FilledButton(
-              onPressed: state.status == CustomerFormStatus.saving
-                  ? null
-                  : _cubit.submit,
-              child: Text(l10n.saveAction),
+            SaveButton(
+              label: l10n.saveAction,
+              savingLabel: l10n.savingLabel,
+              saving: state.status == CustomerFormStatus.saving,
+              onPressed: _cubit.submit,
             ),
           ],
         ),

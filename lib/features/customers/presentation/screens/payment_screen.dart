@@ -4,8 +4,14 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/status_banner.dart';
+import '../../../../core/widgets/unsaved_changes_guard.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/customer_errors.dart';
 import '../../domain/payment.dart';
@@ -23,23 +29,28 @@ class PaymentScreen extends StatelessWidget {
     return BlocListener<PaymentCubit, PaymentState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: _onStatus,
-      child: Scaffold(
-        appBar: AppBar(title: Text(l10n.paymentTitle)),
-        body: BlocBuilder<PaymentCubit, PaymentState>(
-          buildWhen: (a, b) =>
-              (a.status == PaymentStatus.loading) !=
-                  (b.status == PaymentStatus.loading) ||
-              (a.status == PaymentStatus.notFound) !=
-                  (b.status == PaymentStatus.notFound),
-          builder: (context, state) => switch (state.status) {
-            PaymentStatus.loading => const Center(
-              child: CircularProgressIndicator(),
+      child: BlocBuilder<PaymentCubit, PaymentState>(
+        builder: (context, _) => UnsavedChangesGuard(
+          dirty: context.read<PaymentCubit>().hasUnsavedChanges,
+          child: Scaffold(
+            appBar: AppBar(title: Text(l10n.paymentTitle)),
+            body: BlocBuilder<PaymentCubit, PaymentState>(
+              buildWhen: (a, b) =>
+                  (a.status == PaymentStatus.loading) !=
+                      (b.status == PaymentStatus.loading) ||
+                  (a.status == PaymentStatus.notFound) !=
+                      (b.status == PaymentStatus.notFound),
+              builder: (context, state) => switch (state.status) {
+                PaymentStatus.loading => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                PaymentStatus.notFound => Center(
+                  child: Text(l10n.customerNotFound),
+                ),
+                _ => const _Form(),
+              },
             ),
-            PaymentStatus.notFound => Center(
-              child: Text(l10n.customerNotFound),
-            ),
-            _ => const _Form(),
-          },
+          ),
         ),
       ),
     );
@@ -50,28 +61,15 @@ class PaymentScreen extends StatelessWidget {
     final cubit = context.read<PaymentCubit>();
     switch (state.status) {
       case PaymentStatus.confirmCredit:
-        final ok = await showDialog<bool>(
-          context: context,
-          builder: (dialog) => AlertDialog(
-            title: Text(l10n.paymentCreditTitle),
-            content: SingleChildScrollView(
-              child: Text(
-                l10n.paymentCreditBody(
-                  context.money(state.creditAfterPiasters),
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialog).pop(false),
-                child: Text(l10n.backAction),
-              ),
-              FilledButton(
-                onPressed: () => Navigator.of(dialog).pop(true),
-                child: Text(l10n.confirmAction),
-              ),
-            ],
+        final ok = await showConfirmDialog(
+          context,
+          tone: StatusTone.warning,
+          title: l10n.paymentCreditTitle,
+          message: l10n.paymentCreditBody(
+            context.money(state.creditAfterPiasters),
           ),
+          confirmLabel: l10n.confirmAction,
+          cancelLabel: l10n.backAction,
         );
         if (ok ?? false) {
           await cubit.confirmCredit();
@@ -79,12 +77,9 @@ class PaymentScreen extends StatelessWidget {
           cubit.cancelCredit();
         }
       case PaymentStatus.saved:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.paymentSaved(context.receiptNumber(state.receiptNumber!)),
-            ),
-          ),
+        showAppSnackBar(
+          context,
+          l10n.paymentSaved(context.receiptNumber(state.receiptNumber!)),
         );
         context.pop();
       default:
@@ -132,6 +127,14 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (refusal != null || state.status == PaymentStatus.failed) ...[
+              FormErrorBanner(
+                title: refusal == null
+                    ? l10n.errorSaveFailed
+                    : context.paymentError(refusal),
+              ),
+              gap,
+            ],
             Text(state.customerName, style: theme.textTheme.titleLarge),
             SizedBox(height: tokens.spaceXs),
             Text(
@@ -174,22 +177,11 @@ class _FormState extends State<_Form> {
               ),
             ),
             SizedBox(height: tokens.spaceXl),
-            if (refusal != null || state.status == PaymentStatus.failed) ...[
-              Text(
-                refusal == null
-                    ? l10n.errorSaveFailed
-                    : context.paymentError(refusal),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              gap,
-            ],
-            FilledButton(
-              onPressed: state.status == PaymentStatus.saving
-                  ? null
-                  : _cubit.submit,
-              child: Text(l10n.saveAction),
+            SaveButton(
+              label: l10n.saveAction,
+              savingLabel: l10n.savingLabel,
+              saving: state.status == PaymentStatus.saving,
+              onPressed: _cubit.submit,
             ),
           ],
         ),

@@ -74,6 +74,26 @@ class OpeningStockCubit extends Cubit<OpeningStockState> {
     unawaited(_load());
   }
 
+  /// The field values when the form became editable (research R9).
+  Object? _baseline;
+
+  /// True when a field differs from when the form became editable, until
+  /// it is saved (research R9).
+  bool get hasUnsavedChanges =>
+      state.status != OpeningStockStatus.saved &&
+      _baseline != null &&
+      _fields(state) != _baseline;
+
+  static Object _fields(OpeningStockState s) => (s.qty, s.cost);
+
+  @override
+  void onChange(Change<OpeningStockState> change) {
+    super.onChange(change);
+    // The fields never change while loading, so the state before the
+    // first change is the form as it opened.
+    _baseline ??= _fields(change.currentState);
+  }
+
   final ProductRepository _products;
   final InventoryRepository _inventory;
   final String productId;

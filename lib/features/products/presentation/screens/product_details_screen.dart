@@ -9,6 +9,7 @@ import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
+import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../domain/product.dart';
 import '../cubits/product_details_cubit.dart';
@@ -214,21 +215,13 @@ class _Actions extends StatelessWidget {
 
   Future<bool> _confirmArchive(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: SingleChildScrollView(child: Text(l10n.productArchiveConfirm)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.cancelAction),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(l10n.productArchiveAction),
-          ),
-        ],
-      ),
+    final ok = await showConfirmDialog(
+      context,
+      tone: StatusTone.warning,
+      title: null,
+      message: l10n.productArchiveConfirm,
+      confirmLabel: l10n.productArchiveAction,
+      cancelLabel: l10n.cancelAction,
     );
     return ok ?? false;
   }

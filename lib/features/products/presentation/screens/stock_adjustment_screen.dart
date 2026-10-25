@@ -5,8 +5,12 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/unsaved_changes_guard.dart';
 import '../../domain/product_errors.dart';
 import '../../domain/stock_entry.dart';
 import '../cubits/stock_adjustment_cubit.dart';
@@ -26,14 +30,9 @@ class StockAdjustmentScreen extends StatelessWidget {
       listenWhen: (a, b) =>
           a.status != b.status && b.status == StockAdjustmentStatus.saved,
       listener: (context, state) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.adjustSaved(
-                context.quantity(state.newStockMilli!, state.unit),
-              ),
-            ),
-          ),
+        showAppSnackBar(
+          context,
+          l10n.adjustSaved(context.quantity(state.newStockMilli!, state.unit)),
         );
         if (context.canPop()) {
           context.pop();
@@ -45,23 +44,28 @@ class StockAdjustmentScreen extends StatelessWidget {
           );
         }
       },
-      child: Scaffold(
-        appBar: AppBar(title: Text(l10n.adjustTitle)),
-        body: BlocBuilder<StockAdjustmentCubit, StockAdjustmentState>(
-          buildWhen: (a, b) =>
-              (a.status == StockAdjustmentStatus.loading) !=
-                  (b.status == StockAdjustmentStatus.loading) ||
-              (a.status == StockAdjustmentStatus.notFound) !=
-                  (b.status == StockAdjustmentStatus.notFound),
-          builder: (context, state) => switch (state.status) {
-            StockAdjustmentStatus.loading => const Center(
-              child: CircularProgressIndicator(),
+      child: BlocBuilder<StockAdjustmentCubit, StockAdjustmentState>(
+        builder: (context, _) => UnsavedChangesGuard(
+          dirty: context.read<StockAdjustmentCubit>().hasUnsavedChanges,
+          child: Scaffold(
+            appBar: AppBar(title: Text(l10n.adjustTitle)),
+            body: BlocBuilder<StockAdjustmentCubit, StockAdjustmentState>(
+              buildWhen: (a, b) =>
+                  (a.status == StockAdjustmentStatus.loading) !=
+                      (b.status == StockAdjustmentStatus.loading) ||
+                  (a.status == StockAdjustmentStatus.notFound) !=
+                      (b.status == StockAdjustmentStatus.notFound),
+              builder: (context, state) => switch (state.status) {
+                StockAdjustmentStatus.loading => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                StockAdjustmentStatus.notFound => Center(
+                  child: Text(l10n.productNotFound),
+                ),
+                _ => const _Form(),
+              },
             ),
-            StockAdjustmentStatus.notFound => Center(
-              child: Text(l10n.productNotFound),
-            ),
-            _ => const _Form(),
-          },
+          ),
         ),
       ),
     );
@@ -110,6 +114,10 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (state.status == StockAdjustmentStatus.failed) ...[
+              FormErrorBanner(title: l10n.errorSaveFailed),
+              gap,
+            ],
             Text(
               l10n.adjustOnHand(
                 context.quantity(state.onHandMilli, state.unit),
@@ -182,20 +190,11 @@ class _FormState extends State<_Form> {
               ),
               gap,
             ],
-            if (state.status == StockAdjustmentStatus.failed) ...[
-              Text(
-                l10n.errorSaveFailed,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              gap,
-            ],
-            FilledButton(
-              onPressed: state.status == StockAdjustmentStatus.saving
-                  ? null
-                  : _cubit.submit,
-              child: Text(l10n.saveAction),
+            SaveButton(
+              label: l10n.saveAction,
+              savingLabel: l10n.savingLabel,
+              saving: state.status == StockAdjustmentStatus.saving,
+              onPressed: _cubit.submit,
             ),
           ],
         ),

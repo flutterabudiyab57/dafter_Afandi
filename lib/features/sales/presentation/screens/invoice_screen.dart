@@ -4,8 +4,9 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
+import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
@@ -84,13 +85,10 @@ class _Body extends StatelessWidget {
           if (voidedAt != null)
             Padding(
               padding: EdgeInsetsDirectional.all(tokens.spaceMd),
-              child: Text(
-                l10n.invoiceVoidedOn(
+              child: VoidedBanner(
+                text: l10n.invoiceVoidedOn(
                   context.dateTime(voidedAt),
                   invoice.voidReason ?? '',
-                ),
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: context.appColors.voided,
                 ),
               ),
             ),
@@ -188,13 +186,21 @@ class _Body extends StatelessWidget {
       error = await cubit.voidSale(reason);
     } on Object {
       // The transaction rolled back, so nothing changed.
-      messenger.showSnackBar(SnackBar(content: Text(l10n.errorActionFailed)));
+      showAppSnackBarOn(
+        messenger,
+        l10n.errorActionFailed,
+        tone: StatusTone.error,
+      );
       rethrow;
     }
     if (error == null) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.invoiceVoided)));
+      showAppSnackBarOn(messenger, l10n.invoiceVoided);
     } else if (context.mounted) {
-      messenger.showSnackBar(SnackBar(content: Text(context.voidError(error))));
+      showAppSnackBarOn(
+        messenger,
+        context.voidError(error),
+        tone: StatusTone.error,
+      );
     }
   }
 }

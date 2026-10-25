@@ -4,8 +4,12 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/quantity.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/status_banner.dart';
 import '../../../products/domain/product_errors.dart';
 import '../../../products/presentation/cubits/product_form_cubit.dart';
 import '../../../products/presentation/widgets/product_error_text.dart';
@@ -25,9 +29,11 @@ class QuickAddProductPage extends StatelessWidget {
           a.status != b.status && b.status == ProductFormStatus.saved,
       listener: (context, state) {
         if (state.nameExistsElsewhere) {
-          ScaffoldMessenger.of(
+          showAppSnackBar(
             context,
-          ).showSnackBar(SnackBar(content: Text(l10n.productNameExistsNotice)));
+            l10n.productNameExistsNotice,
+            tone: StatusTone.warning,
+          );
         }
         Navigator.of(context).pop<String>(state.savedId);
       },
@@ -83,6 +89,10 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (state.status == ProductFormStatus.failed) ...[
+              FormErrorBanner(title: l10n.errorSaveFailed),
+              gap,
+            ],
             TextField(
               controller: _name,
               onChanged: _cubit.nameChanged,
@@ -132,20 +142,11 @@ class _FormState extends State<_Form> {
               ),
             ),
             SizedBox(height: tokens.spaceXl),
-            if (state.status == ProductFormStatus.failed) ...[
-              Text(
-                l10n.errorSaveFailed,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              gap,
-            ],
-            FilledButton(
-              onPressed: state.status == ProductFormStatus.saving
-                  ? null
-                  : _cubit.submit,
-              child: Text(l10n.saveAction),
+            SaveButton(
+              label: l10n.saveAction,
+              savingLabel: l10n.savingLabel,
+              saving: state.status == ProductFormStatus.saving,
+              onPressed: _cubit.submit,
             ),
           ],
         ),

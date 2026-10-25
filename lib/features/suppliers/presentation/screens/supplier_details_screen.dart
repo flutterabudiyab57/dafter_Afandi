@@ -10,7 +10,9 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
+import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/list_load_state.dart';
+import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
@@ -203,29 +205,15 @@ class _Actions extends StatelessWidget {
   Future<bool> _confirmArchive(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     final b = summary.balancePiasters;
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (dialog) => AlertDialog(
-        content: SingleChildScrollView(
-          child: Text(
-            b == 0
-                ? l10n.supplierArchiveConfirm
-                : l10n.supplierArchiveConfirmBalance(
-                    context.supplierBalance(b),
-                  ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialog).pop(false),
-            child: Text(l10n.cancelAction),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialog).pop(true),
-            child: Text(l10n.supplierArchiveAction),
-          ),
-        ],
-      ),
+    final ok = await showConfirmDialog(
+      context,
+      tone: StatusTone.warning,
+      title: null,
+      message: b == 0
+          ? l10n.supplierArchiveConfirm
+          : l10n.supplierArchiveConfirmBalance(context.supplierBalance(b)),
+      confirmLabel: l10n.supplierArchiveAction,
+      cancelLabel: l10n.cancelAction,
     );
     return ok ?? false;
   }
@@ -345,16 +333,22 @@ class _EntryRow extends StatelessWidget {
       error = await statement.cancelPayment(entry.id, reason);
     } on Object {
       // The transaction rolled back, so nothing changed.
-      messenger.showSnackBar(SnackBar(content: Text(l10n.errorActionFailed)));
+      showAppSnackBarOn(
+        messenger,
+        l10n.errorActionFailed,
+        tone: StatusTone.error,
+      );
       rethrow;
     }
     // The statement reloads after a cancel and may rebuild this row, so
     // the success message does not need its context.
     if (error == null) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.paymentCancelled)));
+      showAppSnackBarOn(messenger, l10n.paymentCancelled);
     } else if (context.mounted) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(context.supplierPaymentError(error))),
+      showAppSnackBarOn(
+        messenger,
+        context.supplierPaymentError(error),
+        tone: StatusTone.error,
       );
     }
   }

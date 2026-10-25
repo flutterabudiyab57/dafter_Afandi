@@ -2,6 +2,7 @@ import 'package:daftar_afandi/core/l10n/generated/app_localizations.dart';
 import 'package:daftar_afandi/core/router/route_names.dart';
 import 'package:daftar_afandi/core/utils/digits.dart';
 import 'package:daftar_afandi/core/utils/quantity.dart';
+import 'package:daftar_afandi/core/widgets/status_banner.dart';
 import 'package:daftar_afandi/features/customers/domain/ledger_entry.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
 import 'package:daftar_afandi/features/sales/domain/sale_draft.dart';
@@ -188,6 +189,12 @@ void main() {
           expect(store.balanceOf(ahmad), 2000);
           await open(tester, RoutePaths.saleInvoice(id));
           await tapVisible(tester, find.text(l10n.invoiceVoidAction));
+          // The destructive choice is last (US1-5).
+          final dialog = tester.widget<AlertDialog>(find.byType(AlertDialog));
+          expect(
+            (dialog.actions!.last as FilledButton).child,
+            isA<Text>().having((t) => t.data, 'data', l10n.invoiceVoidAction),
+          );
           await tester.tap(
             find.widgetWithText(FilledButton, l10n.invoiceVoidAction),
           );
@@ -198,6 +205,7 @@ void main() {
           expect(store.balanceOf(ahmad), 0);
           expect(find.textContaining('خطأ في العميل'), findsOneWidget);
           expect(find.text(l10n.invoiceVoidAction), findsNothing);
+          expect(find.byType(VoidedBanner), findsOneWidget);
           final types = store.statementOf(ahmad).map((e) => e.type).toList();
           expect(types, contains(LedgerEntryType.saleVoid));
           expect(types, contains(LedgerEntryType.reversal));

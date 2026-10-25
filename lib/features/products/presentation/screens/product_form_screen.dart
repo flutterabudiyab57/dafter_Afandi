@@ -6,8 +6,13 @@ import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/quantity.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/status_banner.dart';
+import '../../../../core/widgets/unsaved_changes_guard.dart';
 import '../../domain/product_errors.dart';
 import '../cubits/product_form_cubit.dart';
 import '../widgets/opening_confirm_dialog.dart';
@@ -28,25 +33,32 @@ class ProductFormScreen extends StatelessWidget {
     return BlocListener<ProductFormCubit, ProductFormState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: _onStatus,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(create ? l10n.productAddTitle : l10n.productEditTitle),
-        ),
-        body: BlocBuilder<ProductFormCubit, ProductFormState>(
-          buildWhen: (a, b) =>
-              (a.status == ProductFormStatus.loading) !=
-                  (b.status == ProductFormStatus.loading) ||
-              (a.status == ProductFormStatus.notFound) !=
-                  (b.status == ProductFormStatus.notFound),
-          builder: (context, state) => switch (state.status) {
-            ProductFormStatus.loading => const Center(
-              child: CircularProgressIndicator(),
+      child: BlocBuilder<ProductFormCubit, ProductFormState>(
+        builder: (context, _) => UnsavedChangesGuard(
+          dirty: context.read<ProductFormCubit>().hasUnsavedChanges,
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(
+                create ? l10n.productAddTitle : l10n.productEditTitle,
+              ),
             ),
-            ProductFormStatus.notFound => Center(
-              child: Text(l10n.productNotFound),
+            body: BlocBuilder<ProductFormCubit, ProductFormState>(
+              buildWhen: (a, b) =>
+                  (a.status == ProductFormStatus.loading) !=
+                      (b.status == ProductFormStatus.loading) ||
+                  (a.status == ProductFormStatus.notFound) !=
+                      (b.status == ProductFormStatus.notFound),
+              builder: (context, state) => switch (state.status) {
+                ProductFormStatus.loading => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                ProductFormStatus.notFound => Center(
+                  child: Text(l10n.productNotFound),
+                ),
+                _ => const _Form(),
+              },
             ),
-            _ => const _Form(),
-          },
+          ),
         ),
       ),
     );
@@ -69,9 +81,11 @@ class ProductFormScreen extends StatelessWidget {
       case ProductFormStatus.saved:
         final l10n = AppLocalizations.of(context);
         if (state.nameExistsElsewhere) {
-          ScaffoldMessenger.of(
+          showAppSnackBar(
             context,
-          ).showSnackBar(SnackBar(content: Text(l10n.productNameExistsNotice)));
+            l10n.productNameExistsNotice,
+            tone: StatusTone.warning,
+          );
         }
         if (cubit.mode == ProductFormMode.create) {
           context.pushReplacement(RoutePaths.productDetails(state.savedId!));
@@ -142,6 +156,10 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (state.status == ProductFormStatus.failed) ...[
+              FormErrorBanner(title: l10n.errorSaveFailed),
+              gap,
+            ],
             TextField(
               controller: _name,
               onChanged: _cubit.nameChanged,
@@ -262,20 +280,11 @@ class _FormState extends State<_Form> {
               ),
             ],
             SizedBox(height: tokens.spaceXl),
-            if (state.status == ProductFormStatus.failed) ...[
-              Text(
-                l10n.errorSaveFailed,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              gap,
-            ],
-            FilledButton(
-              onPressed: state.status == ProductFormStatus.saving
-                  ? null
-                  : _cubit.submit,
-              child: Text(l10n.saveAction),
+            SaveButton(
+              label: l10n.saveAction,
+              savingLabel: l10n.savingLabel,
+              saving: state.status == ProductFormStatus.saving,
+              onPressed: _cubit.submit,
             ),
           ],
         ),

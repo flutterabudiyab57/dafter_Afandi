@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:daftar_afandi/core/l10n/generated/app_localizations.dart';
 import 'package:daftar_afandi/core/router/route_names.dart';
 import 'package:daftar_afandi/core/utils/quantity.dart';
+import 'package:daftar_afandi/core/widgets/status_banner.dart';
 import 'package:daftar_afandi/features/products/domain/product_query.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -194,6 +195,52 @@ void main() {
           unawaited(routerOf(tester).push(RoutePaths.productNew, extra: 'زيت'));
           await tester.pumpAndSettle();
           expect(find.text('زيت'), findsOneWidget);
+        });
+
+        testWidgets('a failed save keeps the values and shows a banner at '
+            'the top (US1-3)', (tester) async {
+          final store = await open(tester);
+          await type(tester, l10n.productNameLabel, 'شاي');
+          await type(tester, l10n.productPriceLabel, '10');
+          store.failNextWrite = StateError('disk full');
+          await save(tester);
+          final banner = find.ancestor(
+            of: find.text(l10n.errorSaveFailed),
+            matching: find.byType(StatusBanner),
+          );
+          expect(banner, findsOneWidget);
+          expect(tester.widget<StatusBanner>(banner).tone, StatusTone.error);
+          // Scrolled into view at the top of the form.
+          expect(tester.getRect(banner).top, lessThan(400));
+          expect(find.text('شاي'), findsOneWidget);
+          expect(store.summaries(const ProductQuery()), isEmpty);
+        });
+
+        testWidgets('Back on a changed form asks; on an unchanged one it '
+            'leaves (US3-4)', (tester) async {
+          await open(tester, path: RoutePaths.products);
+          unawaited(routerOf(tester).push(RoutePaths.productNew));
+          await tester.pumpAndSettle();
+          await tester.binding.handlePopRoute();
+          await tester.pumpAndSettle();
+          expect(currentPath(tester), RoutePaths.products);
+
+          unawaited(routerOf(tester).push(RoutePaths.productNew));
+          await tester.pumpAndSettle();
+          await type(tester, l10n.productNameLabel, 'شاي');
+          await tester.binding.handlePopRoute();
+          await tester.pumpAndSettle();
+          expect(find.text(l10n.discardChangesTitle), findsOneWidget);
+          await tester.tap(find.text(l10n.keepEditingAction));
+          await tester.pumpAndSettle();
+          expect(currentPath(tester), RoutePaths.productNew);
+          expect(find.text('شاي'), findsOneWidget);
+
+          await tester.binding.handlePopRoute();
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(l10n.discardAction));
+          await tester.pumpAndSettle();
+          expect(currentPath(tester), RoutePaths.products);
         });
       });
     }

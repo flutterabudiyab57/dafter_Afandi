@@ -5,7 +5,12 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/decimal_text.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
+import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/domain/customer.dart';
 import '../../../customers/domain/payment.dart';
 import '../../../customers/presentation/cubits/customers_list_cubit.dart';
@@ -72,12 +77,9 @@ class NewSaleScreen extends StatelessWidget {
           cubit.cancelShortage();
         }
       case SaleStatus.saved:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.saleSaved(context.saleNumber(state.saved!.number)),
-            ),
-          ),
+        showAppSnackBar(
+          context,
+          l10n.saleSaved(context.saleNumber(state.saved!.number)),
         );
         cubit.startNew();
       default:
@@ -90,60 +92,35 @@ class NewSaleScreen extends StatelessWidget {
     List<Shortage> items,
   ) async {
     final l10n = AppLocalizations.of(context);
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (dialog) => AlertDialog(
-        title: Text(l10n.shortageTitle),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l10n.shortageBody),
-              for (final s in items)
-                Text(
-                  l10n.shortageLine(
-                    s.name,
-                    context.quantity(s.stockMilli, s.unit),
-                    context.quantity(s.needMilli, s.unit),
-                  ),
-                ),
-            ],
+    final ok = await showConfirmDialog(
+      context,
+      tone: StatusTone.warning,
+      title: l10n.shortageTitle,
+      message: [
+        l10n.shortageBody,
+        for (final s in items)
+          l10n.shortageLine(
+            s.name,
+            context.quantity(s.stockMilli, s.unit),
+            context.quantity(s.needMilli, s.unit),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialog).pop(false),
-            child: Text(l10n.backAction),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialog).pop(true),
-            child: Text(l10n.shortageConfirm),
-          ),
-        ],
-      ),
+      ].join('\n'),
+      confirmLabel: l10n.shortageConfirm,
+      cancelLabel: l10n.backAction,
     );
     return ok ?? false;
   }
 
   Future<bool> _confirmDiscard(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (dialog) => AlertDialog(
-        title: Text(l10n.saleDiscardTitle),
-        content: SingleChildScrollView(child: Text(l10n.saleDiscardBody)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialog).pop(false),
-            child: Text(l10n.saleKeepAction),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialog).pop(true),
-            child: Text(l10n.saleDiscardAction),
-          ),
-        ],
-      ),
+    final ok = await showConfirmDialog(
+      context,
+      tone: StatusTone.warning,
+      title: l10n.saleDiscardTitle,
+      message: l10n.saleDiscardBody,
+      confirmLabel: l10n.saleDiscardAction,
+      cancelLabel: l10n.saleKeepAction,
+      destructive: true,
     );
     return ok ?? false;
   }
@@ -183,7 +160,11 @@ class _BodyState extends State<_Body> {
     _barcode.clear();
     _barcodeFocus.requestFocus();
     if (!found) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.saleBarcodeNotFound)));
+      showAppSnackBarOn(
+        messenger,
+        l10n.saleBarcodeNotFound,
+        tone: StatusTone.error,
+      );
     }
   }
 
@@ -229,15 +210,37 @@ class _BodyState extends State<_Body> {
       return p == null ? null : context.inputProblem(f, p);
     }
 
-    final messages = [
+    // Rules that block saving but lose nothing are warnings with a way
+    // forward; failures are errors (research R11). Line errors stay on
+    // their lines.
+    final banners = <Widget?>[
       for (final e in state.errors)
-        if (e is! LineQuantityInvalid &&
-            e is! LinePriceInvalid &&
-            e is! LineDiscountTooLarge)
-          context.saleError(e),
-      if (state.saveError != null) context.saveError(state.saveError!),
-      if (state.status == SaleStatus.failed) l10n.errorSaveFailed,
-    ].whereType<String>().toList();
+        switch (e) {
+          CreditNeedsCustomer() => FormErrorBanner(
+            tone: StatusTone.warning,
+            title: l10n.creditNeedsCustomerTitle,
+            message: context.saleError(e),
+            actionLabel: l10n.chooseAction,
+            onAction: _pickCustomer,
+          ),
+          PaidTooLarge() => FormErrorBanner(
+            tone: StatusTone.warning,
+            title: context.saleError(e)!,
+          ),
+          LineQuantityInvalid() ||
+          LinePriceInvalid() ||
+          LineDiscountTooLarge() => null,
+          _ => switch (context.saleError(e)) {
+            final text? => FormErrorBanner(title: text),
+            null => null,
+          },
+        },
+      if (state.saveError != null)
+        if (context.saveError(state.saveError!) case final text?)
+          FormErrorBanner(title: text),
+      if (state.status == SaleStatus.failed)
+        FormErrorBanner(title: l10n.errorSaveFailed),
+    ].nonNulls.toList();
 
     return BlocListener<SaleCubit, SaleState>(
       // A saved sale empties the fields for the next one; a paid amount
@@ -257,6 +260,7 @@ class _BodyState extends State<_Body> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              for (final b in banners) ...[b, SizedBox(height: tokens.spaceSm)],
               TextField(
                 controller: _barcode,
                 focusNode: _barcodeFocus,
@@ -357,20 +361,11 @@ class _BodyState extends State<_Body> {
                 ],
               ),
               SizedBox(height: tokens.spaceXl),
-              for (final m in messages) ...[
-                Text(
-                  m,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.error,
-                  ),
-                ),
-                SizedBox(height: tokens.spaceSm),
-              ],
-              FilledButton(
-                onPressed: state.status == SaleStatus.saving
-                    ? null
-                    : _cubit.submit,
-                child: Text(l10n.saleSaveAction),
+              SaveButton(
+                label: l10n.saleSaveAction,
+                savingLabel: l10n.savingLabel,
+                saving: state.status == SaleStatus.saving,
+                onPressed: _cubit.submit,
               ),
             ],
           ),

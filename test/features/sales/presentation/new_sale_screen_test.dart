@@ -2,6 +2,7 @@ import 'package:daftar_afandi/core/l10n/generated/app_localizations.dart';
 import 'package:daftar_afandi/core/router/route_names.dart';
 import 'package:daftar_afandi/core/utils/digits.dart';
 import 'package:daftar_afandi/core/utils/quantity.dart';
+import 'package:daftar_afandi/core/widgets/status_banner.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
 import 'package:daftar_afandi/features/sales/domain/sale.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
@@ -166,8 +167,9 @@ void main() {
           await typeIn(tester, lineField(l10n.saleQtyLabel), '12');
           await save(tester);
           expect(find.text(l10n.shortageTitle), findsOneWidget);
+          // The lines are part of the dialog's message.
           expect(
-            find.text(
+            find.textContaining(
               l10n.shortageLine(
                 'شاي',
                 ar ? '١٠ قطعة' : '10 pc',
@@ -217,9 +219,19 @@ void main() {
           await pick(tester, 'زيت');
           await typeIn(tester, lineField(l10n.salePaidLabel), '40');
           await save(tester);
+          // A warning banner at the top whose "Choose" opens the picker
+          // (US3-3).
+          expect(find.text(l10n.creditNeedsCustomerTitle), findsOneWidget);
           expect(find.text(l10n.errorCreditNeedsCustomer), findsOneWidget);
+          final banner = tester.widget<StatusBanner>(
+            find.ancestor(
+              of: find.text(l10n.creditNeedsCustomerTitle),
+              matching: find.byType(StatusBanner),
+            ),
+          );
+          expect(banner.tone, StatusTone.warning);
 
-          await tapVisible(tester, find.text(l10n.saleCustomerPick));
+          await tapVisible(tester, find.text(l10n.chooseAction));
           await tester.enterText(
             find.widgetWithText(TextField, l10n.customersSearchHint),
             'أحمد',

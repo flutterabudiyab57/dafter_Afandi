@@ -5,8 +5,13 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/decimal_text.dart';
+import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
+import '../../../../core/widgets/save_button.dart';
+import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/domain/payment.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../products/domain/product.dart';
@@ -48,12 +53,9 @@ class NewPurchaseScreen extends StatelessWidget {
       listenWhen: (a, b) =>
           a.status != b.status && b.status == PurchaseStatus.saved,
       listener: (context, state) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.purchaseSaved(context.purchaseNumber(state.saved!.number)),
-            ),
-          ),
+        showAppSnackBar(
+          context,
+          l10n.purchaseSaved(context.purchaseNumber(state.saved!.number)),
         );
         cubit.startNew();
       },
@@ -81,22 +83,14 @@ class NewPurchaseScreen extends StatelessWidget {
 
   Future<bool> _confirmDiscard(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (dialog) => AlertDialog(
-        title: Text(l10n.purchaseDiscardTitle),
-        content: SingleChildScrollView(child: Text(l10n.saleDiscardBody)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialog).pop(false),
-            child: Text(l10n.purchaseKeepAction),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialog).pop(true),
-            child: Text(l10n.saleDiscardAction),
-          ),
-        ],
-      ),
+    final ok = await showConfirmDialog(
+      context,
+      tone: StatusTone.warning,
+      title: l10n.purchaseDiscardTitle,
+      message: l10n.saleDiscardBody,
+      confirmLabel: l10n.saleDiscardAction,
+      cancelLabel: l10n.purchaseKeepAction,
+      destructive: true,
     );
     return ok ?? false;
   }
@@ -143,7 +137,11 @@ class _BodyState extends State<_Body> {
     _barcode.clear();
     _barcodeFocus.requestFocus();
     if (!found) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.saleBarcodeNotFound)));
+      showAppSnackBarOn(
+        messenger,
+        l10n.saleBarcodeNotFound,
+        tone: StatusTone.error,
+      );
     }
   }
 
@@ -219,11 +217,32 @@ class _BodyState extends State<_Body> {
       return p == null ? null : context.purchaseInputProblem(f, p);
     }
 
-    final messages = [
-      for (final e in state.errors) context.purchaseError(e),
-      if (state.saveError != null) context.purchaseSaveError(state.saveError!),
-      if (state.status == PurchaseStatus.failed) l10n.errorSaveFailed,
-    ].whereType<String>().toList();
+    // Rules that block saving but lose nothing are warnings with a way
+    // forward; failures are errors (research R11).
+    final banners = <Widget?>[
+      for (final e in state.errors)
+        switch (e) {
+          CreditNeedsSupplier() => FormErrorBanner(
+            tone: StatusTone.warning,
+            title: context.purchaseError(e)!,
+            actionLabel: l10n.chooseAction,
+            onAction: _pickSupplier,
+          ),
+          PurchasePaidTooLarge() => FormErrorBanner(
+            tone: StatusTone.warning,
+            title: context.purchaseError(e)!,
+          ),
+          _ => switch (context.purchaseError(e)) {
+            final text? => FormErrorBanner(title: text),
+            null => null,
+          },
+        },
+      if (state.saveError != null)
+        if (context.purchaseSaveError(state.saveError!) case final text?)
+          FormErrorBanner(title: text),
+      if (state.status == PurchaseStatus.failed)
+        FormErrorBanner(title: l10n.errorSaveFailed),
+    ].nonNulls.toList();
 
     return BlocListener<PurchaseCubit, PurchaseState>(
       // A saved purchase empties the fields for the next one; a paid amount
@@ -244,6 +263,7 @@ class _BodyState extends State<_Body> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              for (final b in banners) ...[b, SizedBox(height: tokens.spaceSm)],
               TextField(
                 controller: _barcode,
                 focusNode: _barcodeFocus,
@@ -388,20 +408,11 @@ class _BodyState extends State<_Body> {
                 decoration: InputDecoration(labelText: l10n.customerNoteLabel),
               ),
               SizedBox(height: tokens.spaceXl),
-              for (final m in messages) ...[
-                Text(
-                  m,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.error,
-                  ),
-                ),
-                SizedBox(height: tokens.spaceSm),
-              ],
-              FilledButton(
-                onPressed: state.status == PurchaseStatus.saving
-                    ? null
-                    : _cubit.submit,
-                child: Text(l10n.purchaseSaveAction),
+              SaveButton(
+                label: l10n.purchaseSaveAction,
+                savingLabel: l10n.savingLabel,
+                saving: state.status == PurchaseStatus.saving,
+                onPressed: _cubit.submit,
               ),
             ],
           ),

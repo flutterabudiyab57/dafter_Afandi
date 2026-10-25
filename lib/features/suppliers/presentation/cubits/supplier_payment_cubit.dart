@@ -107,6 +107,26 @@ class SupplierPaymentCubit extends Cubit<SupplierPaymentState> {
         .listen(_onSupplier, onError: addError);
   }
 
+  /// The field values when the form became editable (research R9).
+  Object? _baseline;
+
+  /// True when a field differs from when the form became editable, until
+  /// it is saved (research R9).
+  bool get hasUnsavedChanges =>
+      state.status != SupplierPaymentStatus.saved &&
+      _baseline != null &&
+      _fields(state) != _baseline;
+
+  static Object _fields(SupplierPaymentState s) => (s.amount, s.method, s.note);
+
+  @override
+  void onChange(Change<SupplierPaymentState> change) {
+    super.onChange(change);
+    // The fields never change while loading, so the state before the
+    // first change is the form as it opened.
+    _baseline ??= _fields(change.currentState);
+  }
+
   final SupplierRepository _repository;
   final String supplierId;
   late final StreamSubscription<SupplierSummary?> _sub;

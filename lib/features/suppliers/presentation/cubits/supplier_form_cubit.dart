@@ -97,6 +97,31 @@ class SupplierFormCubit extends Cubit<SupplierFormState> {
     if (mode == SupplierFormMode.edit) unawaited(_load());
   }
 
+  /// The field values when the form became editable (research R9).
+  Object? _baseline;
+
+  /// True when a field differs from when the form became editable, until
+  /// it is saved (research R9).
+  bool get hasUnsavedChanges =>
+      state.status != SupplierFormStatus.saved &&
+      _baseline != null &&
+      _fields(state) != _baseline;
+
+  static Object _fields(SupplierFormState s) =>
+      (s.name, s.phone, s.address, s.note, s.opening, s.openingInShopFavour);
+
+  @override
+  void onChange(Change<SupplierFormState> change) {
+    super.onChange(change);
+    // Create mode opens editable; edit mode once the record is read.
+    if (_baseline != null) return;
+    if (change.currentState.status != SupplierFormStatus.loading) {
+      _baseline = _fields(change.currentState);
+    } else if (change.nextState.status != SupplierFormStatus.loading) {
+      _baseline = _fields(change.nextState);
+    }
+  }
+
   final SupplierRepository _repository;
   final SupplierFormMode mode;
   final String? supplierId;

@@ -5,8 +5,10 @@ import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/widgets/app_illustration.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
+import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
+import '../../../../core/widgets/status_banner.dart';
 import '../../domain/category.dart';
 import '../../domain/product_errors.dart';
 import '../cubits/categories_cubit.dart';
@@ -194,23 +196,13 @@ class _CategoryRow extends StatelessWidget {
   Future<void> _archive(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     final cubit = context.read<CategoriesCubit>();
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: SingleChildScrollView(
-          child: Text(l10n.categoryArchiveConfirm),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.cancelAction),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(l10n.categoryArchive),
-          ),
-        ],
-      ),
+    final ok = await showConfirmDialog(
+      context,
+      tone: StatusTone.warning,
+      title: null,
+      message: l10n.categoryArchiveConfirm,
+      confirmLabel: l10n.categoryArchive,
+      cancelLabel: l10n.cancelAction,
     );
     if (ok ?? false) await cubit.archive(category.id);
   }

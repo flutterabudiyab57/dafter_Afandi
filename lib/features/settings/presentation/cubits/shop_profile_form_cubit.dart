@@ -21,6 +21,26 @@ class ShopProfileFormCubit extends Cubit<ShopProfileFormState> {
          ),
        );
 
+  /// The field values when the form became editable (research R9).
+  Object? _baseline;
+
+  /// True when a field differs from when the form became editable, until
+  /// it is saved (research R9).
+  bool get hasUnsavedChanges =>
+      state.status != ShopProfileFormStatus.saved &&
+      _baseline != null &&
+      _fields(state) != _baseline;
+
+  static Object _fields(ShopProfileFormState s) => (s.nameInput, s.phoneInput);
+
+  @override
+  void onChange(Change<ShopProfileFormState> change) {
+    super.onChange(change);
+    // The fields never change while loading, so the state before the
+    // first change is the form as it opened.
+    _baseline ??= _fields(change.currentState);
+  }
+
   final SettingsRepository _repository;
   final ShopProfileFormMode mode;
 
