@@ -54,7 +54,10 @@ void main() {
             textScale: textScale,
           );
           await goTo(tester, RoutePaths.purchases);
-          await tester.tap(find.byType(FloatingActionButton));
+          // The empty list's own button; the list has no floating one yet.
+          final add = find.text(l10n.purchasesNewAction);
+          await tester.ensureVisible(add);
+          await tester.tap(add);
           await tester.pumpAndSettle();
           expect(currentPath(tester), RoutePaths.purchasesNew);
           expect(tester.takeException(), isNull);

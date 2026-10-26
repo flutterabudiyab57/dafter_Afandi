@@ -65,6 +65,39 @@ void main() {
           }
         });
 
+        testWidgets('an empty list offers one add button, not two; the '
+            'floating one comes back with the first row', (tester) async {
+          for (final path in [
+            RoutePaths.products,
+            RoutePaths.parties,
+            RoutePaths.suppliers,
+            RoutePaths.purchases,
+          ]) {
+            await open(tester, path);
+            expect(
+              find.byType(FloatingActionButton),
+              findsNothing,
+              reason: path,
+            );
+          }
+
+          products.seedProduct('شاي');
+          sales.seedCustomer('منى');
+          purchases.seedSupplier('مورد');
+          for (final path in [
+            RoutePaths.products,
+            RoutePaths.parties,
+            RoutePaths.suppliers,
+          ]) {
+            await open(tester, path);
+            expect(
+              find.byType(FloatingActionButton),
+              findsOneWidget,
+              reason: path,
+            );
+          }
+        });
+
         testWidgets('no results, then Clear shows the list again (US2-2)', (
           tester,
         ) async {

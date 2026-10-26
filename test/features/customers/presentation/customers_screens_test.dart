@@ -66,7 +66,7 @@ void main() {
           final store = FakeSalesStore();
           await open(tester, store, RoutePaths.parties);
           expect(find.text(l10n.customersEmptyTitle), findsOneWidget);
-          await tapVisible(tester, find.byType(FloatingActionButton));
+          await tapVisible(tester, find.text(l10n.customerAddTitle));
           expect(currentPath(tester), RoutePaths.customerNew);
           await type(tester, l10n.customerNameLabel, 'محمد');
           await type(tester, l10n.customerPhoneLabel, '٠١٠١٢٣٤٥٦٧٨');

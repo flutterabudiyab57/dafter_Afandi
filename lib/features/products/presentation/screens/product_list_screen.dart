@@ -35,6 +35,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
     final tokens = context.tokens;
     final cubit = context.read<ProductListCubit>();
     final state = context.watch<ProductListCubit>().state;
+    final query = state.query;
+    // The empty list has its own Add product button; one is enough.
+    final emptyAction =
+        !state.loading &&
+        !state.loadFailed &&
+        state.items.isEmpty &&
+        query.text.trim().isEmpty &&
+        !query.lowOnly &&
+        query.categoryFilter is AllCategories;
 
     return Scaffold(
       appBar: AppBar(
@@ -50,11 +59,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        label: Text(l10n.productAddTitle),
-        onPressed: () => context.push(RoutePaths.productNew),
-      ),
+      floatingActionButton: emptyAction
+          ? null
+          : FloatingActionButton.extended(
+              icon: const Icon(Icons.add),
+              label: Text(l10n.productAddTitle),
+              onPressed: () => context.push(RoutePaths.productNew),
+            ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

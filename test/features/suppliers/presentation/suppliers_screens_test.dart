@@ -87,7 +87,7 @@ void main() {
           expect(currentPath(tester), RoutePaths.suppliers);
           expect(find.text(l10n.suppliersEmptyTitle), findsOneWidget);
 
-          await tapVisible(tester, find.byType(FloatingActionButton));
+          await tapVisible(tester, find.text(l10n.supplierAddTitle));
           expect(currentPath(tester), RoutePaths.supplierNew);
           await type(tester, l10n.supplierNameLabel, 'شركة النور');
           await type(tester, l10n.customerPhoneLabel, '٠٢٢٣٤٥٦٧٨٩');

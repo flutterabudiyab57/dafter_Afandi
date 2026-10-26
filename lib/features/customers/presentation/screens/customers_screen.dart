@@ -38,16 +38,25 @@ class _CustomersScreenState extends State<CustomersScreen> {
     final tokens = context.tokens;
     final cubit = context.read<CustomersListCubit>();
     final state = context.watch<CustomersListCubit>().state;
+    // The empty list has its own Add customer button; one is enough.
+    final emptyAction =
+        !state.loading &&
+        !state.loadFailed &&
+        state.items.isEmpty &&
+        state.query.text.trim().isEmpty &&
+        !state.query.owesOnly;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        // Section roots stay alive in the shell; a shared default tag
-        // would clash during page transitions.
-        heroTag: null,
-        icon: const Icon(Icons.person_add_alt),
-        label: Text(l10n.customerAddTitle),
-        onPressed: () => context.push(RoutePaths.customerNew),
-      ),
+      floatingActionButton: emptyAction
+          ? null
+          : FloatingActionButton.extended(
+              // Section roots stay alive in the shell; a shared default tag
+              // would clash during page transitions.
+              heroTag: null,
+              icon: const Icon(Icons.person_add_alt),
+              label: Text(l10n.customerAddTitle),
+              onPressed: () => context.push(RoutePaths.customerNew),
+            ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

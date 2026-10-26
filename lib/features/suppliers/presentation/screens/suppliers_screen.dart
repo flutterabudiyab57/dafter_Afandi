@@ -38,16 +38,25 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
     final tokens = context.tokens;
     final cubit = context.read<SuppliersListCubit>();
     final state = context.watch<SuppliersListCubit>().state;
+    // The empty list has its own Add supplier button; one is enough.
+    final emptyAction =
+        !state.loading &&
+        !state.loadFailed &&
+        state.items.isEmpty &&
+        state.query.text.trim().isEmpty &&
+        !state.query.owedOnly;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        // Section roots stay alive in the shell; a shared default tag
-        // would clash during page transitions.
-        heroTag: null,
-        icon: const Icon(Icons.add_business_outlined),
-        label: Text(l10n.supplierAddTitle),
-        onPressed: () => context.push(RoutePaths.supplierNew),
-      ),
+      floatingActionButton: emptyAction
+          ? null
+          : FloatingActionButton.extended(
+              // Section roots stay alive in the shell; a shared default tag
+              // would clash during page transitions.
+              heroTag: null,
+              icon: const Icon(Icons.add_business_outlined),
+              label: Text(l10n.supplierAddTitle),
+              onPressed: () => context.push(RoutePaths.supplierNew),
+            ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
