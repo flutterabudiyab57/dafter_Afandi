@@ -7,6 +7,7 @@ import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/load_failed_view.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
@@ -38,7 +39,12 @@ class PurchaseScreen extends StatelessWidget {
                     ),
             ),
           ),
-          body: !state.loaded
+          body: state.loadFailed
+              ? dataLoadFailedView(
+                  context,
+                  onRetry: context.read<PurchaseViewCubit>().retry,
+                )
+              : !state.loaded
               ? const Center(child: CircularProgressIndicator())
               : purchase == null
               ? Center(child: Text(l10n.purchaseNotFound))
@@ -89,8 +95,9 @@ class _Body extends StatelessWidget {
           if (voidedAt != null)
             Padding(
               padding: EdgeInsetsDirectional.all(tokens.spaceMd),
-              child: VoidedBanner(
-                text: l10n.invoiceVoidedOn(
+              child: StatusBanner(
+                tone: StatusTone.voided,
+                title: l10n.invoiceVoidedOn(
                   context.dateTime(voidedAt),
                   purchase.voidReason ?? '',
                 ),
@@ -215,7 +222,7 @@ class _Body extends StatelessWidget {
     } else if (context.mounted) {
       final text = context.purchaseVoidError(error);
       if (text != null) {
-        showAppSnackBarOn(messenger, text);
+        showAppSnackBarOn(messenger, text, tone: StatusTone.error);
       }
     }
   }

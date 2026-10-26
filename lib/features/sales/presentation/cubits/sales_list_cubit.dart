@@ -130,30 +130,53 @@ class SalesListCubit extends Cubit<SalesListState> {
 }
 
 final class InvoiceState extends Equatable {
-  const InvoiceState({this.invoice, this.loaded = false});
+  const InvoiceState({
+    this.invoice,
+    this.loaded = false,
+    this.loadFailed = false,
+  });
 
   /// Null when the invoice does not exist.
   final SaleInvoice? invoice;
   final bool loaded;
 
+  /// The stream failed; `retry` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [invoice, loaded];
+  List<Object?> get props => [invoice, loaded, loadFailed];
 }
 
 /// One invoice (FR-010) and voiding it (FR-008a).
 class InvoiceCubit extends Cubit<InvoiceState> {
   InvoiceCubit(this._repository, this.invoiceId) : super(const InvoiceState()) {
-    _sub = _repository
-        .watchOne(invoiceId)
-        .listen(
-          (i) => emit(InvoiceState(invoice: i, loaded: true)),
-          onError: addError,
-        );
+    _subscribe();
   }
 
   final SalesRepository _repository;
   final String invoiceId;
-  late final StreamSubscription<SaleInvoice?> _sub;
+  StreamSubscription<SaleInvoice?>? _sub;
+
+  void _subscribe() {
+    unawaited(_sub?.cancel());
+    _sub = _repository
+        .watchOne(invoiceId)
+        .listen(
+          (i) => emit(InvoiceState(invoice: i, loaded: true)),
+          onError: _failed,
+        );
+  }
+
+  /// Subscribes again after a failed load.
+  void retry() {
+    emit(const InvoiceState());
+    _subscribe();
+  }
+
+  void _failed(Object error, StackTrace stack) {
+    emit(const InvoiceState(loadFailed: true));
+    addError(error, stack);
+  }
 
   /// [reason] is already validated. Returns the refusal, if any.
   Future<VoidError?> voidSale(String reason) async =>
@@ -164,7 +187,7 @@ class InvoiceCubit extends Cubit<InvoiceState> {
 
   @override
   Future<void> close() async {
-    await _sub.cancel();
+    await _sub?.cancel();
     return super.close();
   }
 }

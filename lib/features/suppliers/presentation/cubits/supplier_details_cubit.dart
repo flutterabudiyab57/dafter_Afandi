@@ -10,31 +10,54 @@ import '../../domain/supplier_errors.dart';
 import '../../domain/supplier_repository.dart';
 
 final class SupplierDetailsState extends Equatable {
-  const SupplierDetailsState({this.summary, this.loaded = false});
+  const SupplierDetailsState({
+    this.summary,
+    this.loaded = false,
+    this.loadFailed = false,
+  });
 
   /// Null when the supplier does not exist.
   final SupplierSummary? summary;
   final bool loaded;
 
+  /// The stream failed; `retry` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [summary, loaded];
+  List<Object?> get props => [summary, loaded, loadFailed];
 }
 
 /// One supplier with their live balance (US4), archive and restore.
 class SupplierDetailsCubit extends Cubit<SupplierDetailsState> {
   SupplierDetailsCubit(this._repository, this.supplierId)
     : super(const SupplierDetailsState()) {
-    _sub = _repository
-        .watchOne(supplierId)
-        .listen(
-          (s) => emit(SupplierDetailsState(summary: s, loaded: true)),
-          onError: addError,
-        );
+    _subscribe();
   }
 
   final SupplierRepository _repository;
   final String supplierId;
-  late final StreamSubscription<SupplierSummary?> _sub;
+  StreamSubscription<SupplierSummary?>? _sub;
+
+  void _subscribe() {
+    unawaited(_sub?.cancel());
+    _sub = _repository
+        .watchOne(supplierId)
+        .listen(
+          (s) => emit(SupplierDetailsState(summary: s, loaded: true)),
+          onError: _failed,
+        );
+  }
+
+  /// Subscribes again after a failed load.
+  void retry() {
+    emit(const SupplierDetailsState());
+    _subscribe();
+  }
+
+  void _failed(Object error, StackTrace stack) {
+    emit(const SupplierDetailsState(loadFailed: true));
+    addError(error, stack);
+  }
 
   Future<void> archive() => _repository.archive(supplierId);
 
@@ -42,7 +65,7 @@ class SupplierDetailsCubit extends Cubit<SupplierDetailsState> {
 
   @override
   Future<void> close() async {
-    await _sub.cancel();
+    await _sub?.cancel();
     return super.close();
   }
 }

@@ -29,9 +29,11 @@ class PaymentScreen extends StatelessWidget {
     return BlocListener<PaymentCubit, PaymentState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: _onStatus,
-      child: BlocBuilder<PaymentCubit, PaymentState>(
-        builder: (context, _) => UnsavedChangesGuard(
-          dirty: context.read<PaymentCubit>().hasUnsavedChanges,
+      child: BlocSelector<PaymentCubit, PaymentState, bool>(
+        // Rebuilt only when the answer to "leave?" changes.
+        selector: (_) => context.read<PaymentCubit>().hasUnsavedChanges,
+        builder: (context, dirty) => UnsavedChangesGuard(
+          dirty: dirty,
           child: Scaffold(
             appBar: AppBar(title: Text(l10n.paymentTitle)),
             body: BlocBuilder<PaymentCubit, PaymentState>(

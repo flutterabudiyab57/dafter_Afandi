@@ -31,13 +31,21 @@ class _SkeletonListState extends State<SkeletonList>
   @override
   void initState() {
     super.initState();
-    _delay = Timer(kSkeletonDelay, () => setState(() => _visible = true));
+    _delay = Timer(kSkeletonDelay, () {
+      setState(() => _visible = true);
+      _animate();
+    });
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (MediaQuery.disableAnimationsOf(context)) {
+    _animate();
+  }
+
+  /// Shimmers only once visible, and never with animations turned off.
+  void _animate() {
+    if (!_visible || MediaQuery.disableAnimationsOf(context)) {
       _shimmer
         ..stop()
         ..value = 1;

@@ -131,31 +131,54 @@ class PurchasesListCubit extends Cubit<PurchasesListState> {
 }
 
 final class PurchaseViewState extends Equatable {
-  const PurchaseViewState({this.purchase, this.loaded = false});
+  const PurchaseViewState({
+    this.purchase,
+    this.loaded = false,
+    this.loadFailed = false,
+  });
 
   /// Null when the purchase does not exist.
   final Purchase? purchase;
   final bool loaded;
 
+  /// The stream failed; `retry` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [purchase, loaded];
+  List<Object?> get props => [purchase, loaded, loadFailed];
 }
 
 /// One purchase (FR-011) and voiding it (FR-009a).
 class PurchaseViewCubit extends Cubit<PurchaseViewState> {
   PurchaseViewCubit(this._repository, this.purchaseId)
     : super(const PurchaseViewState()) {
-    _sub = _repository
-        .watchOne(purchaseId)
-        .listen(
-          (p) => emit(PurchaseViewState(purchase: p, loaded: true)),
-          onError: addError,
-        );
+    _subscribe();
   }
 
   final PurchaseRepository _repository;
   final String purchaseId;
-  late final StreamSubscription<Purchase?> _sub;
+  StreamSubscription<Purchase?>? _sub;
+
+  void _subscribe() {
+    unawaited(_sub?.cancel());
+    _sub = _repository
+        .watchOne(purchaseId)
+        .listen(
+          (p) => emit(PurchaseViewState(purchase: p, loaded: true)),
+          onError: _failed,
+        );
+  }
+
+  /// Subscribes again after a failed load.
+  void retry() {
+    emit(const PurchaseViewState());
+    _subscribe();
+  }
+
+  void _failed(Object error, StackTrace stack) {
+    emit(const PurchaseViewState(loadFailed: true));
+    addError(error, stack);
+  }
 
   /// [reason] is already validated. Returns the refusal, if any; a
   /// [VoidStockShortage] is asked about, then sent again with
@@ -174,7 +197,7 @@ class PurchaseViewCubit extends Cubit<PurchaseViewState> {
 
   @override
   Future<void> close() async {
-    await _sub.cancel();
+    await _sub?.cancel();
     return super.close();
   }
 }

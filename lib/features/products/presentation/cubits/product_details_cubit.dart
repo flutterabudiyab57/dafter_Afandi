@@ -13,6 +13,7 @@ final class ProductDetailsState extends Equatable {
     this.loaded = false,
     this.summary,
     this.restoreError,
+    this.loadFailed = false,
   });
 
   /// False until the first read; then [summary] is null only when the
@@ -23,14 +24,26 @@ final class ProductDetailsState extends Equatable {
   /// One-shot: shown once, then cleared with `clearMessage`.
   final RestoreError? restoreError;
 
+  /// The stream failed; `retry` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [loaded, summary, restoreError];
+  List<Object?> get props => [loaded, summary, restoreError, loadFailed];
 }
 
 /// One product, kept current by a watch query (FR-012, US3).
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit(this._repository, this.productId)
     : super(const ProductDetailsState()) {
+    _subscribe();
+  }
+
+  final ProductRepository _repository;
+  final String productId;
+  StreamSubscription<ProductSummary?>? _subscription;
+
+  void _subscribe() {
+    unawaited(_subscription?.cancel());
     _subscription = _repository
         .watchSummary(productId)
         .listen(
@@ -41,31 +54,40 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
               restoreError: state.restoreError,
             ),
           ),
-          onError: addError,
+          onError: _failed,
         );
   }
 
-  final ProductRepository _repository;
-  final String productId;
-  late final StreamSubscription<ProductSummary?> _subscription;
+  /// Subscribes again after a failed load.
+  void retry() {
+    emit(const ProductDetailsState());
+    _subscribe();
+  }
+
+  void _failed(Object error, StackTrace stack) {
+    emit(const ProductDetailsState(loadFailed: true));
+    addError(error, stack);
+  }
 
   Future<void> archive() => _repository.archive(productId);
 
-  /// True when restored; a conflict becomes [ProductDetailsState.restoreError].
-  Future<bool> restore() async {
+  /// Null when restored. While open, a refusal also becomes
+  /// [ProductDetailsState.restoreError].
+  Future<RestoreError?> restore() async {
     final result = await _repository.restore(productId);
     if (result case Err(:final error)) {
-      if (isClosed) return false;
-      emit(
-        ProductDetailsState(
-          loaded: state.loaded,
-          summary: state.summary,
-          restoreError: error,
-        ),
-      );
-      return false;
+      if (!isClosed) {
+        emit(
+          ProductDetailsState(
+            loaded: state.loaded,
+            summary: state.summary,
+            restoreError: error,
+          ),
+        );
+      }
+      return error;
     }
-    return true;
+    return null;
   }
 
   void clearMessage() =>
@@ -73,7 +95,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
 
   @override
   Future<void> close() async {
-    await _subscription.cancel();
+    await _subscription?.cancel();
     return super.close();
   }
 }

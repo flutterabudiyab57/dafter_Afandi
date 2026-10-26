@@ -17,15 +17,7 @@ Widget? listLoadState(
   required bool empty,
   required VoidCallback onRetry,
 }) {
-  if (loadFailed) {
-    final l10n = AppLocalizations.of(context);
-    return LoadFailedView(
-      title: l10n.loadFailedTitle,
-      message: l10n.loadFailedBody,
-      retryLabel: l10n.retryAction,
-      onRetry: onRetry,
-    );
-  }
+  if (loadFailed) return dataLoadFailedView(context, onRetry: onRetry);
   if (loading && empty) return const SkeletonList();
   return null;
 }

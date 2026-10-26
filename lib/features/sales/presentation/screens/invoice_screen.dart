@@ -6,6 +6,7 @@ import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
+import '../../../../core/widgets/load_failed_view.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
@@ -36,7 +37,12 @@ class InvoiceScreen extends StatelessWidget {
                     ),
             ),
           ),
-          body: !state.loaded
+          body: state.loadFailed
+              ? dataLoadFailedView(
+                  context,
+                  onRetry: context.read<InvoiceCubit>().retry,
+                )
+              : !state.loaded
               ? const Center(child: CircularProgressIndicator())
               : invoice == null
               ? Center(child: Text(l10n.invoiceNotFound))
@@ -85,8 +91,9 @@ class _Body extends StatelessWidget {
           if (voidedAt != null)
             Padding(
               padding: EdgeInsetsDirectional.all(tokens.spaceMd),
-              child: VoidedBanner(
-                text: l10n.invoiceVoidedOn(
+              child: StatusBanner(
+                tone: StatusTone.voided,
+                title: l10n.invoiceVoidedOn(
                   context.dateTime(voidedAt),
                   invoice.voidReason ?? '',
                 ),

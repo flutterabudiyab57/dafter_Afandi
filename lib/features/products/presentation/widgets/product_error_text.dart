@@ -44,10 +44,7 @@ extension ProductErrorText on BuildContext {
     OpeningNotAllowed() || ProductNotFound() => null,
   };
 
-  String restoreError(RestoreError error) => switch (error) {
-    RestoreBarcodeTaken(:final otherProductName) =>
-      _l10n.errorRestoreBarcodeTaken(otherProductName),
-  };
+  String restoreError(RestoreError error) => restoreErrorText(_l10n, error);
 
   String categoryError(CategoryError error) => switch (error) {
     CategoryNameRequired() => _l10n.errorCategoryNameRequired,
@@ -73,3 +70,11 @@ extension ProductErrorText on BuildContext {
         AlreadyMatches() => _l10n.adjustAlreadyMatches,
       };
 }
+
+/// [ProductErrorText.restoreError] for when no page is left to ask, e.g. an
+/// Undo tapped after leaving the product.
+String restoreErrorText(AppLocalizations l10n, RestoreError error) =>
+    switch (error) {
+      RestoreBarcodeTaken(:final otherProductName) =>
+        l10n.errorRestoreBarcodeTaken(otherProductName),
+    };

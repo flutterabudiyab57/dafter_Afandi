@@ -99,6 +99,66 @@ void main() {
           expect(find.text('منى'), findsOneWidget);
         });
 
+        testWidgets('a details page that fails to load offers Retry, not an '
+            'endless spinner', (tester) async {
+          final product = products.seedProduct('شاي');
+          final customer = sales.seedCustomer('منى');
+          final supplier = purchases.seedSupplier('مورد');
+          // Armed once the section's list is showing, so only the details
+          // page's own stream fails.
+          for (final (list, path, fail, name) in [
+            (
+              RoutePaths.products,
+              RoutePaths.productDetails(product),
+              () => products.failNextWatch = StateError('db'),
+              'شاي',
+            ),
+            (
+              RoutePaths.parties,
+              RoutePaths.customerDetails(customer),
+              () => sales.failNextWatch = StateError('db'),
+              'منى',
+            ),
+            (
+              RoutePaths.suppliers,
+              RoutePaths.supplierDetails(supplier),
+              () => purchases.failNextWatch = StateError('db'),
+              'مورد',
+            ),
+          ]) {
+            await open(tester, list);
+            fail();
+            await goTo(tester, path);
+            expect(find.byType(LoadFailedView), findsOneWidget, reason: path);
+            expect(find.text(name), findsNothing, reason: path);
+
+            await tester.ensureVisible(find.text(l10n.retryAction));
+            await tester.tap(find.text(l10n.retryAction));
+            await tester.pumpAndSettle();
+            expect(find.byType(LoadFailedView), findsNothing, reason: path);
+            expect(find.text(name), findsWidgets, reason: path);
+          }
+        });
+
+        testWidgets('Undo after leaving the product says why a restore was '
+            'refused', (tester) async {
+          final id = products.seedProduct('شاي', barcode: '123');
+          await open(tester, RoutePaths.productDetails(id));
+          await tester.ensureVisible(find.text(l10n.productArchiveAction));
+          await tester.tap(find.text(l10n.productArchiveAction));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text(l10n.productArchiveAction).last);
+          await tester.pumpAndSettle();
+          await goTo(tester, RoutePaths.products);
+          products.seedProduct('قهوة', barcode: '123');
+          await tester.pumpAndSettle();
+
+          await tester.tap(find.text(l10n.undoAction));
+          await tester.pumpAndSettle();
+          expect(products.summary(id)!.product.archived, isTrue);
+          expect(find.text(l10n.errorRestoreBarcodeTaken('قهوة')), findsOne);
+        });
+
         testWidgets('low stock and below zero are two different badges', (
           tester,
         ) async {

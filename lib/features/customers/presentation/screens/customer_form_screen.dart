@@ -44,9 +44,11 @@ class CustomerFormScreen extends StatelessWidget {
           context.pop();
         }
       },
-      child: BlocBuilder<CustomerFormCubit, CustomerFormState>(
-        builder: (context, _) => UnsavedChangesGuard(
-          dirty: context.read<CustomerFormCubit>().hasUnsavedChanges,
+      child: BlocSelector<CustomerFormCubit, CustomerFormState, bool>(
+        // Rebuilt only when the answer to "leave?" changes.
+        selector: (_) => context.read<CustomerFormCubit>().hasUnsavedChanges,
+        builder: (context, dirty) => UnsavedChangesGuard(
+          dirty: dirty,
           child: Scaffold(
             appBar: AppBar(
               title: Text(

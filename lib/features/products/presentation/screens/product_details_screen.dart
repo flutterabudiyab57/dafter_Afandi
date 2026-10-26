@@ -10,6 +10,7 @@ import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/load_failed_view.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../domain/product.dart';
 import '../cubits/product_details_cubit.dart';
@@ -40,6 +41,12 @@ class ProductDetailsScreen extends StatelessWidget {
         appBar: AppBar(title: Text(l10n.productDetailsTitle)),
         body: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
           builder: (context, state) {
+            if (state.loadFailed) {
+              return dataLoadFailedView(
+                context,
+                onRetry: context.read<ProductDetailsCubit>().retry,
+              );
+            }
             if (!state.loaded) {
               return const Center(child: CircularProgressIndicator());
             }
@@ -164,7 +171,7 @@ class _Actions extends StatelessWidget {
           icon: const Icon(Icons.unarchive_outlined),
           label: Text(l10n.productRestoreAction),
           onPressed: () async {
-            if (await cubit.restore() && context.mounted) {
+            if (await cubit.restore() == null && context.mounted) {
               showAppSnackBar(context, l10n.productRestored);
             }
           },
@@ -199,13 +206,24 @@ class _Actions extends StatelessWidget {
             if (!await _confirmArchive(context)) return;
             await cubit.archive();
             if (!context.mounted) return;
+            final messenger = ScaffoldMessenger.of(context);
             // The cubit restores by its own id, even after this screen is
-            // gone (FR-004).
+            // gone (FR-004). Then its listener is gone too, so the Undo
+            // explains a refusal itself.
             showAppSnackBar(
               context,
               l10n.productArchivedMessage,
               actionLabel: l10n.undoAction,
-              onAction: () => unawaited(cubit.restore()),
+              onAction: () => unawaited(() async {
+                final error = await cubit.restore();
+                if (error != null && !context.mounted) {
+                  showAppSnackBarOn(
+                    messenger,
+                    restoreErrorText(l10n, error),
+                    tone: StatusTone.error,
+                  );
+                }
+              }()),
             );
           },
         ),

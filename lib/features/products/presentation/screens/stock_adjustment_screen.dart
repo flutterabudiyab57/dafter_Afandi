@@ -44,9 +44,11 @@ class StockAdjustmentScreen extends StatelessWidget {
           );
         }
       },
-      child: BlocBuilder<StockAdjustmentCubit, StockAdjustmentState>(
-        builder: (context, _) => UnsavedChangesGuard(
-          dirty: context.read<StockAdjustmentCubit>().hasUnsavedChanges,
+      child: BlocSelector<StockAdjustmentCubit, StockAdjustmentState, bool>(
+        // Rebuilt only when the answer to "leave?" changes.
+        selector: (_) => context.read<StockAdjustmentCubit>().hasUnsavedChanges,
+        builder: (context, dirty) => UnsavedChangesGuard(
+          dirty: dirty,
           child: Scaffold(
             appBar: AppBar(title: Text(l10n.adjustTitle)),
             body: BlocBuilder<StockAdjustmentCubit, StockAdjustmentState>(

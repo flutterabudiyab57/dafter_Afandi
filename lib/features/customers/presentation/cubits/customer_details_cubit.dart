@@ -10,31 +10,54 @@ import '../../domain/customer_repository.dart';
 import '../../domain/ledger_entry.dart';
 
 final class CustomerDetailsState extends Equatable {
-  const CustomerDetailsState({this.summary, this.loaded = false});
+  const CustomerDetailsState({
+    this.summary,
+    this.loaded = false,
+    this.loadFailed = false,
+  });
 
   /// Null when the customer does not exist.
   final CustomerSummary? summary;
   final bool loaded;
 
+  /// The stream failed; `retry` tries again (research R7).
+  final bool loadFailed;
+
   @override
-  List<Object?> get props => [summary, loaded];
+  List<Object?> get props => [summary, loaded, loadFailed];
 }
 
 /// One customer with their live balance (US4), archive and restore.
 class CustomerDetailsCubit extends Cubit<CustomerDetailsState> {
   CustomerDetailsCubit(this._repository, this.customerId)
     : super(const CustomerDetailsState()) {
-    _sub = _repository
-        .watchOne(customerId)
-        .listen(
-          (s) => emit(CustomerDetailsState(summary: s, loaded: true)),
-          onError: addError,
-        );
+    _subscribe();
   }
 
   final CustomerRepository _repository;
   final String customerId;
-  late final StreamSubscription<CustomerSummary?> _sub;
+  StreamSubscription<CustomerSummary?>? _sub;
+
+  void _subscribe() {
+    unawaited(_sub?.cancel());
+    _sub = _repository
+        .watchOne(customerId)
+        .listen(
+          (s) => emit(CustomerDetailsState(summary: s, loaded: true)),
+          onError: _failed,
+        );
+  }
+
+  /// Subscribes again after a failed load.
+  void retry() {
+    emit(const CustomerDetailsState());
+    _subscribe();
+  }
+
+  void _failed(Object error, StackTrace stack) {
+    emit(const CustomerDetailsState(loadFailed: true));
+    addError(error, stack);
+  }
 
   Future<void> archive() => _repository.archive(customerId);
 
@@ -42,7 +65,7 @@ class CustomerDetailsCubit extends Cubit<CustomerDetailsState> {
 
   @override
   Future<void> close() async {
-    await _sub.cancel();
+    await _sub?.cancel();
     return super.close();
   }
 }

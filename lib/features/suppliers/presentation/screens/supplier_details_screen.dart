@@ -12,6 +12,7 @@ import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/list_load_state.dart';
+import '../../../../core/widgets/load_failed_view.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
@@ -35,6 +36,12 @@ class SupplierDetailsScreen extends StatelessWidget {
       appBar: AppBar(title: Text(l10n.supplierDetailsTitle)),
       body: BlocBuilder<SupplierDetailsCubit, SupplierDetailsState>(
         builder: (context, state) {
+          if (state.loadFailed) {
+            return dataLoadFailedView(
+              context,
+              onRetry: context.read<SupplierDetailsCubit>().retry,
+            );
+          }
           if (!state.loaded) {
             return const Center(child: CircularProgressIndicator());
           }

@@ -33,9 +33,11 @@ class ProductFormScreen extends StatelessWidget {
     return BlocListener<ProductFormCubit, ProductFormState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: _onStatus,
-      child: BlocBuilder<ProductFormCubit, ProductFormState>(
-        builder: (context, _) => UnsavedChangesGuard(
-          dirty: context.read<ProductFormCubit>().hasUnsavedChanges,
+      child: BlocSelector<ProductFormCubit, ProductFormState, bool>(
+        // Rebuilt only when the answer to "leave?" changes.
+        selector: (_) => context.read<ProductFormCubit>().hasUnsavedChanges,
+        builder: (context, dirty) => UnsavedChangesGuard(
+          dirty: dirty,
           child: Scaffold(
             appBar: AppBar(
               title: Text(

@@ -6,6 +6,7 @@ import 'package:daftar_afandi/core/widgets/starting_app.dart';
 import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/status_banner.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
+import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -78,51 +79,70 @@ void main() {
     });
   }
 
-  testWidgets('welcome shows its illustration, hidden from screen readers', (
-    tester,
-  ) async {
-    final handle = tester.ensureSemantics();
-    await pumpApp(tester, FakeSettingsRepository());
-    await goTo(tester, RoutePaths.welcome);
-    expect(shown(tester), AppIllustration.welcome);
-    final image = tester.widget<Image>(
-      find.descendant(
-        of: find.byType(Illustration),
-        matching: find.byType(Image),
-      ),
-    );
-    expect(image.excludeFromSemantics, isTrue);
-    handle.dispose();
-  });
+  for (final locale in AppLocale.values) {
+    final l10n = lookupAppLocalizations(Locale(locale.name));
+    for (final textScale in [1.0, 2.0]) {
+      final tag = '${locale.name} ×$textScale';
 
-  for (final platform in [TargetPlatform.iOS, TargetPlatform.android]) {
-    testWidgets('data safety on ${platform.name}: an info banner, and a '
-        'warning on iOS only (US4-3)', (tester) async {
-      debugDefaultTargetPlatformOverride = platform;
-      addTearDown(() => debugDefaultTargetPlatformOverride = null);
-      await pumpApp(tester, FakeSettingsRepository(kOnboardedSettings));
-      await goTo(tester, RoutePaths.settingsData);
-      expect(shown(tester), AppIllustration.dataSafety);
-      final banners = tester
-          .widgetList<StatusBanner>(find.byType(StatusBanner))
-          .map((b) => b.tone)
-          .toList();
-      expect(
-        banners,
-        platform == TargetPlatform.iOS
-            ? [StatusTone.info, StatusTone.warning]
-            : [StatusTone.info],
+      Future<void> pumpIn(
+        WidgetTester tester,
+        FakeSettingsRepository repo,
+      ) async {
+        if (locale == AppLocale.en) await repo.setLocale(AppLocale.en);
+        await pumpApp(tester, repo, textScale: textScale);
+      }
+
+      testWidgets(
+        '$tag welcome shows its illustration, hidden from screen readers',
+        (tester) async {
+          final handle = tester.ensureSemantics();
+          await pumpIn(tester, FakeSettingsRepository());
+          await goTo(tester, RoutePaths.welcome);
+          expect(shown(tester), AppIllustration.welcome);
+          final image = tester.widget<Image>(
+            find.descendant(
+              of: find.byType(Illustration),
+              matching: find.byType(Image),
+            ),
+          );
+          expect(image.excludeFromSemantics, isTrue);
+          handle.dispose();
+        },
       );
-      debugDefaultTargetPlatformOverride = null;
-    });
-  }
 
-  testWidgets('reports keeps its placeholder, with an illustration', (
-    tester,
-  ) async {
-    await pumpApp(tester, FakeSettingsRepository(kOnboardedSettings));
-    await goTo(tester, RoutePaths.reports);
-    expect(shown(tester), AppIllustration.emptyReports);
-    expect(find.text(ar.placeholderReportsTitle), findsWidgets);
-  });
+      for (final platform in [TargetPlatform.iOS, TargetPlatform.android]) {
+        testWidgets(
+          '$tag data safety on ${platform.name}: an info banner, and a '
+          'warning on iOS only (US4-3)',
+          (tester) async {
+            debugDefaultTargetPlatformOverride = platform;
+            addTearDown(() => debugDefaultTargetPlatformOverride = null);
+            await pumpIn(tester, FakeSettingsRepository(kOnboardedSettings));
+            await goTo(tester, RoutePaths.settingsData);
+            expect(shown(tester), AppIllustration.dataSafety);
+            final banners = tester
+                .widgetList<StatusBanner>(find.byType(StatusBanner))
+                .map((b) => b.tone)
+                .toList();
+            expect(
+              banners,
+              platform == TargetPlatform.iOS
+                  ? [StatusTone.info, StatusTone.warning]
+                  : [StatusTone.info],
+            );
+            debugDefaultTargetPlatformOverride = null;
+          },
+        );
+      }
+
+      testWidgets('$tag reports keeps its placeholder, with an illustration', (
+        tester,
+      ) async {
+        await pumpIn(tester, FakeSettingsRepository(kOnboardedSettings));
+        await goTo(tester, RoutePaths.reports);
+        expect(shown(tester), AppIllustration.emptyReports);
+        expect(find.text(l10n.placeholderReportsTitle), findsWidgets);
+      });
+    }
+  }
 }

@@ -25,9 +25,11 @@ class OpeningStockScreen extends StatelessWidget {
     return BlocListener<OpeningStockCubit, OpeningStockState>(
       listenWhen: (a, b) => a.status != b.status,
       listener: _onStatus,
-      child: BlocBuilder<OpeningStockCubit, OpeningStockState>(
-        builder: (context, _) => UnsavedChangesGuard(
-          dirty: context.read<OpeningStockCubit>().hasUnsavedChanges,
+      child: BlocSelector<OpeningStockCubit, OpeningStockState, bool>(
+        // Rebuilt only when the answer to "leave?" changes.
+        selector: (_) => context.read<OpeningStockCubit>().hasUnsavedChanges,
+        builder: (context, dirty) => UnsavedChangesGuard(
+          dirty: dirty,
           child: Scaffold(
             appBar: AppBar(title: Text(l10n.productSetOpeningAction)),
             body: BlocBuilder<OpeningStockCubit, OpeningStockState>(

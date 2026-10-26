@@ -15,8 +15,11 @@ void main() {
     await pumpInApp(tester, l10n, const SkeletonList(rows: 3));
     await tester.pump(const Duration(milliseconds: 299));
     expect(rows(), findsNothing);
+    // Nothing shimmers while nothing shows.
+    expect(tester.hasRunningAnimations, isFalse);
     await tester.pump(const Duration(milliseconds: 2));
     expect(rows(), findsNWidgets(3));
+    expect(tester.hasRunningAnimations, isTrue);
     expect(
       find.descendant(
         of: find.byType(SkeletonList),

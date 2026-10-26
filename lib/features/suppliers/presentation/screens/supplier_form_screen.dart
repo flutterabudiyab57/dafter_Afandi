@@ -44,9 +44,11 @@ class SupplierFormScreen extends StatelessWidget {
           context.pop();
         }
       },
-      child: BlocBuilder<SupplierFormCubit, SupplierFormState>(
-        builder: (context, _) => UnsavedChangesGuard(
-          dirty: context.read<SupplierFormCubit>().hasUnsavedChanges,
+      child: BlocSelector<SupplierFormCubit, SupplierFormState, bool>(
+        // Rebuilt only when the answer to "leave?" changes.
+        selector: (_) => context.read<SupplierFormCubit>().hasUnsavedChanges,
+        builder: (context, dirty) => UnsavedChangesGuard(
+          dirty: dirty,
           child: Scaffold(
             appBar: AppBar(
               title: Text(

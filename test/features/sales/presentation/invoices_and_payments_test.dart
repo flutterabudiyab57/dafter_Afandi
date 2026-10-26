@@ -205,7 +205,10 @@ void main() {
           expect(store.balanceOf(ahmad), 0);
           expect(find.textContaining('خطأ في العميل'), findsOneWidget);
           expect(find.text(l10n.invoiceVoidAction), findsNothing);
-          expect(find.byType(VoidedBanner), findsOneWidget);
+          expect(
+            tester.widget<StatusBanner>(find.byType(StatusBanner)).tone,
+            StatusTone.voided,
+          );
           final types = store.statementOf(ahmad).map((e) => e.type).toList();
           expect(types, contains(LedgerEntryType.saleVoid));
           expect(types, contains(LedgerEntryType.reversal));

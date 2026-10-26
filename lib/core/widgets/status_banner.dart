@@ -3,9 +3,10 @@ import 'package:material_ui/material_ui.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 
-/// The four feedback tones (handoff 3.1). Errors use the scheme's error
-/// colors; the other three use [AppColors].
-enum StatusTone { success, warning, error, info }
+/// The four feedback tones (handoff 3.1), plus [voided] for the banner on a
+/// voided invoice or purchase. Errors use the scheme's error colors; the
+/// others use [AppColors].
+enum StatusTone { success, warning, error, info, voided }
 
 /// The colors and filled icon of a [StatusTone], shared by the banner,
 /// the bottom message and the confirm dialog.
@@ -50,6 +51,13 @@ final class StatusToneColors {
         container: colors.infoContainer,
         onContainer: colors.onInfoContainer,
         icon: Icons.info,
+      ),
+      StatusTone.voided => StatusToneColors(
+        fill: colors.voided,
+        onFill: colors.voidedContainer,
+        container: colors.voidedContainer,
+        onContainer: colors.voided,
+        icon: Icons.block,
       ),
     };
   }
@@ -137,48 +145,6 @@ class StatusBanner extends StatelessWidget {
                 SizedBox(width: tokens.spaceSm),
                 action,
               ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// The banner on a voided invoice or purchase, in the voided colors.
-class VoidedBanner extends StatelessWidget {
-  const VoidedBanner({required this.text, super.key});
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = context.tokens;
-    final colors = context.appColors;
-    return Semantics(
-      container: true,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: colors.voidedContainer,
-          borderRadius: BorderRadius.circular(tokens.radiusMd),
-        ),
-        child: Padding(
-          padding: EdgeInsetsDirectional.symmetric(
-            horizontal: tokens.spaceMd,
-            vertical: tokens.spaceMd * 14 / 16,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ExcludeSemantics(child: Icon(Icons.block, color: colors.voided)),
-              SizedBox(width: tokens.spaceSm + tokens.spaceXs),
-              Expanded(
-                child: Text(
-                  text,
-                  style: Theme.of(context).textTheme.titleSmall
-                      ?.copyWith(color: colors.voided),
-                ),
-              ),
             ],
           ),
         ),

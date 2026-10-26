@@ -10,6 +10,7 @@ void main() {
     StatusTone.warning: Icons.warning,
     StatusTone.error: Icons.error,
     StatusTone.info: Icons.info,
+    StatusTone.voided: Icons.block,
   };
 
   testVariants('each tone shows its icon, title, message and action', (

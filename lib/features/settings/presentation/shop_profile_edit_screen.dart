@@ -24,9 +24,11 @@ class ShopProfileEditScreen extends StatelessWidget {
     return BlocListener<ShopProfileFormCubit, ShopProfileFormState>(
       listenWhen: (a, b) => b.status == ShopProfileFormStatus.saved,
       listener: (context, _) => context.pop(),
-      child: BlocBuilder<ShopProfileFormCubit, ShopProfileFormState>(
-        builder: (context, _) => UnsavedChangesGuard(
-          dirty: context.read<ShopProfileFormCubit>().hasUnsavedChanges,
+      child: BlocSelector<ShopProfileFormCubit, ShopProfileFormState, bool>(
+        // Rebuilt only when the answer to "leave?" changes.
+        selector: (_) => context.read<ShopProfileFormCubit>().hasUnsavedChanges,
+        builder: (context, dirty) => UnsavedChangesGuard(
+          dirty: dirty,
           child: Scaffold(
             appBar: AppBar(title: Text(l10n.shopDetailsTitle)),
             body: SafeArea(
