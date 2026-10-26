@@ -55,8 +55,14 @@ void main() {
           await open(tester, store, RoutePaths.productDetails(id));
           expect(find.text('شاي العروسة'), findsOneWidget);
           expect(find.text('مشروبات'), findsOneWidget);
-          expect(find.text(ar ? '١٢٫٥٠ ج.م' : 'EGP 12.50'), findsOneWidget);
-          expect(find.text(ar ? '٩٫٠٠ ج.م' : 'EGP 9.00'), findsOneWidget);
+          expect(
+            find.text(ar ? '١٢٫٥٠\u00A0ج.م' : 'EGP\u00A012.50'),
+            findsOneWidget,
+          );
+          expect(
+            find.text(ar ? '٩٫٠٠\u00A0ج.م' : 'EGP\u00A09.00'),
+            findsOneWidget,
+          );
           expect(
             find.text(ar ? '٣ ${l10n.unitPieceShort}' : '3 pc'),
             findsOneWidget,
@@ -81,7 +87,10 @@ void main() {
             find.widgetWithText(FilledButton, l10n.saveAction),
           );
           expect(currentPath(tester), RoutePaths.productDetails(id));
-          expect(find.text(ar ? '١٢٫٧٥ ج.م' : 'EGP 12.75'), findsOneWidget);
+          expect(
+            find.text(ar ? '١٢٫٧٥\u00A0ج.م' : 'EGP\u00A012.75'),
+            findsOneWidget,
+          );
         });
 
         testWidgets('after history the unit is locked with a note', (

@@ -50,6 +50,7 @@ Future<void> visitEveryScreen(
   required AppLocale locale,
   required Future<void> Function(String screen) check,
   Size size = const Size(420, 812),
+  double devicePixelRatio = 1,
   double textScale = 1,
   Brightness brightness = Brightness.light,
 }) async {
@@ -157,6 +158,7 @@ Future<void> visitEveryScreen(
     suppliers: FakeSuppliersCubits(buying),
     purchases: FakePurchasesCubits(buying),
     size: size,
+    devicePixelRatio: devicePixelRatio,
     textScale: textScale,
     brightness: brightness,
   );
@@ -195,6 +197,9 @@ Future<void> visitEveryScreen(
     RoutePaths.purchase(voidedPurchase),
     RoutePaths.supplierPayment(nour),
   ]) {
+    // The list page is already open, so a new query alone would keep its
+    // cubit; start it again from Home.
+    if (path == RoutePaths.productsLow) await goTo(tester, RoutePaths.home);
     await goTo(tester, path);
     await check(path);
   }
@@ -206,6 +211,7 @@ Future<void> visitEveryScreen(
   }
 
   // Overpaying asks to confirm the credit, still on the payment page.
+  await goTo(tester, RoutePaths.customerPayment(ahmad));
   await tester.enterText(
     find.widgetWithText(TextField, l10n.paymentAmountLabel),
     '1000',

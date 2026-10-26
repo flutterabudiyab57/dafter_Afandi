@@ -5,11 +5,10 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
-import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_illustration.dart';
+import '../../../../core/widgets/balance_tile.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
-import '../../../../core/widgets/status_badge.dart';
 import '../../domain/customer.dart';
 import '../cubits/customers_list_cubit.dart';
 import '../widgets/customer_text.dart';
@@ -174,25 +173,11 @@ class CustomerRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = summary.customer;
-    final b = summary.balancePiasters;
-    return ListTile(
-      title: Text(c.name),
-      subtitle: c.phone == null ? null : Text(ltrIsolate(c.phone!)),
-      trailing: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.sizeOf(context).width * 0.4,
-        ),
-        child: b == 0
-            ? Text(context.balance(b), textAlign: TextAlign.end)
-            : Align(
-                alignment: AlignmentDirectional.centerEnd,
-                widthFactor: 1,
-                child: StatusBadge(
-                  label: context.balance(b),
-                  tone: b > 0 ? BadgeTone.owes : BadgeTone.credit,
-                ),
-              ),
-      ),
+    return BalanceTile(
+      name: c.name,
+      phone: c.phone,
+      balancePiasters: summary.balancePiasters,
+      balanceText: context.balance(summary.balancePiasters),
       onTap: onTap ?? () => context.push(RoutePaths.customerDetails(c.id)),
     );
   }

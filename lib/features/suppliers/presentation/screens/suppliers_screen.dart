@@ -5,11 +5,10 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
-import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_illustration.dart';
+import '../../../../core/widgets/balance_tile.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
-import '../../../../core/widgets/status_badge.dart';
 import '../../../customers/presentation/widgets/parties_switch.dart';
 import '../../domain/supplier.dart';
 import '../cubits/suppliers_list_cubit.dart';
@@ -174,25 +173,11 @@ class SupplierRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = summary.supplier;
-    final b = summary.balancePiasters;
-    return ListTile(
-      title: Text(s.name),
-      subtitle: s.phone == null ? null : Text(ltrIsolate(s.phone!)),
-      trailing: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.sizeOf(context).width * 0.4,
-        ),
-        child: b == 0
-            ? Text(context.supplierBalance(b), textAlign: TextAlign.end)
-            : Align(
-                alignment: AlignmentDirectional.centerEnd,
-                widthFactor: 1,
-                child: StatusBadge(
-                  label: context.supplierBalance(b),
-                  tone: b > 0 ? BadgeTone.owes : BadgeTone.credit,
-                ),
-              ),
-      ),
+    return BalanceTile(
+      name: s.name,
+      phone: s.phone,
+      balancePiasters: summary.balancePiasters,
+      balanceText: context.supplierBalance(summary.balancePiasters),
       onTap: onTap ?? () => context.push(RoutePaths.supplierDetails(s.id)),
     );
   }

@@ -159,6 +159,35 @@ void main() {
           expect(find.text(l10n.errorRestoreBarcodeTaken('قهوة')), findsOne);
         });
 
+        testWidgets('going from one product to another shows the second', (
+          tester,
+        ) async {
+          final tea = products.seedProduct('شاي');
+          final rice = products.seedProduct('أرز');
+          await open(tester, RoutePaths.productDetails(tea));
+          await goTo(tester, RoutePaths.productDetails(rice));
+          expect(find.text('أرز'), findsOneWidget);
+          expect(find.text('شاي'), findsNothing);
+        });
+
+        testWidgets('a balance moves under the phone at large text, never '
+            'clipped beside it', (tester) async {
+          sales.seedCustomer(
+            'منى',
+            phone: '01011112222',
+            openingPiasters: 5000,
+          );
+          await open(tester, RoutePaths.parties);
+          final tile = tester.widget<ListTile>(
+            find.ancestor(
+              of: find.text('منى'),
+              matching: find.byType(ListTile),
+            ),
+          );
+          expect(tile.trailing == null, textScale > 1.3);
+          expect(find.byType(StatusBadge), findsOneWidget);
+        });
+
         testWidgets('low stock and below zero are two different badges', (
           tester,
         ) async {

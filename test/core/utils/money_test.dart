@@ -259,7 +259,7 @@ void main() {
           locale: AppLocaleCode.ar,
           digits: DigitStyle.arabicIndic,
         ),
-        '١٬٢٣٤٫٥٠ ج.م',
+        '١٬٢٣٤٫٥٠\u00A0ج.م',
       );
     });
 
@@ -270,7 +270,7 @@ void main() {
           locale: AppLocaleCode.en,
           digits: DigitStyle.latin,
         ),
-        'EGP 1,234.50',
+        'EGP\u00A01,234.50',
       );
     });
 
@@ -281,7 +281,7 @@ void main() {
           locale: AppLocaleCode.ar,
           digits: DigitStyle.latin,
         ),
-        '1,234.50 ج.م',
+        '1,234.50\u00A0ج.م',
       );
       expect(
         formatPiasters(
@@ -289,7 +289,7 @@ void main() {
           locale: AppLocaleCode.en,
           digits: DigitStyle.arabicIndic,
         ),
-        'EGP ١٬٢٣٤٫٥٠',
+        'EGP\u00A0١٬٢٣٤٫٥٠',
       );
     });
 
@@ -366,5 +366,26 @@ void main() {
       expect(RegExp(r'\bdouble\b').hasMatch(source), isFalse, reason: path);
       expect(source.contains('toDouble'), isFalse, reason: path);
     }
+  });
+
+  test('a sign stays with the number, and the currency after both', () {
+    expect(
+      formatPiasters(
+        6000,
+        locale: AppLocaleCode.ar,
+        digits: DigitStyle.arabicIndic,
+        sign: '+',
+      ),
+      '\u2066+٦٠٫٠٠\u2069\u00A0ج.م',
+    );
+    expect(
+      formatPiasters(
+        2500,
+        locale: AppLocaleCode.en,
+        digits: DigitStyle.latin,
+        sign: '−',
+      ),
+      'EGP\u00A0\u2066−25.00\u2069',
+    );
   });
 }

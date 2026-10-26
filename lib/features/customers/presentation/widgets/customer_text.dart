@@ -87,10 +87,9 @@ extension CustomerText on BuildContext {
     LedgerEntryType.reversal => _l10n.ledgerReversal,
   };
 
-  /// A signed amount: "+60.00" or "−25.00", kept left-to-right.
+  /// A signed amount: "+٦٠٫٠٠ ج.م" or "EGP −25.00".
   String signedMoney(int piasters) {
     if (piasters == 0) return money(0);
-    final sign = piasters > 0 ? '+' : '−';
-    return ltrIsolate('$sign${money(piasters.abs())}');
+    return money(piasters.abs(), sign: piasters > 0 ? '+' : '−');
   }
 }

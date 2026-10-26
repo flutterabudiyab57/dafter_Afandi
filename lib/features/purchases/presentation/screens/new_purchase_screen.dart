@@ -5,9 +5,11 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/decimal_text.dart';
+import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/digit_style_scope.dart';
 import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
 import '../../../../core/widgets/save_button.dart';
@@ -192,8 +194,14 @@ class _BodyState extends State<_Body> {
   }
 
   Future<void> _pickDate(DateTime shown) async {
+    // Plain Arabic numbers the days in Latin digits while its dates use
+    // Arabic-Indic ones; Egyptian Arabic uses Arabic-Indic for both.
+    final arabicIndic =
+        DigitStyleScope.of(context) == DigitStyle.arabicIndic &&
+        Localizations.localeOf(context).languageCode == 'ar';
     final picked = await showDatePicker(
       context: context,
+      locale: arabicIndic ? const Locale('ar', 'EG') : null,
       initialDate: shown,
       firstDate: DateTime(2000),
       // No future dates (FR-005).

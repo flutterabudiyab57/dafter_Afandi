@@ -108,6 +108,7 @@ Future<void> pumpApp(
   WidgetTester tester,
   SettingsRepository repository, {
   Size size = const Size(420, 812),
+  double devicePixelRatio = 1,
   double textScale = 1,
   Brightness brightness = Brightness.light,
   ProductsCubits? products,
@@ -117,8 +118,8 @@ Future<void> pumpApp(
   PurchasesCubits? purchases,
 }) async {
   tester.view
-    ..devicePixelRatio = 1
-    ..physicalSize = size;
+    ..devicePixelRatio = devicePixelRatio
+    ..physicalSize = size * devicePixelRatio;
   tester.platformDispatcher
     ..textScaleFactorTestValue = textScale
     ..platformBrightnessTestValue = brightness;

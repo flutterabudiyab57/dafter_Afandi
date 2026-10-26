@@ -102,8 +102,16 @@ void main() {
           await save(tester);
 
           final body = ar
-              ? l10n.openingConfirmBody('١٢ قطعة', '٧٫٥٠ ج.م', '٩٠٫٠٠ ج.م')
-              : l10n.openingConfirmBody('12 pc', 'EGP 7.50', 'EGP 90.00');
+              ? l10n.openingConfirmBody(
+                  '١٢ قطعة',
+                  '٧٫٥٠\u00A0ج.م',
+                  '٩٠٫٠٠\u00A0ج.م',
+                )
+              : l10n.openingConfirmBody(
+                  '12 pc',
+                  'EGP\u00A07.50',
+                  'EGP\u00A090.00',
+                );
           expect(find.text(l10n.openingConfirmTitle), findsOneWidget);
           expect(find.text(body), findsOneWidget);
 

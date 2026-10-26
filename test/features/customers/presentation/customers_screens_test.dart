@@ -17,7 +17,7 @@ void main() {
     final l10n = lookupAppLocalizations(Locale(locale.name));
     final ar = locale == AppLocale.ar;
     String egp(String latin, String arabic) =>
-        ar ? '$arabic ج.م' : 'EGP $latin';
+        ar ? '$arabic\u00A0ج.م' : 'EGP\u00A0$latin';
 
     for (final textScale in [1.0, 2.0]) {
       group('${locale.name} ×$textScale', () {

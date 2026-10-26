@@ -57,6 +57,10 @@ typedef ShopProfileFormCubitFactory = ShopProfileFormCubit Function(
 
 /// The app's routes with one redirect (contracts/routes-and-screens.md):
 /// before onboarding only the first-run routes, after it never them.
+///
+/// go_router keys a page by its route pattern, so a `go` from one id to
+/// another would keep the first id's cubits. Each page that reads an id is
+/// keyed by its own matched location instead.
 GoRouter createAppRouter(
   AppPreferencesCubit prefs, {
   required ShopProfileFormCubitFactory shopProfileForm,
@@ -190,6 +194,7 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
           builder: (context, state) {
             final id = state.pathParameters['id']!;
             return MultiBlocProvider(
+              key: ValueKey(state.matchedLocation),
               providers: [
                 BlocProvider(create: (_) => products.productDetails(id)),
                 BlocProvider(create: (_) => products.stockHistory(id)..load()),
@@ -201,6 +206,7 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
             GoRoute(
               path: 'edit',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) => products.productForm(
                   mode: ProductFormMode.edit,
                   productId: state.pathParameters['id'],
@@ -211,6 +217,7 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
             GoRoute(
               path: 'opening',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) =>
                     products.openingStock(state.pathParameters['id']!),
                 child: const OpeningStockScreen(),
@@ -219,6 +226,7 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
             GoRoute(
               path: 'adjust',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) =>
                     products.stockAdjustment(state.pathParameters['id']!),
                 child: const StockAdjustmentScreen(),
@@ -260,6 +268,7 @@ GoRoute _salesRoute(SalesCubits sales) => GoRoute(
     GoRoute(
       path: ':id',
       builder: (context, state) => BlocProvider(
+        key: ValueKey(state.matchedLocation),
         create: (_) => sales.invoice(state.pathParameters['id']!),
         child: const InvoiceScreen(),
       ),
@@ -290,6 +299,7 @@ GoRoute _purchasesRoute(PurchasesCubits purchases) => GoRoute(
     GoRoute(
       path: ':id',
       builder: (context, state) => BlocProvider(
+        key: ValueKey(state.matchedLocation),
         create: (_) => purchases.purchaseView(state.pathParameters['id']!),
         child: const PurchaseScreen(),
       ),
@@ -329,6 +339,7 @@ GoRoute _partiesRoute(CustomersCubits customers, SalesCubits sales) => GoRoute(
       builder: (context, state) {
         final id = state.pathParameters['id']!;
         return MultiBlocProvider(
+          key: ValueKey(state.matchedLocation),
           providers: [
             BlocProvider(create: (_) => customers.customerDetails(id)),
             BlocProvider(create: (_) => customers.statement(id)..load()),
@@ -341,6 +352,7 @@ GoRoute _partiesRoute(CustomersCubits customers, SalesCubits sales) => GoRoute(
         GoRoute(
           path: 'edit',
           builder: (context, state) => BlocProvider(
+            key: ValueKey(state.matchedLocation),
             create: (_) => customers.customerForm(
               mode: CustomerFormMode.edit,
               customerId: state.pathParameters['id'],
@@ -351,6 +363,7 @@ GoRoute _partiesRoute(CustomersCubits customers, SalesCubits sales) => GoRoute(
         GoRoute(
           path: 'payment',
           builder: (context, state) => BlocProvider(
+            key: ValueKey(state.matchedLocation),
             create: (_) => customers.payment(state.pathParameters['id']!),
             child: const PaymentScreen(),
           ),
@@ -394,6 +407,7 @@ GoRoute _suppliersRoute(SuppliersCubits suppliers, PurchasesCubits purchases) =>
           builder: (context, state) {
             final id = state.pathParameters['id']!;
             return MultiBlocProvider(
+              key: ValueKey(state.matchedLocation),
               providers: [
                 BlocProvider(create: (_) => suppliers.supplierDetails(id)),
                 BlocProvider(create: (_) => suppliers.statement(id)..load()),
@@ -408,6 +422,7 @@ GoRoute _suppliersRoute(SuppliersCubits suppliers, PurchasesCubits purchases) =>
             GoRoute(
               path: 'edit',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) => suppliers.supplierForm(
                   mode: SupplierFormMode.edit,
                   supplierId: state.pathParameters['id'],
@@ -418,6 +433,7 @@ GoRoute _suppliersRoute(SuppliersCubits suppliers, PurchasesCubits purchases) =>
             GoRoute(
               path: 'payment',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) => suppliers.payment(state.pathParameters['id']!),
                 child: const SupplierPaymentScreen(),
               ),

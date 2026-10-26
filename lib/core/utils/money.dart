@@ -104,20 +104,25 @@ int? tryParsePiasters(String input, {bool allowNegative = false}) =>
     );
 
 /// Formats piasters with 2 decimals, e.g. `١٬٢٣٤٫٥٠ ج.م` (Arabic) or
-/// `EGP 1,234.50` (English). [digits] picks the digit shapes.
+/// `EGP 1,234.50` (English). [digits] picks the digit shapes. A [sign]
+/// such as `+` is kept left-to-right with the number, so in Arabic it stays
+/// in front of the number and the currency stays after it.
 String formatPiasters(
   int piasters, {
   required AppLocaleCode locale,
   required DigitStyle digits,
   bool withCurrency = true,
+  String sign = '',
 }) {
-  final number = applyDigitStyle(
+  final plain = applyDigitStyle(
     formatScaledDecimal(piasters, scale: 2, minDecimals: 2),
     digits,
   );
+  final number = sign.isEmpty ? plain : ltrIsolate('$sign$plain');
   if (!withCurrency) return number;
+  // A no-break space: an amount never wraps away from its currency.
   return switch (locale) {
-    AppLocaleCode.ar => '$number ج.م',
-    AppLocaleCode.en => 'EGP $number',
+    AppLocaleCode.ar => '$number ج.م',
+    AppLocaleCode.en => 'EGP $number',
   };
 }

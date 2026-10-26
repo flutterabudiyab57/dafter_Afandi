@@ -136,7 +136,11 @@ class StatusBanner extends StatelessWidget {
             vertical: tokens.spaceMd * 14 / 16,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // A one-line banner centers its action on the title; with a
+            // message, everything stays at the top.
+            crossAxisAlignment: message == null && !wrapAction
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
             children: [
               ExcludeSemantics(child: Icon(tc.icon, color: tc.fill)),
               SizedBox(width: tokens.spaceSm + tokens.spaceXs),
