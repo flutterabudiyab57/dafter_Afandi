@@ -2,19 +2,11 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/result.dart';
 import '../../../core/utils/text_length.dart';
+import '../../payments/domain/payment_method.dart';
 import 'customer_draft.dart';
 import 'customer_errors.dart';
 
-/// How money was paid (decision Q23). `card` exists in storage but is not
-/// offered in the user interface.
-enum PaymentMethod { cash, wallet, instapay, card }
-
-/// The methods the user can pick.
-const List<PaymentMethod> offeredPaymentMethods = [
-  PaymentMethod.cash,
-  PaymentMethod.wallet,
-  PaymentMethod.instapay,
-];
+export '../../payments/domain/payment_method.dart';
 
 /// A validated payment from a customer (FR-016).
 final class PaymentRequest extends Equatable {

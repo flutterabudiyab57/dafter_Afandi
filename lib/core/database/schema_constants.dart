@@ -3,7 +3,7 @@
 library;
 
 /// Stored in SQLite `user_version`; `AppDatabase.schemaVersion` returns it.
-const int kSchemaVersion = 1;
+const int kSchemaVersion = 2;
 
 /// Stored in SQLite `application_id`: "DAFA" in ASCII.
 const int kAppApplicationId = 0x44414641;

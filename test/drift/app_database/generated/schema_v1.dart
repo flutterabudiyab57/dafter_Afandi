@@ -4,7 +4,7 @@
 //
 import 'package:drift/drift.dart';
 
-class AppSettings extends Table with TableInfo {
+class AppSettings extends Table with TableInfo<AppSettings, AppSettingsData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -163,8 +163,70 @@ class AppSettings extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  AppSettingsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AppSettingsData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      singleton: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}singleton'],
+      )!,
+      shopName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shop_name'],
+      ),
+      shopPhone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shop_phone'],
+      ),
+      shopAddress: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shop_address'],
+      ),
+      invoiceFooter: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}invoice_footer'],
+      ),
+      localeCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}locale_code'],
+      )!,
+      digitStyle: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}digit_style'],
+      )!,
+      negativeStockPolicy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}negative_stock_policy'],
+      )!,
+      appLockEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}app_lock_enabled'],
+      )!,
+      biometricEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}biometric_enabled'],
+      )!,
+      deviceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}device_id'],
+      )!,
+      onboardingCompletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}onboarding_completed_at'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
   }
 
   @override
@@ -186,7 +248,501 @@ class AppSettings extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class Counters extends Table with TableInfo {
+class AppSettingsData extends DataClass implements Insertable<AppSettingsData> {
+  final String id;
+  final int singleton;
+  final String? shopName;
+  final String? shopPhone;
+  final String? shopAddress;
+  final String? invoiceFooter;
+  final String localeCode;
+  final String digitStyle;
+  final String negativeStockPolicy;
+  final int appLockEnabled;
+  final int biometricEnabled;
+  final String deviceId;
+  final int? onboardingCompletedAt;
+  final int createdAt;
+  final int updatedAt;
+  const AppSettingsData({
+    required this.id,
+    required this.singleton,
+    this.shopName,
+    this.shopPhone,
+    this.shopAddress,
+    this.invoiceFooter,
+    required this.localeCode,
+    required this.digitStyle,
+    required this.negativeStockPolicy,
+    required this.appLockEnabled,
+    required this.biometricEnabled,
+    required this.deviceId,
+    this.onboardingCompletedAt,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['singleton'] = Variable<int>(singleton);
+    if (!nullToAbsent || shopName != null) {
+      map['shop_name'] = Variable<String>(shopName);
+    }
+    if (!nullToAbsent || shopPhone != null) {
+      map['shop_phone'] = Variable<String>(shopPhone);
+    }
+    if (!nullToAbsent || shopAddress != null) {
+      map['shop_address'] = Variable<String>(shopAddress);
+    }
+    if (!nullToAbsent || invoiceFooter != null) {
+      map['invoice_footer'] = Variable<String>(invoiceFooter);
+    }
+    map['locale_code'] = Variable<String>(localeCode);
+    map['digit_style'] = Variable<String>(digitStyle);
+    map['negative_stock_policy'] = Variable<String>(negativeStockPolicy);
+    map['app_lock_enabled'] = Variable<int>(appLockEnabled);
+    map['biometric_enabled'] = Variable<int>(biometricEnabled);
+    map['device_id'] = Variable<String>(deviceId);
+    if (!nullToAbsent || onboardingCompletedAt != null) {
+      map['onboarding_completed_at'] = Variable<int>(onboardingCompletedAt);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    return map;
+  }
+
+  AppSettingsCompanion toCompanion(bool nullToAbsent) {
+    return AppSettingsCompanion(
+      id: Value(id),
+      singleton: Value(singleton),
+      shopName: shopName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(shopName),
+      shopPhone: shopPhone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(shopPhone),
+      shopAddress: shopAddress == null && nullToAbsent
+          ? const Value.absent()
+          : Value(shopAddress),
+      invoiceFooter: invoiceFooter == null && nullToAbsent
+          ? const Value.absent()
+          : Value(invoiceFooter),
+      localeCode: Value(localeCode),
+      digitStyle: Value(digitStyle),
+      negativeStockPolicy: Value(negativeStockPolicy),
+      appLockEnabled: Value(appLockEnabled),
+      biometricEnabled: Value(biometricEnabled),
+      deviceId: Value(deviceId),
+      onboardingCompletedAt: onboardingCompletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(onboardingCompletedAt),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory AppSettingsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AppSettingsData(
+      id: serializer.fromJson<String>(json['id']),
+      singleton: serializer.fromJson<int>(json['singleton']),
+      shopName: serializer.fromJson<String?>(json['shopName']),
+      shopPhone: serializer.fromJson<String?>(json['shopPhone']),
+      shopAddress: serializer.fromJson<String?>(json['shopAddress']),
+      invoiceFooter: serializer.fromJson<String?>(json['invoiceFooter']),
+      localeCode: serializer.fromJson<String>(json['localeCode']),
+      digitStyle: serializer.fromJson<String>(json['digitStyle']),
+      negativeStockPolicy: serializer.fromJson<String>(
+        json['negativeStockPolicy'],
+      ),
+      appLockEnabled: serializer.fromJson<int>(json['appLockEnabled']),
+      biometricEnabled: serializer.fromJson<int>(json['biometricEnabled']),
+      deviceId: serializer.fromJson<String>(json['deviceId']),
+      onboardingCompletedAt: serializer.fromJson<int?>(
+        json['onboardingCompletedAt'],
+      ),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'singleton': serializer.toJson<int>(singleton),
+      'shopName': serializer.toJson<String?>(shopName),
+      'shopPhone': serializer.toJson<String?>(shopPhone),
+      'shopAddress': serializer.toJson<String?>(shopAddress),
+      'invoiceFooter': serializer.toJson<String?>(invoiceFooter),
+      'localeCode': serializer.toJson<String>(localeCode),
+      'digitStyle': serializer.toJson<String>(digitStyle),
+      'negativeStockPolicy': serializer.toJson<String>(negativeStockPolicy),
+      'appLockEnabled': serializer.toJson<int>(appLockEnabled),
+      'biometricEnabled': serializer.toJson<int>(biometricEnabled),
+      'deviceId': serializer.toJson<String>(deviceId),
+      'onboardingCompletedAt': serializer.toJson<int?>(onboardingCompletedAt),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+    };
+  }
+
+  AppSettingsData copyWith({
+    String? id,
+    int? singleton,
+    Value<String?> shopName = const Value.absent(),
+    Value<String?> shopPhone = const Value.absent(),
+    Value<String?> shopAddress = const Value.absent(),
+    Value<String?> invoiceFooter = const Value.absent(),
+    String? localeCode,
+    String? digitStyle,
+    String? negativeStockPolicy,
+    int? appLockEnabled,
+    int? biometricEnabled,
+    String? deviceId,
+    Value<int?> onboardingCompletedAt = const Value.absent(),
+    int? createdAt,
+    int? updatedAt,
+  }) => AppSettingsData(
+    id: id ?? this.id,
+    singleton: singleton ?? this.singleton,
+    shopName: shopName.present ? shopName.value : this.shopName,
+    shopPhone: shopPhone.present ? shopPhone.value : this.shopPhone,
+    shopAddress: shopAddress.present ? shopAddress.value : this.shopAddress,
+    invoiceFooter: invoiceFooter.present
+        ? invoiceFooter.value
+        : this.invoiceFooter,
+    localeCode: localeCode ?? this.localeCode,
+    digitStyle: digitStyle ?? this.digitStyle,
+    negativeStockPolicy: negativeStockPolicy ?? this.negativeStockPolicy,
+    appLockEnabled: appLockEnabled ?? this.appLockEnabled,
+    biometricEnabled: biometricEnabled ?? this.biometricEnabled,
+    deviceId: deviceId ?? this.deviceId,
+    onboardingCompletedAt: onboardingCompletedAt.present
+        ? onboardingCompletedAt.value
+        : this.onboardingCompletedAt,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  AppSettingsData copyWithCompanion(AppSettingsCompanion data) {
+    return AppSettingsData(
+      id: data.id.present ? data.id.value : this.id,
+      singleton: data.singleton.present ? data.singleton.value : this.singleton,
+      shopName: data.shopName.present ? data.shopName.value : this.shopName,
+      shopPhone: data.shopPhone.present ? data.shopPhone.value : this.shopPhone,
+      shopAddress: data.shopAddress.present
+          ? data.shopAddress.value
+          : this.shopAddress,
+      invoiceFooter: data.invoiceFooter.present
+          ? data.invoiceFooter.value
+          : this.invoiceFooter,
+      localeCode: data.localeCode.present
+          ? data.localeCode.value
+          : this.localeCode,
+      digitStyle: data.digitStyle.present
+          ? data.digitStyle.value
+          : this.digitStyle,
+      negativeStockPolicy: data.negativeStockPolicy.present
+          ? data.negativeStockPolicy.value
+          : this.negativeStockPolicy,
+      appLockEnabled: data.appLockEnabled.present
+          ? data.appLockEnabled.value
+          : this.appLockEnabled,
+      biometricEnabled: data.biometricEnabled.present
+          ? data.biometricEnabled.value
+          : this.biometricEnabled,
+      deviceId: data.deviceId.present ? data.deviceId.value : this.deviceId,
+      onboardingCompletedAt: data.onboardingCompletedAt.present
+          ? data.onboardingCompletedAt.value
+          : this.onboardingCompletedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AppSettingsData(')
+          ..write('id: $id, ')
+          ..write('singleton: $singleton, ')
+          ..write('shopName: $shopName, ')
+          ..write('shopPhone: $shopPhone, ')
+          ..write('shopAddress: $shopAddress, ')
+          ..write('invoiceFooter: $invoiceFooter, ')
+          ..write('localeCode: $localeCode, ')
+          ..write('digitStyle: $digitStyle, ')
+          ..write('negativeStockPolicy: $negativeStockPolicy, ')
+          ..write('appLockEnabled: $appLockEnabled, ')
+          ..write('biometricEnabled: $biometricEnabled, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('onboardingCompletedAt: $onboardingCompletedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    singleton,
+    shopName,
+    shopPhone,
+    shopAddress,
+    invoiceFooter,
+    localeCode,
+    digitStyle,
+    negativeStockPolicy,
+    appLockEnabled,
+    biometricEnabled,
+    deviceId,
+    onboardingCompletedAt,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AppSettingsData &&
+          other.id == this.id &&
+          other.singleton == this.singleton &&
+          other.shopName == this.shopName &&
+          other.shopPhone == this.shopPhone &&
+          other.shopAddress == this.shopAddress &&
+          other.invoiceFooter == this.invoiceFooter &&
+          other.localeCode == this.localeCode &&
+          other.digitStyle == this.digitStyle &&
+          other.negativeStockPolicy == this.negativeStockPolicy &&
+          other.appLockEnabled == this.appLockEnabled &&
+          other.biometricEnabled == this.biometricEnabled &&
+          other.deviceId == this.deviceId &&
+          other.onboardingCompletedAt == this.onboardingCompletedAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class AppSettingsCompanion extends UpdateCompanion<AppSettingsData> {
+  final Value<String> id;
+  final Value<int> singleton;
+  final Value<String?> shopName;
+  final Value<String?> shopPhone;
+  final Value<String?> shopAddress;
+  final Value<String?> invoiceFooter;
+  final Value<String> localeCode;
+  final Value<String> digitStyle;
+  final Value<String> negativeStockPolicy;
+  final Value<int> appLockEnabled;
+  final Value<int> biometricEnabled;
+  final Value<String> deviceId;
+  final Value<int?> onboardingCompletedAt;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int> rowid;
+  const AppSettingsCompanion({
+    this.id = const Value.absent(),
+    this.singleton = const Value.absent(),
+    this.shopName = const Value.absent(),
+    this.shopPhone = const Value.absent(),
+    this.shopAddress = const Value.absent(),
+    this.invoiceFooter = const Value.absent(),
+    this.localeCode = const Value.absent(),
+    this.digitStyle = const Value.absent(),
+    this.negativeStockPolicy = const Value.absent(),
+    this.appLockEnabled = const Value.absent(),
+    this.biometricEnabled = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.onboardingCompletedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AppSettingsCompanion.insert({
+    required String id,
+    this.singleton = const Value.absent(),
+    this.shopName = const Value.absent(),
+    this.shopPhone = const Value.absent(),
+    this.shopAddress = const Value.absent(),
+    this.invoiceFooter = const Value.absent(),
+    this.localeCode = const Value.absent(),
+    this.digitStyle = const Value.absent(),
+    this.negativeStockPolicy = const Value.absent(),
+    this.appLockEnabled = const Value.absent(),
+    this.biometricEnabled = const Value.absent(),
+    required String deviceId,
+    this.onboardingCompletedAt = const Value.absent(),
+    required int createdAt,
+    required int updatedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       deviceId = Value(deviceId),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<AppSettingsData> custom({
+    Expression<String>? id,
+    Expression<int>? singleton,
+    Expression<String>? shopName,
+    Expression<String>? shopPhone,
+    Expression<String>? shopAddress,
+    Expression<String>? invoiceFooter,
+    Expression<String>? localeCode,
+    Expression<String>? digitStyle,
+    Expression<String>? negativeStockPolicy,
+    Expression<int>? appLockEnabled,
+    Expression<int>? biometricEnabled,
+    Expression<String>? deviceId,
+    Expression<int>? onboardingCompletedAt,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (singleton != null) 'singleton': singleton,
+      if (shopName != null) 'shop_name': shopName,
+      if (shopPhone != null) 'shop_phone': shopPhone,
+      if (shopAddress != null) 'shop_address': shopAddress,
+      if (invoiceFooter != null) 'invoice_footer': invoiceFooter,
+      if (localeCode != null) 'locale_code': localeCode,
+      if (digitStyle != null) 'digit_style': digitStyle,
+      if (negativeStockPolicy != null)
+        'negative_stock_policy': negativeStockPolicy,
+      if (appLockEnabled != null) 'app_lock_enabled': appLockEnabled,
+      if (biometricEnabled != null) 'biometric_enabled': biometricEnabled,
+      if (deviceId != null) 'device_id': deviceId,
+      if (onboardingCompletedAt != null)
+        'onboarding_completed_at': onboardingCompletedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AppSettingsCompanion copyWith({
+    Value<String>? id,
+    Value<int>? singleton,
+    Value<String?>? shopName,
+    Value<String?>? shopPhone,
+    Value<String?>? shopAddress,
+    Value<String?>? invoiceFooter,
+    Value<String>? localeCode,
+    Value<String>? digitStyle,
+    Value<String>? negativeStockPolicy,
+    Value<int>? appLockEnabled,
+    Value<int>? biometricEnabled,
+    Value<String>? deviceId,
+    Value<int?>? onboardingCompletedAt,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return AppSettingsCompanion(
+      id: id ?? this.id,
+      singleton: singleton ?? this.singleton,
+      shopName: shopName ?? this.shopName,
+      shopPhone: shopPhone ?? this.shopPhone,
+      shopAddress: shopAddress ?? this.shopAddress,
+      invoiceFooter: invoiceFooter ?? this.invoiceFooter,
+      localeCode: localeCode ?? this.localeCode,
+      digitStyle: digitStyle ?? this.digitStyle,
+      negativeStockPolicy: negativeStockPolicy ?? this.negativeStockPolicy,
+      appLockEnabled: appLockEnabled ?? this.appLockEnabled,
+      biometricEnabled: biometricEnabled ?? this.biometricEnabled,
+      deviceId: deviceId ?? this.deviceId,
+      onboardingCompletedAt:
+          onboardingCompletedAt ?? this.onboardingCompletedAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (singleton.present) {
+      map['singleton'] = Variable<int>(singleton.value);
+    }
+    if (shopName.present) {
+      map['shop_name'] = Variable<String>(shopName.value);
+    }
+    if (shopPhone.present) {
+      map['shop_phone'] = Variable<String>(shopPhone.value);
+    }
+    if (shopAddress.present) {
+      map['shop_address'] = Variable<String>(shopAddress.value);
+    }
+    if (invoiceFooter.present) {
+      map['invoice_footer'] = Variable<String>(invoiceFooter.value);
+    }
+    if (localeCode.present) {
+      map['locale_code'] = Variable<String>(localeCode.value);
+    }
+    if (digitStyle.present) {
+      map['digit_style'] = Variable<String>(digitStyle.value);
+    }
+    if (negativeStockPolicy.present) {
+      map['negative_stock_policy'] = Variable<String>(
+        negativeStockPolicy.value,
+      );
+    }
+    if (appLockEnabled.present) {
+      map['app_lock_enabled'] = Variable<int>(appLockEnabled.value);
+    }
+    if (biometricEnabled.present) {
+      map['biometric_enabled'] = Variable<int>(biometricEnabled.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (onboardingCompletedAt.present) {
+      map['onboarding_completed_at'] = Variable<int>(
+        onboardingCompletedAt.value,
+      );
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AppSettingsCompanion(')
+          ..write('id: $id, ')
+          ..write('singleton: $singleton, ')
+          ..write('shopName: $shopName, ')
+          ..write('shopPhone: $shopPhone, ')
+          ..write('shopAddress: $shopAddress, ')
+          ..write('invoiceFooter: $invoiceFooter, ')
+          ..write('localeCode: $localeCode, ')
+          ..write('digitStyle: $digitStyle, ')
+          ..write('negativeStockPolicy: $negativeStockPolicy, ')
+          ..write('appLockEnabled: $appLockEnabled, ')
+          ..write('biometricEnabled: $biometricEnabled, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('onboardingCompletedAt: $onboardingCompletedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Counters extends Table with TableInfo<Counters, CountersData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -247,8 +803,30 @@ class Counters extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  CountersData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CountersData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      docType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}doc_type'],
+      )!,
+      nextValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}next_value'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
   }
 
   @override
@@ -266,7 +844,215 @@ class Counters extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class Categories extends Table with TableInfo {
+class CountersData extends DataClass implements Insertable<CountersData> {
+  final String id;
+  final String docType;
+  final int nextValue;
+  final int createdAt;
+  final int updatedAt;
+  const CountersData({
+    required this.id,
+    required this.docType,
+    required this.nextValue,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['doc_type'] = Variable<String>(docType);
+    map['next_value'] = Variable<int>(nextValue);
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    return map;
+  }
+
+  CountersCompanion toCompanion(bool nullToAbsent) {
+    return CountersCompanion(
+      id: Value(id),
+      docType: Value(docType),
+      nextValue: Value(nextValue),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory CountersData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CountersData(
+      id: serializer.fromJson<String>(json['id']),
+      docType: serializer.fromJson<String>(json['docType']),
+      nextValue: serializer.fromJson<int>(json['nextValue']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'docType': serializer.toJson<String>(docType),
+      'nextValue': serializer.toJson<int>(nextValue),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+    };
+  }
+
+  CountersData copyWith({
+    String? id,
+    String? docType,
+    int? nextValue,
+    int? createdAt,
+    int? updatedAt,
+  }) => CountersData(
+    id: id ?? this.id,
+    docType: docType ?? this.docType,
+    nextValue: nextValue ?? this.nextValue,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  CountersData copyWithCompanion(CountersCompanion data) {
+    return CountersData(
+      id: data.id.present ? data.id.value : this.id,
+      docType: data.docType.present ? data.docType.value : this.docType,
+      nextValue: data.nextValue.present ? data.nextValue.value : this.nextValue,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CountersData(')
+          ..write('id: $id, ')
+          ..write('docType: $docType, ')
+          ..write('nextValue: $nextValue, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, docType, nextValue, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CountersData &&
+          other.id == this.id &&
+          other.docType == this.docType &&
+          other.nextValue == this.nextValue &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class CountersCompanion extends UpdateCompanion<CountersData> {
+  final Value<String> id;
+  final Value<String> docType;
+  final Value<int> nextValue;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int> rowid;
+  const CountersCompanion({
+    this.id = const Value.absent(),
+    this.docType = const Value.absent(),
+    this.nextValue = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CountersCompanion.insert({
+    required String id,
+    required String docType,
+    required int nextValue,
+    required int createdAt,
+    required int updatedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       docType = Value(docType),
+       nextValue = Value(nextValue),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<CountersData> custom({
+    Expression<String>? id,
+    Expression<String>? docType,
+    Expression<int>? nextValue,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (docType != null) 'doc_type': docType,
+      if (nextValue != null) 'next_value': nextValue,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CountersCompanion copyWith({
+    Value<String>? id,
+    Value<String>? docType,
+    Value<int>? nextValue,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return CountersCompanion(
+      id: id ?? this.id,
+      docType: docType ?? this.docType,
+      nextValue: nextValue ?? this.nextValue,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (docType.present) {
+      map['doc_type'] = Variable<String>(docType.value);
+    }
+    if (nextValue.present) {
+      map['next_value'] = Variable<int>(nextValue.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CountersCompanion(')
+          ..write('id: $id, ')
+          ..write('docType: $docType, ')
+          ..write('nextValue: $nextValue, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Categories extends Table with TableInfo<Categories, CategoriesData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -346,8 +1132,38 @@ class Categories extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  CategoriesData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CategoriesData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      searchKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}search_key'],
+      )!,
+      sortOrder: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sort_order'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      archivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}archived_at'],
+      ),
+    );
   }
 
   @override
@@ -361,7 +1177,273 @@ class Categories extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class Products extends Table with TableInfo {
+class CategoriesData extends DataClass implements Insertable<CategoriesData> {
+  final String id;
+  final String name;
+  final String searchKey;
+  final int sortOrder;
+  final int createdAt;
+  final int updatedAt;
+  final int? archivedAt;
+  const CategoriesData({
+    required this.id,
+    required this.name,
+    required this.searchKey,
+    required this.sortOrder,
+    required this.createdAt,
+    required this.updatedAt,
+    this.archivedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['search_key'] = Variable<String>(searchKey);
+    map['sort_order'] = Variable<int>(sortOrder);
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    if (!nullToAbsent || archivedAt != null) {
+      map['archived_at'] = Variable<int>(archivedAt);
+    }
+    return map;
+  }
+
+  CategoriesCompanion toCompanion(bool nullToAbsent) {
+    return CategoriesCompanion(
+      id: Value(id),
+      name: Value(name),
+      searchKey: Value(searchKey),
+      sortOrder: Value(sortOrder),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      archivedAt: archivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(archivedAt),
+    );
+  }
+
+  factory CategoriesData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CategoriesData(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      searchKey: serializer.fromJson<String>(json['searchKey']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      archivedAt: serializer.fromJson<int?>(json['archivedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'searchKey': serializer.toJson<String>(searchKey),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'archivedAt': serializer.toJson<int?>(archivedAt),
+    };
+  }
+
+  CategoriesData copyWith({
+    String? id,
+    String? name,
+    String? searchKey,
+    int? sortOrder,
+    int? createdAt,
+    int? updatedAt,
+    Value<int?> archivedAt = const Value.absent(),
+  }) => CategoriesData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    searchKey: searchKey ?? this.searchKey,
+    sortOrder: sortOrder ?? this.sortOrder,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    archivedAt: archivedAt.present ? archivedAt.value : this.archivedAt,
+  );
+  CategoriesData copyWithCompanion(CategoriesCompanion data) {
+    return CategoriesData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      searchKey: data.searchKey.present ? data.searchKey.value : this.searchKey,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      archivedAt: data.archivedAt.present
+          ? data.archivedAt.value
+          : this.archivedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CategoriesData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    searchKey,
+    sortOrder,
+    createdAt,
+    updatedAt,
+    archivedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CategoriesData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.searchKey == this.searchKey &&
+          other.sortOrder == this.sortOrder &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.archivedAt == this.archivedAt);
+}
+
+class CategoriesCompanion extends UpdateCompanion<CategoriesData> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> searchKey;
+  final Value<int> sortOrder;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int?> archivedAt;
+  final Value<int> rowid;
+  const CategoriesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.searchKey = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CategoriesCompanion.insert({
+    required String id,
+    required String name,
+    required String searchKey,
+    this.sortOrder = const Value.absent(),
+    required int createdAt,
+    required int updatedAt,
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       searchKey = Value(searchKey),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<CategoriesData> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? searchKey,
+    Expression<int>? sortOrder,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? archivedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (searchKey != null) 'search_key': searchKey,
+      if (sortOrder != null) 'sort_order': sortOrder,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (archivedAt != null) 'archived_at': archivedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CategoriesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String>? searchKey,
+    Value<int>? sortOrder,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int?>? archivedAt,
+    Value<int>? rowid,
+  }) {
+    return CategoriesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      searchKey: searchKey ?? this.searchKey,
+      sortOrder: sortOrder ?? this.sortOrder,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      archivedAt: archivedAt ?? this.archivedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (searchKey.present) {
+      map['search_key'] = Variable<String>(searchKey.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (archivedAt.present) {
+      map['archived_at'] = Variable<int>(archivedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CategoriesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('sortOrder: $sortOrder, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Products extends Table with TableInfo<Products, ProductsData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -495,8 +1577,62 @@ class Products extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  ProductsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProductsData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      categoryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category_id'],
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      searchKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}search_key'],
+      )!,
+      barcode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}barcode'],
+      ),
+      sku: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sku'],
+      ),
+      unitType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit_type'],
+      )!,
+      salePricePiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sale_price_piasters'],
+      )!,
+      avgCostPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}avg_cost_piasters'],
+      )!,
+      lowStockThresholdMilli: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}low_stock_threshold_milli'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      archivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}archived_at'],
+      ),
+    );
   }
 
   @override
@@ -515,7 +1651,443 @@ class Products extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class Customers extends Table with TableInfo {
+class ProductsData extends DataClass implements Insertable<ProductsData> {
+  final String id;
+  final String? categoryId;
+  final String name;
+  final String searchKey;
+  final String? barcode;
+  final String? sku;
+  final String unitType;
+  final int salePricePiasters;
+  final int avgCostPiasters;
+  final int? lowStockThresholdMilli;
+  final int createdAt;
+  final int updatedAt;
+  final int? archivedAt;
+  const ProductsData({
+    required this.id,
+    this.categoryId,
+    required this.name,
+    required this.searchKey,
+    this.barcode,
+    this.sku,
+    required this.unitType,
+    required this.salePricePiasters,
+    required this.avgCostPiasters,
+    this.lowStockThresholdMilli,
+    required this.createdAt,
+    required this.updatedAt,
+    this.archivedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || categoryId != null) {
+      map['category_id'] = Variable<String>(categoryId);
+    }
+    map['name'] = Variable<String>(name);
+    map['search_key'] = Variable<String>(searchKey);
+    if (!nullToAbsent || barcode != null) {
+      map['barcode'] = Variable<String>(barcode);
+    }
+    if (!nullToAbsent || sku != null) {
+      map['sku'] = Variable<String>(sku);
+    }
+    map['unit_type'] = Variable<String>(unitType);
+    map['sale_price_piasters'] = Variable<int>(salePricePiasters);
+    map['avg_cost_piasters'] = Variable<int>(avgCostPiasters);
+    if (!nullToAbsent || lowStockThresholdMilli != null) {
+      map['low_stock_threshold_milli'] = Variable<int>(lowStockThresholdMilli);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    if (!nullToAbsent || archivedAt != null) {
+      map['archived_at'] = Variable<int>(archivedAt);
+    }
+    return map;
+  }
+
+  ProductsCompanion toCompanion(bool nullToAbsent) {
+    return ProductsCompanion(
+      id: Value(id),
+      categoryId: categoryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(categoryId),
+      name: Value(name),
+      searchKey: Value(searchKey),
+      barcode: barcode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(barcode),
+      sku: sku == null && nullToAbsent ? const Value.absent() : Value(sku),
+      unitType: Value(unitType),
+      salePricePiasters: Value(salePricePiasters),
+      avgCostPiasters: Value(avgCostPiasters),
+      lowStockThresholdMilli: lowStockThresholdMilli == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lowStockThresholdMilli),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      archivedAt: archivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(archivedAt),
+    );
+  }
+
+  factory ProductsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProductsData(
+      id: serializer.fromJson<String>(json['id']),
+      categoryId: serializer.fromJson<String?>(json['categoryId']),
+      name: serializer.fromJson<String>(json['name']),
+      searchKey: serializer.fromJson<String>(json['searchKey']),
+      barcode: serializer.fromJson<String?>(json['barcode']),
+      sku: serializer.fromJson<String?>(json['sku']),
+      unitType: serializer.fromJson<String>(json['unitType']),
+      salePricePiasters: serializer.fromJson<int>(json['salePricePiasters']),
+      avgCostPiasters: serializer.fromJson<int>(json['avgCostPiasters']),
+      lowStockThresholdMilli: serializer.fromJson<int?>(
+        json['lowStockThresholdMilli'],
+      ),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      archivedAt: serializer.fromJson<int?>(json['archivedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'categoryId': serializer.toJson<String?>(categoryId),
+      'name': serializer.toJson<String>(name),
+      'searchKey': serializer.toJson<String>(searchKey),
+      'barcode': serializer.toJson<String?>(barcode),
+      'sku': serializer.toJson<String?>(sku),
+      'unitType': serializer.toJson<String>(unitType),
+      'salePricePiasters': serializer.toJson<int>(salePricePiasters),
+      'avgCostPiasters': serializer.toJson<int>(avgCostPiasters),
+      'lowStockThresholdMilli': serializer.toJson<int?>(lowStockThresholdMilli),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'archivedAt': serializer.toJson<int?>(archivedAt),
+    };
+  }
+
+  ProductsData copyWith({
+    String? id,
+    Value<String?> categoryId = const Value.absent(),
+    String? name,
+    String? searchKey,
+    Value<String?> barcode = const Value.absent(),
+    Value<String?> sku = const Value.absent(),
+    String? unitType,
+    int? salePricePiasters,
+    int? avgCostPiasters,
+    Value<int?> lowStockThresholdMilli = const Value.absent(),
+    int? createdAt,
+    int? updatedAt,
+    Value<int?> archivedAt = const Value.absent(),
+  }) => ProductsData(
+    id: id ?? this.id,
+    categoryId: categoryId.present ? categoryId.value : this.categoryId,
+    name: name ?? this.name,
+    searchKey: searchKey ?? this.searchKey,
+    barcode: barcode.present ? barcode.value : this.barcode,
+    sku: sku.present ? sku.value : this.sku,
+    unitType: unitType ?? this.unitType,
+    salePricePiasters: salePricePiasters ?? this.salePricePiasters,
+    avgCostPiasters: avgCostPiasters ?? this.avgCostPiasters,
+    lowStockThresholdMilli: lowStockThresholdMilli.present
+        ? lowStockThresholdMilli.value
+        : this.lowStockThresholdMilli,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    archivedAt: archivedAt.present ? archivedAt.value : this.archivedAt,
+  );
+  ProductsData copyWithCompanion(ProductsCompanion data) {
+    return ProductsData(
+      id: data.id.present ? data.id.value : this.id,
+      categoryId: data.categoryId.present
+          ? data.categoryId.value
+          : this.categoryId,
+      name: data.name.present ? data.name.value : this.name,
+      searchKey: data.searchKey.present ? data.searchKey.value : this.searchKey,
+      barcode: data.barcode.present ? data.barcode.value : this.barcode,
+      sku: data.sku.present ? data.sku.value : this.sku,
+      unitType: data.unitType.present ? data.unitType.value : this.unitType,
+      salePricePiasters: data.salePricePiasters.present
+          ? data.salePricePiasters.value
+          : this.salePricePiasters,
+      avgCostPiasters: data.avgCostPiasters.present
+          ? data.avgCostPiasters.value
+          : this.avgCostPiasters,
+      lowStockThresholdMilli: data.lowStockThresholdMilli.present
+          ? data.lowStockThresholdMilli.value
+          : this.lowStockThresholdMilli,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      archivedAt: data.archivedAt.present
+          ? data.archivedAt.value
+          : this.archivedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProductsData(')
+          ..write('id: $id, ')
+          ..write('categoryId: $categoryId, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('barcode: $barcode, ')
+          ..write('sku: $sku, ')
+          ..write('unitType: $unitType, ')
+          ..write('salePricePiasters: $salePricePiasters, ')
+          ..write('avgCostPiasters: $avgCostPiasters, ')
+          ..write('lowStockThresholdMilli: $lowStockThresholdMilli, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    categoryId,
+    name,
+    searchKey,
+    barcode,
+    sku,
+    unitType,
+    salePricePiasters,
+    avgCostPiasters,
+    lowStockThresholdMilli,
+    createdAt,
+    updatedAt,
+    archivedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProductsData &&
+          other.id == this.id &&
+          other.categoryId == this.categoryId &&
+          other.name == this.name &&
+          other.searchKey == this.searchKey &&
+          other.barcode == this.barcode &&
+          other.sku == this.sku &&
+          other.unitType == this.unitType &&
+          other.salePricePiasters == this.salePricePiasters &&
+          other.avgCostPiasters == this.avgCostPiasters &&
+          other.lowStockThresholdMilli == this.lowStockThresholdMilli &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.archivedAt == this.archivedAt);
+}
+
+class ProductsCompanion extends UpdateCompanion<ProductsData> {
+  final Value<String> id;
+  final Value<String?> categoryId;
+  final Value<String> name;
+  final Value<String> searchKey;
+  final Value<String?> barcode;
+  final Value<String?> sku;
+  final Value<String> unitType;
+  final Value<int> salePricePiasters;
+  final Value<int> avgCostPiasters;
+  final Value<int?> lowStockThresholdMilli;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int?> archivedAt;
+  final Value<int> rowid;
+  const ProductsCompanion({
+    this.id = const Value.absent(),
+    this.categoryId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.searchKey = const Value.absent(),
+    this.barcode = const Value.absent(),
+    this.sku = const Value.absent(),
+    this.unitType = const Value.absent(),
+    this.salePricePiasters = const Value.absent(),
+    this.avgCostPiasters = const Value.absent(),
+    this.lowStockThresholdMilli = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ProductsCompanion.insert({
+    required String id,
+    this.categoryId = const Value.absent(),
+    required String name,
+    required String searchKey,
+    this.barcode = const Value.absent(),
+    this.sku = const Value.absent(),
+    required String unitType,
+    required int salePricePiasters,
+    this.avgCostPiasters = const Value.absent(),
+    this.lowStockThresholdMilli = const Value.absent(),
+    required int createdAt,
+    required int updatedAt,
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       searchKey = Value(searchKey),
+       unitType = Value(unitType),
+       salePricePiasters = Value(salePricePiasters),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<ProductsData> custom({
+    Expression<String>? id,
+    Expression<String>? categoryId,
+    Expression<String>? name,
+    Expression<String>? searchKey,
+    Expression<String>? barcode,
+    Expression<String>? sku,
+    Expression<String>? unitType,
+    Expression<int>? salePricePiasters,
+    Expression<int>? avgCostPiasters,
+    Expression<int>? lowStockThresholdMilli,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? archivedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (categoryId != null) 'category_id': categoryId,
+      if (name != null) 'name': name,
+      if (searchKey != null) 'search_key': searchKey,
+      if (barcode != null) 'barcode': barcode,
+      if (sku != null) 'sku': sku,
+      if (unitType != null) 'unit_type': unitType,
+      if (salePricePiasters != null) 'sale_price_piasters': salePricePiasters,
+      if (avgCostPiasters != null) 'avg_cost_piasters': avgCostPiasters,
+      if (lowStockThresholdMilli != null)
+        'low_stock_threshold_milli': lowStockThresholdMilli,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (archivedAt != null) 'archived_at': archivedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ProductsCompanion copyWith({
+    Value<String>? id,
+    Value<String?>? categoryId,
+    Value<String>? name,
+    Value<String>? searchKey,
+    Value<String?>? barcode,
+    Value<String?>? sku,
+    Value<String>? unitType,
+    Value<int>? salePricePiasters,
+    Value<int>? avgCostPiasters,
+    Value<int?>? lowStockThresholdMilli,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int?>? archivedAt,
+    Value<int>? rowid,
+  }) {
+    return ProductsCompanion(
+      id: id ?? this.id,
+      categoryId: categoryId ?? this.categoryId,
+      name: name ?? this.name,
+      searchKey: searchKey ?? this.searchKey,
+      barcode: barcode ?? this.barcode,
+      sku: sku ?? this.sku,
+      unitType: unitType ?? this.unitType,
+      salePricePiasters: salePricePiasters ?? this.salePricePiasters,
+      avgCostPiasters: avgCostPiasters ?? this.avgCostPiasters,
+      lowStockThresholdMilli:
+          lowStockThresholdMilli ?? this.lowStockThresholdMilli,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      archivedAt: archivedAt ?? this.archivedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (categoryId.present) {
+      map['category_id'] = Variable<String>(categoryId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (searchKey.present) {
+      map['search_key'] = Variable<String>(searchKey.value);
+    }
+    if (barcode.present) {
+      map['barcode'] = Variable<String>(barcode.value);
+    }
+    if (sku.present) {
+      map['sku'] = Variable<String>(sku.value);
+    }
+    if (unitType.present) {
+      map['unit_type'] = Variable<String>(unitType.value);
+    }
+    if (salePricePiasters.present) {
+      map['sale_price_piasters'] = Variable<int>(salePricePiasters.value);
+    }
+    if (avgCostPiasters.present) {
+      map['avg_cost_piasters'] = Variable<int>(avgCostPiasters.value);
+    }
+    if (lowStockThresholdMilli.present) {
+      map['low_stock_threshold_milli'] = Variable<int>(
+        lowStockThresholdMilli.value,
+      );
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (archivedAt.present) {
+      map['archived_at'] = Variable<int>(archivedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProductsCompanion(')
+          ..write('id: $id, ')
+          ..write('categoryId: $categoryId, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('barcode: $barcode, ')
+          ..write('sku: $sku, ')
+          ..write('unitType: $unitType, ')
+          ..write('salePricePiasters: $salePricePiasters, ')
+          ..write('avgCostPiasters: $avgCostPiasters, ')
+          ..write('lowStockThresholdMilli: $lowStockThresholdMilli, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Customers extends Table with TableInfo<Customers, CustomersData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -612,8 +2184,46 @@ class Customers extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  CustomersData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CustomersData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      searchKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}search_key'],
+      )!,
+      phone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phone'],
+      ),
+      address: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      archivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}archived_at'],
+      ),
+    );
   }
 
   @override
@@ -627,7 +2237,329 @@ class Customers extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class Suppliers extends Table with TableInfo {
+class CustomersData extends DataClass implements Insertable<CustomersData> {
+  final String id;
+  final String name;
+  final String searchKey;
+  final String? phone;
+  final String? address;
+  final String? note;
+  final int createdAt;
+  final int updatedAt;
+  final int? archivedAt;
+  const CustomersData({
+    required this.id,
+    required this.name,
+    required this.searchKey,
+    this.phone,
+    this.address,
+    this.note,
+    required this.createdAt,
+    required this.updatedAt,
+    this.archivedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['search_key'] = Variable<String>(searchKey);
+    if (!nullToAbsent || phone != null) {
+      map['phone'] = Variable<String>(phone);
+    }
+    if (!nullToAbsent || address != null) {
+      map['address'] = Variable<String>(address);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    if (!nullToAbsent || archivedAt != null) {
+      map['archived_at'] = Variable<int>(archivedAt);
+    }
+    return map;
+  }
+
+  CustomersCompanion toCompanion(bool nullToAbsent) {
+    return CustomersCompanion(
+      id: Value(id),
+      name: Value(name),
+      searchKey: Value(searchKey),
+      phone: phone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(phone),
+      address: address == null && nullToAbsent
+          ? const Value.absent()
+          : Value(address),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      archivedAt: archivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(archivedAt),
+    );
+  }
+
+  factory CustomersData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CustomersData(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      searchKey: serializer.fromJson<String>(json['searchKey']),
+      phone: serializer.fromJson<String?>(json['phone']),
+      address: serializer.fromJson<String?>(json['address']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      archivedAt: serializer.fromJson<int?>(json['archivedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'searchKey': serializer.toJson<String>(searchKey),
+      'phone': serializer.toJson<String?>(phone),
+      'address': serializer.toJson<String?>(address),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'archivedAt': serializer.toJson<int?>(archivedAt),
+    };
+  }
+
+  CustomersData copyWith({
+    String? id,
+    String? name,
+    String? searchKey,
+    Value<String?> phone = const Value.absent(),
+    Value<String?> address = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+    int? createdAt,
+    int? updatedAt,
+    Value<int?> archivedAt = const Value.absent(),
+  }) => CustomersData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    searchKey: searchKey ?? this.searchKey,
+    phone: phone.present ? phone.value : this.phone,
+    address: address.present ? address.value : this.address,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    archivedAt: archivedAt.present ? archivedAt.value : this.archivedAt,
+  );
+  CustomersData copyWithCompanion(CustomersCompanion data) {
+    return CustomersData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      searchKey: data.searchKey.present ? data.searchKey.value : this.searchKey,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      address: data.address.present ? data.address.value : this.address,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      archivedAt: data.archivedAt.present
+          ? data.archivedAt.value
+          : this.archivedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CustomersData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('phone: $phone, ')
+          ..write('address: $address, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    searchKey,
+    phone,
+    address,
+    note,
+    createdAt,
+    updatedAt,
+    archivedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CustomersData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.searchKey == this.searchKey &&
+          other.phone == this.phone &&
+          other.address == this.address &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.archivedAt == this.archivedAt);
+}
+
+class CustomersCompanion extends UpdateCompanion<CustomersData> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> searchKey;
+  final Value<String?> phone;
+  final Value<String?> address;
+  final Value<String?> note;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int?> archivedAt;
+  final Value<int> rowid;
+  const CustomersCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.searchKey = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.address = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CustomersCompanion.insert({
+    required String id,
+    required String name,
+    required String searchKey,
+    this.phone = const Value.absent(),
+    this.address = const Value.absent(),
+    this.note = const Value.absent(),
+    required int createdAt,
+    required int updatedAt,
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       searchKey = Value(searchKey),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<CustomersData> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? searchKey,
+    Expression<String>? phone,
+    Expression<String>? address,
+    Expression<String>? note,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? archivedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (searchKey != null) 'search_key': searchKey,
+      if (phone != null) 'phone': phone,
+      if (address != null) 'address': address,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (archivedAt != null) 'archived_at': archivedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CustomersCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String>? searchKey,
+    Value<String?>? phone,
+    Value<String?>? address,
+    Value<String?>? note,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int?>? archivedAt,
+    Value<int>? rowid,
+  }) {
+    return CustomersCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      searchKey: searchKey ?? this.searchKey,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      archivedAt: archivedAt ?? this.archivedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (searchKey.present) {
+      map['search_key'] = Variable<String>(searchKey.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    if (address.present) {
+      map['address'] = Variable<String>(address.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (archivedAt.present) {
+      map['archived_at'] = Variable<int>(archivedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CustomersCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('phone: $phone, ')
+          ..write('address: $address, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Suppliers extends Table with TableInfo<Suppliers, SuppliersData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -724,8 +2656,46 @@ class Suppliers extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  SuppliersData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SuppliersData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      searchKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}search_key'],
+      )!,
+      phone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phone'],
+      ),
+      address: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      archivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}archived_at'],
+      ),
+    );
   }
 
   @override
@@ -739,7 +2709,330 @@ class Suppliers extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class ExpenseCategories extends Table with TableInfo {
+class SuppliersData extends DataClass implements Insertable<SuppliersData> {
+  final String id;
+  final String name;
+  final String searchKey;
+  final String? phone;
+  final String? address;
+  final String? note;
+  final int createdAt;
+  final int updatedAt;
+  final int? archivedAt;
+  const SuppliersData({
+    required this.id,
+    required this.name,
+    required this.searchKey,
+    this.phone,
+    this.address,
+    this.note,
+    required this.createdAt,
+    required this.updatedAt,
+    this.archivedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['search_key'] = Variable<String>(searchKey);
+    if (!nullToAbsent || phone != null) {
+      map['phone'] = Variable<String>(phone);
+    }
+    if (!nullToAbsent || address != null) {
+      map['address'] = Variable<String>(address);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    if (!nullToAbsent || archivedAt != null) {
+      map['archived_at'] = Variable<int>(archivedAt);
+    }
+    return map;
+  }
+
+  SuppliersCompanion toCompanion(bool nullToAbsent) {
+    return SuppliersCompanion(
+      id: Value(id),
+      name: Value(name),
+      searchKey: Value(searchKey),
+      phone: phone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(phone),
+      address: address == null && nullToAbsent
+          ? const Value.absent()
+          : Value(address),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      archivedAt: archivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(archivedAt),
+    );
+  }
+
+  factory SuppliersData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SuppliersData(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      searchKey: serializer.fromJson<String>(json['searchKey']),
+      phone: serializer.fromJson<String?>(json['phone']),
+      address: serializer.fromJson<String?>(json['address']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      archivedAt: serializer.fromJson<int?>(json['archivedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'searchKey': serializer.toJson<String>(searchKey),
+      'phone': serializer.toJson<String?>(phone),
+      'address': serializer.toJson<String?>(address),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'archivedAt': serializer.toJson<int?>(archivedAt),
+    };
+  }
+
+  SuppliersData copyWith({
+    String? id,
+    String? name,
+    String? searchKey,
+    Value<String?> phone = const Value.absent(),
+    Value<String?> address = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+    int? createdAt,
+    int? updatedAt,
+    Value<int?> archivedAt = const Value.absent(),
+  }) => SuppliersData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    searchKey: searchKey ?? this.searchKey,
+    phone: phone.present ? phone.value : this.phone,
+    address: address.present ? address.value : this.address,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    archivedAt: archivedAt.present ? archivedAt.value : this.archivedAt,
+  );
+  SuppliersData copyWithCompanion(SuppliersCompanion data) {
+    return SuppliersData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      searchKey: data.searchKey.present ? data.searchKey.value : this.searchKey,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      address: data.address.present ? data.address.value : this.address,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      archivedAt: data.archivedAt.present
+          ? data.archivedAt.value
+          : this.archivedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SuppliersData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('phone: $phone, ')
+          ..write('address: $address, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    searchKey,
+    phone,
+    address,
+    note,
+    createdAt,
+    updatedAt,
+    archivedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SuppliersData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.searchKey == this.searchKey &&
+          other.phone == this.phone &&
+          other.address == this.address &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.archivedAt == this.archivedAt);
+}
+
+class SuppliersCompanion extends UpdateCompanion<SuppliersData> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> searchKey;
+  final Value<String?> phone;
+  final Value<String?> address;
+  final Value<String?> note;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int?> archivedAt;
+  final Value<int> rowid;
+  const SuppliersCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.searchKey = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.address = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SuppliersCompanion.insert({
+    required String id,
+    required String name,
+    required String searchKey,
+    this.phone = const Value.absent(),
+    this.address = const Value.absent(),
+    this.note = const Value.absent(),
+    required int createdAt,
+    required int updatedAt,
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       searchKey = Value(searchKey),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<SuppliersData> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? searchKey,
+    Expression<String>? phone,
+    Expression<String>? address,
+    Expression<String>? note,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? archivedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (searchKey != null) 'search_key': searchKey,
+      if (phone != null) 'phone': phone,
+      if (address != null) 'address': address,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (archivedAt != null) 'archived_at': archivedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SuppliersCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String>? searchKey,
+    Value<String?>? phone,
+    Value<String?>? address,
+    Value<String?>? note,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int?>? archivedAt,
+    Value<int>? rowid,
+  }) {
+    return SuppliersCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      searchKey: searchKey ?? this.searchKey,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      archivedAt: archivedAt ?? this.archivedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (searchKey.present) {
+      map['search_key'] = Variable<String>(searchKey.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    if (address.present) {
+      map['address'] = Variable<String>(address.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (archivedAt.present) {
+      map['archived_at'] = Variable<int>(archivedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SuppliersCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('phone: $phone, ')
+          ..write('address: $address, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class ExpenseCategories extends Table
+    with TableInfo<ExpenseCategories, ExpenseCategoriesData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -809,8 +3102,34 @@ class ExpenseCategories extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  ExpenseCategoriesData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExpenseCategoriesData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      searchKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}search_key'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      archivedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}archived_at'],
+      ),
+    );
   }
 
   @override
@@ -824,7 +3143,247 @@ class ExpenseCategories extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class SalesInvoices extends Table with TableInfo {
+class ExpenseCategoriesData extends DataClass
+    implements Insertable<ExpenseCategoriesData> {
+  final String id;
+  final String name;
+  final String searchKey;
+  final int createdAt;
+  final int updatedAt;
+  final int? archivedAt;
+  const ExpenseCategoriesData({
+    required this.id,
+    required this.name,
+    required this.searchKey,
+    required this.createdAt,
+    required this.updatedAt,
+    this.archivedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['search_key'] = Variable<String>(searchKey);
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    if (!nullToAbsent || archivedAt != null) {
+      map['archived_at'] = Variable<int>(archivedAt);
+    }
+    return map;
+  }
+
+  ExpenseCategoriesCompanion toCompanion(bool nullToAbsent) {
+    return ExpenseCategoriesCompanion(
+      id: Value(id),
+      name: Value(name),
+      searchKey: Value(searchKey),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      archivedAt: archivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(archivedAt),
+    );
+  }
+
+  factory ExpenseCategoriesData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ExpenseCategoriesData(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      searchKey: serializer.fromJson<String>(json['searchKey']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      archivedAt: serializer.fromJson<int?>(json['archivedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'searchKey': serializer.toJson<String>(searchKey),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'archivedAt': serializer.toJson<int?>(archivedAt),
+    };
+  }
+
+  ExpenseCategoriesData copyWith({
+    String? id,
+    String? name,
+    String? searchKey,
+    int? createdAt,
+    int? updatedAt,
+    Value<int?> archivedAt = const Value.absent(),
+  }) => ExpenseCategoriesData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    searchKey: searchKey ?? this.searchKey,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    archivedAt: archivedAt.present ? archivedAt.value : this.archivedAt,
+  );
+  ExpenseCategoriesData copyWithCompanion(ExpenseCategoriesCompanion data) {
+    return ExpenseCategoriesData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      searchKey: data.searchKey.present ? data.searchKey.value : this.searchKey,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      archivedAt: data.archivedAt.present
+          ? data.archivedAt.value
+          : this.archivedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExpenseCategoriesData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, name, searchKey, createdAt, updatedAt, archivedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ExpenseCategoriesData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.searchKey == this.searchKey &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.archivedAt == this.archivedAt);
+}
+
+class ExpenseCategoriesCompanion
+    extends UpdateCompanion<ExpenseCategoriesData> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> searchKey;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int?> archivedAt;
+  final Value<int> rowid;
+  const ExpenseCategoriesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.searchKey = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ExpenseCategoriesCompanion.insert({
+    required String id,
+    required String name,
+    required String searchKey,
+    required int createdAt,
+    required int updatedAt,
+    this.archivedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       searchKey = Value(searchKey),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<ExpenseCategoriesData> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? searchKey,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? archivedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (searchKey != null) 'search_key': searchKey,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (archivedAt != null) 'archived_at': archivedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ExpenseCategoriesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String>? searchKey,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int?>? archivedAt,
+    Value<int>? rowid,
+  }) {
+    return ExpenseCategoriesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      searchKey: searchKey ?? this.searchKey,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      archivedAt: archivedAt ?? this.archivedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (searchKey.present) {
+      map['search_key'] = Variable<String>(searchKey.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (archivedAt.present) {
+      map['archived_at'] = Variable<int>(archivedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExpenseCategoriesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('searchKey: $searchKey, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('archivedAt: $archivedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SalesInvoices extends Table
+    with TableInfo<SalesInvoices, SalesInvoicesData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -959,8 +3518,62 @@ class SalesInvoices extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  SalesInvoicesData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SalesInvoicesData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}number'],
+      )!,
+      customerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}customer_id'],
+      ),
+      subtotalPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}subtotal_piasters'],
+      )!,
+      discountPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}discount_piasters'],
+      )!,
+      totalPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_piasters'],
+      )!,
+      paidAtSalePiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}paid_at_sale_piasters'],
+      )!,
+      paymentMethod: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payment_method'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      voidedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}voided_at'],
+      ),
+      voidReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}void_reason'],
+      ),
+    );
   }
 
   @override
@@ -982,7 +3595,437 @@ class SalesInvoices extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class SaleItems extends Table with TableInfo {
+class SalesInvoicesData extends DataClass
+    implements Insertable<SalesInvoicesData> {
+  final String id;
+  final int number;
+  final String? customerId;
+  final int subtotalPiasters;
+  final int discountPiasters;
+  final int totalPiasters;
+  final int paidAtSalePiasters;
+  final String paymentMethod;
+  final String? note;
+  final int createdAt;
+  final int updatedAt;
+  final int? voidedAt;
+  final String? voidReason;
+  const SalesInvoicesData({
+    required this.id,
+    required this.number,
+    this.customerId,
+    required this.subtotalPiasters,
+    required this.discountPiasters,
+    required this.totalPiasters,
+    required this.paidAtSalePiasters,
+    required this.paymentMethod,
+    this.note,
+    required this.createdAt,
+    required this.updatedAt,
+    this.voidedAt,
+    this.voidReason,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['number'] = Variable<int>(number);
+    if (!nullToAbsent || customerId != null) {
+      map['customer_id'] = Variable<String>(customerId);
+    }
+    map['subtotal_piasters'] = Variable<int>(subtotalPiasters);
+    map['discount_piasters'] = Variable<int>(discountPiasters);
+    map['total_piasters'] = Variable<int>(totalPiasters);
+    map['paid_at_sale_piasters'] = Variable<int>(paidAtSalePiasters);
+    map['payment_method'] = Variable<String>(paymentMethod);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    if (!nullToAbsent || voidedAt != null) {
+      map['voided_at'] = Variable<int>(voidedAt);
+    }
+    if (!nullToAbsent || voidReason != null) {
+      map['void_reason'] = Variable<String>(voidReason);
+    }
+    return map;
+  }
+
+  SalesInvoicesCompanion toCompanion(bool nullToAbsent) {
+    return SalesInvoicesCompanion(
+      id: Value(id),
+      number: Value(number),
+      customerId: customerId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customerId),
+      subtotalPiasters: Value(subtotalPiasters),
+      discountPiasters: Value(discountPiasters),
+      totalPiasters: Value(totalPiasters),
+      paidAtSalePiasters: Value(paidAtSalePiasters),
+      paymentMethod: Value(paymentMethod),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      voidedAt: voidedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(voidedAt),
+      voidReason: voidReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(voidReason),
+    );
+  }
+
+  factory SalesInvoicesData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SalesInvoicesData(
+      id: serializer.fromJson<String>(json['id']),
+      number: serializer.fromJson<int>(json['number']),
+      customerId: serializer.fromJson<String?>(json['customerId']),
+      subtotalPiasters: serializer.fromJson<int>(json['subtotalPiasters']),
+      discountPiasters: serializer.fromJson<int>(json['discountPiasters']),
+      totalPiasters: serializer.fromJson<int>(json['totalPiasters']),
+      paidAtSalePiasters: serializer.fromJson<int>(json['paidAtSalePiasters']),
+      paymentMethod: serializer.fromJson<String>(json['paymentMethod']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      voidedAt: serializer.fromJson<int?>(json['voidedAt']),
+      voidReason: serializer.fromJson<String?>(json['voidReason']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'number': serializer.toJson<int>(number),
+      'customerId': serializer.toJson<String?>(customerId),
+      'subtotalPiasters': serializer.toJson<int>(subtotalPiasters),
+      'discountPiasters': serializer.toJson<int>(discountPiasters),
+      'totalPiasters': serializer.toJson<int>(totalPiasters),
+      'paidAtSalePiasters': serializer.toJson<int>(paidAtSalePiasters),
+      'paymentMethod': serializer.toJson<String>(paymentMethod),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'voidedAt': serializer.toJson<int?>(voidedAt),
+      'voidReason': serializer.toJson<String?>(voidReason),
+    };
+  }
+
+  SalesInvoicesData copyWith({
+    String? id,
+    int? number,
+    Value<String?> customerId = const Value.absent(),
+    int? subtotalPiasters,
+    int? discountPiasters,
+    int? totalPiasters,
+    int? paidAtSalePiasters,
+    String? paymentMethod,
+    Value<String?> note = const Value.absent(),
+    int? createdAt,
+    int? updatedAt,
+    Value<int?> voidedAt = const Value.absent(),
+    Value<String?> voidReason = const Value.absent(),
+  }) => SalesInvoicesData(
+    id: id ?? this.id,
+    number: number ?? this.number,
+    customerId: customerId.present ? customerId.value : this.customerId,
+    subtotalPiasters: subtotalPiasters ?? this.subtotalPiasters,
+    discountPiasters: discountPiasters ?? this.discountPiasters,
+    totalPiasters: totalPiasters ?? this.totalPiasters,
+    paidAtSalePiasters: paidAtSalePiasters ?? this.paidAtSalePiasters,
+    paymentMethod: paymentMethod ?? this.paymentMethod,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    voidedAt: voidedAt.present ? voidedAt.value : this.voidedAt,
+    voidReason: voidReason.present ? voidReason.value : this.voidReason,
+  );
+  SalesInvoicesData copyWithCompanion(SalesInvoicesCompanion data) {
+    return SalesInvoicesData(
+      id: data.id.present ? data.id.value : this.id,
+      number: data.number.present ? data.number.value : this.number,
+      customerId: data.customerId.present
+          ? data.customerId.value
+          : this.customerId,
+      subtotalPiasters: data.subtotalPiasters.present
+          ? data.subtotalPiasters.value
+          : this.subtotalPiasters,
+      discountPiasters: data.discountPiasters.present
+          ? data.discountPiasters.value
+          : this.discountPiasters,
+      totalPiasters: data.totalPiasters.present
+          ? data.totalPiasters.value
+          : this.totalPiasters,
+      paidAtSalePiasters: data.paidAtSalePiasters.present
+          ? data.paidAtSalePiasters.value
+          : this.paidAtSalePiasters,
+      paymentMethod: data.paymentMethod.present
+          ? data.paymentMethod.value
+          : this.paymentMethod,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      voidedAt: data.voidedAt.present ? data.voidedAt.value : this.voidedAt,
+      voidReason: data.voidReason.present
+          ? data.voidReason.value
+          : this.voidReason,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SalesInvoicesData(')
+          ..write('id: $id, ')
+          ..write('number: $number, ')
+          ..write('customerId: $customerId, ')
+          ..write('subtotalPiasters: $subtotalPiasters, ')
+          ..write('discountPiasters: $discountPiasters, ')
+          ..write('totalPiasters: $totalPiasters, ')
+          ..write('paidAtSalePiasters: $paidAtSalePiasters, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('voidedAt: $voidedAt, ')
+          ..write('voidReason: $voidReason')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    number,
+    customerId,
+    subtotalPiasters,
+    discountPiasters,
+    totalPiasters,
+    paidAtSalePiasters,
+    paymentMethod,
+    note,
+    createdAt,
+    updatedAt,
+    voidedAt,
+    voidReason,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SalesInvoicesData &&
+          other.id == this.id &&
+          other.number == this.number &&
+          other.customerId == this.customerId &&
+          other.subtotalPiasters == this.subtotalPiasters &&
+          other.discountPiasters == this.discountPiasters &&
+          other.totalPiasters == this.totalPiasters &&
+          other.paidAtSalePiasters == this.paidAtSalePiasters &&
+          other.paymentMethod == this.paymentMethod &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.voidedAt == this.voidedAt &&
+          other.voidReason == this.voidReason);
+}
+
+class SalesInvoicesCompanion extends UpdateCompanion<SalesInvoicesData> {
+  final Value<String> id;
+  final Value<int> number;
+  final Value<String?> customerId;
+  final Value<int> subtotalPiasters;
+  final Value<int> discountPiasters;
+  final Value<int> totalPiasters;
+  final Value<int> paidAtSalePiasters;
+  final Value<String> paymentMethod;
+  final Value<String?> note;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int?> voidedAt;
+  final Value<String?> voidReason;
+  final Value<int> rowid;
+  const SalesInvoicesCompanion({
+    this.id = const Value.absent(),
+    this.number = const Value.absent(),
+    this.customerId = const Value.absent(),
+    this.subtotalPiasters = const Value.absent(),
+    this.discountPiasters = const Value.absent(),
+    this.totalPiasters = const Value.absent(),
+    this.paidAtSalePiasters = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.voidedAt = const Value.absent(),
+    this.voidReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SalesInvoicesCompanion.insert({
+    required String id,
+    required int number,
+    this.customerId = const Value.absent(),
+    required int subtotalPiasters,
+    this.discountPiasters = const Value.absent(),
+    required int totalPiasters,
+    required int paidAtSalePiasters,
+    this.paymentMethod = const Value.absent(),
+    this.note = const Value.absent(),
+    required int createdAt,
+    required int updatedAt,
+    this.voidedAt = const Value.absent(),
+    this.voidReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       number = Value(number),
+       subtotalPiasters = Value(subtotalPiasters),
+       totalPiasters = Value(totalPiasters),
+       paidAtSalePiasters = Value(paidAtSalePiasters),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<SalesInvoicesData> custom({
+    Expression<String>? id,
+    Expression<int>? number,
+    Expression<String>? customerId,
+    Expression<int>? subtotalPiasters,
+    Expression<int>? discountPiasters,
+    Expression<int>? totalPiasters,
+    Expression<int>? paidAtSalePiasters,
+    Expression<String>? paymentMethod,
+    Expression<String>? note,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? voidedAt,
+    Expression<String>? voidReason,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (number != null) 'number': number,
+      if (customerId != null) 'customer_id': customerId,
+      if (subtotalPiasters != null) 'subtotal_piasters': subtotalPiasters,
+      if (discountPiasters != null) 'discount_piasters': discountPiasters,
+      if (totalPiasters != null) 'total_piasters': totalPiasters,
+      if (paidAtSalePiasters != null)
+        'paid_at_sale_piasters': paidAtSalePiasters,
+      if (paymentMethod != null) 'payment_method': paymentMethod,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (voidedAt != null) 'voided_at': voidedAt,
+      if (voidReason != null) 'void_reason': voidReason,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SalesInvoicesCompanion copyWith({
+    Value<String>? id,
+    Value<int>? number,
+    Value<String?>? customerId,
+    Value<int>? subtotalPiasters,
+    Value<int>? discountPiasters,
+    Value<int>? totalPiasters,
+    Value<int>? paidAtSalePiasters,
+    Value<String>? paymentMethod,
+    Value<String?>? note,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int?>? voidedAt,
+    Value<String?>? voidReason,
+    Value<int>? rowid,
+  }) {
+    return SalesInvoicesCompanion(
+      id: id ?? this.id,
+      number: number ?? this.number,
+      customerId: customerId ?? this.customerId,
+      subtotalPiasters: subtotalPiasters ?? this.subtotalPiasters,
+      discountPiasters: discountPiasters ?? this.discountPiasters,
+      totalPiasters: totalPiasters ?? this.totalPiasters,
+      paidAtSalePiasters: paidAtSalePiasters ?? this.paidAtSalePiasters,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      voidedAt: voidedAt ?? this.voidedAt,
+      voidReason: voidReason ?? this.voidReason,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (customerId.present) {
+      map['customer_id'] = Variable<String>(customerId.value);
+    }
+    if (subtotalPiasters.present) {
+      map['subtotal_piasters'] = Variable<int>(subtotalPiasters.value);
+    }
+    if (discountPiasters.present) {
+      map['discount_piasters'] = Variable<int>(discountPiasters.value);
+    }
+    if (totalPiasters.present) {
+      map['total_piasters'] = Variable<int>(totalPiasters.value);
+    }
+    if (paidAtSalePiasters.present) {
+      map['paid_at_sale_piasters'] = Variable<int>(paidAtSalePiasters.value);
+    }
+    if (paymentMethod.present) {
+      map['payment_method'] = Variable<String>(paymentMethod.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (voidedAt.present) {
+      map['voided_at'] = Variable<int>(voidedAt.value);
+    }
+    if (voidReason.present) {
+      map['void_reason'] = Variable<String>(voidReason.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SalesInvoicesCompanion(')
+          ..write('id: $id, ')
+          ..write('number: $number, ')
+          ..write('customerId: $customerId, ')
+          ..write('subtotalPiasters: $subtotalPiasters, ')
+          ..write('discountPiasters: $discountPiasters, ')
+          ..write('totalPiasters: $totalPiasters, ')
+          ..write('paidAtSalePiasters: $paidAtSalePiasters, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('voidedAt: $voidedAt, ')
+          ..write('voidReason: $voidReason, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SaleItems extends Table with TableInfo<SaleItems, SaleItemsData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1122,8 +4165,62 @@ class SaleItems extends Table with TableInfo {
     {salesInvoiceId, lineNo},
   ];
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  SaleItemsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SaleItemsData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      salesInvoiceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sales_invoice_id'],
+      )!,
+      lineNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}line_no'],
+      )!,
+      productId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_id'],
+      )!,
+      productNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_name_snapshot'],
+      )!,
+      unitTypeSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit_type_snapshot'],
+      )!,
+      qtyMilli: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}qty_milli'],
+      )!,
+      unitPricePiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}unit_price_piasters'],
+      )!,
+      discountPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}discount_piasters'],
+      )!,
+      lineTotalPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}line_total_piasters'],
+      )!,
+      invoiceDiscountSharePiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}invoice_discount_share_piasters'],
+      )!,
+      unitCostPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}unit_cost_piasters'],
+      )!,
+      lineCostPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}line_cost_piasters'],
+      )!,
+    );
   }
 
   @override
@@ -1144,7 +4241,452 @@ class SaleItems extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class SaleReturns extends Table with TableInfo {
+class SaleItemsData extends DataClass implements Insertable<SaleItemsData> {
+  final String id;
+  final String salesInvoiceId;
+  final int lineNo;
+  final String productId;
+  final String productNameSnapshot;
+  final String unitTypeSnapshot;
+  final int qtyMilli;
+  final int unitPricePiasters;
+  final int discountPiasters;
+  final int lineTotalPiasters;
+  final int invoiceDiscountSharePiasters;
+  final int unitCostPiasters;
+  final int lineCostPiasters;
+  const SaleItemsData({
+    required this.id,
+    required this.salesInvoiceId,
+    required this.lineNo,
+    required this.productId,
+    required this.productNameSnapshot,
+    required this.unitTypeSnapshot,
+    required this.qtyMilli,
+    required this.unitPricePiasters,
+    required this.discountPiasters,
+    required this.lineTotalPiasters,
+    required this.invoiceDiscountSharePiasters,
+    required this.unitCostPiasters,
+    required this.lineCostPiasters,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sales_invoice_id'] = Variable<String>(salesInvoiceId);
+    map['line_no'] = Variable<int>(lineNo);
+    map['product_id'] = Variable<String>(productId);
+    map['product_name_snapshot'] = Variable<String>(productNameSnapshot);
+    map['unit_type_snapshot'] = Variable<String>(unitTypeSnapshot);
+    map['qty_milli'] = Variable<int>(qtyMilli);
+    map['unit_price_piasters'] = Variable<int>(unitPricePiasters);
+    map['discount_piasters'] = Variable<int>(discountPiasters);
+    map['line_total_piasters'] = Variable<int>(lineTotalPiasters);
+    map['invoice_discount_share_piasters'] = Variable<int>(
+      invoiceDiscountSharePiasters,
+    );
+    map['unit_cost_piasters'] = Variable<int>(unitCostPiasters);
+    map['line_cost_piasters'] = Variable<int>(lineCostPiasters);
+    return map;
+  }
+
+  SaleItemsCompanion toCompanion(bool nullToAbsent) {
+    return SaleItemsCompanion(
+      id: Value(id),
+      salesInvoiceId: Value(salesInvoiceId),
+      lineNo: Value(lineNo),
+      productId: Value(productId),
+      productNameSnapshot: Value(productNameSnapshot),
+      unitTypeSnapshot: Value(unitTypeSnapshot),
+      qtyMilli: Value(qtyMilli),
+      unitPricePiasters: Value(unitPricePiasters),
+      discountPiasters: Value(discountPiasters),
+      lineTotalPiasters: Value(lineTotalPiasters),
+      invoiceDiscountSharePiasters: Value(invoiceDiscountSharePiasters),
+      unitCostPiasters: Value(unitCostPiasters),
+      lineCostPiasters: Value(lineCostPiasters),
+    );
+  }
+
+  factory SaleItemsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SaleItemsData(
+      id: serializer.fromJson<String>(json['id']),
+      salesInvoiceId: serializer.fromJson<String>(json['salesInvoiceId']),
+      lineNo: serializer.fromJson<int>(json['lineNo']),
+      productId: serializer.fromJson<String>(json['productId']),
+      productNameSnapshot: serializer.fromJson<String>(
+        json['productNameSnapshot'],
+      ),
+      unitTypeSnapshot: serializer.fromJson<String>(json['unitTypeSnapshot']),
+      qtyMilli: serializer.fromJson<int>(json['qtyMilli']),
+      unitPricePiasters: serializer.fromJson<int>(json['unitPricePiasters']),
+      discountPiasters: serializer.fromJson<int>(json['discountPiasters']),
+      lineTotalPiasters: serializer.fromJson<int>(json['lineTotalPiasters']),
+      invoiceDiscountSharePiasters: serializer.fromJson<int>(
+        json['invoiceDiscountSharePiasters'],
+      ),
+      unitCostPiasters: serializer.fromJson<int>(json['unitCostPiasters']),
+      lineCostPiasters: serializer.fromJson<int>(json['lineCostPiasters']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'salesInvoiceId': serializer.toJson<String>(salesInvoiceId),
+      'lineNo': serializer.toJson<int>(lineNo),
+      'productId': serializer.toJson<String>(productId),
+      'productNameSnapshot': serializer.toJson<String>(productNameSnapshot),
+      'unitTypeSnapshot': serializer.toJson<String>(unitTypeSnapshot),
+      'qtyMilli': serializer.toJson<int>(qtyMilli),
+      'unitPricePiasters': serializer.toJson<int>(unitPricePiasters),
+      'discountPiasters': serializer.toJson<int>(discountPiasters),
+      'lineTotalPiasters': serializer.toJson<int>(lineTotalPiasters),
+      'invoiceDiscountSharePiasters': serializer.toJson<int>(
+        invoiceDiscountSharePiasters,
+      ),
+      'unitCostPiasters': serializer.toJson<int>(unitCostPiasters),
+      'lineCostPiasters': serializer.toJson<int>(lineCostPiasters),
+    };
+  }
+
+  SaleItemsData copyWith({
+    String? id,
+    String? salesInvoiceId,
+    int? lineNo,
+    String? productId,
+    String? productNameSnapshot,
+    String? unitTypeSnapshot,
+    int? qtyMilli,
+    int? unitPricePiasters,
+    int? discountPiasters,
+    int? lineTotalPiasters,
+    int? invoiceDiscountSharePiasters,
+    int? unitCostPiasters,
+    int? lineCostPiasters,
+  }) => SaleItemsData(
+    id: id ?? this.id,
+    salesInvoiceId: salesInvoiceId ?? this.salesInvoiceId,
+    lineNo: lineNo ?? this.lineNo,
+    productId: productId ?? this.productId,
+    productNameSnapshot: productNameSnapshot ?? this.productNameSnapshot,
+    unitTypeSnapshot: unitTypeSnapshot ?? this.unitTypeSnapshot,
+    qtyMilli: qtyMilli ?? this.qtyMilli,
+    unitPricePiasters: unitPricePiasters ?? this.unitPricePiasters,
+    discountPiasters: discountPiasters ?? this.discountPiasters,
+    lineTotalPiasters: lineTotalPiasters ?? this.lineTotalPiasters,
+    invoiceDiscountSharePiasters:
+        invoiceDiscountSharePiasters ?? this.invoiceDiscountSharePiasters,
+    unitCostPiasters: unitCostPiasters ?? this.unitCostPiasters,
+    lineCostPiasters: lineCostPiasters ?? this.lineCostPiasters,
+  );
+  SaleItemsData copyWithCompanion(SaleItemsCompanion data) {
+    return SaleItemsData(
+      id: data.id.present ? data.id.value : this.id,
+      salesInvoiceId: data.salesInvoiceId.present
+          ? data.salesInvoiceId.value
+          : this.salesInvoiceId,
+      lineNo: data.lineNo.present ? data.lineNo.value : this.lineNo,
+      productId: data.productId.present ? data.productId.value : this.productId,
+      productNameSnapshot: data.productNameSnapshot.present
+          ? data.productNameSnapshot.value
+          : this.productNameSnapshot,
+      unitTypeSnapshot: data.unitTypeSnapshot.present
+          ? data.unitTypeSnapshot.value
+          : this.unitTypeSnapshot,
+      qtyMilli: data.qtyMilli.present ? data.qtyMilli.value : this.qtyMilli,
+      unitPricePiasters: data.unitPricePiasters.present
+          ? data.unitPricePiasters.value
+          : this.unitPricePiasters,
+      discountPiasters: data.discountPiasters.present
+          ? data.discountPiasters.value
+          : this.discountPiasters,
+      lineTotalPiasters: data.lineTotalPiasters.present
+          ? data.lineTotalPiasters.value
+          : this.lineTotalPiasters,
+      invoiceDiscountSharePiasters: data.invoiceDiscountSharePiasters.present
+          ? data.invoiceDiscountSharePiasters.value
+          : this.invoiceDiscountSharePiasters,
+      unitCostPiasters: data.unitCostPiasters.present
+          ? data.unitCostPiasters.value
+          : this.unitCostPiasters,
+      lineCostPiasters: data.lineCostPiasters.present
+          ? data.lineCostPiasters.value
+          : this.lineCostPiasters,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SaleItemsData(')
+          ..write('id: $id, ')
+          ..write('salesInvoiceId: $salesInvoiceId, ')
+          ..write('lineNo: $lineNo, ')
+          ..write('productId: $productId, ')
+          ..write('productNameSnapshot: $productNameSnapshot, ')
+          ..write('unitTypeSnapshot: $unitTypeSnapshot, ')
+          ..write('qtyMilli: $qtyMilli, ')
+          ..write('unitPricePiasters: $unitPricePiasters, ')
+          ..write('discountPiasters: $discountPiasters, ')
+          ..write('lineTotalPiasters: $lineTotalPiasters, ')
+          ..write(
+            'invoiceDiscountSharePiasters: $invoiceDiscountSharePiasters, ',
+          )
+          ..write('unitCostPiasters: $unitCostPiasters, ')
+          ..write('lineCostPiasters: $lineCostPiasters')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    salesInvoiceId,
+    lineNo,
+    productId,
+    productNameSnapshot,
+    unitTypeSnapshot,
+    qtyMilli,
+    unitPricePiasters,
+    discountPiasters,
+    lineTotalPiasters,
+    invoiceDiscountSharePiasters,
+    unitCostPiasters,
+    lineCostPiasters,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SaleItemsData &&
+          other.id == this.id &&
+          other.salesInvoiceId == this.salesInvoiceId &&
+          other.lineNo == this.lineNo &&
+          other.productId == this.productId &&
+          other.productNameSnapshot == this.productNameSnapshot &&
+          other.unitTypeSnapshot == this.unitTypeSnapshot &&
+          other.qtyMilli == this.qtyMilli &&
+          other.unitPricePiasters == this.unitPricePiasters &&
+          other.discountPiasters == this.discountPiasters &&
+          other.lineTotalPiasters == this.lineTotalPiasters &&
+          other.invoiceDiscountSharePiasters ==
+              this.invoiceDiscountSharePiasters &&
+          other.unitCostPiasters == this.unitCostPiasters &&
+          other.lineCostPiasters == this.lineCostPiasters);
+}
+
+class SaleItemsCompanion extends UpdateCompanion<SaleItemsData> {
+  final Value<String> id;
+  final Value<String> salesInvoiceId;
+  final Value<int> lineNo;
+  final Value<String> productId;
+  final Value<String> productNameSnapshot;
+  final Value<String> unitTypeSnapshot;
+  final Value<int> qtyMilli;
+  final Value<int> unitPricePiasters;
+  final Value<int> discountPiasters;
+  final Value<int> lineTotalPiasters;
+  final Value<int> invoiceDiscountSharePiasters;
+  final Value<int> unitCostPiasters;
+  final Value<int> lineCostPiasters;
+  final Value<int> rowid;
+  const SaleItemsCompanion({
+    this.id = const Value.absent(),
+    this.salesInvoiceId = const Value.absent(),
+    this.lineNo = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.productNameSnapshot = const Value.absent(),
+    this.unitTypeSnapshot = const Value.absent(),
+    this.qtyMilli = const Value.absent(),
+    this.unitPricePiasters = const Value.absent(),
+    this.discountPiasters = const Value.absent(),
+    this.lineTotalPiasters = const Value.absent(),
+    this.invoiceDiscountSharePiasters = const Value.absent(),
+    this.unitCostPiasters = const Value.absent(),
+    this.lineCostPiasters = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SaleItemsCompanion.insert({
+    required String id,
+    required String salesInvoiceId,
+    required int lineNo,
+    required String productId,
+    required String productNameSnapshot,
+    required String unitTypeSnapshot,
+    required int qtyMilli,
+    required int unitPricePiasters,
+    required int discountPiasters,
+    required int lineTotalPiasters,
+    required int invoiceDiscountSharePiasters,
+    required int unitCostPiasters,
+    required int lineCostPiasters,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       salesInvoiceId = Value(salesInvoiceId),
+       lineNo = Value(lineNo),
+       productId = Value(productId),
+       productNameSnapshot = Value(productNameSnapshot),
+       unitTypeSnapshot = Value(unitTypeSnapshot),
+       qtyMilli = Value(qtyMilli),
+       unitPricePiasters = Value(unitPricePiasters),
+       discountPiasters = Value(discountPiasters),
+       lineTotalPiasters = Value(lineTotalPiasters),
+       invoiceDiscountSharePiasters = Value(invoiceDiscountSharePiasters),
+       unitCostPiasters = Value(unitCostPiasters),
+       lineCostPiasters = Value(lineCostPiasters);
+  static Insertable<SaleItemsData> custom({
+    Expression<String>? id,
+    Expression<String>? salesInvoiceId,
+    Expression<int>? lineNo,
+    Expression<String>? productId,
+    Expression<String>? productNameSnapshot,
+    Expression<String>? unitTypeSnapshot,
+    Expression<int>? qtyMilli,
+    Expression<int>? unitPricePiasters,
+    Expression<int>? discountPiasters,
+    Expression<int>? lineTotalPiasters,
+    Expression<int>? invoiceDiscountSharePiasters,
+    Expression<int>? unitCostPiasters,
+    Expression<int>? lineCostPiasters,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (salesInvoiceId != null) 'sales_invoice_id': salesInvoiceId,
+      if (lineNo != null) 'line_no': lineNo,
+      if (productId != null) 'product_id': productId,
+      if (productNameSnapshot != null)
+        'product_name_snapshot': productNameSnapshot,
+      if (unitTypeSnapshot != null) 'unit_type_snapshot': unitTypeSnapshot,
+      if (qtyMilli != null) 'qty_milli': qtyMilli,
+      if (unitPricePiasters != null) 'unit_price_piasters': unitPricePiasters,
+      if (discountPiasters != null) 'discount_piasters': discountPiasters,
+      if (lineTotalPiasters != null) 'line_total_piasters': lineTotalPiasters,
+      if (invoiceDiscountSharePiasters != null)
+        'invoice_discount_share_piasters': invoiceDiscountSharePiasters,
+      if (unitCostPiasters != null) 'unit_cost_piasters': unitCostPiasters,
+      if (lineCostPiasters != null) 'line_cost_piasters': lineCostPiasters,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SaleItemsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? salesInvoiceId,
+    Value<int>? lineNo,
+    Value<String>? productId,
+    Value<String>? productNameSnapshot,
+    Value<String>? unitTypeSnapshot,
+    Value<int>? qtyMilli,
+    Value<int>? unitPricePiasters,
+    Value<int>? discountPiasters,
+    Value<int>? lineTotalPiasters,
+    Value<int>? invoiceDiscountSharePiasters,
+    Value<int>? unitCostPiasters,
+    Value<int>? lineCostPiasters,
+    Value<int>? rowid,
+  }) {
+    return SaleItemsCompanion(
+      id: id ?? this.id,
+      salesInvoiceId: salesInvoiceId ?? this.salesInvoiceId,
+      lineNo: lineNo ?? this.lineNo,
+      productId: productId ?? this.productId,
+      productNameSnapshot: productNameSnapshot ?? this.productNameSnapshot,
+      unitTypeSnapshot: unitTypeSnapshot ?? this.unitTypeSnapshot,
+      qtyMilli: qtyMilli ?? this.qtyMilli,
+      unitPricePiasters: unitPricePiasters ?? this.unitPricePiasters,
+      discountPiasters: discountPiasters ?? this.discountPiasters,
+      lineTotalPiasters: lineTotalPiasters ?? this.lineTotalPiasters,
+      invoiceDiscountSharePiasters:
+          invoiceDiscountSharePiasters ?? this.invoiceDiscountSharePiasters,
+      unitCostPiasters: unitCostPiasters ?? this.unitCostPiasters,
+      lineCostPiasters: lineCostPiasters ?? this.lineCostPiasters,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (salesInvoiceId.present) {
+      map['sales_invoice_id'] = Variable<String>(salesInvoiceId.value);
+    }
+    if (lineNo.present) {
+      map['line_no'] = Variable<int>(lineNo.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<String>(productId.value);
+    }
+    if (productNameSnapshot.present) {
+      map['product_name_snapshot'] = Variable<String>(
+        productNameSnapshot.value,
+      );
+    }
+    if (unitTypeSnapshot.present) {
+      map['unit_type_snapshot'] = Variable<String>(unitTypeSnapshot.value);
+    }
+    if (qtyMilli.present) {
+      map['qty_milli'] = Variable<int>(qtyMilli.value);
+    }
+    if (unitPricePiasters.present) {
+      map['unit_price_piasters'] = Variable<int>(unitPricePiasters.value);
+    }
+    if (discountPiasters.present) {
+      map['discount_piasters'] = Variable<int>(discountPiasters.value);
+    }
+    if (lineTotalPiasters.present) {
+      map['line_total_piasters'] = Variable<int>(lineTotalPiasters.value);
+    }
+    if (invoiceDiscountSharePiasters.present) {
+      map['invoice_discount_share_piasters'] = Variable<int>(
+        invoiceDiscountSharePiasters.value,
+      );
+    }
+    if (unitCostPiasters.present) {
+      map['unit_cost_piasters'] = Variable<int>(unitCostPiasters.value);
+    }
+    if (lineCostPiasters.present) {
+      map['line_cost_piasters'] = Variable<int>(lineCostPiasters.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SaleItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('salesInvoiceId: $salesInvoiceId, ')
+          ..write('lineNo: $lineNo, ')
+          ..write('productId: $productId, ')
+          ..write('productNameSnapshot: $productNameSnapshot, ')
+          ..write('unitTypeSnapshot: $unitTypeSnapshot, ')
+          ..write('qtyMilli: $qtyMilli, ')
+          ..write('unitPricePiasters: $unitPricePiasters, ')
+          ..write('discountPiasters: $discountPiasters, ')
+          ..write('lineTotalPiasters: $lineTotalPiasters, ')
+          ..write(
+            'invoiceDiscountSharePiasters: $invoiceDiscountSharePiasters, ',
+          )
+          ..write('unitCostPiasters: $unitCostPiasters, ')
+          ..write('lineCostPiasters: $lineCostPiasters, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SaleReturns extends Table with TableInfo<SaleReturns, SaleReturnsData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1252,8 +4794,50 @@ class SaleReturns extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  SaleReturnsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SaleReturnsData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}number'],
+      )!,
+      salesInvoiceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sales_invoice_id'],
+      )!,
+      customerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}customer_id'],
+      ),
+      totalRefundPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_refund_piasters'],
+      )!,
+      totalCostPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_cost_piasters'],
+      )!,
+      refundPaidPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}refund_paid_piasters'],
+      )!,
+      paymentMethod: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payment_method'],
+      )!,
+      reason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
   }
 
   @override
@@ -1272,7 +4856,363 @@ class SaleReturns extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class SaleReturnItems extends Table with TableInfo {
+class SaleReturnsData extends DataClass implements Insertable<SaleReturnsData> {
+  final String id;
+  final int number;
+  final String salesInvoiceId;
+  final String? customerId;
+  final int totalRefundPiasters;
+  final int totalCostPiasters;
+  final int refundPaidPiasters;
+  final String paymentMethod;
+  final String? reason;
+  final int createdAt;
+  const SaleReturnsData({
+    required this.id,
+    required this.number,
+    required this.salesInvoiceId,
+    this.customerId,
+    required this.totalRefundPiasters,
+    required this.totalCostPiasters,
+    required this.refundPaidPiasters,
+    required this.paymentMethod,
+    this.reason,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['number'] = Variable<int>(number);
+    map['sales_invoice_id'] = Variable<String>(salesInvoiceId);
+    if (!nullToAbsent || customerId != null) {
+      map['customer_id'] = Variable<String>(customerId);
+    }
+    map['total_refund_piasters'] = Variable<int>(totalRefundPiasters);
+    map['total_cost_piasters'] = Variable<int>(totalCostPiasters);
+    map['refund_paid_piasters'] = Variable<int>(refundPaidPiasters);
+    map['payment_method'] = Variable<String>(paymentMethod);
+    if (!nullToAbsent || reason != null) {
+      map['reason'] = Variable<String>(reason);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    return map;
+  }
+
+  SaleReturnsCompanion toCompanion(bool nullToAbsent) {
+    return SaleReturnsCompanion(
+      id: Value(id),
+      number: Value(number),
+      salesInvoiceId: Value(salesInvoiceId),
+      customerId: customerId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customerId),
+      totalRefundPiasters: Value(totalRefundPiasters),
+      totalCostPiasters: Value(totalCostPiasters),
+      refundPaidPiasters: Value(refundPaidPiasters),
+      paymentMethod: Value(paymentMethod),
+      reason: reason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reason),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory SaleReturnsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SaleReturnsData(
+      id: serializer.fromJson<String>(json['id']),
+      number: serializer.fromJson<int>(json['number']),
+      salesInvoiceId: serializer.fromJson<String>(json['salesInvoiceId']),
+      customerId: serializer.fromJson<String?>(json['customerId']),
+      totalRefundPiasters: serializer.fromJson<int>(
+        json['totalRefundPiasters'],
+      ),
+      totalCostPiasters: serializer.fromJson<int>(json['totalCostPiasters']),
+      refundPaidPiasters: serializer.fromJson<int>(json['refundPaidPiasters']),
+      paymentMethod: serializer.fromJson<String>(json['paymentMethod']),
+      reason: serializer.fromJson<String?>(json['reason']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'number': serializer.toJson<int>(number),
+      'salesInvoiceId': serializer.toJson<String>(salesInvoiceId),
+      'customerId': serializer.toJson<String?>(customerId),
+      'totalRefundPiasters': serializer.toJson<int>(totalRefundPiasters),
+      'totalCostPiasters': serializer.toJson<int>(totalCostPiasters),
+      'refundPaidPiasters': serializer.toJson<int>(refundPaidPiasters),
+      'paymentMethod': serializer.toJson<String>(paymentMethod),
+      'reason': serializer.toJson<String?>(reason),
+      'createdAt': serializer.toJson<int>(createdAt),
+    };
+  }
+
+  SaleReturnsData copyWith({
+    String? id,
+    int? number,
+    String? salesInvoiceId,
+    Value<String?> customerId = const Value.absent(),
+    int? totalRefundPiasters,
+    int? totalCostPiasters,
+    int? refundPaidPiasters,
+    String? paymentMethod,
+    Value<String?> reason = const Value.absent(),
+    int? createdAt,
+  }) => SaleReturnsData(
+    id: id ?? this.id,
+    number: number ?? this.number,
+    salesInvoiceId: salesInvoiceId ?? this.salesInvoiceId,
+    customerId: customerId.present ? customerId.value : this.customerId,
+    totalRefundPiasters: totalRefundPiasters ?? this.totalRefundPiasters,
+    totalCostPiasters: totalCostPiasters ?? this.totalCostPiasters,
+    refundPaidPiasters: refundPaidPiasters ?? this.refundPaidPiasters,
+    paymentMethod: paymentMethod ?? this.paymentMethod,
+    reason: reason.present ? reason.value : this.reason,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  SaleReturnsData copyWithCompanion(SaleReturnsCompanion data) {
+    return SaleReturnsData(
+      id: data.id.present ? data.id.value : this.id,
+      number: data.number.present ? data.number.value : this.number,
+      salesInvoiceId: data.salesInvoiceId.present
+          ? data.salesInvoiceId.value
+          : this.salesInvoiceId,
+      customerId: data.customerId.present
+          ? data.customerId.value
+          : this.customerId,
+      totalRefundPiasters: data.totalRefundPiasters.present
+          ? data.totalRefundPiasters.value
+          : this.totalRefundPiasters,
+      totalCostPiasters: data.totalCostPiasters.present
+          ? data.totalCostPiasters.value
+          : this.totalCostPiasters,
+      refundPaidPiasters: data.refundPaidPiasters.present
+          ? data.refundPaidPiasters.value
+          : this.refundPaidPiasters,
+      paymentMethod: data.paymentMethod.present
+          ? data.paymentMethod.value
+          : this.paymentMethod,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SaleReturnsData(')
+          ..write('id: $id, ')
+          ..write('number: $number, ')
+          ..write('salesInvoiceId: $salesInvoiceId, ')
+          ..write('customerId: $customerId, ')
+          ..write('totalRefundPiasters: $totalRefundPiasters, ')
+          ..write('totalCostPiasters: $totalCostPiasters, ')
+          ..write('refundPaidPiasters: $refundPaidPiasters, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('reason: $reason, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    number,
+    salesInvoiceId,
+    customerId,
+    totalRefundPiasters,
+    totalCostPiasters,
+    refundPaidPiasters,
+    paymentMethod,
+    reason,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SaleReturnsData &&
+          other.id == this.id &&
+          other.number == this.number &&
+          other.salesInvoiceId == this.salesInvoiceId &&
+          other.customerId == this.customerId &&
+          other.totalRefundPiasters == this.totalRefundPiasters &&
+          other.totalCostPiasters == this.totalCostPiasters &&
+          other.refundPaidPiasters == this.refundPaidPiasters &&
+          other.paymentMethod == this.paymentMethod &&
+          other.reason == this.reason &&
+          other.createdAt == this.createdAt);
+}
+
+class SaleReturnsCompanion extends UpdateCompanion<SaleReturnsData> {
+  final Value<String> id;
+  final Value<int> number;
+  final Value<String> salesInvoiceId;
+  final Value<String?> customerId;
+  final Value<int> totalRefundPiasters;
+  final Value<int> totalCostPiasters;
+  final Value<int> refundPaidPiasters;
+  final Value<String> paymentMethod;
+  final Value<String?> reason;
+  final Value<int> createdAt;
+  final Value<int> rowid;
+  const SaleReturnsCompanion({
+    this.id = const Value.absent(),
+    this.number = const Value.absent(),
+    this.salesInvoiceId = const Value.absent(),
+    this.customerId = const Value.absent(),
+    this.totalRefundPiasters = const Value.absent(),
+    this.totalCostPiasters = const Value.absent(),
+    this.refundPaidPiasters = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SaleReturnsCompanion.insert({
+    required String id,
+    required int number,
+    required String salesInvoiceId,
+    this.customerId = const Value.absent(),
+    required int totalRefundPiasters,
+    required int totalCostPiasters,
+    required int refundPaidPiasters,
+    this.paymentMethod = const Value.absent(),
+    this.reason = const Value.absent(),
+    required int createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       number = Value(number),
+       salesInvoiceId = Value(salesInvoiceId),
+       totalRefundPiasters = Value(totalRefundPiasters),
+       totalCostPiasters = Value(totalCostPiasters),
+       refundPaidPiasters = Value(refundPaidPiasters),
+       createdAt = Value(createdAt);
+  static Insertable<SaleReturnsData> custom({
+    Expression<String>? id,
+    Expression<int>? number,
+    Expression<String>? salesInvoiceId,
+    Expression<String>? customerId,
+    Expression<int>? totalRefundPiasters,
+    Expression<int>? totalCostPiasters,
+    Expression<int>? refundPaidPiasters,
+    Expression<String>? paymentMethod,
+    Expression<String>? reason,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (number != null) 'number': number,
+      if (salesInvoiceId != null) 'sales_invoice_id': salesInvoiceId,
+      if (customerId != null) 'customer_id': customerId,
+      if (totalRefundPiasters != null)
+        'total_refund_piasters': totalRefundPiasters,
+      if (totalCostPiasters != null) 'total_cost_piasters': totalCostPiasters,
+      if (refundPaidPiasters != null)
+        'refund_paid_piasters': refundPaidPiasters,
+      if (paymentMethod != null) 'payment_method': paymentMethod,
+      if (reason != null) 'reason': reason,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SaleReturnsCompanion copyWith({
+    Value<String>? id,
+    Value<int>? number,
+    Value<String>? salesInvoiceId,
+    Value<String?>? customerId,
+    Value<int>? totalRefundPiasters,
+    Value<int>? totalCostPiasters,
+    Value<int>? refundPaidPiasters,
+    Value<String>? paymentMethod,
+    Value<String?>? reason,
+    Value<int>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return SaleReturnsCompanion(
+      id: id ?? this.id,
+      number: number ?? this.number,
+      salesInvoiceId: salesInvoiceId ?? this.salesInvoiceId,
+      customerId: customerId ?? this.customerId,
+      totalRefundPiasters: totalRefundPiasters ?? this.totalRefundPiasters,
+      totalCostPiasters: totalCostPiasters ?? this.totalCostPiasters,
+      refundPaidPiasters: refundPaidPiasters ?? this.refundPaidPiasters,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      reason: reason ?? this.reason,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (salesInvoiceId.present) {
+      map['sales_invoice_id'] = Variable<String>(salesInvoiceId.value);
+    }
+    if (customerId.present) {
+      map['customer_id'] = Variable<String>(customerId.value);
+    }
+    if (totalRefundPiasters.present) {
+      map['total_refund_piasters'] = Variable<int>(totalRefundPiasters.value);
+    }
+    if (totalCostPiasters.present) {
+      map['total_cost_piasters'] = Variable<int>(totalCostPiasters.value);
+    }
+    if (refundPaidPiasters.present) {
+      map['refund_paid_piasters'] = Variable<int>(refundPaidPiasters.value);
+    }
+    if (paymentMethod.present) {
+      map['payment_method'] = Variable<String>(paymentMethod.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SaleReturnsCompanion(')
+          ..write('id: $id, ')
+          ..write('number: $number, ')
+          ..write('salesInvoiceId: $salesInvoiceId, ')
+          ..write('customerId: $customerId, ')
+          ..write('totalRefundPiasters: $totalRefundPiasters, ')
+          ..write('totalCostPiasters: $totalCostPiasters, ')
+          ..write('refundPaidPiasters: $refundPaidPiasters, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('reason: $reason, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SaleReturnItems extends Table
+    with TableInfo<SaleReturnItems, SaleReturnItemsData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1379,8 +5319,50 @@ class SaleReturnItems extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  SaleReturnItemsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SaleReturnItemsData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      saleReturnId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sale_return_id'],
+      )!,
+      saleItemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sale_item_id'],
+      )!,
+      productId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_id'],
+      )!,
+      qtyMilli: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}qty_milli'],
+      )!,
+      unitPricePiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}unit_price_piasters'],
+      )!,
+      unitCostPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}unit_cost_piasters'],
+      )!,
+      refundPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}refund_piasters'],
+      )!,
+      costPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}cost_piasters'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
   }
 
   @override
@@ -1397,7 +5379,355 @@ class SaleReturnItems extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class PurchaseInvoices extends Table with TableInfo {
+class SaleReturnItemsData extends DataClass
+    implements Insertable<SaleReturnItemsData> {
+  final String id;
+  final String saleReturnId;
+  final String saleItemId;
+  final String productId;
+  final int qtyMilli;
+  final int unitPricePiasters;
+  final int unitCostPiasters;
+  final int refundPiasters;
+  final int costPiasters;
+  final int createdAt;
+  const SaleReturnItemsData({
+    required this.id,
+    required this.saleReturnId,
+    required this.saleItemId,
+    required this.productId,
+    required this.qtyMilli,
+    required this.unitPricePiasters,
+    required this.unitCostPiasters,
+    required this.refundPiasters,
+    required this.costPiasters,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sale_return_id'] = Variable<String>(saleReturnId);
+    map['sale_item_id'] = Variable<String>(saleItemId);
+    map['product_id'] = Variable<String>(productId);
+    map['qty_milli'] = Variable<int>(qtyMilli);
+    map['unit_price_piasters'] = Variable<int>(unitPricePiasters);
+    map['unit_cost_piasters'] = Variable<int>(unitCostPiasters);
+    map['refund_piasters'] = Variable<int>(refundPiasters);
+    map['cost_piasters'] = Variable<int>(costPiasters);
+    map['created_at'] = Variable<int>(createdAt);
+    return map;
+  }
+
+  SaleReturnItemsCompanion toCompanion(bool nullToAbsent) {
+    return SaleReturnItemsCompanion(
+      id: Value(id),
+      saleReturnId: Value(saleReturnId),
+      saleItemId: Value(saleItemId),
+      productId: Value(productId),
+      qtyMilli: Value(qtyMilli),
+      unitPricePiasters: Value(unitPricePiasters),
+      unitCostPiasters: Value(unitCostPiasters),
+      refundPiasters: Value(refundPiasters),
+      costPiasters: Value(costPiasters),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory SaleReturnItemsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SaleReturnItemsData(
+      id: serializer.fromJson<String>(json['id']),
+      saleReturnId: serializer.fromJson<String>(json['saleReturnId']),
+      saleItemId: serializer.fromJson<String>(json['saleItemId']),
+      productId: serializer.fromJson<String>(json['productId']),
+      qtyMilli: serializer.fromJson<int>(json['qtyMilli']),
+      unitPricePiasters: serializer.fromJson<int>(json['unitPricePiasters']),
+      unitCostPiasters: serializer.fromJson<int>(json['unitCostPiasters']),
+      refundPiasters: serializer.fromJson<int>(json['refundPiasters']),
+      costPiasters: serializer.fromJson<int>(json['costPiasters']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'saleReturnId': serializer.toJson<String>(saleReturnId),
+      'saleItemId': serializer.toJson<String>(saleItemId),
+      'productId': serializer.toJson<String>(productId),
+      'qtyMilli': serializer.toJson<int>(qtyMilli),
+      'unitPricePiasters': serializer.toJson<int>(unitPricePiasters),
+      'unitCostPiasters': serializer.toJson<int>(unitCostPiasters),
+      'refundPiasters': serializer.toJson<int>(refundPiasters),
+      'costPiasters': serializer.toJson<int>(costPiasters),
+      'createdAt': serializer.toJson<int>(createdAt),
+    };
+  }
+
+  SaleReturnItemsData copyWith({
+    String? id,
+    String? saleReturnId,
+    String? saleItemId,
+    String? productId,
+    int? qtyMilli,
+    int? unitPricePiasters,
+    int? unitCostPiasters,
+    int? refundPiasters,
+    int? costPiasters,
+    int? createdAt,
+  }) => SaleReturnItemsData(
+    id: id ?? this.id,
+    saleReturnId: saleReturnId ?? this.saleReturnId,
+    saleItemId: saleItemId ?? this.saleItemId,
+    productId: productId ?? this.productId,
+    qtyMilli: qtyMilli ?? this.qtyMilli,
+    unitPricePiasters: unitPricePiasters ?? this.unitPricePiasters,
+    unitCostPiasters: unitCostPiasters ?? this.unitCostPiasters,
+    refundPiasters: refundPiasters ?? this.refundPiasters,
+    costPiasters: costPiasters ?? this.costPiasters,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  SaleReturnItemsData copyWithCompanion(SaleReturnItemsCompanion data) {
+    return SaleReturnItemsData(
+      id: data.id.present ? data.id.value : this.id,
+      saleReturnId: data.saleReturnId.present
+          ? data.saleReturnId.value
+          : this.saleReturnId,
+      saleItemId: data.saleItemId.present
+          ? data.saleItemId.value
+          : this.saleItemId,
+      productId: data.productId.present ? data.productId.value : this.productId,
+      qtyMilli: data.qtyMilli.present ? data.qtyMilli.value : this.qtyMilli,
+      unitPricePiasters: data.unitPricePiasters.present
+          ? data.unitPricePiasters.value
+          : this.unitPricePiasters,
+      unitCostPiasters: data.unitCostPiasters.present
+          ? data.unitCostPiasters.value
+          : this.unitCostPiasters,
+      refundPiasters: data.refundPiasters.present
+          ? data.refundPiasters.value
+          : this.refundPiasters,
+      costPiasters: data.costPiasters.present
+          ? data.costPiasters.value
+          : this.costPiasters,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SaleReturnItemsData(')
+          ..write('id: $id, ')
+          ..write('saleReturnId: $saleReturnId, ')
+          ..write('saleItemId: $saleItemId, ')
+          ..write('productId: $productId, ')
+          ..write('qtyMilli: $qtyMilli, ')
+          ..write('unitPricePiasters: $unitPricePiasters, ')
+          ..write('unitCostPiasters: $unitCostPiasters, ')
+          ..write('refundPiasters: $refundPiasters, ')
+          ..write('costPiasters: $costPiasters, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    saleReturnId,
+    saleItemId,
+    productId,
+    qtyMilli,
+    unitPricePiasters,
+    unitCostPiasters,
+    refundPiasters,
+    costPiasters,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SaleReturnItemsData &&
+          other.id == this.id &&
+          other.saleReturnId == this.saleReturnId &&
+          other.saleItemId == this.saleItemId &&
+          other.productId == this.productId &&
+          other.qtyMilli == this.qtyMilli &&
+          other.unitPricePiasters == this.unitPricePiasters &&
+          other.unitCostPiasters == this.unitCostPiasters &&
+          other.refundPiasters == this.refundPiasters &&
+          other.costPiasters == this.costPiasters &&
+          other.createdAt == this.createdAt);
+}
+
+class SaleReturnItemsCompanion extends UpdateCompanion<SaleReturnItemsData> {
+  final Value<String> id;
+  final Value<String> saleReturnId;
+  final Value<String> saleItemId;
+  final Value<String> productId;
+  final Value<int> qtyMilli;
+  final Value<int> unitPricePiasters;
+  final Value<int> unitCostPiasters;
+  final Value<int> refundPiasters;
+  final Value<int> costPiasters;
+  final Value<int> createdAt;
+  final Value<int> rowid;
+  const SaleReturnItemsCompanion({
+    this.id = const Value.absent(),
+    this.saleReturnId = const Value.absent(),
+    this.saleItemId = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.qtyMilli = const Value.absent(),
+    this.unitPricePiasters = const Value.absent(),
+    this.unitCostPiasters = const Value.absent(),
+    this.refundPiasters = const Value.absent(),
+    this.costPiasters = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SaleReturnItemsCompanion.insert({
+    required String id,
+    required String saleReturnId,
+    required String saleItemId,
+    required String productId,
+    required int qtyMilli,
+    required int unitPricePiasters,
+    required int unitCostPiasters,
+    required int refundPiasters,
+    required int costPiasters,
+    required int createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       saleReturnId = Value(saleReturnId),
+       saleItemId = Value(saleItemId),
+       productId = Value(productId),
+       qtyMilli = Value(qtyMilli),
+       unitPricePiasters = Value(unitPricePiasters),
+       unitCostPiasters = Value(unitCostPiasters),
+       refundPiasters = Value(refundPiasters),
+       costPiasters = Value(costPiasters),
+       createdAt = Value(createdAt);
+  static Insertable<SaleReturnItemsData> custom({
+    Expression<String>? id,
+    Expression<String>? saleReturnId,
+    Expression<String>? saleItemId,
+    Expression<String>? productId,
+    Expression<int>? qtyMilli,
+    Expression<int>? unitPricePiasters,
+    Expression<int>? unitCostPiasters,
+    Expression<int>? refundPiasters,
+    Expression<int>? costPiasters,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (saleReturnId != null) 'sale_return_id': saleReturnId,
+      if (saleItemId != null) 'sale_item_id': saleItemId,
+      if (productId != null) 'product_id': productId,
+      if (qtyMilli != null) 'qty_milli': qtyMilli,
+      if (unitPricePiasters != null) 'unit_price_piasters': unitPricePiasters,
+      if (unitCostPiasters != null) 'unit_cost_piasters': unitCostPiasters,
+      if (refundPiasters != null) 'refund_piasters': refundPiasters,
+      if (costPiasters != null) 'cost_piasters': costPiasters,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SaleReturnItemsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? saleReturnId,
+    Value<String>? saleItemId,
+    Value<String>? productId,
+    Value<int>? qtyMilli,
+    Value<int>? unitPricePiasters,
+    Value<int>? unitCostPiasters,
+    Value<int>? refundPiasters,
+    Value<int>? costPiasters,
+    Value<int>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return SaleReturnItemsCompanion(
+      id: id ?? this.id,
+      saleReturnId: saleReturnId ?? this.saleReturnId,
+      saleItemId: saleItemId ?? this.saleItemId,
+      productId: productId ?? this.productId,
+      qtyMilli: qtyMilli ?? this.qtyMilli,
+      unitPricePiasters: unitPricePiasters ?? this.unitPricePiasters,
+      unitCostPiasters: unitCostPiasters ?? this.unitCostPiasters,
+      refundPiasters: refundPiasters ?? this.refundPiasters,
+      costPiasters: costPiasters ?? this.costPiasters,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (saleReturnId.present) {
+      map['sale_return_id'] = Variable<String>(saleReturnId.value);
+    }
+    if (saleItemId.present) {
+      map['sale_item_id'] = Variable<String>(saleItemId.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<String>(productId.value);
+    }
+    if (qtyMilli.present) {
+      map['qty_milli'] = Variable<int>(qtyMilli.value);
+    }
+    if (unitPricePiasters.present) {
+      map['unit_price_piasters'] = Variable<int>(unitPricePiasters.value);
+    }
+    if (unitCostPiasters.present) {
+      map['unit_cost_piasters'] = Variable<int>(unitCostPiasters.value);
+    }
+    if (refundPiasters.present) {
+      map['refund_piasters'] = Variable<int>(refundPiasters.value);
+    }
+    if (costPiasters.present) {
+      map['cost_piasters'] = Variable<int>(costPiasters.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SaleReturnItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('saleReturnId: $saleReturnId, ')
+          ..write('saleItemId: $saleItemId, ')
+          ..write('productId: $productId, ')
+          ..write('qtyMilli: $qtyMilli, ')
+          ..write('unitPricePiasters: $unitPricePiasters, ')
+          ..write('unitCostPiasters: $unitCostPiasters, ')
+          ..write('refundPiasters: $refundPiasters, ')
+          ..write('costPiasters: $costPiasters, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class PurchaseInvoices extends Table
+    with TableInfo<PurchaseInvoices, PurchaseInvoicesData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1550,8 +5880,70 @@ class PurchaseInvoices extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  PurchaseInvoicesData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PurchaseInvoicesData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}number'],
+      )!,
+      supplierId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supplier_id'],
+      ),
+      supplierRef: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supplier_ref'],
+      ),
+      invoiceDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}invoice_date'],
+      )!,
+      subtotalPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}subtotal_piasters'],
+      )!,
+      discountPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}discount_piasters'],
+      )!,
+      totalPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_piasters'],
+      )!,
+      paidPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}paid_piasters'],
+      )!,
+      paymentMethod: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payment_method'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      voidedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}voided_at'],
+      ),
+      voidReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}void_reason'],
+      ),
+    );
   }
 
   @override
@@ -1573,7 +5965,492 @@ class PurchaseInvoices extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class PurchaseItems extends Table with TableInfo {
+class PurchaseInvoicesData extends DataClass
+    implements Insertable<PurchaseInvoicesData> {
+  final String id;
+  final int number;
+  final String? supplierId;
+  final String? supplierRef;
+  final int invoiceDate;
+  final int subtotalPiasters;
+  final int discountPiasters;
+  final int totalPiasters;
+  final int paidPiasters;
+  final String paymentMethod;
+  final String? note;
+  final int createdAt;
+  final int updatedAt;
+  final int? voidedAt;
+  final String? voidReason;
+  const PurchaseInvoicesData({
+    required this.id,
+    required this.number,
+    this.supplierId,
+    this.supplierRef,
+    required this.invoiceDate,
+    required this.subtotalPiasters,
+    required this.discountPiasters,
+    required this.totalPiasters,
+    required this.paidPiasters,
+    required this.paymentMethod,
+    this.note,
+    required this.createdAt,
+    required this.updatedAt,
+    this.voidedAt,
+    this.voidReason,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['number'] = Variable<int>(number);
+    if (!nullToAbsent || supplierId != null) {
+      map['supplier_id'] = Variable<String>(supplierId);
+    }
+    if (!nullToAbsent || supplierRef != null) {
+      map['supplier_ref'] = Variable<String>(supplierRef);
+    }
+    map['invoice_date'] = Variable<int>(invoiceDate);
+    map['subtotal_piasters'] = Variable<int>(subtotalPiasters);
+    map['discount_piasters'] = Variable<int>(discountPiasters);
+    map['total_piasters'] = Variable<int>(totalPiasters);
+    map['paid_piasters'] = Variable<int>(paidPiasters);
+    map['payment_method'] = Variable<String>(paymentMethod);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    if (!nullToAbsent || voidedAt != null) {
+      map['voided_at'] = Variable<int>(voidedAt);
+    }
+    if (!nullToAbsent || voidReason != null) {
+      map['void_reason'] = Variable<String>(voidReason);
+    }
+    return map;
+  }
+
+  PurchaseInvoicesCompanion toCompanion(bool nullToAbsent) {
+    return PurchaseInvoicesCompanion(
+      id: Value(id),
+      number: Value(number),
+      supplierId: supplierId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supplierId),
+      supplierRef: supplierRef == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supplierRef),
+      invoiceDate: Value(invoiceDate),
+      subtotalPiasters: Value(subtotalPiasters),
+      discountPiasters: Value(discountPiasters),
+      totalPiasters: Value(totalPiasters),
+      paidPiasters: Value(paidPiasters),
+      paymentMethod: Value(paymentMethod),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      voidedAt: voidedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(voidedAt),
+      voidReason: voidReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(voidReason),
+    );
+  }
+
+  factory PurchaseInvoicesData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PurchaseInvoicesData(
+      id: serializer.fromJson<String>(json['id']),
+      number: serializer.fromJson<int>(json['number']),
+      supplierId: serializer.fromJson<String?>(json['supplierId']),
+      supplierRef: serializer.fromJson<String?>(json['supplierRef']),
+      invoiceDate: serializer.fromJson<int>(json['invoiceDate']),
+      subtotalPiasters: serializer.fromJson<int>(json['subtotalPiasters']),
+      discountPiasters: serializer.fromJson<int>(json['discountPiasters']),
+      totalPiasters: serializer.fromJson<int>(json['totalPiasters']),
+      paidPiasters: serializer.fromJson<int>(json['paidPiasters']),
+      paymentMethod: serializer.fromJson<String>(json['paymentMethod']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      voidedAt: serializer.fromJson<int?>(json['voidedAt']),
+      voidReason: serializer.fromJson<String?>(json['voidReason']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'number': serializer.toJson<int>(number),
+      'supplierId': serializer.toJson<String?>(supplierId),
+      'supplierRef': serializer.toJson<String?>(supplierRef),
+      'invoiceDate': serializer.toJson<int>(invoiceDate),
+      'subtotalPiasters': serializer.toJson<int>(subtotalPiasters),
+      'discountPiasters': serializer.toJson<int>(discountPiasters),
+      'totalPiasters': serializer.toJson<int>(totalPiasters),
+      'paidPiasters': serializer.toJson<int>(paidPiasters),
+      'paymentMethod': serializer.toJson<String>(paymentMethod),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'voidedAt': serializer.toJson<int?>(voidedAt),
+      'voidReason': serializer.toJson<String?>(voidReason),
+    };
+  }
+
+  PurchaseInvoicesData copyWith({
+    String? id,
+    int? number,
+    Value<String?> supplierId = const Value.absent(),
+    Value<String?> supplierRef = const Value.absent(),
+    int? invoiceDate,
+    int? subtotalPiasters,
+    int? discountPiasters,
+    int? totalPiasters,
+    int? paidPiasters,
+    String? paymentMethod,
+    Value<String?> note = const Value.absent(),
+    int? createdAt,
+    int? updatedAt,
+    Value<int?> voidedAt = const Value.absent(),
+    Value<String?> voidReason = const Value.absent(),
+  }) => PurchaseInvoicesData(
+    id: id ?? this.id,
+    number: number ?? this.number,
+    supplierId: supplierId.present ? supplierId.value : this.supplierId,
+    supplierRef: supplierRef.present ? supplierRef.value : this.supplierRef,
+    invoiceDate: invoiceDate ?? this.invoiceDate,
+    subtotalPiasters: subtotalPiasters ?? this.subtotalPiasters,
+    discountPiasters: discountPiasters ?? this.discountPiasters,
+    totalPiasters: totalPiasters ?? this.totalPiasters,
+    paidPiasters: paidPiasters ?? this.paidPiasters,
+    paymentMethod: paymentMethod ?? this.paymentMethod,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    voidedAt: voidedAt.present ? voidedAt.value : this.voidedAt,
+    voidReason: voidReason.present ? voidReason.value : this.voidReason,
+  );
+  PurchaseInvoicesData copyWithCompanion(PurchaseInvoicesCompanion data) {
+    return PurchaseInvoicesData(
+      id: data.id.present ? data.id.value : this.id,
+      number: data.number.present ? data.number.value : this.number,
+      supplierId: data.supplierId.present
+          ? data.supplierId.value
+          : this.supplierId,
+      supplierRef: data.supplierRef.present
+          ? data.supplierRef.value
+          : this.supplierRef,
+      invoiceDate: data.invoiceDate.present
+          ? data.invoiceDate.value
+          : this.invoiceDate,
+      subtotalPiasters: data.subtotalPiasters.present
+          ? data.subtotalPiasters.value
+          : this.subtotalPiasters,
+      discountPiasters: data.discountPiasters.present
+          ? data.discountPiasters.value
+          : this.discountPiasters,
+      totalPiasters: data.totalPiasters.present
+          ? data.totalPiasters.value
+          : this.totalPiasters,
+      paidPiasters: data.paidPiasters.present
+          ? data.paidPiasters.value
+          : this.paidPiasters,
+      paymentMethod: data.paymentMethod.present
+          ? data.paymentMethod.value
+          : this.paymentMethod,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      voidedAt: data.voidedAt.present ? data.voidedAt.value : this.voidedAt,
+      voidReason: data.voidReason.present
+          ? data.voidReason.value
+          : this.voidReason,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PurchaseInvoicesData(')
+          ..write('id: $id, ')
+          ..write('number: $number, ')
+          ..write('supplierId: $supplierId, ')
+          ..write('supplierRef: $supplierRef, ')
+          ..write('invoiceDate: $invoiceDate, ')
+          ..write('subtotalPiasters: $subtotalPiasters, ')
+          ..write('discountPiasters: $discountPiasters, ')
+          ..write('totalPiasters: $totalPiasters, ')
+          ..write('paidPiasters: $paidPiasters, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('voidedAt: $voidedAt, ')
+          ..write('voidReason: $voidReason')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    number,
+    supplierId,
+    supplierRef,
+    invoiceDate,
+    subtotalPiasters,
+    discountPiasters,
+    totalPiasters,
+    paidPiasters,
+    paymentMethod,
+    note,
+    createdAt,
+    updatedAt,
+    voidedAt,
+    voidReason,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PurchaseInvoicesData &&
+          other.id == this.id &&
+          other.number == this.number &&
+          other.supplierId == this.supplierId &&
+          other.supplierRef == this.supplierRef &&
+          other.invoiceDate == this.invoiceDate &&
+          other.subtotalPiasters == this.subtotalPiasters &&
+          other.discountPiasters == this.discountPiasters &&
+          other.totalPiasters == this.totalPiasters &&
+          other.paidPiasters == this.paidPiasters &&
+          other.paymentMethod == this.paymentMethod &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.voidedAt == this.voidedAt &&
+          other.voidReason == this.voidReason);
+}
+
+class PurchaseInvoicesCompanion extends UpdateCompanion<PurchaseInvoicesData> {
+  final Value<String> id;
+  final Value<int> number;
+  final Value<String?> supplierId;
+  final Value<String?> supplierRef;
+  final Value<int> invoiceDate;
+  final Value<int> subtotalPiasters;
+  final Value<int> discountPiasters;
+  final Value<int> totalPiasters;
+  final Value<int> paidPiasters;
+  final Value<String> paymentMethod;
+  final Value<String?> note;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int?> voidedAt;
+  final Value<String?> voidReason;
+  final Value<int> rowid;
+  const PurchaseInvoicesCompanion({
+    this.id = const Value.absent(),
+    this.number = const Value.absent(),
+    this.supplierId = const Value.absent(),
+    this.supplierRef = const Value.absent(),
+    this.invoiceDate = const Value.absent(),
+    this.subtotalPiasters = const Value.absent(),
+    this.discountPiasters = const Value.absent(),
+    this.totalPiasters = const Value.absent(),
+    this.paidPiasters = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.voidedAt = const Value.absent(),
+    this.voidReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PurchaseInvoicesCompanion.insert({
+    required String id,
+    required int number,
+    this.supplierId = const Value.absent(),
+    this.supplierRef = const Value.absent(),
+    required int invoiceDate,
+    required int subtotalPiasters,
+    this.discountPiasters = const Value.absent(),
+    required int totalPiasters,
+    required int paidPiasters,
+    this.paymentMethod = const Value.absent(),
+    this.note = const Value.absent(),
+    required int createdAt,
+    required int updatedAt,
+    this.voidedAt = const Value.absent(),
+    this.voidReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       number = Value(number),
+       invoiceDate = Value(invoiceDate),
+       subtotalPiasters = Value(subtotalPiasters),
+       totalPiasters = Value(totalPiasters),
+       paidPiasters = Value(paidPiasters),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<PurchaseInvoicesData> custom({
+    Expression<String>? id,
+    Expression<int>? number,
+    Expression<String>? supplierId,
+    Expression<String>? supplierRef,
+    Expression<int>? invoiceDate,
+    Expression<int>? subtotalPiasters,
+    Expression<int>? discountPiasters,
+    Expression<int>? totalPiasters,
+    Expression<int>? paidPiasters,
+    Expression<String>? paymentMethod,
+    Expression<String>? note,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? voidedAt,
+    Expression<String>? voidReason,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (number != null) 'number': number,
+      if (supplierId != null) 'supplier_id': supplierId,
+      if (supplierRef != null) 'supplier_ref': supplierRef,
+      if (invoiceDate != null) 'invoice_date': invoiceDate,
+      if (subtotalPiasters != null) 'subtotal_piasters': subtotalPiasters,
+      if (discountPiasters != null) 'discount_piasters': discountPiasters,
+      if (totalPiasters != null) 'total_piasters': totalPiasters,
+      if (paidPiasters != null) 'paid_piasters': paidPiasters,
+      if (paymentMethod != null) 'payment_method': paymentMethod,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (voidedAt != null) 'voided_at': voidedAt,
+      if (voidReason != null) 'void_reason': voidReason,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PurchaseInvoicesCompanion copyWith({
+    Value<String>? id,
+    Value<int>? number,
+    Value<String?>? supplierId,
+    Value<String?>? supplierRef,
+    Value<int>? invoiceDate,
+    Value<int>? subtotalPiasters,
+    Value<int>? discountPiasters,
+    Value<int>? totalPiasters,
+    Value<int>? paidPiasters,
+    Value<String>? paymentMethod,
+    Value<String?>? note,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int?>? voidedAt,
+    Value<String?>? voidReason,
+    Value<int>? rowid,
+  }) {
+    return PurchaseInvoicesCompanion(
+      id: id ?? this.id,
+      number: number ?? this.number,
+      supplierId: supplierId ?? this.supplierId,
+      supplierRef: supplierRef ?? this.supplierRef,
+      invoiceDate: invoiceDate ?? this.invoiceDate,
+      subtotalPiasters: subtotalPiasters ?? this.subtotalPiasters,
+      discountPiasters: discountPiasters ?? this.discountPiasters,
+      totalPiasters: totalPiasters ?? this.totalPiasters,
+      paidPiasters: paidPiasters ?? this.paidPiasters,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      voidedAt: voidedAt ?? this.voidedAt,
+      voidReason: voidReason ?? this.voidReason,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (supplierId.present) {
+      map['supplier_id'] = Variable<String>(supplierId.value);
+    }
+    if (supplierRef.present) {
+      map['supplier_ref'] = Variable<String>(supplierRef.value);
+    }
+    if (invoiceDate.present) {
+      map['invoice_date'] = Variable<int>(invoiceDate.value);
+    }
+    if (subtotalPiasters.present) {
+      map['subtotal_piasters'] = Variable<int>(subtotalPiasters.value);
+    }
+    if (discountPiasters.present) {
+      map['discount_piasters'] = Variable<int>(discountPiasters.value);
+    }
+    if (totalPiasters.present) {
+      map['total_piasters'] = Variable<int>(totalPiasters.value);
+    }
+    if (paidPiasters.present) {
+      map['paid_piasters'] = Variable<int>(paidPiasters.value);
+    }
+    if (paymentMethod.present) {
+      map['payment_method'] = Variable<String>(paymentMethod.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (voidedAt.present) {
+      map['voided_at'] = Variable<int>(voidedAt.value);
+    }
+    if (voidReason.present) {
+      map['void_reason'] = Variable<String>(voidReason.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PurchaseInvoicesCompanion(')
+          ..write('id: $id, ')
+          ..write('number: $number, ')
+          ..write('supplierId: $supplierId, ')
+          ..write('supplierRef: $supplierRef, ')
+          ..write('invoiceDate: $invoiceDate, ')
+          ..write('subtotalPiasters: $subtotalPiasters, ')
+          ..write('discountPiasters: $discountPiasters, ')
+          ..write('totalPiasters: $totalPiasters, ')
+          ..write('paidPiasters: $paidPiasters, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('voidedAt: $voidedAt, ')
+          ..write('voidReason: $voidReason, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class PurchaseItems extends Table
+    with TableInfo<PurchaseItems, PurchaseItemsData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1724,8 +6601,66 @@ class PurchaseItems extends Table with TableInfo {
     {purchaseInvoiceId, lineNo},
   ];
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  PurchaseItemsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PurchaseItemsData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      purchaseInvoiceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}purchase_invoice_id'],
+      )!,
+      lineNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}line_no'],
+      )!,
+      productId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_id'],
+      )!,
+      productNameSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_name_snapshot'],
+      )!,
+      qtyMilli: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}qty_milli'],
+      )!,
+      unitCostPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}unit_cost_piasters'],
+      )!,
+      discountPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}discount_piasters'],
+      )!,
+      lineTotalPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}line_total_piasters'],
+      )!,
+      invoiceDiscountSharePiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}invoice_discount_share_piasters'],
+      )!,
+      netLineCostPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}net_line_cost_piasters'],
+      )!,
+      avgCostBeforePiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}avg_cost_before_piasters'],
+      )!,
+      avgCostAfterPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}avg_cost_after_piasters'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
   }
 
   @override
@@ -1743,7 +6678,491 @@ class PurchaseItems extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class StockMovements extends Table with TableInfo {
+class PurchaseItemsData extends DataClass
+    implements Insertable<PurchaseItemsData> {
+  final String id;
+  final String purchaseInvoiceId;
+  final int lineNo;
+  final String productId;
+  final String productNameSnapshot;
+  final int qtyMilli;
+  final int unitCostPiasters;
+  final int discountPiasters;
+  final int lineTotalPiasters;
+  final int invoiceDiscountSharePiasters;
+  final int netLineCostPiasters;
+  final int avgCostBeforePiasters;
+  final int avgCostAfterPiasters;
+  final int createdAt;
+  const PurchaseItemsData({
+    required this.id,
+    required this.purchaseInvoiceId,
+    required this.lineNo,
+    required this.productId,
+    required this.productNameSnapshot,
+    required this.qtyMilli,
+    required this.unitCostPiasters,
+    required this.discountPiasters,
+    required this.lineTotalPiasters,
+    required this.invoiceDiscountSharePiasters,
+    required this.netLineCostPiasters,
+    required this.avgCostBeforePiasters,
+    required this.avgCostAfterPiasters,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['purchase_invoice_id'] = Variable<String>(purchaseInvoiceId);
+    map['line_no'] = Variable<int>(lineNo);
+    map['product_id'] = Variable<String>(productId);
+    map['product_name_snapshot'] = Variable<String>(productNameSnapshot);
+    map['qty_milli'] = Variable<int>(qtyMilli);
+    map['unit_cost_piasters'] = Variable<int>(unitCostPiasters);
+    map['discount_piasters'] = Variable<int>(discountPiasters);
+    map['line_total_piasters'] = Variable<int>(lineTotalPiasters);
+    map['invoice_discount_share_piasters'] = Variable<int>(
+      invoiceDiscountSharePiasters,
+    );
+    map['net_line_cost_piasters'] = Variable<int>(netLineCostPiasters);
+    map['avg_cost_before_piasters'] = Variable<int>(avgCostBeforePiasters);
+    map['avg_cost_after_piasters'] = Variable<int>(avgCostAfterPiasters);
+    map['created_at'] = Variable<int>(createdAt);
+    return map;
+  }
+
+  PurchaseItemsCompanion toCompanion(bool nullToAbsent) {
+    return PurchaseItemsCompanion(
+      id: Value(id),
+      purchaseInvoiceId: Value(purchaseInvoiceId),
+      lineNo: Value(lineNo),
+      productId: Value(productId),
+      productNameSnapshot: Value(productNameSnapshot),
+      qtyMilli: Value(qtyMilli),
+      unitCostPiasters: Value(unitCostPiasters),
+      discountPiasters: Value(discountPiasters),
+      lineTotalPiasters: Value(lineTotalPiasters),
+      invoiceDiscountSharePiasters: Value(invoiceDiscountSharePiasters),
+      netLineCostPiasters: Value(netLineCostPiasters),
+      avgCostBeforePiasters: Value(avgCostBeforePiasters),
+      avgCostAfterPiasters: Value(avgCostAfterPiasters),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory PurchaseItemsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PurchaseItemsData(
+      id: serializer.fromJson<String>(json['id']),
+      purchaseInvoiceId: serializer.fromJson<String>(json['purchaseInvoiceId']),
+      lineNo: serializer.fromJson<int>(json['lineNo']),
+      productId: serializer.fromJson<String>(json['productId']),
+      productNameSnapshot: serializer.fromJson<String>(
+        json['productNameSnapshot'],
+      ),
+      qtyMilli: serializer.fromJson<int>(json['qtyMilli']),
+      unitCostPiasters: serializer.fromJson<int>(json['unitCostPiasters']),
+      discountPiasters: serializer.fromJson<int>(json['discountPiasters']),
+      lineTotalPiasters: serializer.fromJson<int>(json['lineTotalPiasters']),
+      invoiceDiscountSharePiasters: serializer.fromJson<int>(
+        json['invoiceDiscountSharePiasters'],
+      ),
+      netLineCostPiasters: serializer.fromJson<int>(
+        json['netLineCostPiasters'],
+      ),
+      avgCostBeforePiasters: serializer.fromJson<int>(
+        json['avgCostBeforePiasters'],
+      ),
+      avgCostAfterPiasters: serializer.fromJson<int>(
+        json['avgCostAfterPiasters'],
+      ),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'purchaseInvoiceId': serializer.toJson<String>(purchaseInvoiceId),
+      'lineNo': serializer.toJson<int>(lineNo),
+      'productId': serializer.toJson<String>(productId),
+      'productNameSnapshot': serializer.toJson<String>(productNameSnapshot),
+      'qtyMilli': serializer.toJson<int>(qtyMilli),
+      'unitCostPiasters': serializer.toJson<int>(unitCostPiasters),
+      'discountPiasters': serializer.toJson<int>(discountPiasters),
+      'lineTotalPiasters': serializer.toJson<int>(lineTotalPiasters),
+      'invoiceDiscountSharePiasters': serializer.toJson<int>(
+        invoiceDiscountSharePiasters,
+      ),
+      'netLineCostPiasters': serializer.toJson<int>(netLineCostPiasters),
+      'avgCostBeforePiasters': serializer.toJson<int>(avgCostBeforePiasters),
+      'avgCostAfterPiasters': serializer.toJson<int>(avgCostAfterPiasters),
+      'createdAt': serializer.toJson<int>(createdAt),
+    };
+  }
+
+  PurchaseItemsData copyWith({
+    String? id,
+    String? purchaseInvoiceId,
+    int? lineNo,
+    String? productId,
+    String? productNameSnapshot,
+    int? qtyMilli,
+    int? unitCostPiasters,
+    int? discountPiasters,
+    int? lineTotalPiasters,
+    int? invoiceDiscountSharePiasters,
+    int? netLineCostPiasters,
+    int? avgCostBeforePiasters,
+    int? avgCostAfterPiasters,
+    int? createdAt,
+  }) => PurchaseItemsData(
+    id: id ?? this.id,
+    purchaseInvoiceId: purchaseInvoiceId ?? this.purchaseInvoiceId,
+    lineNo: lineNo ?? this.lineNo,
+    productId: productId ?? this.productId,
+    productNameSnapshot: productNameSnapshot ?? this.productNameSnapshot,
+    qtyMilli: qtyMilli ?? this.qtyMilli,
+    unitCostPiasters: unitCostPiasters ?? this.unitCostPiasters,
+    discountPiasters: discountPiasters ?? this.discountPiasters,
+    lineTotalPiasters: lineTotalPiasters ?? this.lineTotalPiasters,
+    invoiceDiscountSharePiasters:
+        invoiceDiscountSharePiasters ?? this.invoiceDiscountSharePiasters,
+    netLineCostPiasters: netLineCostPiasters ?? this.netLineCostPiasters,
+    avgCostBeforePiasters: avgCostBeforePiasters ?? this.avgCostBeforePiasters,
+    avgCostAfterPiasters: avgCostAfterPiasters ?? this.avgCostAfterPiasters,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  PurchaseItemsData copyWithCompanion(PurchaseItemsCompanion data) {
+    return PurchaseItemsData(
+      id: data.id.present ? data.id.value : this.id,
+      purchaseInvoiceId: data.purchaseInvoiceId.present
+          ? data.purchaseInvoiceId.value
+          : this.purchaseInvoiceId,
+      lineNo: data.lineNo.present ? data.lineNo.value : this.lineNo,
+      productId: data.productId.present ? data.productId.value : this.productId,
+      productNameSnapshot: data.productNameSnapshot.present
+          ? data.productNameSnapshot.value
+          : this.productNameSnapshot,
+      qtyMilli: data.qtyMilli.present ? data.qtyMilli.value : this.qtyMilli,
+      unitCostPiasters: data.unitCostPiasters.present
+          ? data.unitCostPiasters.value
+          : this.unitCostPiasters,
+      discountPiasters: data.discountPiasters.present
+          ? data.discountPiasters.value
+          : this.discountPiasters,
+      lineTotalPiasters: data.lineTotalPiasters.present
+          ? data.lineTotalPiasters.value
+          : this.lineTotalPiasters,
+      invoiceDiscountSharePiasters: data.invoiceDiscountSharePiasters.present
+          ? data.invoiceDiscountSharePiasters.value
+          : this.invoiceDiscountSharePiasters,
+      netLineCostPiasters: data.netLineCostPiasters.present
+          ? data.netLineCostPiasters.value
+          : this.netLineCostPiasters,
+      avgCostBeforePiasters: data.avgCostBeforePiasters.present
+          ? data.avgCostBeforePiasters.value
+          : this.avgCostBeforePiasters,
+      avgCostAfterPiasters: data.avgCostAfterPiasters.present
+          ? data.avgCostAfterPiasters.value
+          : this.avgCostAfterPiasters,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PurchaseItemsData(')
+          ..write('id: $id, ')
+          ..write('purchaseInvoiceId: $purchaseInvoiceId, ')
+          ..write('lineNo: $lineNo, ')
+          ..write('productId: $productId, ')
+          ..write('productNameSnapshot: $productNameSnapshot, ')
+          ..write('qtyMilli: $qtyMilli, ')
+          ..write('unitCostPiasters: $unitCostPiasters, ')
+          ..write('discountPiasters: $discountPiasters, ')
+          ..write('lineTotalPiasters: $lineTotalPiasters, ')
+          ..write(
+            'invoiceDiscountSharePiasters: $invoiceDiscountSharePiasters, ',
+          )
+          ..write('netLineCostPiasters: $netLineCostPiasters, ')
+          ..write('avgCostBeforePiasters: $avgCostBeforePiasters, ')
+          ..write('avgCostAfterPiasters: $avgCostAfterPiasters, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    purchaseInvoiceId,
+    lineNo,
+    productId,
+    productNameSnapshot,
+    qtyMilli,
+    unitCostPiasters,
+    discountPiasters,
+    lineTotalPiasters,
+    invoiceDiscountSharePiasters,
+    netLineCostPiasters,
+    avgCostBeforePiasters,
+    avgCostAfterPiasters,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PurchaseItemsData &&
+          other.id == this.id &&
+          other.purchaseInvoiceId == this.purchaseInvoiceId &&
+          other.lineNo == this.lineNo &&
+          other.productId == this.productId &&
+          other.productNameSnapshot == this.productNameSnapshot &&
+          other.qtyMilli == this.qtyMilli &&
+          other.unitCostPiasters == this.unitCostPiasters &&
+          other.discountPiasters == this.discountPiasters &&
+          other.lineTotalPiasters == this.lineTotalPiasters &&
+          other.invoiceDiscountSharePiasters ==
+              this.invoiceDiscountSharePiasters &&
+          other.netLineCostPiasters == this.netLineCostPiasters &&
+          other.avgCostBeforePiasters == this.avgCostBeforePiasters &&
+          other.avgCostAfterPiasters == this.avgCostAfterPiasters &&
+          other.createdAt == this.createdAt);
+}
+
+class PurchaseItemsCompanion extends UpdateCompanion<PurchaseItemsData> {
+  final Value<String> id;
+  final Value<String> purchaseInvoiceId;
+  final Value<int> lineNo;
+  final Value<String> productId;
+  final Value<String> productNameSnapshot;
+  final Value<int> qtyMilli;
+  final Value<int> unitCostPiasters;
+  final Value<int> discountPiasters;
+  final Value<int> lineTotalPiasters;
+  final Value<int> invoiceDiscountSharePiasters;
+  final Value<int> netLineCostPiasters;
+  final Value<int> avgCostBeforePiasters;
+  final Value<int> avgCostAfterPiasters;
+  final Value<int> createdAt;
+  final Value<int> rowid;
+  const PurchaseItemsCompanion({
+    this.id = const Value.absent(),
+    this.purchaseInvoiceId = const Value.absent(),
+    this.lineNo = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.productNameSnapshot = const Value.absent(),
+    this.qtyMilli = const Value.absent(),
+    this.unitCostPiasters = const Value.absent(),
+    this.discountPiasters = const Value.absent(),
+    this.lineTotalPiasters = const Value.absent(),
+    this.invoiceDiscountSharePiasters = const Value.absent(),
+    this.netLineCostPiasters = const Value.absent(),
+    this.avgCostBeforePiasters = const Value.absent(),
+    this.avgCostAfterPiasters = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PurchaseItemsCompanion.insert({
+    required String id,
+    required String purchaseInvoiceId,
+    required int lineNo,
+    required String productId,
+    required String productNameSnapshot,
+    required int qtyMilli,
+    required int unitCostPiasters,
+    this.discountPiasters = const Value.absent(),
+    required int lineTotalPiasters,
+    required int invoiceDiscountSharePiasters,
+    required int netLineCostPiasters,
+    required int avgCostBeforePiasters,
+    required int avgCostAfterPiasters,
+    required int createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       purchaseInvoiceId = Value(purchaseInvoiceId),
+       lineNo = Value(lineNo),
+       productId = Value(productId),
+       productNameSnapshot = Value(productNameSnapshot),
+       qtyMilli = Value(qtyMilli),
+       unitCostPiasters = Value(unitCostPiasters),
+       lineTotalPiasters = Value(lineTotalPiasters),
+       invoiceDiscountSharePiasters = Value(invoiceDiscountSharePiasters),
+       netLineCostPiasters = Value(netLineCostPiasters),
+       avgCostBeforePiasters = Value(avgCostBeforePiasters),
+       avgCostAfterPiasters = Value(avgCostAfterPiasters),
+       createdAt = Value(createdAt);
+  static Insertable<PurchaseItemsData> custom({
+    Expression<String>? id,
+    Expression<String>? purchaseInvoiceId,
+    Expression<int>? lineNo,
+    Expression<String>? productId,
+    Expression<String>? productNameSnapshot,
+    Expression<int>? qtyMilli,
+    Expression<int>? unitCostPiasters,
+    Expression<int>? discountPiasters,
+    Expression<int>? lineTotalPiasters,
+    Expression<int>? invoiceDiscountSharePiasters,
+    Expression<int>? netLineCostPiasters,
+    Expression<int>? avgCostBeforePiasters,
+    Expression<int>? avgCostAfterPiasters,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (purchaseInvoiceId != null) 'purchase_invoice_id': purchaseInvoiceId,
+      if (lineNo != null) 'line_no': lineNo,
+      if (productId != null) 'product_id': productId,
+      if (productNameSnapshot != null)
+        'product_name_snapshot': productNameSnapshot,
+      if (qtyMilli != null) 'qty_milli': qtyMilli,
+      if (unitCostPiasters != null) 'unit_cost_piasters': unitCostPiasters,
+      if (discountPiasters != null) 'discount_piasters': discountPiasters,
+      if (lineTotalPiasters != null) 'line_total_piasters': lineTotalPiasters,
+      if (invoiceDiscountSharePiasters != null)
+        'invoice_discount_share_piasters': invoiceDiscountSharePiasters,
+      if (netLineCostPiasters != null)
+        'net_line_cost_piasters': netLineCostPiasters,
+      if (avgCostBeforePiasters != null)
+        'avg_cost_before_piasters': avgCostBeforePiasters,
+      if (avgCostAfterPiasters != null)
+        'avg_cost_after_piasters': avgCostAfterPiasters,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PurchaseItemsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? purchaseInvoiceId,
+    Value<int>? lineNo,
+    Value<String>? productId,
+    Value<String>? productNameSnapshot,
+    Value<int>? qtyMilli,
+    Value<int>? unitCostPiasters,
+    Value<int>? discountPiasters,
+    Value<int>? lineTotalPiasters,
+    Value<int>? invoiceDiscountSharePiasters,
+    Value<int>? netLineCostPiasters,
+    Value<int>? avgCostBeforePiasters,
+    Value<int>? avgCostAfterPiasters,
+    Value<int>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return PurchaseItemsCompanion(
+      id: id ?? this.id,
+      purchaseInvoiceId: purchaseInvoiceId ?? this.purchaseInvoiceId,
+      lineNo: lineNo ?? this.lineNo,
+      productId: productId ?? this.productId,
+      productNameSnapshot: productNameSnapshot ?? this.productNameSnapshot,
+      qtyMilli: qtyMilli ?? this.qtyMilli,
+      unitCostPiasters: unitCostPiasters ?? this.unitCostPiasters,
+      discountPiasters: discountPiasters ?? this.discountPiasters,
+      lineTotalPiasters: lineTotalPiasters ?? this.lineTotalPiasters,
+      invoiceDiscountSharePiasters:
+          invoiceDiscountSharePiasters ?? this.invoiceDiscountSharePiasters,
+      netLineCostPiasters: netLineCostPiasters ?? this.netLineCostPiasters,
+      avgCostBeforePiasters:
+          avgCostBeforePiasters ?? this.avgCostBeforePiasters,
+      avgCostAfterPiasters: avgCostAfterPiasters ?? this.avgCostAfterPiasters,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (purchaseInvoiceId.present) {
+      map['purchase_invoice_id'] = Variable<String>(purchaseInvoiceId.value);
+    }
+    if (lineNo.present) {
+      map['line_no'] = Variable<int>(lineNo.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<String>(productId.value);
+    }
+    if (productNameSnapshot.present) {
+      map['product_name_snapshot'] = Variable<String>(
+        productNameSnapshot.value,
+      );
+    }
+    if (qtyMilli.present) {
+      map['qty_milli'] = Variable<int>(qtyMilli.value);
+    }
+    if (unitCostPiasters.present) {
+      map['unit_cost_piasters'] = Variable<int>(unitCostPiasters.value);
+    }
+    if (discountPiasters.present) {
+      map['discount_piasters'] = Variable<int>(discountPiasters.value);
+    }
+    if (lineTotalPiasters.present) {
+      map['line_total_piasters'] = Variable<int>(lineTotalPiasters.value);
+    }
+    if (invoiceDiscountSharePiasters.present) {
+      map['invoice_discount_share_piasters'] = Variable<int>(
+        invoiceDiscountSharePiasters.value,
+      );
+    }
+    if (netLineCostPiasters.present) {
+      map['net_line_cost_piasters'] = Variable<int>(netLineCostPiasters.value);
+    }
+    if (avgCostBeforePiasters.present) {
+      map['avg_cost_before_piasters'] = Variable<int>(
+        avgCostBeforePiasters.value,
+      );
+    }
+    if (avgCostAfterPiasters.present) {
+      map['avg_cost_after_piasters'] = Variable<int>(
+        avgCostAfterPiasters.value,
+      );
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PurchaseItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('purchaseInvoiceId: $purchaseInvoiceId, ')
+          ..write('lineNo: $lineNo, ')
+          ..write('productId: $productId, ')
+          ..write('productNameSnapshot: $productNameSnapshot, ')
+          ..write('qtyMilli: $qtyMilli, ')
+          ..write('unitCostPiasters: $unitCostPiasters, ')
+          ..write('discountPiasters: $discountPiasters, ')
+          ..write('lineTotalPiasters: $lineTotalPiasters, ')
+          ..write(
+            'invoiceDiscountSharePiasters: $invoiceDiscountSharePiasters, ',
+          )
+          ..write('netLineCostPiasters: $netLineCostPiasters, ')
+          ..write('avgCostBeforePiasters: $avgCostBeforePiasters, ')
+          ..write('avgCostAfterPiasters: $avgCostAfterPiasters, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class StockMovements extends Table
+    with TableInfo<StockMovements, StockMovementsData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1870,8 +7289,58 @@ class StockMovements extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  StockMovementsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StockMovementsData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      productId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_id'],
+      )!,
+      movementType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}movement_type'],
+      )!,
+      qtyDeltaMilli: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}qty_delta_milli'],
+      )!,
+      unitCostPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}unit_cost_piasters'],
+      )!,
+      saleItemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sale_item_id'],
+      ),
+      saleReturnItemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sale_return_item_id'],
+      ),
+      purchaseItemId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}purchase_item_id'],
+      ),
+      reversesMovementId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reverses_movement_id'],
+      ),
+      adjustmentReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}adjustment_reason'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
   }
 
   @override
@@ -1892,7 +7361,434 @@ class StockMovements extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class CustomerLedger extends Table with TableInfo {
+class StockMovementsData extends DataClass
+    implements Insertable<StockMovementsData> {
+  final String id;
+  final String productId;
+  final String movementType;
+  final int qtyDeltaMilli;
+  final int unitCostPiasters;
+  final String? saleItemId;
+  final String? saleReturnItemId;
+  final String? purchaseItemId;
+  final String? reversesMovementId;
+  final String? adjustmentReason;
+  final String? note;
+  final int createdAt;
+  const StockMovementsData({
+    required this.id,
+    required this.productId,
+    required this.movementType,
+    required this.qtyDeltaMilli,
+    required this.unitCostPiasters,
+    this.saleItemId,
+    this.saleReturnItemId,
+    this.purchaseItemId,
+    this.reversesMovementId,
+    this.adjustmentReason,
+    this.note,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['product_id'] = Variable<String>(productId);
+    map['movement_type'] = Variable<String>(movementType);
+    map['qty_delta_milli'] = Variable<int>(qtyDeltaMilli);
+    map['unit_cost_piasters'] = Variable<int>(unitCostPiasters);
+    if (!nullToAbsent || saleItemId != null) {
+      map['sale_item_id'] = Variable<String>(saleItemId);
+    }
+    if (!nullToAbsent || saleReturnItemId != null) {
+      map['sale_return_item_id'] = Variable<String>(saleReturnItemId);
+    }
+    if (!nullToAbsent || purchaseItemId != null) {
+      map['purchase_item_id'] = Variable<String>(purchaseItemId);
+    }
+    if (!nullToAbsent || reversesMovementId != null) {
+      map['reverses_movement_id'] = Variable<String>(reversesMovementId);
+    }
+    if (!nullToAbsent || adjustmentReason != null) {
+      map['adjustment_reason'] = Variable<String>(adjustmentReason);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    return map;
+  }
+
+  StockMovementsCompanion toCompanion(bool nullToAbsent) {
+    return StockMovementsCompanion(
+      id: Value(id),
+      productId: Value(productId),
+      movementType: Value(movementType),
+      qtyDeltaMilli: Value(qtyDeltaMilli),
+      unitCostPiasters: Value(unitCostPiasters),
+      saleItemId: saleItemId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(saleItemId),
+      saleReturnItemId: saleReturnItemId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(saleReturnItemId),
+      purchaseItemId: purchaseItemId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(purchaseItemId),
+      reversesMovementId: reversesMovementId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reversesMovementId),
+      adjustmentReason: adjustmentReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(adjustmentReason),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory StockMovementsData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StockMovementsData(
+      id: serializer.fromJson<String>(json['id']),
+      productId: serializer.fromJson<String>(json['productId']),
+      movementType: serializer.fromJson<String>(json['movementType']),
+      qtyDeltaMilli: serializer.fromJson<int>(json['qtyDeltaMilli']),
+      unitCostPiasters: serializer.fromJson<int>(json['unitCostPiasters']),
+      saleItemId: serializer.fromJson<String?>(json['saleItemId']),
+      saleReturnItemId: serializer.fromJson<String?>(json['saleReturnItemId']),
+      purchaseItemId: serializer.fromJson<String?>(json['purchaseItemId']),
+      reversesMovementId: serializer.fromJson<String?>(
+        json['reversesMovementId'],
+      ),
+      adjustmentReason: serializer.fromJson<String?>(json['adjustmentReason']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'productId': serializer.toJson<String>(productId),
+      'movementType': serializer.toJson<String>(movementType),
+      'qtyDeltaMilli': serializer.toJson<int>(qtyDeltaMilli),
+      'unitCostPiasters': serializer.toJson<int>(unitCostPiasters),
+      'saleItemId': serializer.toJson<String?>(saleItemId),
+      'saleReturnItemId': serializer.toJson<String?>(saleReturnItemId),
+      'purchaseItemId': serializer.toJson<String?>(purchaseItemId),
+      'reversesMovementId': serializer.toJson<String?>(reversesMovementId),
+      'adjustmentReason': serializer.toJson<String?>(adjustmentReason),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<int>(createdAt),
+    };
+  }
+
+  StockMovementsData copyWith({
+    String? id,
+    String? productId,
+    String? movementType,
+    int? qtyDeltaMilli,
+    int? unitCostPiasters,
+    Value<String?> saleItemId = const Value.absent(),
+    Value<String?> saleReturnItemId = const Value.absent(),
+    Value<String?> purchaseItemId = const Value.absent(),
+    Value<String?> reversesMovementId = const Value.absent(),
+    Value<String?> adjustmentReason = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+    int? createdAt,
+  }) => StockMovementsData(
+    id: id ?? this.id,
+    productId: productId ?? this.productId,
+    movementType: movementType ?? this.movementType,
+    qtyDeltaMilli: qtyDeltaMilli ?? this.qtyDeltaMilli,
+    unitCostPiasters: unitCostPiasters ?? this.unitCostPiasters,
+    saleItemId: saleItemId.present ? saleItemId.value : this.saleItemId,
+    saleReturnItemId: saleReturnItemId.present
+        ? saleReturnItemId.value
+        : this.saleReturnItemId,
+    purchaseItemId: purchaseItemId.present
+        ? purchaseItemId.value
+        : this.purchaseItemId,
+    reversesMovementId: reversesMovementId.present
+        ? reversesMovementId.value
+        : this.reversesMovementId,
+    adjustmentReason: adjustmentReason.present
+        ? adjustmentReason.value
+        : this.adjustmentReason,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  StockMovementsData copyWithCompanion(StockMovementsCompanion data) {
+    return StockMovementsData(
+      id: data.id.present ? data.id.value : this.id,
+      productId: data.productId.present ? data.productId.value : this.productId,
+      movementType: data.movementType.present
+          ? data.movementType.value
+          : this.movementType,
+      qtyDeltaMilli: data.qtyDeltaMilli.present
+          ? data.qtyDeltaMilli.value
+          : this.qtyDeltaMilli,
+      unitCostPiasters: data.unitCostPiasters.present
+          ? data.unitCostPiasters.value
+          : this.unitCostPiasters,
+      saleItemId: data.saleItemId.present
+          ? data.saleItemId.value
+          : this.saleItemId,
+      saleReturnItemId: data.saleReturnItemId.present
+          ? data.saleReturnItemId.value
+          : this.saleReturnItemId,
+      purchaseItemId: data.purchaseItemId.present
+          ? data.purchaseItemId.value
+          : this.purchaseItemId,
+      reversesMovementId: data.reversesMovementId.present
+          ? data.reversesMovementId.value
+          : this.reversesMovementId,
+      adjustmentReason: data.adjustmentReason.present
+          ? data.adjustmentReason.value
+          : this.adjustmentReason,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockMovementsData(')
+          ..write('id: $id, ')
+          ..write('productId: $productId, ')
+          ..write('movementType: $movementType, ')
+          ..write('qtyDeltaMilli: $qtyDeltaMilli, ')
+          ..write('unitCostPiasters: $unitCostPiasters, ')
+          ..write('saleItemId: $saleItemId, ')
+          ..write('saleReturnItemId: $saleReturnItemId, ')
+          ..write('purchaseItemId: $purchaseItemId, ')
+          ..write('reversesMovementId: $reversesMovementId, ')
+          ..write('adjustmentReason: $adjustmentReason, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    productId,
+    movementType,
+    qtyDeltaMilli,
+    unitCostPiasters,
+    saleItemId,
+    saleReturnItemId,
+    purchaseItemId,
+    reversesMovementId,
+    adjustmentReason,
+    note,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StockMovementsData &&
+          other.id == this.id &&
+          other.productId == this.productId &&
+          other.movementType == this.movementType &&
+          other.qtyDeltaMilli == this.qtyDeltaMilli &&
+          other.unitCostPiasters == this.unitCostPiasters &&
+          other.saleItemId == this.saleItemId &&
+          other.saleReturnItemId == this.saleReturnItemId &&
+          other.purchaseItemId == this.purchaseItemId &&
+          other.reversesMovementId == this.reversesMovementId &&
+          other.adjustmentReason == this.adjustmentReason &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt);
+}
+
+class StockMovementsCompanion extends UpdateCompanion<StockMovementsData> {
+  final Value<String> id;
+  final Value<String> productId;
+  final Value<String> movementType;
+  final Value<int> qtyDeltaMilli;
+  final Value<int> unitCostPiasters;
+  final Value<String?> saleItemId;
+  final Value<String?> saleReturnItemId;
+  final Value<String?> purchaseItemId;
+  final Value<String?> reversesMovementId;
+  final Value<String?> adjustmentReason;
+  final Value<String?> note;
+  final Value<int> createdAt;
+  final Value<int> rowid;
+  const StockMovementsCompanion({
+    this.id = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.movementType = const Value.absent(),
+    this.qtyDeltaMilli = const Value.absent(),
+    this.unitCostPiasters = const Value.absent(),
+    this.saleItemId = const Value.absent(),
+    this.saleReturnItemId = const Value.absent(),
+    this.purchaseItemId = const Value.absent(),
+    this.reversesMovementId = const Value.absent(),
+    this.adjustmentReason = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StockMovementsCompanion.insert({
+    required String id,
+    required String productId,
+    required String movementType,
+    required int qtyDeltaMilli,
+    required int unitCostPiasters,
+    this.saleItemId = const Value.absent(),
+    this.saleReturnItemId = const Value.absent(),
+    this.purchaseItemId = const Value.absent(),
+    this.reversesMovementId = const Value.absent(),
+    this.adjustmentReason = const Value.absent(),
+    this.note = const Value.absent(),
+    required int createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       productId = Value(productId),
+       movementType = Value(movementType),
+       qtyDeltaMilli = Value(qtyDeltaMilli),
+       unitCostPiasters = Value(unitCostPiasters),
+       createdAt = Value(createdAt);
+  static Insertable<StockMovementsData> custom({
+    Expression<String>? id,
+    Expression<String>? productId,
+    Expression<String>? movementType,
+    Expression<int>? qtyDeltaMilli,
+    Expression<int>? unitCostPiasters,
+    Expression<String>? saleItemId,
+    Expression<String>? saleReturnItemId,
+    Expression<String>? purchaseItemId,
+    Expression<String>? reversesMovementId,
+    Expression<String>? adjustmentReason,
+    Expression<String>? note,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (productId != null) 'product_id': productId,
+      if (movementType != null) 'movement_type': movementType,
+      if (qtyDeltaMilli != null) 'qty_delta_milli': qtyDeltaMilli,
+      if (unitCostPiasters != null) 'unit_cost_piasters': unitCostPiasters,
+      if (saleItemId != null) 'sale_item_id': saleItemId,
+      if (saleReturnItemId != null) 'sale_return_item_id': saleReturnItemId,
+      if (purchaseItemId != null) 'purchase_item_id': purchaseItemId,
+      if (reversesMovementId != null)
+        'reverses_movement_id': reversesMovementId,
+      if (adjustmentReason != null) 'adjustment_reason': adjustmentReason,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StockMovementsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? productId,
+    Value<String>? movementType,
+    Value<int>? qtyDeltaMilli,
+    Value<int>? unitCostPiasters,
+    Value<String?>? saleItemId,
+    Value<String?>? saleReturnItemId,
+    Value<String?>? purchaseItemId,
+    Value<String?>? reversesMovementId,
+    Value<String?>? adjustmentReason,
+    Value<String?>? note,
+    Value<int>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return StockMovementsCompanion(
+      id: id ?? this.id,
+      productId: productId ?? this.productId,
+      movementType: movementType ?? this.movementType,
+      qtyDeltaMilli: qtyDeltaMilli ?? this.qtyDeltaMilli,
+      unitCostPiasters: unitCostPiasters ?? this.unitCostPiasters,
+      saleItemId: saleItemId ?? this.saleItemId,
+      saleReturnItemId: saleReturnItemId ?? this.saleReturnItemId,
+      purchaseItemId: purchaseItemId ?? this.purchaseItemId,
+      reversesMovementId: reversesMovementId ?? this.reversesMovementId,
+      adjustmentReason: adjustmentReason ?? this.adjustmentReason,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<String>(productId.value);
+    }
+    if (movementType.present) {
+      map['movement_type'] = Variable<String>(movementType.value);
+    }
+    if (qtyDeltaMilli.present) {
+      map['qty_delta_milli'] = Variable<int>(qtyDeltaMilli.value);
+    }
+    if (unitCostPiasters.present) {
+      map['unit_cost_piasters'] = Variable<int>(unitCostPiasters.value);
+    }
+    if (saleItemId.present) {
+      map['sale_item_id'] = Variable<String>(saleItemId.value);
+    }
+    if (saleReturnItemId.present) {
+      map['sale_return_item_id'] = Variable<String>(saleReturnItemId.value);
+    }
+    if (purchaseItemId.present) {
+      map['purchase_item_id'] = Variable<String>(purchaseItemId.value);
+    }
+    if (reversesMovementId.present) {
+      map['reverses_movement_id'] = Variable<String>(reversesMovementId.value);
+    }
+    if (adjustmentReason.present) {
+      map['adjustment_reason'] = Variable<String>(adjustmentReason.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockMovementsCompanion(')
+          ..write('id: $id, ')
+          ..write('productId: $productId, ')
+          ..write('movementType: $movementType, ')
+          ..write('qtyDeltaMilli: $qtyDeltaMilli, ')
+          ..write('unitCostPiasters: $unitCostPiasters, ')
+          ..write('saleItemId: $saleItemId, ')
+          ..write('saleReturnItemId: $saleReturnItemId, ')
+          ..write('purchaseItemId: $purchaseItemId, ')
+          ..write('reversesMovementId: $reversesMovementId, ')
+          ..write('adjustmentReason: $adjustmentReason, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class CustomerLedger extends Table
+    with TableInfo<CustomerLedger, CustomerLedgerData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2007,8 +7903,54 @@ class CustomerLedger extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  CustomerLedgerData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CustomerLedgerData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      customerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}customer_id'],
+      )!,
+      entryType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entry_type'],
+      )!,
+      amountPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_piasters'],
+      )!,
+      salesInvoiceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sales_invoice_id'],
+      ),
+      saleReturnId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sale_return_id'],
+      ),
+      receiptNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}receipt_number'],
+      ),
+      paymentMethod: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payment_method'],
+      ),
+      reversesEntryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reverses_entry_id'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
   }
 
   @override
@@ -2028,7 +7970,405 @@ class CustomerLedger extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class SupplierLedger extends Table with TableInfo {
+class CustomerLedgerData extends DataClass
+    implements Insertable<CustomerLedgerData> {
+  final String id;
+  final String customerId;
+  final String entryType;
+  final int amountPiasters;
+  final String? salesInvoiceId;
+  final String? saleReturnId;
+  final int? receiptNumber;
+  final String? paymentMethod;
+  final String? reversesEntryId;
+  final String? note;
+  final int createdAt;
+  const CustomerLedgerData({
+    required this.id,
+    required this.customerId,
+    required this.entryType,
+    required this.amountPiasters,
+    this.salesInvoiceId,
+    this.saleReturnId,
+    this.receiptNumber,
+    this.paymentMethod,
+    this.reversesEntryId,
+    this.note,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['customer_id'] = Variable<String>(customerId);
+    map['entry_type'] = Variable<String>(entryType);
+    map['amount_piasters'] = Variable<int>(amountPiasters);
+    if (!nullToAbsent || salesInvoiceId != null) {
+      map['sales_invoice_id'] = Variable<String>(salesInvoiceId);
+    }
+    if (!nullToAbsent || saleReturnId != null) {
+      map['sale_return_id'] = Variable<String>(saleReturnId);
+    }
+    if (!nullToAbsent || receiptNumber != null) {
+      map['receipt_number'] = Variable<int>(receiptNumber);
+    }
+    if (!nullToAbsent || paymentMethod != null) {
+      map['payment_method'] = Variable<String>(paymentMethod);
+    }
+    if (!nullToAbsent || reversesEntryId != null) {
+      map['reverses_entry_id'] = Variable<String>(reversesEntryId);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    return map;
+  }
+
+  CustomerLedgerCompanion toCompanion(bool nullToAbsent) {
+    return CustomerLedgerCompanion(
+      id: Value(id),
+      customerId: Value(customerId),
+      entryType: Value(entryType),
+      amountPiasters: Value(amountPiasters),
+      salesInvoiceId: salesInvoiceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(salesInvoiceId),
+      saleReturnId: saleReturnId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(saleReturnId),
+      receiptNumber: receiptNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(receiptNumber),
+      paymentMethod: paymentMethod == null && nullToAbsent
+          ? const Value.absent()
+          : Value(paymentMethod),
+      reversesEntryId: reversesEntryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reversesEntryId),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory CustomerLedgerData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CustomerLedgerData(
+      id: serializer.fromJson<String>(json['id']),
+      customerId: serializer.fromJson<String>(json['customerId']),
+      entryType: serializer.fromJson<String>(json['entryType']),
+      amountPiasters: serializer.fromJson<int>(json['amountPiasters']),
+      salesInvoiceId: serializer.fromJson<String?>(json['salesInvoiceId']),
+      saleReturnId: serializer.fromJson<String?>(json['saleReturnId']),
+      receiptNumber: serializer.fromJson<int?>(json['receiptNumber']),
+      paymentMethod: serializer.fromJson<String?>(json['paymentMethod']),
+      reversesEntryId: serializer.fromJson<String?>(json['reversesEntryId']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'customerId': serializer.toJson<String>(customerId),
+      'entryType': serializer.toJson<String>(entryType),
+      'amountPiasters': serializer.toJson<int>(amountPiasters),
+      'salesInvoiceId': serializer.toJson<String?>(salesInvoiceId),
+      'saleReturnId': serializer.toJson<String?>(saleReturnId),
+      'receiptNumber': serializer.toJson<int?>(receiptNumber),
+      'paymentMethod': serializer.toJson<String?>(paymentMethod),
+      'reversesEntryId': serializer.toJson<String?>(reversesEntryId),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<int>(createdAt),
+    };
+  }
+
+  CustomerLedgerData copyWith({
+    String? id,
+    String? customerId,
+    String? entryType,
+    int? amountPiasters,
+    Value<String?> salesInvoiceId = const Value.absent(),
+    Value<String?> saleReturnId = const Value.absent(),
+    Value<int?> receiptNumber = const Value.absent(),
+    Value<String?> paymentMethod = const Value.absent(),
+    Value<String?> reversesEntryId = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+    int? createdAt,
+  }) => CustomerLedgerData(
+    id: id ?? this.id,
+    customerId: customerId ?? this.customerId,
+    entryType: entryType ?? this.entryType,
+    amountPiasters: amountPiasters ?? this.amountPiasters,
+    salesInvoiceId: salesInvoiceId.present
+        ? salesInvoiceId.value
+        : this.salesInvoiceId,
+    saleReturnId: saleReturnId.present ? saleReturnId.value : this.saleReturnId,
+    receiptNumber: receiptNumber.present
+        ? receiptNumber.value
+        : this.receiptNumber,
+    paymentMethod: paymentMethod.present
+        ? paymentMethod.value
+        : this.paymentMethod,
+    reversesEntryId: reversesEntryId.present
+        ? reversesEntryId.value
+        : this.reversesEntryId,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  CustomerLedgerData copyWithCompanion(CustomerLedgerCompanion data) {
+    return CustomerLedgerData(
+      id: data.id.present ? data.id.value : this.id,
+      customerId: data.customerId.present
+          ? data.customerId.value
+          : this.customerId,
+      entryType: data.entryType.present ? data.entryType.value : this.entryType,
+      amountPiasters: data.amountPiasters.present
+          ? data.amountPiasters.value
+          : this.amountPiasters,
+      salesInvoiceId: data.salesInvoiceId.present
+          ? data.salesInvoiceId.value
+          : this.salesInvoiceId,
+      saleReturnId: data.saleReturnId.present
+          ? data.saleReturnId.value
+          : this.saleReturnId,
+      receiptNumber: data.receiptNumber.present
+          ? data.receiptNumber.value
+          : this.receiptNumber,
+      paymentMethod: data.paymentMethod.present
+          ? data.paymentMethod.value
+          : this.paymentMethod,
+      reversesEntryId: data.reversesEntryId.present
+          ? data.reversesEntryId.value
+          : this.reversesEntryId,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CustomerLedgerData(')
+          ..write('id: $id, ')
+          ..write('customerId: $customerId, ')
+          ..write('entryType: $entryType, ')
+          ..write('amountPiasters: $amountPiasters, ')
+          ..write('salesInvoiceId: $salesInvoiceId, ')
+          ..write('saleReturnId: $saleReturnId, ')
+          ..write('receiptNumber: $receiptNumber, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('reversesEntryId: $reversesEntryId, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    customerId,
+    entryType,
+    amountPiasters,
+    salesInvoiceId,
+    saleReturnId,
+    receiptNumber,
+    paymentMethod,
+    reversesEntryId,
+    note,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CustomerLedgerData &&
+          other.id == this.id &&
+          other.customerId == this.customerId &&
+          other.entryType == this.entryType &&
+          other.amountPiasters == this.amountPiasters &&
+          other.salesInvoiceId == this.salesInvoiceId &&
+          other.saleReturnId == this.saleReturnId &&
+          other.receiptNumber == this.receiptNumber &&
+          other.paymentMethod == this.paymentMethod &&
+          other.reversesEntryId == this.reversesEntryId &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt);
+}
+
+class CustomerLedgerCompanion extends UpdateCompanion<CustomerLedgerData> {
+  final Value<String> id;
+  final Value<String> customerId;
+  final Value<String> entryType;
+  final Value<int> amountPiasters;
+  final Value<String?> salesInvoiceId;
+  final Value<String?> saleReturnId;
+  final Value<int?> receiptNumber;
+  final Value<String?> paymentMethod;
+  final Value<String?> reversesEntryId;
+  final Value<String?> note;
+  final Value<int> createdAt;
+  final Value<int> rowid;
+  const CustomerLedgerCompanion({
+    this.id = const Value.absent(),
+    this.customerId = const Value.absent(),
+    this.entryType = const Value.absent(),
+    this.amountPiasters = const Value.absent(),
+    this.salesInvoiceId = const Value.absent(),
+    this.saleReturnId = const Value.absent(),
+    this.receiptNumber = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
+    this.reversesEntryId = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CustomerLedgerCompanion.insert({
+    required String id,
+    required String customerId,
+    required String entryType,
+    required int amountPiasters,
+    this.salesInvoiceId = const Value.absent(),
+    this.saleReturnId = const Value.absent(),
+    this.receiptNumber = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
+    this.reversesEntryId = const Value.absent(),
+    this.note = const Value.absent(),
+    required int createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       customerId = Value(customerId),
+       entryType = Value(entryType),
+       amountPiasters = Value(amountPiasters),
+       createdAt = Value(createdAt);
+  static Insertable<CustomerLedgerData> custom({
+    Expression<String>? id,
+    Expression<String>? customerId,
+    Expression<String>? entryType,
+    Expression<int>? amountPiasters,
+    Expression<String>? salesInvoiceId,
+    Expression<String>? saleReturnId,
+    Expression<int>? receiptNumber,
+    Expression<String>? paymentMethod,
+    Expression<String>? reversesEntryId,
+    Expression<String>? note,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (customerId != null) 'customer_id': customerId,
+      if (entryType != null) 'entry_type': entryType,
+      if (amountPiasters != null) 'amount_piasters': amountPiasters,
+      if (salesInvoiceId != null) 'sales_invoice_id': salesInvoiceId,
+      if (saleReturnId != null) 'sale_return_id': saleReturnId,
+      if (receiptNumber != null) 'receipt_number': receiptNumber,
+      if (paymentMethod != null) 'payment_method': paymentMethod,
+      if (reversesEntryId != null) 'reverses_entry_id': reversesEntryId,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CustomerLedgerCompanion copyWith({
+    Value<String>? id,
+    Value<String>? customerId,
+    Value<String>? entryType,
+    Value<int>? amountPiasters,
+    Value<String?>? salesInvoiceId,
+    Value<String?>? saleReturnId,
+    Value<int?>? receiptNumber,
+    Value<String?>? paymentMethod,
+    Value<String?>? reversesEntryId,
+    Value<String?>? note,
+    Value<int>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return CustomerLedgerCompanion(
+      id: id ?? this.id,
+      customerId: customerId ?? this.customerId,
+      entryType: entryType ?? this.entryType,
+      amountPiasters: amountPiasters ?? this.amountPiasters,
+      salesInvoiceId: salesInvoiceId ?? this.salesInvoiceId,
+      saleReturnId: saleReturnId ?? this.saleReturnId,
+      receiptNumber: receiptNumber ?? this.receiptNumber,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      reversesEntryId: reversesEntryId ?? this.reversesEntryId,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (customerId.present) {
+      map['customer_id'] = Variable<String>(customerId.value);
+    }
+    if (entryType.present) {
+      map['entry_type'] = Variable<String>(entryType.value);
+    }
+    if (amountPiasters.present) {
+      map['amount_piasters'] = Variable<int>(amountPiasters.value);
+    }
+    if (salesInvoiceId.present) {
+      map['sales_invoice_id'] = Variable<String>(salesInvoiceId.value);
+    }
+    if (saleReturnId.present) {
+      map['sale_return_id'] = Variable<String>(saleReturnId.value);
+    }
+    if (receiptNumber.present) {
+      map['receipt_number'] = Variable<int>(receiptNumber.value);
+    }
+    if (paymentMethod.present) {
+      map['payment_method'] = Variable<String>(paymentMethod.value);
+    }
+    if (reversesEntryId.present) {
+      map['reverses_entry_id'] = Variable<String>(reversesEntryId.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CustomerLedgerCompanion(')
+          ..write('id: $id, ')
+          ..write('customerId: $customerId, ')
+          ..write('entryType: $entryType, ')
+          ..write('amountPiasters: $amountPiasters, ')
+          ..write('salesInvoiceId: $salesInvoiceId, ')
+          ..write('saleReturnId: $saleReturnId, ')
+          ..write('receiptNumber: $receiptNumber, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('reversesEntryId: $reversesEntryId, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SupplierLedger extends Table
+    with TableInfo<SupplierLedger, SupplierLedgerData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2136,8 +8476,50 @@ class SupplierLedger extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  SupplierLedgerData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupplierLedgerData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      supplierId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supplier_id'],
+      )!,
+      entryType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}entry_type'],
+      )!,
+      amountPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_piasters'],
+      )!,
+      purchaseInvoiceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}purchase_invoice_id'],
+      ),
+      paymentNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}payment_number'],
+      ),
+      paymentMethod: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payment_method'],
+      ),
+      reversesEntryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reverses_entry_id'],
+      ),
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
   }
 
   @override
@@ -2157,7 +8539,377 @@ class SupplierLedger extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class Expenses extends Table with TableInfo {
+class SupplierLedgerData extends DataClass
+    implements Insertable<SupplierLedgerData> {
+  final String id;
+  final String supplierId;
+  final String entryType;
+  final int amountPiasters;
+  final String? purchaseInvoiceId;
+  final int? paymentNumber;
+  final String? paymentMethod;
+  final String? reversesEntryId;
+  final String? note;
+  final int createdAt;
+  const SupplierLedgerData({
+    required this.id,
+    required this.supplierId,
+    required this.entryType,
+    required this.amountPiasters,
+    this.purchaseInvoiceId,
+    this.paymentNumber,
+    this.paymentMethod,
+    this.reversesEntryId,
+    this.note,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['supplier_id'] = Variable<String>(supplierId);
+    map['entry_type'] = Variable<String>(entryType);
+    map['amount_piasters'] = Variable<int>(amountPiasters);
+    if (!nullToAbsent || purchaseInvoiceId != null) {
+      map['purchase_invoice_id'] = Variable<String>(purchaseInvoiceId);
+    }
+    if (!nullToAbsent || paymentNumber != null) {
+      map['payment_number'] = Variable<int>(paymentNumber);
+    }
+    if (!nullToAbsent || paymentMethod != null) {
+      map['payment_method'] = Variable<String>(paymentMethod);
+    }
+    if (!nullToAbsent || reversesEntryId != null) {
+      map['reverses_entry_id'] = Variable<String>(reversesEntryId);
+    }
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    return map;
+  }
+
+  SupplierLedgerCompanion toCompanion(bool nullToAbsent) {
+    return SupplierLedgerCompanion(
+      id: Value(id),
+      supplierId: Value(supplierId),
+      entryType: Value(entryType),
+      amountPiasters: Value(amountPiasters),
+      purchaseInvoiceId: purchaseInvoiceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(purchaseInvoiceId),
+      paymentNumber: paymentNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(paymentNumber),
+      paymentMethod: paymentMethod == null && nullToAbsent
+          ? const Value.absent()
+          : Value(paymentMethod),
+      reversesEntryId: reversesEntryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reversesEntryId),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory SupplierLedgerData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SupplierLedgerData(
+      id: serializer.fromJson<String>(json['id']),
+      supplierId: serializer.fromJson<String>(json['supplierId']),
+      entryType: serializer.fromJson<String>(json['entryType']),
+      amountPiasters: serializer.fromJson<int>(json['amountPiasters']),
+      purchaseInvoiceId: serializer.fromJson<String?>(
+        json['purchaseInvoiceId'],
+      ),
+      paymentNumber: serializer.fromJson<int?>(json['paymentNumber']),
+      paymentMethod: serializer.fromJson<String?>(json['paymentMethod']),
+      reversesEntryId: serializer.fromJson<String?>(json['reversesEntryId']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'supplierId': serializer.toJson<String>(supplierId),
+      'entryType': serializer.toJson<String>(entryType),
+      'amountPiasters': serializer.toJson<int>(amountPiasters),
+      'purchaseInvoiceId': serializer.toJson<String?>(purchaseInvoiceId),
+      'paymentNumber': serializer.toJson<int?>(paymentNumber),
+      'paymentMethod': serializer.toJson<String?>(paymentMethod),
+      'reversesEntryId': serializer.toJson<String?>(reversesEntryId),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<int>(createdAt),
+    };
+  }
+
+  SupplierLedgerData copyWith({
+    String? id,
+    String? supplierId,
+    String? entryType,
+    int? amountPiasters,
+    Value<String?> purchaseInvoiceId = const Value.absent(),
+    Value<int?> paymentNumber = const Value.absent(),
+    Value<String?> paymentMethod = const Value.absent(),
+    Value<String?> reversesEntryId = const Value.absent(),
+    Value<String?> note = const Value.absent(),
+    int? createdAt,
+  }) => SupplierLedgerData(
+    id: id ?? this.id,
+    supplierId: supplierId ?? this.supplierId,
+    entryType: entryType ?? this.entryType,
+    amountPiasters: amountPiasters ?? this.amountPiasters,
+    purchaseInvoiceId: purchaseInvoiceId.present
+        ? purchaseInvoiceId.value
+        : this.purchaseInvoiceId,
+    paymentNumber: paymentNumber.present
+        ? paymentNumber.value
+        : this.paymentNumber,
+    paymentMethod: paymentMethod.present
+        ? paymentMethod.value
+        : this.paymentMethod,
+    reversesEntryId: reversesEntryId.present
+        ? reversesEntryId.value
+        : this.reversesEntryId,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  SupplierLedgerData copyWithCompanion(SupplierLedgerCompanion data) {
+    return SupplierLedgerData(
+      id: data.id.present ? data.id.value : this.id,
+      supplierId: data.supplierId.present
+          ? data.supplierId.value
+          : this.supplierId,
+      entryType: data.entryType.present ? data.entryType.value : this.entryType,
+      amountPiasters: data.amountPiasters.present
+          ? data.amountPiasters.value
+          : this.amountPiasters,
+      purchaseInvoiceId: data.purchaseInvoiceId.present
+          ? data.purchaseInvoiceId.value
+          : this.purchaseInvoiceId,
+      paymentNumber: data.paymentNumber.present
+          ? data.paymentNumber.value
+          : this.paymentNumber,
+      paymentMethod: data.paymentMethod.present
+          ? data.paymentMethod.value
+          : this.paymentMethod,
+      reversesEntryId: data.reversesEntryId.present
+          ? data.reversesEntryId.value
+          : this.reversesEntryId,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupplierLedgerData(')
+          ..write('id: $id, ')
+          ..write('supplierId: $supplierId, ')
+          ..write('entryType: $entryType, ')
+          ..write('amountPiasters: $amountPiasters, ')
+          ..write('purchaseInvoiceId: $purchaseInvoiceId, ')
+          ..write('paymentNumber: $paymentNumber, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('reversesEntryId: $reversesEntryId, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    supplierId,
+    entryType,
+    amountPiasters,
+    purchaseInvoiceId,
+    paymentNumber,
+    paymentMethod,
+    reversesEntryId,
+    note,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SupplierLedgerData &&
+          other.id == this.id &&
+          other.supplierId == this.supplierId &&
+          other.entryType == this.entryType &&
+          other.amountPiasters == this.amountPiasters &&
+          other.purchaseInvoiceId == this.purchaseInvoiceId &&
+          other.paymentNumber == this.paymentNumber &&
+          other.paymentMethod == this.paymentMethod &&
+          other.reversesEntryId == this.reversesEntryId &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt);
+}
+
+class SupplierLedgerCompanion extends UpdateCompanion<SupplierLedgerData> {
+  final Value<String> id;
+  final Value<String> supplierId;
+  final Value<String> entryType;
+  final Value<int> amountPiasters;
+  final Value<String?> purchaseInvoiceId;
+  final Value<int?> paymentNumber;
+  final Value<String?> paymentMethod;
+  final Value<String?> reversesEntryId;
+  final Value<String?> note;
+  final Value<int> createdAt;
+  final Value<int> rowid;
+  const SupplierLedgerCompanion({
+    this.id = const Value.absent(),
+    this.supplierId = const Value.absent(),
+    this.entryType = const Value.absent(),
+    this.amountPiasters = const Value.absent(),
+    this.purchaseInvoiceId = const Value.absent(),
+    this.paymentNumber = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
+    this.reversesEntryId = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SupplierLedgerCompanion.insert({
+    required String id,
+    required String supplierId,
+    required String entryType,
+    required int amountPiasters,
+    this.purchaseInvoiceId = const Value.absent(),
+    this.paymentNumber = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
+    this.reversesEntryId = const Value.absent(),
+    this.note = const Value.absent(),
+    required int createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       supplierId = Value(supplierId),
+       entryType = Value(entryType),
+       amountPiasters = Value(amountPiasters),
+       createdAt = Value(createdAt);
+  static Insertable<SupplierLedgerData> custom({
+    Expression<String>? id,
+    Expression<String>? supplierId,
+    Expression<String>? entryType,
+    Expression<int>? amountPiasters,
+    Expression<String>? purchaseInvoiceId,
+    Expression<int>? paymentNumber,
+    Expression<String>? paymentMethod,
+    Expression<String>? reversesEntryId,
+    Expression<String>? note,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (supplierId != null) 'supplier_id': supplierId,
+      if (entryType != null) 'entry_type': entryType,
+      if (amountPiasters != null) 'amount_piasters': amountPiasters,
+      if (purchaseInvoiceId != null) 'purchase_invoice_id': purchaseInvoiceId,
+      if (paymentNumber != null) 'payment_number': paymentNumber,
+      if (paymentMethod != null) 'payment_method': paymentMethod,
+      if (reversesEntryId != null) 'reverses_entry_id': reversesEntryId,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SupplierLedgerCompanion copyWith({
+    Value<String>? id,
+    Value<String>? supplierId,
+    Value<String>? entryType,
+    Value<int>? amountPiasters,
+    Value<String?>? purchaseInvoiceId,
+    Value<int?>? paymentNumber,
+    Value<String?>? paymentMethod,
+    Value<String?>? reversesEntryId,
+    Value<String?>? note,
+    Value<int>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return SupplierLedgerCompanion(
+      id: id ?? this.id,
+      supplierId: supplierId ?? this.supplierId,
+      entryType: entryType ?? this.entryType,
+      amountPiasters: amountPiasters ?? this.amountPiasters,
+      purchaseInvoiceId: purchaseInvoiceId ?? this.purchaseInvoiceId,
+      paymentNumber: paymentNumber ?? this.paymentNumber,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      reversesEntryId: reversesEntryId ?? this.reversesEntryId,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (supplierId.present) {
+      map['supplier_id'] = Variable<String>(supplierId.value);
+    }
+    if (entryType.present) {
+      map['entry_type'] = Variable<String>(entryType.value);
+    }
+    if (amountPiasters.present) {
+      map['amount_piasters'] = Variable<int>(amountPiasters.value);
+    }
+    if (purchaseInvoiceId.present) {
+      map['purchase_invoice_id'] = Variable<String>(purchaseInvoiceId.value);
+    }
+    if (paymentNumber.present) {
+      map['payment_number'] = Variable<int>(paymentNumber.value);
+    }
+    if (paymentMethod.present) {
+      map['payment_method'] = Variable<String>(paymentMethod.value);
+    }
+    if (reversesEntryId.present) {
+      map['reverses_entry_id'] = Variable<String>(reversesEntryId.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupplierLedgerCompanion(')
+          ..write('id: $id, ')
+          ..write('supplierId: $supplierId, ')
+          ..write('entryType: $entryType, ')
+          ..write('amountPiasters: $amountPiasters, ')
+          ..write('purchaseInvoiceId: $purchaseInvoiceId, ')
+          ..write('paymentNumber: $paymentNumber, ')
+          ..write('paymentMethod: $paymentMethod, ')
+          ..write('reversesEntryId: $reversesEntryId, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Expenses extends Table with TableInfo<Expenses, ExpensesData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -2265,8 +9017,50 @@ class Expenses extends Table with TableInfo {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
+  ExpensesData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExpensesData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      number: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}number'],
+      )!,
+      expenseCategoryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}expense_category_id'],
+      )!,
+      amountPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_piasters'],
+      )!,
+      spentAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}spent_at'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      voidedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}voided_at'],
+      ),
+      voidReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}void_reason'],
+      ),
+    );
   }
 
   @override
@@ -2282,6 +9076,353 @@ class Expenses extends Table with TableInfo {
   ];
   @override
   bool get dontWriteConstraints => true;
+}
+
+class ExpensesData extends DataClass implements Insertable<ExpensesData> {
+  final String id;
+  final int number;
+  final String expenseCategoryId;
+  final int amountPiasters;
+  final int spentAt;
+  final String? note;
+  final int createdAt;
+  final int updatedAt;
+  final int? voidedAt;
+  final String? voidReason;
+  const ExpensesData({
+    required this.id,
+    required this.number,
+    required this.expenseCategoryId,
+    required this.amountPiasters,
+    required this.spentAt,
+    this.note,
+    required this.createdAt,
+    required this.updatedAt,
+    this.voidedAt,
+    this.voidReason,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['number'] = Variable<int>(number);
+    map['expense_category_id'] = Variable<String>(expenseCategoryId);
+    map['amount_piasters'] = Variable<int>(amountPiasters);
+    map['spent_at'] = Variable<int>(spentAt);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
+    if (!nullToAbsent || voidedAt != null) {
+      map['voided_at'] = Variable<int>(voidedAt);
+    }
+    if (!nullToAbsent || voidReason != null) {
+      map['void_reason'] = Variable<String>(voidReason);
+    }
+    return map;
+  }
+
+  ExpensesCompanion toCompanion(bool nullToAbsent) {
+    return ExpensesCompanion(
+      id: Value(id),
+      number: Value(number),
+      expenseCategoryId: Value(expenseCategoryId),
+      amountPiasters: Value(amountPiasters),
+      spentAt: Value(spentAt),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      voidedAt: voidedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(voidedAt),
+      voidReason: voidReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(voidReason),
+    );
+  }
+
+  factory ExpensesData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ExpensesData(
+      id: serializer.fromJson<String>(json['id']),
+      number: serializer.fromJson<int>(json['number']),
+      expenseCategoryId: serializer.fromJson<String>(json['expenseCategoryId']),
+      amountPiasters: serializer.fromJson<int>(json['amountPiasters']),
+      spentAt: serializer.fromJson<int>(json['spentAt']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      voidedAt: serializer.fromJson<int?>(json['voidedAt']),
+      voidReason: serializer.fromJson<String?>(json['voidReason']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'number': serializer.toJson<int>(number),
+      'expenseCategoryId': serializer.toJson<String>(expenseCategoryId),
+      'amountPiasters': serializer.toJson<int>(amountPiasters),
+      'spentAt': serializer.toJson<int>(spentAt),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
+      'voidedAt': serializer.toJson<int?>(voidedAt),
+      'voidReason': serializer.toJson<String?>(voidReason),
+    };
+  }
+
+  ExpensesData copyWith({
+    String? id,
+    int? number,
+    String? expenseCategoryId,
+    int? amountPiasters,
+    int? spentAt,
+    Value<String?> note = const Value.absent(),
+    int? createdAt,
+    int? updatedAt,
+    Value<int?> voidedAt = const Value.absent(),
+    Value<String?> voidReason = const Value.absent(),
+  }) => ExpensesData(
+    id: id ?? this.id,
+    number: number ?? this.number,
+    expenseCategoryId: expenseCategoryId ?? this.expenseCategoryId,
+    amountPiasters: amountPiasters ?? this.amountPiasters,
+    spentAt: spentAt ?? this.spentAt,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    voidedAt: voidedAt.present ? voidedAt.value : this.voidedAt,
+    voidReason: voidReason.present ? voidReason.value : this.voidReason,
+  );
+  ExpensesData copyWithCompanion(ExpensesCompanion data) {
+    return ExpensesData(
+      id: data.id.present ? data.id.value : this.id,
+      number: data.number.present ? data.number.value : this.number,
+      expenseCategoryId: data.expenseCategoryId.present
+          ? data.expenseCategoryId.value
+          : this.expenseCategoryId,
+      amountPiasters: data.amountPiasters.present
+          ? data.amountPiasters.value
+          : this.amountPiasters,
+      spentAt: data.spentAt.present ? data.spentAt.value : this.spentAt,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      voidedAt: data.voidedAt.present ? data.voidedAt.value : this.voidedAt,
+      voidReason: data.voidReason.present
+          ? data.voidReason.value
+          : this.voidReason,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExpensesData(')
+          ..write('id: $id, ')
+          ..write('number: $number, ')
+          ..write('expenseCategoryId: $expenseCategoryId, ')
+          ..write('amountPiasters: $amountPiasters, ')
+          ..write('spentAt: $spentAt, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('voidedAt: $voidedAt, ')
+          ..write('voidReason: $voidReason')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    number,
+    expenseCategoryId,
+    amountPiasters,
+    spentAt,
+    note,
+    createdAt,
+    updatedAt,
+    voidedAt,
+    voidReason,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ExpensesData &&
+          other.id == this.id &&
+          other.number == this.number &&
+          other.expenseCategoryId == this.expenseCategoryId &&
+          other.amountPiasters == this.amountPiasters &&
+          other.spentAt == this.spentAt &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.voidedAt == this.voidedAt &&
+          other.voidReason == this.voidReason);
+}
+
+class ExpensesCompanion extends UpdateCompanion<ExpensesData> {
+  final Value<String> id;
+  final Value<int> number;
+  final Value<String> expenseCategoryId;
+  final Value<int> amountPiasters;
+  final Value<int> spentAt;
+  final Value<String?> note;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
+  final Value<int?> voidedAt;
+  final Value<String?> voidReason;
+  final Value<int> rowid;
+  const ExpensesCompanion({
+    this.id = const Value.absent(),
+    this.number = const Value.absent(),
+    this.expenseCategoryId = const Value.absent(),
+    this.amountPiasters = const Value.absent(),
+    this.spentAt = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.voidedAt = const Value.absent(),
+    this.voidReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ExpensesCompanion.insert({
+    required String id,
+    required int number,
+    required String expenseCategoryId,
+    required int amountPiasters,
+    required int spentAt,
+    this.note = const Value.absent(),
+    required int createdAt,
+    required int updatedAt,
+    this.voidedAt = const Value.absent(),
+    this.voidReason = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       number = Value(number),
+       expenseCategoryId = Value(expenseCategoryId),
+       amountPiasters = Value(amountPiasters),
+       spentAt = Value(spentAt),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<ExpensesData> custom({
+    Expression<String>? id,
+    Expression<int>? number,
+    Expression<String>? expenseCategoryId,
+    Expression<int>? amountPiasters,
+    Expression<int>? spentAt,
+    Expression<String>? note,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+    Expression<int>? voidedAt,
+    Expression<String>? voidReason,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (number != null) 'number': number,
+      if (expenseCategoryId != null) 'expense_category_id': expenseCategoryId,
+      if (amountPiasters != null) 'amount_piasters': amountPiasters,
+      if (spentAt != null) 'spent_at': spentAt,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (voidedAt != null) 'voided_at': voidedAt,
+      if (voidReason != null) 'void_reason': voidReason,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ExpensesCompanion copyWith({
+    Value<String>? id,
+    Value<int>? number,
+    Value<String>? expenseCategoryId,
+    Value<int>? amountPiasters,
+    Value<int>? spentAt,
+    Value<String?>? note,
+    Value<int>? createdAt,
+    Value<int>? updatedAt,
+    Value<int?>? voidedAt,
+    Value<String?>? voidReason,
+    Value<int>? rowid,
+  }) {
+    return ExpensesCompanion(
+      id: id ?? this.id,
+      number: number ?? this.number,
+      expenseCategoryId: expenseCategoryId ?? this.expenseCategoryId,
+      amountPiasters: amountPiasters ?? this.amountPiasters,
+      spentAt: spentAt ?? this.spentAt,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      voidedAt: voidedAt ?? this.voidedAt,
+      voidReason: voidReason ?? this.voidReason,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (expenseCategoryId.present) {
+      map['expense_category_id'] = Variable<String>(expenseCategoryId.value);
+    }
+    if (amountPiasters.present) {
+      map['amount_piasters'] = Variable<int>(amountPiasters.value);
+    }
+    if (spentAt.present) {
+      map['spent_at'] = Variable<int>(spentAt.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
+    if (voidedAt.present) {
+      map['voided_at'] = Variable<int>(voidedAt.value);
+    }
+    if (voidReason.present) {
+      map['void_reason'] = Variable<String>(voidReason.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExpensesCompanion(')
+          ..write('id: $id, ')
+          ..write('number: $number, ')
+          ..write('expenseCategoryId: $expenseCategoryId, ')
+          ..write('amountPiasters: $amountPiasters, ')
+          ..write('spentAt: $spentAt, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('voidedAt: $voidedAt, ')
+          ..write('voidReason: $voidReason, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
 }
 
 class DatabaseAtV1 extends GeneratedDatabase {

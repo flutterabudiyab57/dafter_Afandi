@@ -23,6 +23,7 @@ final Map<(String, String), List<Enum>> _enumColumns = {
   ('customer_ledger', 'payment_method'): PaymentMethod.values,
   ('supplier_ledger', 'entry_type'): SupplierEntryType.values,
   ('supplier_ledger', 'payment_method'): PaymentMethod.values,
+  ('payment_parts', 'method'): PaymentMethod.values,
 };
 
 void main() {
@@ -407,6 +408,65 @@ void main() {
         _rejected,
       );
     }
+  });
+
+  group('payment_parts', () {
+    Future<void> part(
+      String id, {
+      String parents = "sales_invoice_id",
+      String parentValues = "'si1'",
+      int partNo = 2,
+      String method = 'wallet',
+      int amount = 100,
+      String? account,
+    }) => exec(
+      'INSERT INTO payment_parts (id, $parents, part_no, method, '
+      'amount_piasters, account_ref, created_at) '
+      'VALUES (?, $parentValues, ?, ?, ?, ?, 1)',
+      [id, partNo, method, amount, account],
+    );
+
+    test('a valid part with the owner account', () async {
+      await part('ok', account: 'shop@instapay');
+    });
+
+    test('exactly one parent', () async {
+      await expectLater(
+        part(
+          'two',
+          parents: 'sales_invoice_id, expense_id',
+          parentValues: "'si1', 'e1'",
+        ),
+        _rejected,
+      );
+      await expectLater(
+        exec(
+          'INSERT INTO payment_parts (id, part_no, method, amount_piasters, '
+          "created_at) VALUES ('none', 1, 'cash', 1, 1)",
+        ),
+        _rejected,
+      );
+    });
+
+    test('amount above 0 and part number 1 to 3', () async {
+      await expectLater(part('zero', amount: 0), _rejected);
+      await expectLater(part('four', partNo: 4), _rejected);
+    });
+
+    test('no account on cash; 1 to 40 characters', () async {
+      await expectLater(
+        part('cash', method: 'cash', account: '010'),
+        _rejected,
+      );
+      await expectLater(part('empty', account: ''), _rejected);
+      await expectLater(part('long', account: '1' * 41), _rejected);
+      await part('forty', account: '1' * 40);
+    });
+
+    test('one method and one part number per parent', () async {
+      await expectLater(part('samemethod', method: 'cash'), _rejected);
+      await expectLater(part('samepart', partNo: 1), _rejected);
+    });
   });
 
   test('foreign keys are enforced', () async {

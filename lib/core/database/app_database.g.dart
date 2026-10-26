@@ -11608,6 +11608,724 @@ class ExpensesCompanion extends UpdateCompanion<ExpenseRow> {
   }
 }
 
+class $PaymentPartsTable extends PaymentParts
+    with TableInfo<$PaymentPartsTable, PaymentPartRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PaymentPartsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _salesInvoiceIdMeta = const VerificationMeta(
+    'salesInvoiceId',
+  );
+  @override
+  late final GeneratedColumn<String> salesInvoiceId = GeneratedColumn<String>(
+    'sales_invoice_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES sales_invoices (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _purchaseInvoiceIdMeta = const VerificationMeta(
+    'purchaseInvoiceId',
+  );
+  @override
+  late final GeneratedColumn<String> purchaseInvoiceId =
+      GeneratedColumn<String>(
+        'purchase_invoice_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES purchase_invoices (id) ON DELETE RESTRICT',
+        ),
+      );
+  static const VerificationMeta _customerLedgerIdMeta = const VerificationMeta(
+    'customerLedgerId',
+  );
+  @override
+  late final GeneratedColumn<String> customerLedgerId = GeneratedColumn<String>(
+    'customer_ledger_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES customer_ledger (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _supplierLedgerIdMeta = const VerificationMeta(
+    'supplierLedgerId',
+  );
+  @override
+  late final GeneratedColumn<String> supplierLedgerId = GeneratedColumn<String>(
+    'supplier_ledger_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES supplier_ledger (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _expenseIdMeta = const VerificationMeta(
+    'expenseId',
+  );
+  @override
+  late final GeneratedColumn<String> expenseId = GeneratedColumn<String>(
+    'expense_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES expenses (id) ON DELETE RESTRICT',
+    ),
+  );
+  static const VerificationMeta _partNoMeta = const VerificationMeta('partNo');
+  @override
+  late final GeneratedColumn<int> partNo = GeneratedColumn<int>(
+    'part_no',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<PaymentMethod, String> method =
+      GeneratedColumn<String>(
+        'method',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<PaymentMethod>($PaymentPartsTable.$convertermethod);
+  static const VerificationMeta _amountPiastersMeta = const VerificationMeta(
+    'amountPiasters',
+  );
+  @override
+  late final GeneratedColumn<int> amountPiasters = GeneratedColumn<int>(
+    'amount_piasters',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _accountRefMeta = const VerificationMeta(
+    'accountRef',
+  );
+  @override
+  late final GeneratedColumn<String> accountRef = GeneratedColumn<String>(
+    'account_ref',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, int> createdAt =
+      GeneratedColumn<int>(
+        'created_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($PaymentPartsTable.$convertercreatedAt);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    salesInvoiceId,
+    purchaseInvoiceId,
+    customerLedgerId,
+    supplierLedgerId,
+    expenseId,
+    partNo,
+    method,
+    amountPiasters,
+    accountRef,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'payment_parts';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PaymentPartRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sales_invoice_id')) {
+      context.handle(
+        _salesInvoiceIdMeta,
+        salesInvoiceId.isAcceptableOrUnknown(
+          data['sales_invoice_id']!,
+          _salesInvoiceIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('purchase_invoice_id')) {
+      context.handle(
+        _purchaseInvoiceIdMeta,
+        purchaseInvoiceId.isAcceptableOrUnknown(
+          data['purchase_invoice_id']!,
+          _purchaseInvoiceIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('customer_ledger_id')) {
+      context.handle(
+        _customerLedgerIdMeta,
+        customerLedgerId.isAcceptableOrUnknown(
+          data['customer_ledger_id']!,
+          _customerLedgerIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('supplier_ledger_id')) {
+      context.handle(
+        _supplierLedgerIdMeta,
+        supplierLedgerId.isAcceptableOrUnknown(
+          data['supplier_ledger_id']!,
+          _supplierLedgerIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('expense_id')) {
+      context.handle(
+        _expenseIdMeta,
+        expenseId.isAcceptableOrUnknown(data['expense_id']!, _expenseIdMeta),
+      );
+    }
+    if (data.containsKey('part_no')) {
+      context.handle(
+        _partNoMeta,
+        partNo.isAcceptableOrUnknown(data['part_no']!, _partNoMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_partNoMeta);
+    }
+    if (data.containsKey('amount_piasters')) {
+      context.handle(
+        _amountPiastersMeta,
+        amountPiasters.isAcceptableOrUnknown(
+          data['amount_piasters']!,
+          _amountPiastersMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_amountPiastersMeta);
+    }
+    if (data.containsKey('account_ref')) {
+      context.handle(
+        _accountRefMeta,
+        accountRef.isAcceptableOrUnknown(data['account_ref']!, _accountRefMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PaymentPartRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PaymentPartRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      salesInvoiceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sales_invoice_id'],
+      ),
+      purchaseInvoiceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}purchase_invoice_id'],
+      ),
+      customerLedgerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}customer_ledger_id'],
+      ),
+      supplierLedgerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}supplier_ledger_id'],
+      ),
+      expenseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}expense_id'],
+      ),
+      partNo: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}part_no'],
+      )!,
+      method: $PaymentPartsTable.$convertermethod.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}method'],
+        )!,
+      ),
+      amountPiasters: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_piasters'],
+      )!,
+      accountRef: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}account_ref'],
+      ),
+      createdAt: $PaymentPartsTable.$convertercreatedAt.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}created_at'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $PaymentPartsTable createAlias(String alias) {
+    return $PaymentPartsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<PaymentMethod, String, String> $convertermethod =
+      const EnumNameConverter<PaymentMethod>(PaymentMethod.values);
+  static TypeConverter<DateTime, int> $convertercreatedAt =
+      const UtcMillisConverter();
+}
+
+class PaymentPartRow extends DataClass implements Insertable<PaymentPartRow> {
+  final String id;
+  final String? salesInvoiceId;
+  final String? purchaseInvoiceId;
+  final String? customerLedgerId;
+  final String? supplierLedgerId;
+  final String? expenseId;
+  final int partNo;
+  final PaymentMethod method;
+  final int amountPiasters;
+  final String? accountRef;
+  final DateTime createdAt;
+  const PaymentPartRow({
+    required this.id,
+    this.salesInvoiceId,
+    this.purchaseInvoiceId,
+    this.customerLedgerId,
+    this.supplierLedgerId,
+    this.expenseId,
+    required this.partNo,
+    required this.method,
+    required this.amountPiasters,
+    this.accountRef,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || salesInvoiceId != null) {
+      map['sales_invoice_id'] = Variable<String>(salesInvoiceId);
+    }
+    if (!nullToAbsent || purchaseInvoiceId != null) {
+      map['purchase_invoice_id'] = Variable<String>(purchaseInvoiceId);
+    }
+    if (!nullToAbsent || customerLedgerId != null) {
+      map['customer_ledger_id'] = Variable<String>(customerLedgerId);
+    }
+    if (!nullToAbsent || supplierLedgerId != null) {
+      map['supplier_ledger_id'] = Variable<String>(supplierLedgerId);
+    }
+    if (!nullToAbsent || expenseId != null) {
+      map['expense_id'] = Variable<String>(expenseId);
+    }
+    map['part_no'] = Variable<int>(partNo);
+    {
+      map['method'] = Variable<String>(
+        $PaymentPartsTable.$convertermethod.toSql(method),
+      );
+    }
+    map['amount_piasters'] = Variable<int>(amountPiasters);
+    if (!nullToAbsent || accountRef != null) {
+      map['account_ref'] = Variable<String>(accountRef);
+    }
+    {
+      map['created_at'] = Variable<int>(
+        $PaymentPartsTable.$convertercreatedAt.toSql(createdAt),
+      );
+    }
+    return map;
+  }
+
+  PaymentPartsCompanion toCompanion(bool nullToAbsent) {
+    return PaymentPartsCompanion(
+      id: Value(id),
+      salesInvoiceId: salesInvoiceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(salesInvoiceId),
+      purchaseInvoiceId: purchaseInvoiceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(purchaseInvoiceId),
+      customerLedgerId: customerLedgerId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customerLedgerId),
+      supplierLedgerId: supplierLedgerId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(supplierLedgerId),
+      expenseId: expenseId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(expenseId),
+      partNo: Value(partNo),
+      method: Value(method),
+      amountPiasters: Value(amountPiasters),
+      accountRef: accountRef == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accountRef),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory PaymentPartRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PaymentPartRow(
+      id: serializer.fromJson<String>(json['id']),
+      salesInvoiceId: serializer.fromJson<String?>(json['salesInvoiceId']),
+      purchaseInvoiceId: serializer.fromJson<String?>(
+        json['purchaseInvoiceId'],
+      ),
+      customerLedgerId: serializer.fromJson<String?>(json['customerLedgerId']),
+      supplierLedgerId: serializer.fromJson<String?>(json['supplierLedgerId']),
+      expenseId: serializer.fromJson<String?>(json['expenseId']),
+      partNo: serializer.fromJson<int>(json['partNo']),
+      method: $PaymentPartsTable.$convertermethod.fromJson(
+        serializer.fromJson<String>(json['method']),
+      ),
+      amountPiasters: serializer.fromJson<int>(json['amountPiasters']),
+      accountRef: serializer.fromJson<String?>(json['accountRef']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'salesInvoiceId': serializer.toJson<String?>(salesInvoiceId),
+      'purchaseInvoiceId': serializer.toJson<String?>(purchaseInvoiceId),
+      'customerLedgerId': serializer.toJson<String?>(customerLedgerId),
+      'supplierLedgerId': serializer.toJson<String?>(supplierLedgerId),
+      'expenseId': serializer.toJson<String?>(expenseId),
+      'partNo': serializer.toJson<int>(partNo),
+      'method': serializer.toJson<String>(
+        $PaymentPartsTable.$convertermethod.toJson(method),
+      ),
+      'amountPiasters': serializer.toJson<int>(amountPiasters),
+      'accountRef': serializer.toJson<String?>(accountRef),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  PaymentPartRow copyWith({
+    String? id,
+    Value<String?> salesInvoiceId = const Value.absent(),
+    Value<String?> purchaseInvoiceId = const Value.absent(),
+    Value<String?> customerLedgerId = const Value.absent(),
+    Value<String?> supplierLedgerId = const Value.absent(),
+    Value<String?> expenseId = const Value.absent(),
+    int? partNo,
+    PaymentMethod? method,
+    int? amountPiasters,
+    Value<String?> accountRef = const Value.absent(),
+    DateTime? createdAt,
+  }) => PaymentPartRow(
+    id: id ?? this.id,
+    salesInvoiceId: salesInvoiceId.present
+        ? salesInvoiceId.value
+        : this.salesInvoiceId,
+    purchaseInvoiceId: purchaseInvoiceId.present
+        ? purchaseInvoiceId.value
+        : this.purchaseInvoiceId,
+    customerLedgerId: customerLedgerId.present
+        ? customerLedgerId.value
+        : this.customerLedgerId,
+    supplierLedgerId: supplierLedgerId.present
+        ? supplierLedgerId.value
+        : this.supplierLedgerId,
+    expenseId: expenseId.present ? expenseId.value : this.expenseId,
+    partNo: partNo ?? this.partNo,
+    method: method ?? this.method,
+    amountPiasters: amountPiasters ?? this.amountPiasters,
+    accountRef: accountRef.present ? accountRef.value : this.accountRef,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  PaymentPartRow copyWithCompanion(PaymentPartsCompanion data) {
+    return PaymentPartRow(
+      id: data.id.present ? data.id.value : this.id,
+      salesInvoiceId: data.salesInvoiceId.present
+          ? data.salesInvoiceId.value
+          : this.salesInvoiceId,
+      purchaseInvoiceId: data.purchaseInvoiceId.present
+          ? data.purchaseInvoiceId.value
+          : this.purchaseInvoiceId,
+      customerLedgerId: data.customerLedgerId.present
+          ? data.customerLedgerId.value
+          : this.customerLedgerId,
+      supplierLedgerId: data.supplierLedgerId.present
+          ? data.supplierLedgerId.value
+          : this.supplierLedgerId,
+      expenseId: data.expenseId.present ? data.expenseId.value : this.expenseId,
+      partNo: data.partNo.present ? data.partNo.value : this.partNo,
+      method: data.method.present ? data.method.value : this.method,
+      amountPiasters: data.amountPiasters.present
+          ? data.amountPiasters.value
+          : this.amountPiasters,
+      accountRef: data.accountRef.present
+          ? data.accountRef.value
+          : this.accountRef,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PaymentPartRow(')
+          ..write('id: $id, ')
+          ..write('salesInvoiceId: $salesInvoiceId, ')
+          ..write('purchaseInvoiceId: $purchaseInvoiceId, ')
+          ..write('customerLedgerId: $customerLedgerId, ')
+          ..write('supplierLedgerId: $supplierLedgerId, ')
+          ..write('expenseId: $expenseId, ')
+          ..write('partNo: $partNo, ')
+          ..write('method: $method, ')
+          ..write('amountPiasters: $amountPiasters, ')
+          ..write('accountRef: $accountRef, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    salesInvoiceId,
+    purchaseInvoiceId,
+    customerLedgerId,
+    supplierLedgerId,
+    expenseId,
+    partNo,
+    method,
+    amountPiasters,
+    accountRef,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PaymentPartRow &&
+          other.id == this.id &&
+          other.salesInvoiceId == this.salesInvoiceId &&
+          other.purchaseInvoiceId == this.purchaseInvoiceId &&
+          other.customerLedgerId == this.customerLedgerId &&
+          other.supplierLedgerId == this.supplierLedgerId &&
+          other.expenseId == this.expenseId &&
+          other.partNo == this.partNo &&
+          other.method == this.method &&
+          other.amountPiasters == this.amountPiasters &&
+          other.accountRef == this.accountRef &&
+          other.createdAt == this.createdAt);
+}
+
+class PaymentPartsCompanion extends UpdateCompanion<PaymentPartRow> {
+  final Value<String> id;
+  final Value<String?> salesInvoiceId;
+  final Value<String?> purchaseInvoiceId;
+  final Value<String?> customerLedgerId;
+  final Value<String?> supplierLedgerId;
+  final Value<String?> expenseId;
+  final Value<int> partNo;
+  final Value<PaymentMethod> method;
+  final Value<int> amountPiasters;
+  final Value<String?> accountRef;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const PaymentPartsCompanion({
+    this.id = const Value.absent(),
+    this.salesInvoiceId = const Value.absent(),
+    this.purchaseInvoiceId = const Value.absent(),
+    this.customerLedgerId = const Value.absent(),
+    this.supplierLedgerId = const Value.absent(),
+    this.expenseId = const Value.absent(),
+    this.partNo = const Value.absent(),
+    this.method = const Value.absent(),
+    this.amountPiasters = const Value.absent(),
+    this.accountRef = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PaymentPartsCompanion.insert({
+    required String id,
+    this.salesInvoiceId = const Value.absent(),
+    this.purchaseInvoiceId = const Value.absent(),
+    this.customerLedgerId = const Value.absent(),
+    this.supplierLedgerId = const Value.absent(),
+    this.expenseId = const Value.absent(),
+    required int partNo,
+    required PaymentMethod method,
+    required int amountPiasters,
+    this.accountRef = const Value.absent(),
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       partNo = Value(partNo),
+       method = Value(method),
+       amountPiasters = Value(amountPiasters),
+       createdAt = Value(createdAt);
+  static Insertable<PaymentPartRow> custom({
+    Expression<String>? id,
+    Expression<String>? salesInvoiceId,
+    Expression<String>? purchaseInvoiceId,
+    Expression<String>? customerLedgerId,
+    Expression<String>? supplierLedgerId,
+    Expression<String>? expenseId,
+    Expression<int>? partNo,
+    Expression<String>? method,
+    Expression<int>? amountPiasters,
+    Expression<String>? accountRef,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (salesInvoiceId != null) 'sales_invoice_id': salesInvoiceId,
+      if (purchaseInvoiceId != null) 'purchase_invoice_id': purchaseInvoiceId,
+      if (customerLedgerId != null) 'customer_ledger_id': customerLedgerId,
+      if (supplierLedgerId != null) 'supplier_ledger_id': supplierLedgerId,
+      if (expenseId != null) 'expense_id': expenseId,
+      if (partNo != null) 'part_no': partNo,
+      if (method != null) 'method': method,
+      if (amountPiasters != null) 'amount_piasters': amountPiasters,
+      if (accountRef != null) 'account_ref': accountRef,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PaymentPartsCompanion copyWith({
+    Value<String>? id,
+    Value<String?>? salesInvoiceId,
+    Value<String?>? purchaseInvoiceId,
+    Value<String?>? customerLedgerId,
+    Value<String?>? supplierLedgerId,
+    Value<String?>? expenseId,
+    Value<int>? partNo,
+    Value<PaymentMethod>? method,
+    Value<int>? amountPiasters,
+    Value<String?>? accountRef,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return PaymentPartsCompanion(
+      id: id ?? this.id,
+      salesInvoiceId: salesInvoiceId ?? this.salesInvoiceId,
+      purchaseInvoiceId: purchaseInvoiceId ?? this.purchaseInvoiceId,
+      customerLedgerId: customerLedgerId ?? this.customerLedgerId,
+      supplierLedgerId: supplierLedgerId ?? this.supplierLedgerId,
+      expenseId: expenseId ?? this.expenseId,
+      partNo: partNo ?? this.partNo,
+      method: method ?? this.method,
+      amountPiasters: amountPiasters ?? this.amountPiasters,
+      accountRef: accountRef ?? this.accountRef,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (salesInvoiceId.present) {
+      map['sales_invoice_id'] = Variable<String>(salesInvoiceId.value);
+    }
+    if (purchaseInvoiceId.present) {
+      map['purchase_invoice_id'] = Variable<String>(purchaseInvoiceId.value);
+    }
+    if (customerLedgerId.present) {
+      map['customer_ledger_id'] = Variable<String>(customerLedgerId.value);
+    }
+    if (supplierLedgerId.present) {
+      map['supplier_ledger_id'] = Variable<String>(supplierLedgerId.value);
+    }
+    if (expenseId.present) {
+      map['expense_id'] = Variable<String>(expenseId.value);
+    }
+    if (partNo.present) {
+      map['part_no'] = Variable<int>(partNo.value);
+    }
+    if (method.present) {
+      map['method'] = Variable<String>(
+        $PaymentPartsTable.$convertermethod.toSql(method.value),
+      );
+    }
+    if (amountPiasters.present) {
+      map['amount_piasters'] = Variable<int>(amountPiasters.value);
+    }
+    if (accountRef.present) {
+      map['account_ref'] = Variable<String>(accountRef.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(
+        $PaymentPartsTable.$convertercreatedAt.toSql(createdAt.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PaymentPartsCompanion(')
+          ..write('id: $id, ')
+          ..write('salesInvoiceId: $salesInvoiceId, ')
+          ..write('purchaseInvoiceId: $purchaseInvoiceId, ')
+          ..write('customerLedgerId: $customerLedgerId, ')
+          ..write('supplierLedgerId: $supplierLedgerId, ')
+          ..write('expenseId: $expenseId, ')
+          ..write('partNo: $partNo, ')
+          ..write('method: $method, ')
+          ..write('amountPiasters: $amountPiasters, ')
+          ..write('accountRef: $accountRef, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -11633,6 +12351,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $CustomerLedgerTable customerLedger = $CustomerLedgerTable(this);
   late final $SupplierLedgerTable supplierLedger = $SupplierLedgerTable(this);
   late final $ExpensesTable expenses = $ExpensesTable(this);
+  late final $PaymentPartsTable paymentParts = $PaymentPartsTable(this);
   late final SettingsDao settingsDao = SettingsDao(this as AppDatabase);
   late final ProductsDao productsDao = ProductsDao(this as AppDatabase);
   late final CategoriesDao categoriesDao = CategoriesDao(this as AppDatabase);
@@ -11650,6 +12369,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this as AppDatabase,
   );
   late final PurchasesDao purchasesDao = PurchasesDao(this as AppDatabase);
+  late final PaymentPartsDao paymentPartsDao = PaymentPartsDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -11672,6 +12394,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     customerLedger,
     supplierLedger,
     expenses,
+    paymentParts,
   ];
 }
 
@@ -15040,6 +15763,24 @@ final class $$SalesInvoicesTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$PaymentPartsTable, List<PaymentPartRow>>
+  _paymentPartsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.paymentParts,
+    aliasName: 'sales_invoices__id__payment_parts__sales_invoice_id',
+  );
+
+  $$PaymentPartsTableProcessedTableManager get paymentPartsRefs {
+    final manager = $$PaymentPartsTableTableManager(
+      $_db,
+      $_db.paymentParts,
+    ).filter((f) => f.salesInvoiceId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_paymentPartsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$SalesInvoicesTableFilterComposer
@@ -15204,6 +15945,31 @@ class $$SalesInvoicesTableFilterComposer
           }) => $$CustomerLedgerTableFilterComposer(
             $db: $db,
             $table: $db.customerLedger,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> paymentPartsRefs(
+    Expression<bool> Function($$PaymentPartsTableFilterComposer f) f,
+  ) {
+    final $$PaymentPartsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.salesInvoiceId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableFilterComposer(
+            $db: $db,
+            $table: $db.paymentParts,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -15462,6 +16228,31 @@ class $$SalesInvoicesTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> paymentPartsRefs<T extends Object>(
+    Expression<T> Function($$PaymentPartsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentPartsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.salesInvoiceId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.paymentParts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$SalesInvoicesTableTableManager
@@ -15482,6 +16273,7 @@ class $$SalesInvoicesTableTableManager
             bool saleItemsRefs,
             bool saleReturnsRefs,
             bool customerLedgerRefs,
+            bool paymentPartsRefs,
           })
         > {
   $$SalesInvoicesTableTableManager(_$AppDatabase db, $SalesInvoicesTable table)
@@ -15573,6 +16365,7 @@ class $$SalesInvoicesTableTableManager
                 saleItemsRefs = false,
                 saleReturnsRefs = false,
                 customerLedgerRefs = false,
+                paymentPartsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -15580,6 +16373,7 @@ class $$SalesInvoicesTableTableManager
                     if (saleItemsRefs) db.saleItems,
                     if (saleReturnsRefs) db.saleReturns,
                     if (customerLedgerRefs) db.customerLedger,
+                    if (paymentPartsRefs) db.paymentParts,
                   ],
                   addJoins:
                       <
@@ -15676,6 +16470,27 @@ class $$SalesInvoicesTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (paymentPartsRefs)
+                        await $_getPrefetchedData<
+                          SalesInvoiceRow,
+                          $SalesInvoicesTable,
+                          PaymentPartRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SalesInvoicesTableReferences
+                              ._paymentPartsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SalesInvoicesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentPartsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.salesInvoiceId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -15701,6 +16516,7 @@ typedef $$SalesInvoicesTableProcessedTableManager =
         bool saleItemsRefs,
         bool saleReturnsRefs,
         bool customerLedgerRefs,
+        bool paymentPartsRefs,
       })
     >;
 typedef $$SaleItemsTableCreateCompanionBuilder = SaleItemsCompanion Function({
@@ -17988,6 +18804,24 @@ final class $$PurchaseInvoicesTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$PaymentPartsTable, List<PaymentPartRow>>
+  _paymentPartsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.paymentParts,
+    aliasName: 'purchase_invoices__id__payment_parts__purchase_invoice_id',
+  );
+
+  $$PaymentPartsTableProcessedTableManager get paymentPartsRefs {
+    final manager = $$PaymentPartsTableTableManager($_db, $_db.paymentParts)
+        .filter(
+          (f) => f.purchaseInvoiceId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(_paymentPartsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$PurchaseInvoicesTableFilterComposer
@@ -18138,6 +18972,31 @@ class $$PurchaseInvoicesTableFilterComposer
           }) => $$SupplierLedgerTableFilterComposer(
             $db: $db,
             $table: $db.supplierLedger,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> paymentPartsRefs(
+    Expression<bool> Function($$PaymentPartsTableFilterComposer f) f,
+  ) {
+    final $$PaymentPartsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.purchaseInvoiceId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableFilterComposer(
+            $db: $db,
+            $table: $db.paymentParts,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -18392,6 +19251,31 @@ class $$PurchaseInvoicesTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> paymentPartsRefs<T extends Object>(
+    Expression<T> Function($$PaymentPartsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentPartsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.purchaseInvoiceId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.paymentParts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$PurchaseInvoicesTableTableManager
@@ -18411,6 +19295,7 @@ class $$PurchaseInvoicesTableTableManager
             bool supplierId,
             bool purchaseItemsRefs,
             bool supplierLedgerRefs,
+            bool paymentPartsRefs,
           })
         > {
   $$PurchaseInvoicesTableTableManager(
@@ -18513,12 +19398,14 @@ class $$PurchaseInvoicesTableTableManager
                 supplierId = false,
                 purchaseItemsRefs = false,
                 supplierLedgerRefs = false,
+                paymentPartsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (purchaseItemsRefs) db.purchaseItems,
                     if (supplierLedgerRefs) db.supplierLedger,
+                    if (paymentPartsRefs) db.paymentParts,
                   ],
                   addJoins:
                       <
@@ -18594,6 +19481,27 @@ class $$PurchaseInvoicesTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (paymentPartsRefs)
+                        await $_getPrefetchedData<
+                          PurchaseInvoiceRow,
+                          $PurchaseInvoicesTable,
+                          PaymentPartRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$PurchaseInvoicesTableReferences
+                              ._paymentPartsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$PurchaseInvoicesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentPartsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.purchaseInvoiceId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -18618,6 +19526,7 @@ typedef $$PurchaseInvoicesTableProcessedTableManager =
         bool supplierId,
         bool purchaseItemsRefs,
         bool supplierLedgerRefs,
+        bool paymentPartsRefs,
       })
     >;
 typedef $$PurchaseItemsTableCreateCompanionBuilder =
@@ -20259,6 +21168,24 @@ final class $$CustomerLedgerTableReferences
       manager.$state.copyWith(prefetchedData: [item]),
     );
   }
+
+  static MultiTypedResultKey<$PaymentPartsTable, List<PaymentPartRow>>
+  _paymentPartsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.paymentParts,
+    aliasName: 'customer_ledger__id__payment_parts__customer_ledger_id',
+  );
+
+  $$PaymentPartsTableProcessedTableManager get paymentPartsRefs {
+    final manager = $$PaymentPartsTableTableManager($_db, $_db.paymentParts)
+        .filter(
+          (f) => f.customerLedgerId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(_paymentPartsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$CustomerLedgerTableFilterComposer
@@ -20398,6 +21325,31 @@ class $$CustomerLedgerTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> paymentPartsRefs(
+    Expression<bool> Function($$PaymentPartsTableFilterComposer f) f,
+  ) {
+    final $$PaymentPartsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.customerLedgerId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableFilterComposer(
+            $db: $db,
+            $table: $db.paymentParts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -20666,6 +21618,31 @@ class $$CustomerLedgerTableAnnotationComposer
     );
     return composer;
   }
+
+  Expression<T> paymentPartsRefs<T extends Object>(
+    Expression<T> Function($$PaymentPartsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentPartsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.customerLedgerId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.paymentParts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$CustomerLedgerTableTableManager
@@ -20686,6 +21663,7 @@ class $$CustomerLedgerTableTableManager
             bool salesInvoiceId,
             bool saleReturnId,
             bool reversesEntryId,
+            bool paymentPartsRefs,
           })
         > {
   $$CustomerLedgerTableTableManager(
@@ -20771,10 +21749,13 @@ class $$CustomerLedgerTableTableManager
                 salesInvoiceId = false,
                 saleReturnId = false,
                 reversesEntryId = false,
+                paymentPartsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
-                  explicitlyWatchedTables: [],
+                  explicitlyWatchedTables: [
+                    if (paymentPartsRefs) db.paymentParts,
+                  ],
                   addJoins:
                       <
                         T extends TableManagerState<
@@ -20839,7 +21820,29 @@ class $$CustomerLedgerTableTableManager
                         return state;
                       },
                   getPrefetchedDataCallback: (items) async {
-                    return [];
+                    return [
+                      if (paymentPartsRefs)
+                        await $_getPrefetchedData<
+                          CustomerLedgerRow,
+                          $CustomerLedgerTable,
+                          PaymentPartRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$CustomerLedgerTableReferences
+                              ._paymentPartsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$CustomerLedgerTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentPartsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.customerLedgerId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
                   },
                 );
               },
@@ -20864,6 +21867,7 @@ typedef $$CustomerLedgerTableProcessedTableManager =
         bool salesInvoiceId,
         bool saleReturnId,
         bool reversesEntryId,
+        bool paymentPartsRefs,
       })
     >;
 typedef $$SupplierLedgerTableCreateCompanionBuilder =
@@ -20955,6 +21959,24 @@ final class $$SupplierLedgerTableReferences
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$PaymentPartsTable, List<PaymentPartRow>>
+  _paymentPartsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.paymentParts,
+    aliasName: 'supplier_ledger__id__payment_parts__supplier_ledger_id',
+  );
+
+  $$PaymentPartsTableProcessedTableManager get paymentPartsRefs {
+    final manager = $$PaymentPartsTableTableManager($_db, $_db.paymentParts)
+        .filter(
+          (f) => f.supplierLedgerId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(_paymentPartsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
     );
   }
 }
@@ -21073,6 +22095,31 @@ class $$SupplierLedgerTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> paymentPartsRefs(
+    Expression<bool> Function($$PaymentPartsTableFilterComposer f) f,
+  ) {
+    final $$PaymentPartsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.supplierLedgerId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableFilterComposer(
+            $db: $db,
+            $table: $db.paymentParts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -21295,6 +22342,31 @@ class $$SupplierLedgerTableAnnotationComposer
     );
     return composer;
   }
+
+  Expression<T> paymentPartsRefs<T extends Object>(
+    Expression<T> Function($$PaymentPartsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentPartsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.supplierLedgerId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.paymentParts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$SupplierLedgerTableTableManager
@@ -21314,6 +22386,7 @@ class $$SupplierLedgerTableTableManager
             bool supplierId,
             bool purchaseInvoiceId,
             bool reversesEntryId,
+            bool paymentPartsRefs,
           })
         > {
   $$SupplierLedgerTableTableManager(
@@ -21394,10 +22467,13 @@ class $$SupplierLedgerTableTableManager
                 supplierId = false,
                 purchaseInvoiceId = false,
                 reversesEntryId = false,
+                paymentPartsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
-                  explicitlyWatchedTables: [],
+                  explicitlyWatchedTables: [
+                    if (paymentPartsRefs) db.paymentParts,
+                  ],
                   addJoins:
                       <
                         T extends TableManagerState<
@@ -21451,7 +22527,29 @@ class $$SupplierLedgerTableTableManager
                         return state;
                       },
                   getPrefetchedDataCallback: (items) async {
-                    return [];
+                    return [
+                      if (paymentPartsRefs)
+                        await $_getPrefetchedData<
+                          SupplierLedgerRow,
+                          $SupplierLedgerTable,
+                          PaymentPartRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SupplierLedgerTableReferences
+                              ._paymentPartsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SupplierLedgerTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentPartsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.supplierLedgerId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
                   },
                 );
               },
@@ -21475,6 +22573,7 @@ typedef $$SupplierLedgerTableProcessedTableManager =
         bool supplierId,
         bool purchaseInvoiceId,
         bool reversesEntryId,
+        bool paymentPartsRefs,
       })
     >;
 typedef $$ExpensesTableCreateCompanionBuilder = ExpensesCompanion Function({
@@ -21523,6 +22622,24 @@ final class $$ExpensesTableReferences
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$PaymentPartsTable, List<PaymentPartRow>>
+  _paymentPartsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.paymentParts,
+    aliasName: 'expenses__id__payment_parts__expense_id',
+  );
+
+  $$PaymentPartsTableProcessedTableManager get paymentPartsRefs {
+    final manager = $$PaymentPartsTableTableManager(
+      $_db,
+      $_db.paymentParts,
+    ).filter((f) => f.expenseId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_paymentPartsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
     );
   }
 }
@@ -21606,6 +22723,31 @@ class $$ExpensesTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> paymentPartsRefs(
+    Expression<bool> Function($$PaymentPartsTableFilterComposer f) f,
+  ) {
+    final $$PaymentPartsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.expenseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableFilterComposer(
+            $db: $db,
+            $table: $db.paymentParts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -21750,6 +22892,31 @@ class $$ExpensesTableAnnotationComposer
         );
     return composer;
   }
+
+  Expression<T> paymentPartsRefs<T extends Object>(
+    Expression<T> Function($$PaymentPartsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentPartsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.paymentParts,
+      getReferencedColumn: (t) => t.expenseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentPartsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.paymentParts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ExpensesTableTableManager
@@ -21765,7 +22932,10 @@ class $$ExpensesTableTableManager
           $$ExpensesTableUpdateCompanionBuilder,
           (ExpenseRow, $$ExpensesTableReferences),
           ExpenseRow,
-          PrefetchHooks Function({bool expenseCategoryId})
+          PrefetchHooks Function({
+            bool expenseCategoryId,
+            bool paymentPartsRefs,
+          })
         > {
   $$ExpensesTableTableManager(_$AppDatabase db, $ExpensesTable table)
     : super(
@@ -21838,45 +23008,70 @@ class $$ExpensesTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({expenseCategoryId = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [],
-              addJoins:
-                  <
-                    T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic
-                    >
-                  >(state) {
-                    if (expenseCategoryId) {
-                      state = state.withJoin(
-                        currentTable: table,
-                        currentColumn: table.expenseCategoryId,
-                        referencedTable: $$ExpensesTableReferences
-                            ._expenseCategoryIdTable(db),
-                        referencedColumn: $$ExpensesTableReferences
-                            ._expenseCategoryIdTable(db)
-                            .id,
-                      ) as T;
-                    }
+          prefetchHooksCallback:
+              ({expenseCategoryId = false, paymentPartsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (paymentPartsRefs) db.paymentParts,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (expenseCategoryId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.expenseCategoryId,
+                            referencedTable: $$ExpensesTableReferences
+                                ._expenseCategoryIdTable(db),
+                            referencedColumn: $$ExpensesTableReferences
+                                ._expenseCategoryIdTable(db)
+                                .id,
+                          ) as T;
+                        }
 
-                    return state;
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (paymentPartsRefs)
+                        await $_getPrefetchedData<
+                          ExpenseRow,
+                          $ExpensesTable,
+                          PaymentPartRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ExpensesTableReferences
+                              ._paymentPartsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ExpensesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentPartsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.expenseId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
                   },
-              getPrefetchedDataCallback: (items) async {
-                return [];
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -21893,7 +23088,801 @@ typedef $$ExpensesTableProcessedTableManager =
       $$ExpensesTableUpdateCompanionBuilder,
       (ExpenseRow, $$ExpensesTableReferences),
       ExpenseRow,
-      PrefetchHooks Function({bool expenseCategoryId})
+      PrefetchHooks Function({bool expenseCategoryId, bool paymentPartsRefs})
+    >;
+typedef $$PaymentPartsTableCreateCompanionBuilder =
+    PaymentPartsCompanion Function({
+      required String id,
+      Value<String?> salesInvoiceId,
+      Value<String?> purchaseInvoiceId,
+      Value<String?> customerLedgerId,
+      Value<String?> supplierLedgerId,
+      Value<String?> expenseId,
+      required int partNo,
+      required PaymentMethod method,
+      required int amountPiasters,
+      Value<String?> accountRef,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$PaymentPartsTableUpdateCompanionBuilder =
+    PaymentPartsCompanion Function({
+      Value<String> id,
+      Value<String?> salesInvoiceId,
+      Value<String?> purchaseInvoiceId,
+      Value<String?> customerLedgerId,
+      Value<String?> supplierLedgerId,
+      Value<String?> expenseId,
+      Value<int> partNo,
+      Value<PaymentMethod> method,
+      Value<int> amountPiasters,
+      Value<String?> accountRef,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$PaymentPartsTableReferences
+    extends BaseReferences<_$AppDatabase, $PaymentPartsTable, PaymentPartRow> {
+  $$PaymentPartsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $SalesInvoicesTable _salesInvoiceIdTable(_$AppDatabase db) => db
+      .salesInvoices
+      .createAlias('payment_parts__sales_invoice_id__sales_invoices__id');
+
+  $$SalesInvoicesTableProcessedTableManager? get salesInvoiceId {
+    final $_column = $_itemColumn<String>('sales_invoice_id');
+    if ($_column == null) return null;
+    final manager = $$SalesInvoicesTableTableManager(
+      $_db,
+      $_db.salesInvoices,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_salesInvoiceIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $PurchaseInvoicesTable _purchaseInvoiceIdTable(_$AppDatabase db) => db
+      .purchaseInvoices
+      .createAlias('payment_parts__purchase_invoice_id__purchase_invoices__id');
+
+  $$PurchaseInvoicesTableProcessedTableManager? get purchaseInvoiceId {
+    final $_column = $_itemColumn<String>('purchase_invoice_id');
+    if ($_column == null) return null;
+    final manager = $$PurchaseInvoicesTableTableManager(
+      $_db,
+      $_db.purchaseInvoices,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_purchaseInvoiceIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $CustomerLedgerTable _customerLedgerIdTable(_$AppDatabase db) => db
+      .customerLedger
+      .createAlias('payment_parts__customer_ledger_id__customer_ledger__id');
+
+  $$CustomerLedgerTableProcessedTableManager? get customerLedgerId {
+    final $_column = $_itemColumn<String>('customer_ledger_id');
+    if ($_column == null) return null;
+    final manager = $$CustomerLedgerTableTableManager(
+      $_db,
+      $_db.customerLedger,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_customerLedgerIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $SupplierLedgerTable _supplierLedgerIdTable(_$AppDatabase db) => db
+      .supplierLedger
+      .createAlias('payment_parts__supplier_ledger_id__supplier_ledger__id');
+
+  $$SupplierLedgerTableProcessedTableManager? get supplierLedgerId {
+    final $_column = $_itemColumn<String>('supplier_ledger_id');
+    if ($_column == null) return null;
+    final manager = $$SupplierLedgerTableTableManager(
+      $_db,
+      $_db.supplierLedger,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_supplierLedgerIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $ExpensesTable _expenseIdTable(_$AppDatabase db) =>
+      db.expenses.createAlias('payment_parts__expense_id__expenses__id');
+
+  $$ExpensesTableProcessedTableManager? get expenseId {
+    final $_column = $_itemColumn<String>('expense_id');
+    if ($_column == null) return null;
+    final manager = $$ExpensesTableTableManager(
+      $_db,
+      $_db.expenses,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_expenseIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$PaymentPartsTableFilterComposer
+    extends Composer<_$AppDatabase, $PaymentPartsTable> {
+  $$PaymentPartsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get partNo => $composableBuilder(
+    column: $table.partNo,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<PaymentMethod, PaymentMethod, String>
+  get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<int> get amountPiasters => $composableBuilder(
+    column: $table.amountPiasters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get accountRef => $composableBuilder(
+    column: $table.accountRef,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<DateTime, DateTime, int> get createdAt =>
+      $composableBuilder(
+        column: $table.createdAt,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  $$SalesInvoicesTableFilterComposer get salesInvoiceId {
+    final $$SalesInvoicesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.salesInvoiceId,
+      referencedTable: $db.salesInvoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SalesInvoicesTableFilterComposer(
+            $db: $db,
+            $table: $db.salesInvoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$PurchaseInvoicesTableFilterComposer get purchaseInvoiceId {
+    final $$PurchaseInvoicesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.purchaseInvoiceId,
+      referencedTable: $db.purchaseInvoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PurchaseInvoicesTableFilterComposer(
+            $db: $db,
+            $table: $db.purchaseInvoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomerLedgerTableFilterComposer get customerLedgerId {
+    final $$CustomerLedgerTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerLedgerId,
+      referencedTable: $db.customerLedger,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomerLedgerTableFilterComposer(
+            $db: $db,
+            $table: $db.customerLedger,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$SupplierLedgerTableFilterComposer get supplierLedgerId {
+    final $$SupplierLedgerTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.supplierLedgerId,
+      referencedTable: $db.supplierLedger,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupplierLedgerTableFilterComposer(
+            $db: $db,
+            $table: $db.supplierLedger,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExpensesTableFilterComposer get expenseId {
+    final $$ExpensesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.expenseId,
+      referencedTable: $db.expenses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExpensesTableFilterComposer(
+            $db: $db,
+            $table: $db.expenses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PaymentPartsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PaymentPartsTable> {
+  $$PaymentPartsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get partNo => $composableBuilder(
+    column: $table.partNo,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get amountPiasters => $composableBuilder(
+    column: $table.amountPiasters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get accountRef => $composableBuilder(
+    column: $table.accountRef,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SalesInvoicesTableOrderingComposer get salesInvoiceId {
+    final $$SalesInvoicesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.salesInvoiceId,
+      referencedTable: $db.salesInvoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SalesInvoicesTableOrderingComposer(
+            $db: $db,
+            $table: $db.salesInvoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$PurchaseInvoicesTableOrderingComposer get purchaseInvoiceId {
+    final $$PurchaseInvoicesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.purchaseInvoiceId,
+      referencedTable: $db.purchaseInvoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PurchaseInvoicesTableOrderingComposer(
+            $db: $db,
+            $table: $db.purchaseInvoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomerLedgerTableOrderingComposer get customerLedgerId {
+    final $$CustomerLedgerTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerLedgerId,
+      referencedTable: $db.customerLedger,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomerLedgerTableOrderingComposer(
+            $db: $db,
+            $table: $db.customerLedger,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$SupplierLedgerTableOrderingComposer get supplierLedgerId {
+    final $$SupplierLedgerTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.supplierLedgerId,
+      referencedTable: $db.supplierLedger,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupplierLedgerTableOrderingComposer(
+            $db: $db,
+            $table: $db.supplierLedger,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExpensesTableOrderingComposer get expenseId {
+    final $$ExpensesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.expenseId,
+      referencedTable: $db.expenses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExpensesTableOrderingComposer(
+            $db: $db,
+            $table: $db.expenses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PaymentPartsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PaymentPartsTable> {
+  $$PaymentPartsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get partNo =>
+      $composableBuilder(column: $table.partNo, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<PaymentMethod, String> get method =>
+      $composableBuilder(column: $table.method, builder: (column) => column);
+
+  GeneratedColumn<int> get amountPiasters => $composableBuilder(
+    column: $table.amountPiasters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get accountRef => $composableBuilder(
+    column: $table.accountRef,
+    builder: (column) => column,
+  );
+
+  GeneratedColumnWithTypeConverter<DateTime, int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$SalesInvoicesTableAnnotationComposer get salesInvoiceId {
+    final $$SalesInvoicesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.salesInvoiceId,
+      referencedTable: $db.salesInvoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SalesInvoicesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.salesInvoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$PurchaseInvoicesTableAnnotationComposer get purchaseInvoiceId {
+    final $$PurchaseInvoicesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.purchaseInvoiceId,
+      referencedTable: $db.purchaseInvoices,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PurchaseInvoicesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.purchaseInvoices,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CustomerLedgerTableAnnotationComposer get customerLedgerId {
+    final $$CustomerLedgerTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.customerLedgerId,
+      referencedTable: $db.customerLedger,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CustomerLedgerTableAnnotationComposer(
+            $db: $db,
+            $table: $db.customerLedger,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$SupplierLedgerTableAnnotationComposer get supplierLedgerId {
+    final $$SupplierLedgerTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.supplierLedgerId,
+      referencedTable: $db.supplierLedger,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupplierLedgerTableAnnotationComposer(
+            $db: $db,
+            $table: $db.supplierLedger,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExpensesTableAnnotationComposer get expenseId {
+    final $$ExpensesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.expenseId,
+      referencedTable: $db.expenses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExpensesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.expenses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PaymentPartsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PaymentPartsTable,
+          PaymentPartRow,
+          $$PaymentPartsTableFilterComposer,
+          $$PaymentPartsTableOrderingComposer,
+          $$PaymentPartsTableAnnotationComposer,
+          $$PaymentPartsTableCreateCompanionBuilder,
+          $$PaymentPartsTableUpdateCompanionBuilder,
+          (PaymentPartRow, $$PaymentPartsTableReferences),
+          PaymentPartRow,
+          PrefetchHooks Function({
+            bool salesInvoiceId,
+            bool purchaseInvoiceId,
+            bool customerLedgerId,
+            bool supplierLedgerId,
+            bool expenseId,
+          })
+        > {
+  $$PaymentPartsTableTableManager(_$AppDatabase db, $PaymentPartsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PaymentPartsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PaymentPartsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PaymentPartsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String?> salesInvoiceId = const Value.absent(),
+                Value<String?> purchaseInvoiceId = const Value.absent(),
+                Value<String?> customerLedgerId = const Value.absent(),
+                Value<String?> supplierLedgerId = const Value.absent(),
+                Value<String?> expenseId = const Value.absent(),
+                Value<int> partNo = const Value.absent(),
+                Value<PaymentMethod> method = const Value.absent(),
+                Value<int> amountPiasters = const Value.absent(),
+                Value<String?> accountRef = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PaymentPartsCompanion(
+                id: id,
+                salesInvoiceId: salesInvoiceId,
+                purchaseInvoiceId: purchaseInvoiceId,
+                customerLedgerId: customerLedgerId,
+                supplierLedgerId: supplierLedgerId,
+                expenseId: expenseId,
+                partNo: partNo,
+                method: method,
+                amountPiasters: amountPiasters,
+                accountRef: accountRef,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                Value<String?> salesInvoiceId = const Value.absent(),
+                Value<String?> purchaseInvoiceId = const Value.absent(),
+                Value<String?> customerLedgerId = const Value.absent(),
+                Value<String?> supplierLedgerId = const Value.absent(),
+                Value<String?> expenseId = const Value.absent(),
+                required int partNo,
+                required PaymentMethod method,
+                required int amountPiasters,
+                Value<String?> accountRef = const Value.absent(),
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => PaymentPartsCompanion.insert(
+                id: id,
+                salesInvoiceId: salesInvoiceId,
+                purchaseInvoiceId: purchaseInvoiceId,
+                customerLedgerId: customerLedgerId,
+                supplierLedgerId: supplierLedgerId,
+                expenseId: expenseId,
+                partNo: partNo,
+                method: method,
+                amountPiasters: amountPiasters,
+                accountRef: accountRef,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$PaymentPartsTable, PaymentPartRow>(table),
+                  $$PaymentPartsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                salesInvoiceId = false,
+                purchaseInvoiceId = false,
+                customerLedgerId = false,
+                supplierLedgerId = false,
+                expenseId = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (salesInvoiceId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.salesInvoiceId,
+                            referencedTable: $$PaymentPartsTableReferences
+                                ._salesInvoiceIdTable(db),
+                            referencedColumn: $$PaymentPartsTableReferences
+                                ._salesInvoiceIdTable(db)
+                                .id,
+                          ) as T;
+                        }
+                        if (purchaseInvoiceId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.purchaseInvoiceId,
+                            referencedTable: $$PaymentPartsTableReferences
+                                ._purchaseInvoiceIdTable(db),
+                            referencedColumn: $$PaymentPartsTableReferences
+                                ._purchaseInvoiceIdTable(db)
+                                .id,
+                          ) as T;
+                        }
+                        if (customerLedgerId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.customerLedgerId,
+                            referencedTable: $$PaymentPartsTableReferences
+                                ._customerLedgerIdTable(db),
+                            referencedColumn: $$PaymentPartsTableReferences
+                                ._customerLedgerIdTable(db)
+                                .id,
+                          ) as T;
+                        }
+                        if (supplierLedgerId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.supplierLedgerId,
+                            referencedTable: $$PaymentPartsTableReferences
+                                ._supplierLedgerIdTable(db),
+                            referencedColumn: $$PaymentPartsTableReferences
+                                ._supplierLedgerIdTable(db)
+                                .id,
+                          ) as T;
+                        }
+                        if (expenseId) {
+                          state = state.withJoin(
+                            currentTable: table,
+                            currentColumn: table.expenseId,
+                            referencedTable: $$PaymentPartsTableReferences
+                                ._expenseIdTable(db),
+                            referencedColumn: $$PaymentPartsTableReferences
+                                ._expenseIdTable(db)
+                                .id,
+                          ) as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$PaymentPartsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PaymentPartsTable,
+      PaymentPartRow,
+      $$PaymentPartsTableFilterComposer,
+      $$PaymentPartsTableOrderingComposer,
+      $$PaymentPartsTableAnnotationComposer,
+      $$PaymentPartsTableCreateCompanionBuilder,
+      $$PaymentPartsTableUpdateCompanionBuilder,
+      (PaymentPartRow, $$PaymentPartsTableReferences),
+      PaymentPartRow,
+      PrefetchHooks Function({
+        bool salesInvoiceId,
+        bool purchaseInvoiceId,
+        bool customerLedgerId,
+        bool supplierLedgerId,
+        bool expenseId,
+      })
     >;
 
 class $AppDatabaseManager {
@@ -21933,4 +23922,6 @@ class $AppDatabaseManager {
       $$SupplierLedgerTableTableManager(_db, _db.supplierLedger);
   $$ExpensesTableTableManager get expenses =>
       $$ExpensesTableTableManager(_db, _db.expenses);
+  $$PaymentPartsTableTableManager get paymentParts =>
+      $$PaymentPartsTableTableManager(_db, _db.paymentParts);
 }
