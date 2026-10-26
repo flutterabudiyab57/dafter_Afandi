@@ -32,7 +32,7 @@ A phase is not done until `flutter analyze` is clean and `flutter test` passes.
 - **Packages:** never add, remove or upgrade one without approval. Direct dependencies are pinned exactly. Never pick a version under 14 days old.
 - **Overrides:** every `dependency_overrides` entry carries a "remove after <date>" comment. Re-audit `pubspec.lock` dates before each feature's first commit.
 - When something is ambiguous, stop and ask.
-- **Logo:** `assets/images/logo.png` is the only correct one. Never read or use files from other projects, e.g. `E:\projects\Cardeil`.
+- **Logo:** `assets/images/afandi.jpg` (the photo of the afandi writing in his ledger) is the only correct one; the old drawing `logo.png` is kept but no longer shown. Never read or use files from other projects, e.g. `E:\projects\Cardeil`.
 - **Signing and devices:** never create keystores, handle passwords, unlock a device or enter a PIN.
 
 ## Hard code rules (most are enforced by `test/architecture/import_rules_test.dart`)
