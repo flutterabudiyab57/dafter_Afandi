@@ -1,0 +1,189 @@
+import 'package:drift/drift.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../features/customers/data/customer_repository_impl.dart';
+import '../../features/customers/domain/customer_repository.dart';
+import '../../features/customers/presentation/customers_cubits.dart';
+import '../../features/products/data/category_repository_impl.dart';
+import '../../features/products/data/inventory_repository_impl.dart';
+import '../../features/products/data/product_repository_impl.dart';
+import '../../features/products/domain/category_repository.dart';
+import '../../features/products/domain/inventory_repository.dart';
+import '../../features/products/domain/product_repository.dart';
+import '../../features/products/presentation/products_cubits.dart';
+import '../../features/purchases/data/purchase_repository_impl.dart';
+import '../../features/purchases/domain/purchase_repository.dart';
+import '../../features/purchases/presentation/purchases_cubits.dart';
+import '../../features/sales/data/sales_repository_impl.dart';
+import '../../features/sales/domain/sales_repository.dart';
+import '../../features/sales/presentation/sales_cubits.dart';
+import '../../features/settings/data/package_info_app_version_source.dart';
+import '../../features/settings/data/settings_repository_impl.dart';
+import '../../features/settings/domain/app_settings.dart';
+import '../../features/settings/domain/app_version.dart';
+import '../../features/settings/domain/settings_repository.dart';
+import '../../features/settings/domain/shop_profile.dart';
+import '../../features/settings/presentation/cubits/app_preferences_cubit.dart';
+import '../../features/settings/presentation/cubits/shop_profile_form_cubit.dart';
+import '../../features/suppliers/data/supplier_repository_impl.dart';
+import '../../features/suppliers/domain/supplier_repository.dart';
+import '../../features/suppliers/presentation/suppliers_cubits.dart';
+import '../database/app_database.dart';
+import '../database/daos/categories_dao.dart';
+import '../database/daos/counters_dao.dart';
+import '../database/daos/customer_ledger_dao.dart';
+import '../database/daos/customers_dao.dart';
+import '../database/daos/products_dao.dart';
+import '../database/daos/purchases_dao.dart';
+import '../database/daos/sales_dao.dart';
+import '../database/daos/settings_dao.dart';
+import '../database/daos/stock_movements_dao.dart';
+import '../database/daos/supplier_ledger_dao.dart';
+import '../database/daos/suppliers_dao.dart';
+import '../database/transaction_runner.dart';
+import '../utils/clock.dart';
+import '../utils/id.dart';
+
+final GetIt sl = GetIt.instance;
+
+/// Registers the app's services on [executor]. Called only after the schema
+/// guard has passed (contracts/startup-guard.md); nothing is registered
+/// before that.
+Future<void> configureDependencies({
+  required QueryExecutor executor,
+  AppVersionSource? versionSource,
+}) async {
+  sl
+    ..registerSingleton<Clock>(const SystemClock())
+    ..registerSingleton<IdGenerator>(const UuidV7Generator())
+    ..registerSingleton<AppDatabase>(
+      AppDatabase(executor, sl<IdGenerator>(), sl<Clock>()),
+      dispose: (db) => db.close(),
+    )
+    ..registerLazySingleton<TransactionRunner>(
+      () => DriftTransactionRunner(sl<AppDatabase>()),
+    )
+    ..registerLazySingleton<SettingsDao>(() => sl<AppDatabase>().settingsDao)
+    ..registerLazySingleton<SettingsRepository>(
+      () => SettingsRepositoryImpl(
+        sl<SettingsDao>(),
+        sl<TransactionRunner>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<ProductsDao>(() => sl<AppDatabase>().productsDao)
+    ..registerLazySingleton<CategoriesDao>(
+      () => sl<AppDatabase>().categoriesDao,
+    )
+    ..registerLazySingleton<StockMovementsDao>(
+      () => sl<AppDatabase>().stockMovementsDao,
+    )
+    ..registerLazySingleton<ProductRepository>(
+      () => ProductRepositoryImpl(
+        sl<ProductsDao>(),
+        sl<StockMovementsDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<InventoryRepository>(
+      () => InventoryRepositoryImpl(
+        sl<ProductsDao>(),
+        sl<StockMovementsDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<CategoryRepository>(
+      () => CategoryRepositoryImpl(
+        sl<CategoriesDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<CountersDao>(() => sl<AppDatabase>().countersDao)
+    ..registerLazySingleton<CustomersDao>(() => sl<AppDatabase>().customersDao)
+    ..registerLazySingleton<CustomerLedgerDao>(
+      () => sl<AppDatabase>().customerLedgerDao,
+    )
+    ..registerLazySingleton<SalesDao>(() => sl<AppDatabase>().salesDao)
+    ..registerLazySingleton<CustomerRepository>(
+      () => CustomerRepositoryImpl(
+        sl<CustomersDao>(),
+        sl<CustomerLedgerDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<SalesRepository>(
+      () => SalesRepositoryImpl(
+        sl<SalesDao>(),
+        sl<ProductsDao>(),
+        sl<StockMovementsDao>(),
+        sl<CustomersDao>(),
+        sl<CustomerLedgerDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<SuppliersDao>(() => sl<AppDatabase>().suppliersDao)
+    ..registerLazySingleton<SupplierLedgerDao>(
+      () => sl<AppDatabase>().supplierLedgerDao,
+    )
+    ..registerLazySingleton<PurchasesDao>(() => sl<AppDatabase>().purchasesDao)
+    ..registerLazySingleton<SupplierRepository>(
+      () => SupplierRepositoryImpl(
+        sl<SuppliersDao>(),
+        sl<SupplierLedgerDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<PurchaseRepository>(
+      () => PurchaseRepositoryImpl(
+        sl<PurchasesDao>(),
+        sl<ProductsDao>(),
+        sl<StockMovementsDao>(),
+        sl<SuppliersDao>(),
+        sl<SupplierLedgerDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<ProductsCubits>(() => AppProductsCubits(sl))
+    ..registerLazySingleton<CustomersCubits>(() => AppCustomersCubits(sl))
+    ..registerLazySingleton<SalesCubits>(() => AppSalesCubits(sl))
+    ..registerLazySingleton<SuppliersCubits>(() => AppSuppliersCubits(sl))
+    ..registerLazySingleton<PurchasesCubits>(() => AppPurchasesCubits(sl))
+    ..registerSingleton<AppVersionSource>(
+      versionSource ?? const PackageInfoAppVersionSource(),
+    )
+    ..registerFactoryParam<AppPreferencesCubit, AppSettings, void>(
+      (initial, _) => AppPreferencesCubit(sl<SettingsRepository>(), initial),
+    )
+    ..registerFactoryParam<
+      ShopProfileFormCubit,
+      ShopProfileFormMode,
+      ShopProfile?
+    >(
+      (mode, initial) => ShopProfileFormCubit(
+        sl<SettingsRepository>(),
+        mode: mode,
+        initial: initial,
+      ),
+    );
+}
+
+/// Unregisters everything and closes the database.
+Future<void> resetDependencies() => sl.reset();

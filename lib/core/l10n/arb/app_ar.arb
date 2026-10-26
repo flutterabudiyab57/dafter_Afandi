@@ -3,5 +3,1846 @@
   "appName": "دفتر أفندي",
   "@appName": {
     "description": "Application name shown in the app and on the welcome screen."
+  },
+  "welcomeTitle": "أهلًا بك في دفتر أفندي",
+  "@welcomeTitle": {
+    "description": "Welcome screen title."
+  },
+  "welcomeBody": "دفترك لحسابات المحل: المبيعات والمشتريات والعملاء والموردين، كلها على هاتفك وتعمل بدون إنترنت.",
+  "@welcomeBody": {
+    "description": "Short introduction on the welcome screen."
+  },
+  "languageArabic": "العربية",
+  "@languageArabic": {
+    "description": "The Arabic language option. Always written in Arabic."
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "The English language option. Always written in English."
+  },
+  "continueAction": "متابعة",
+  "@continueAction": {
+    "description": "Button that moves to the next first-run step."
+  },
+  "shopDetailsTitle": "بيانات المحل",
+  "@shopDetailsTitle": {
+    "description": "Title of the shop details step and the shop edit screen."
+  },
+  "shopNameLabel": "اسم المحل",
+  "@shopNameLabel": {
+    "description": "Label of the required shop name field."
+  },
+  "shopPhoneLabel": "رقم هاتف المحل",
+  "@shopPhoneLabel": {
+    "description": "Label of the optional shop phone field."
+  },
+  "shopPhoneOptionalHint": "اختياري. يظهر على الفواتير التي تشاركها.",
+  "@shopPhoneOptionalHint": {
+    "description": "Helper text under the shop phone field."
+  },
+  "errorShopNameRequired": "اكتب اسم المحل.",
+  "@errorShopNameRequired": {
+    "description": "Error when the shop name is empty or only spaces."
+  },
+  "errorShopNameTooLong": "اسم المحل لا يزيد على {max} حرفًا.",
+  "@errorShopNameTooLong": {
+    "description": "Error when the shop name is too long. {max} is the limit, already in the active digit style.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPhoneInvalid": "رقم الهاتف يقبل الأرقام فقط، مع علامة + في أوله إن لزم.",
+  "@errorPhoneInvalid": {
+    "description": "Error when the phone has characters other than digits and a leading +."
+  },
+  "errorPhoneTooShort": "رقم الهاتف لا يقل عن {min} أرقام.",
+  "@errorPhoneTooShort": {
+    "description": "Error when the phone has too few digits. {min} is already in the active digit style.",
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPhoneTooLong": "رقم الهاتف لا يزيد على {max} رقمًا.",
+  "@errorPhoneTooLong": {
+    "description": "Error when the phone has too many digits. {max} is already in the active digit style.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSaveFailed": "تعذّر الحفظ. بياناتك المكتوبة ما زالت هنا، حاول مرة أخرى.",
+  "@errorSaveFailed": {
+    "description": "Shown when writing settings fails. The typed values are kept."
+  },
+  "dataSafetyTitle": "عن بياناتك",
+  "@dataSafetyTitle": {
+    "description": "Title of the data and backup explanation screen."
+  },
+  "dataSafetyLocalOnly": "بياناتك محفوظة على هذا الهاتف فقط، ولا تُرسل إلى أي خادم.",
+  "@dataSafetyLocalOnly": {
+    "description": "Explains that data lives only on the device."
+  },
+  "dataSafetyAndroidBackup": "إذا كان النسخ الاحتياطي مفعّلًا في إعدادات الهاتف، يحفظ أندرويد نسخة من بياناتك في حساب Google الخاص بك تلقائيًا، فتعود إذا أعدت تثبيت التطبيق بنفس الحساب.",
+  "@dataSafetyAndroidBackup": {
+    "description": "Android-only backup explanation."
+  },
+  "dataSafetyIosManual": "على آيفون لا يتم النسخ الاحتياطي تلقائيًا. ستتمكن من تصدير نسخة احتياطية بنفسك في تحديث قادم، فاحرص على ذلك بانتظام.",
+  "@dataSafetyIosManual": {
+    "description": "iOS-only backup explanation."
+  },
+  "finishAction": "ابدأ",
+  "@finishAction": {
+    "description": "Button that finishes the first run."
+  },
+  "navHome": "الرئيسية",
+  "@navHome": {
+    "description": "Bottom navigation: Home."
+  },
+  "navSales": "المبيعات",
+  "@navSales": {
+    "description": "Bottom navigation: Sales."
+  },
+  "navParties": "العملاء والموردين",
+  "@navParties": {
+    "description": "Bottom navigation: Customers and suppliers."
+  },
+  "navPurchases": "المشتريات",
+  "@navPurchases": {
+    "description": "Bottom navigation: Purchases."
+  },
+  "navReports": "التقارير",
+  "@navReports": {
+    "description": "Bottom navigation: Reports."
+  },
+  "placeholderHomeTitle": "الرئيسية",
+  "@placeholderHomeTitle": {
+    "description": "Home placeholder title."
+  },
+  "placeholderHomeBody": "هنا سترى ملخص يومك: المبيعات والمصروفات والنقدية، والتنبيهات المهمة.",
+  "@placeholderHomeBody": {
+    "description": "Home placeholder body."
+  },
+  "placeholderSalesTitle": "المبيعات",
+  "@placeholderSalesTitle": {
+    "description": "Sales placeholder title."
+  },
+  "placeholderSalesBody": "هنا ستسجّل فواتير البيع والمرتجعات وتشاركها مع عملائك.",
+  "@placeholderSalesBody": {
+    "description": "Sales placeholder body."
+  },
+  "placeholderPartiesTitle": "العملاء والموردين",
+  "@placeholderPartiesTitle": {
+    "description": "Customers and suppliers placeholder title."
+  },
+  "placeholderPartiesBody": "هنا ستتابع عملاءك ومورديك، وما لك وما عليك مع كل واحد منهم.",
+  "@placeholderPartiesBody": {
+    "description": "Customers and suppliers placeholder body."
+  },
+  "placeholderPurchasesTitle": "المشتريات",
+  "@placeholderPurchasesTitle": {
+    "description": "Purchases placeholder title."
+  },
+  "placeholderPurchasesBody": "هنا ستسجّل فواتير الشراء من الموردين، فيتحدّث المخزون والتكلفة تلقائيًا.",
+  "@placeholderPurchasesBody": {
+    "description": "Purchases placeholder body."
+  },
+  "placeholderReportsTitle": "التقارير",
+  "@placeholderReportsTitle": {
+    "description": "Reports placeholder title."
+  },
+  "placeholderReportsBody": "هنا ستجد تقارير المبيعات والأرباح والمخزون والمصروفات.",
+  "@placeholderReportsBody": {
+    "description": "Reports placeholder body."
+  },
+  "settingsTitle": "الإعدادات",
+  "@settingsTitle": {
+    "description": "Settings screen title."
+  },
+  "settingsShopDetails": "بيانات المحل",
+  "@settingsShopDetails": {
+    "description": "Settings row that opens the shop details editor."
+  },
+  "settingsLanguage": "اللغة",
+  "@settingsLanguage": {
+    "description": "Settings row for the app language."
+  },
+  "settingsDigitStyle": "شكل الأرقام",
+  "@settingsDigitStyle": {
+    "description": "Settings row for the digit style."
+  },
+  "digitStyleFollowLanguage": "حسب اللغة",
+  "@digitStyleFollowLanguage": {
+    "description": "Digit style option: follow the language."
+  },
+  "digitStyleArabic": "أرقام عربية (٠١٢٣)",
+  "@digitStyleArabic": {
+    "description": "Digit style option: Arabic-Indic digits. The sample digits stay as written."
+  },
+  "digitStyleLatin": "أرقام لاتينية (0123)",
+  "@digitStyleLatin": {
+    "description": "Digit style option: Latin digits. The sample digits stay as written."
+  },
+  "settingsAboutData": "عن بياناتك",
+  "@settingsAboutData": {
+    "description": "Settings row that opens the data and backup explanation."
+  },
+  "settingsAppVersion": "إصدار التطبيق",
+  "@settingsAppVersion": {
+    "description": "Settings row showing the app version."
+  },
+  "saveAction": "حفظ",
+  "@saveAction": {
+    "description": "Save button."
+  },
+  "openSettingsSemantics": "فتح الإعدادات",
+  "@openSettingsSemantics": {
+    "description": "Spoken label of the settings button in the app bar."
+  },
+  "logoSemantics": "شعار دفتر أفندي",
+  "@logoSemantics": {
+    "description": "Spoken label of the app logo."
+  },
+  "updateRequiredTitle": "يلزم تحديث التطبيق",
+  "@updateRequiredTitle": {
+    "description": "Title of the blocking screen shown when the stored data cannot be opened by this app version."
+  },
+  "updateRequiredBody": "بياناتك محفوظة بإصدار أحدث من دفتر أفندي. حدّث التطبيق من المتجر لتفتحها. لم يتم تغيير أي شيء في بياناتك.",
+  "@updateRequiredBody": {
+    "description": "Body of the blocking screen when the data was made by a newer app version (FR-018)."
+  },
+  "dataUnrecognizedBody": "ملف البيانات الموجود على هذا الهاتف غير معروف لهذا الإصدار من دفتر أفندي. حدّث التطبيق من المتجر. لم يتم تغيير أي شيء في الملف.",
+  "@dataUnrecognizedBody": {
+    "description": "Body of the blocking screen when the data file is not a file this app made."
+  },
+  "startupErrorBody": "تعذّر فتح بياناتك. لم يتم تغيير أي شيء فيها. أغلق التطبيق وافتحه مرة أخرى، وإذا تكررت المشكلة حدّث التطبيق من المتجر.",
+  "@startupErrorBody": {
+    "description": "Body of the screen shown when opening or upgrading the database fails."
+  },
+  "homeProductsAction": "المنتجات",
+  "@homeProductsAction": {
+    "description": "Home button that opens the product list."
+  },
+  "homeCategoriesAction": "الأقسام",
+  "@homeCategoriesAction": {
+    "description": "Home entry that opens the categories screen."
+  },
+  "lowStockCardTitle": "مخزون قليل",
+  "@lowStockCardTitle": {
+    "description": "Title of the Home card listing products low on stock."
+  },
+  "lowStockCount": "{count, plural, =1{منتج واحد مخزونه قليل} =2{منتجان مخزونهما قليل} few{{countText} منتجات مخزونها قليل} other{{countText} منتج مخزونه قليل}}",
+  "@lowStockCount": {
+    "description": "How many products are low on stock. {count} picks the plural form; {countText} is the same number in the active digit style.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "countText": {
+        "type": "String"
+      }
+    }
+  },
+  "lowStockNone": "المخزون كله على ما يرام.",
+  "@lowStockNone": {
+    "description": "Home card text when no product is low on stock."
+  },
+  "lowStockNoProducts": "أضف منتجاتك لتتابع مخزونها.",
+  "@lowStockNoProducts": {
+    "description": "Home card text when the shop has no products yet."
+  },
+  "lowStockSeeAll": "عرض الكل",
+  "@lowStockSeeAll": {
+    "description": "Home card action that opens the list filtered to low stock."
+  },
+  "productsTitle": "المنتجات",
+  "@productsTitle": {
+    "description": "Title of the product list."
+  },
+  "productsSearchHint": "ابحث بالاسم أو الكود أو الباركود",
+  "@productsSearchHint": {
+    "description": "Hint in the product search field."
+  },
+  "productsFilterAll": "الكل",
+  "@productsFilterAll": {
+    "description": "Filter chip: all categories."
+  },
+  "productsFilterNoCategory": "بدون قسم",
+  "@productsFilterNoCategory": {
+    "description": "Filter chip: products with no category."
+  },
+  "productsFilterLow": "مخزون قليل",
+  "@productsFilterLow": {
+    "description": "Filter chip: only products low on stock."
+  },
+  "productsArchivedTitle": "المنتجات المؤرشفة",
+  "@productsArchivedTitle": {
+    "description": "Title of the archived products screen and its menu item."
+  },
+  "productsEmpty": "لا توجد منتجات بعد. أضف أول منتج لتبدأ.",
+  "@productsEmpty": {
+    "description": "Empty state of the product list."
+  },
+  "productsEmptyAction": "إضافة منتج",
+  "@productsEmptyAction": {
+    "description": "Button in the empty product list."
+  },
+  "productsNoMatch": "لا يوجد منتج باسم «{query}».",
+  "@productsNoMatch": {
+    "description": "Empty search result. {query} is what the owner typed.",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "productsAddNamed": "إضافة «{name}»",
+  "@productsAddNamed": {
+    "description": "Button that opens the add form with the typed name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "markLowStock": "مخزون قليل",
+  "@markLowStock": {
+    "description": "Spoken label of the low-stock mark on a product row."
+  },
+  "markBelowZero": "المخزون أقل من صفر",
+  "@markBelowZero": {
+    "description": "Spoken label of the below-zero mark on a product row."
+  },
+  "productArchivedBadge": "مؤرشف",
+  "@productArchivedBadge": {
+    "description": "Badge on an archived product."
+  },
+  "unitPiece": "بالقطعة",
+  "@unitPiece": {
+    "description": "Unit option: sold by piece."
+  },
+  "unitKg": "بالكيلو",
+  "@unitKg": {
+    "description": "Unit option: sold by kilogram."
+  },
+  "unitLiter": "باللتر",
+  "@unitLiter": {
+    "description": "Unit option: sold by liter."
+  },
+  "unitMeter": "بالمتر",
+  "@unitMeter": {
+    "description": "Unit option: sold by meter."
+  },
+  "unitPieceShort": "قطعة",
+  "@unitPieceShort": {
+    "description": "Short unit label after a quantity: piece. No plural."
+  },
+  "unitKgShort": "كجم",
+  "@unitKgShort": {
+    "description": "Short unit label after a quantity: kilogram."
+  },
+  "unitLiterShort": "لتر",
+  "@unitLiterShort": {
+    "description": "Short unit label after a quantity: liter."
+  },
+  "unitMeterShort": "م",
+  "@unitMeterShort": {
+    "description": "Short unit label after a quantity: meter."
+  },
+  "productAddTitle": "إضافة منتج",
+  "@productAddTitle": {
+    "description": "Title of the add product screen and its button."
+  },
+  "productEditTitle": "تعديل المنتج",
+  "@productEditTitle": {
+    "description": "Title of the edit product screen."
+  },
+  "productNameLabel": "اسم المنتج",
+  "@productNameLabel": {
+    "description": "Label of the product name field."
+  },
+  "productUnitLabel": "يُباع",
+  "@productUnitLabel": {
+    "description": "Label above the unit options."
+  },
+  "productPriceLabel": "سعر البيع للوحدة",
+  "@productPriceLabel": {
+    "description": "Label of the sale price field."
+  },
+  "productCategoryLabel": "القسم",
+  "@productCategoryLabel": {
+    "description": "Label of the category picker and the category row in details."
+  },
+  "productNoCategory": "بدون قسم",
+  "@productNoCategory": {
+    "description": "Category option: none."
+  },
+  "productBarcodeLabel": "الباركود",
+  "@productBarcodeLabel": {
+    "description": "Label of the barcode field."
+  },
+  "productSkuLabel": "الكود",
+  "@productSkuLabel": {
+    "description": "Label of the product code (SKU) field."
+  },
+  "productLowStockLabel": "حد المخزون القليل",
+  "@productLowStockLabel": {
+    "description": "Label of the low-stock level field."
+  },
+  "productLowStockHint": "تظهر علامة عندما يصل المخزون إلى هذه الكمية أو أقل.",
+  "@productLowStockHint": {
+    "description": "Helper text under the low-stock level field."
+  },
+  "productOpeningSection": "رصيد أول المدة",
+  "@productOpeningSection": {
+    "description": "Header of the opening stock section."
+  },
+  "productOpeningHint": "الكمية الموجودة لديك الآن، وتكلفة الوحدة عليك.",
+  "@productOpeningHint": {
+    "description": "Helper text of the opening stock section."
+  },
+  "productOpeningQtyLabel": "الكمية الموجودة",
+  "@productOpeningQtyLabel": {
+    "description": "Label of the opening quantity field."
+  },
+  "productOpeningCostLabel": "تكلفة الوحدة",
+  "@productOpeningCostLabel": {
+    "description": "Label of the opening cost field."
+  },
+  "productUnitLockedNote": "لا يمكن تغيير الوحدة بعد تسجيل حركات مخزون للمنتج.",
+  "@productUnitLockedNote": {
+    "description": "Note under the disabled unit options."
+  },
+  "openingConfirmTitle": "تأكيد رصيد أول المدة",
+  "@openingConfirmTitle": {
+    "description": "Title of the opening stock confirmation."
+  },
+  "openingConfirmBody": "{qty} × {cost} = {total}\nلا يمكن تعديل رصيد أول المدة بعد الحفظ.",
+  "@openingConfirmBody": {
+    "description": "Opening stock confirmation. {qty} includes the unit; all values are already formatted.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmAction": "تأكيد",
+  "@confirmAction": {
+    "description": "Confirm button."
+  },
+  "backAction": "رجوع",
+  "@backAction": {
+    "description": "Back button in a dialog; nothing is saved."
+  },
+  "cancelAction": "إلغاء",
+  "@cancelAction": {
+    "description": "Cancel button in a dialog."
+  },
+  "productNameExistsNotice": "تم الحفظ. يوجد منتج آخر بنفس الاسم.",
+  "@productNameExistsNotice": {
+    "description": "Notice after saving a product whose name another product has."
+  },
+  "errorNameRequired": "اكتب اسم المنتج.",
+  "@errorNameRequired": {
+    "description": "Error when the product name is empty."
+  },
+  "errorNameTooLong": "الاسم لا يزيد على {max} حرفًا.",
+  "@errorNameTooLong": {
+    "description": "Error when a name is too long. {max} is already in the active digit style.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPriceRequired": "اكتب سعر البيع.",
+  "@errorPriceRequired": {
+    "description": "Error when the sale price is empty."
+  },
+  "errorPriceInvalid": "اكتب مبلغًا صحيحًا بحد أقصى رقمين بعد العلامة العشرية.",
+  "@errorPriceInvalid": {
+    "description": "Error when an amount is not a number or has too many decimals."
+  },
+  "errorPriceTooLarge": "المبلغ لا يزيد على {max}.",
+  "@errorPriceTooLarge": {
+    "description": "Error when an amount is too large. {max} is already formatted with the currency.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorQuantityRequired": "اكتب الكمية.",
+  "@errorQuantityRequired": {
+    "description": "Error when a quantity is empty or zero."
+  },
+  "errorQuantityInvalid": "اكتب كمية صحيحة بحد أقصى ٣ أرقام بعد العلامة العشرية.",
+  "@errorQuantityInvalid": {
+    "description": "Error when a quantity is not a number, negative or has too many decimals."
+  },
+  "errorQuantityNotWhole": "القطع تُكتب أعدادًا صحيحة بدون كسور.",
+  "@errorQuantityNotWhole": {
+    "description": "Error when a piece quantity has a fraction."
+  },
+  "errorQuantityTooLarge": "الكمية لا تزيد على {max}.",
+  "@errorQuantityTooLarge": {
+    "description": "Error when a quantity is too large. {max} is already formatted.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorOpeningCostRequired": "اكتب تكلفة الوحدة، نحتاجها لحساب الربح.",
+  "@errorOpeningCostRequired": {
+    "description": "Error when an opening quantity has no cost."
+  },
+  "errorBarcodeTaken": "هذا الباركود مستخدم للمنتج «{name}».",
+  "@errorBarcodeTaken": {
+    "description": "Error when another active product has the barcode.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCodeTooLong": "لا يزيد على {max} حرفًا.",
+  "@errorCodeTooLong": {
+    "description": "Error when a barcode or code is too long. {max} is already formatted.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorRestoreBarcodeTaken": "لا يمكن الاسترجاع: الباركود مستخدم الآن للمنتج «{name}».",
+  "@errorRestoreBarcodeTaken": {
+    "description": "Error when restoring a product whose barcode another active product has.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorNoteTooLong": "الملاحظة لا تزيد على {max} حرفًا.",
+  "@errorNoteTooLong": {
+    "description": "Error when a note is too long. {max} is already formatted.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "productDetailsTitle": "تفاصيل المنتج",
+  "@productDetailsTitle": {
+    "description": "Title of the product details screen."
+  },
+  "productAvgCost": "متوسط التكلفة",
+  "@productAvgCost": {
+    "description": "Row label: average cost per unit."
+  },
+  "productStockOnHand": "المخزون الحالي",
+  "@productStockOnHand": {
+    "description": "Row label: stock on hand."
+  },
+  "productEditAction": "تعديل",
+  "@productEditAction": {
+    "description": "Action that opens the edit form."
+  },
+  "productAdjustAction": "تسوية المخزون",
+  "@productAdjustAction": {
+    "description": "Action that opens the stock adjustment."
+  },
+  "productSetOpeningAction": "إدخال رصيد أول المدة",
+  "@productSetOpeningAction": {
+    "description": "Action that opens the opening stock screen."
+  },
+  "productArchiveAction": "أرشفة",
+  "@productArchiveAction": {
+    "description": "Action that archives the product."
+  },
+  "productArchiveConfirm": "أرشفة المنتج؟ لن يظهر في القائمة والبحث، ويبقى سجله محفوظًا ويمكن استرجاعه.",
+  "@productArchiveConfirm": {
+    "description": "Archive confirmation text."
+  },
+  "productRestoreAction": "استرجاع",
+  "@productRestoreAction": {
+    "description": "Action that restores an archived product."
+  },
+  "productRestored": "تم استرجاع المنتج.",
+  "@productRestored": {
+    "description": "Notice after restoring a product."
+  },
+  "historyTitle": "حركة المخزون",
+  "@historyTitle": {
+    "description": "Header of the stock history list."
+  },
+  "historyEmpty": "لا توجد حركات مخزون بعد.",
+  "@historyEmpty": {
+    "description": "Empty stock history."
+  },
+  "historyShowMore": "عرض المزيد",
+  "@historyShowMore": {
+    "description": "Loads more history rows."
+  },
+  "stockOpening": "رصيد أول المدة",
+  "@stockOpening": {
+    "description": "History type: opening stock."
+  },
+  "stockPurchase": "شراء",
+  "@stockPurchase": {
+    "description": "History type: purchase."
+  },
+  "stockPurchaseVoid": "إلغاء شراء",
+  "@stockPurchaseVoid": {
+    "description": "History type: purchase voided."
+  },
+  "stockSale": "بيع",
+  "@stockSale": {
+    "description": "History type: sale."
+  },
+  "stockSaleReturn": "مرتجع بيع",
+  "@stockSaleReturn": {
+    "description": "History type: sale return."
+  },
+  "stockSaleVoid": "إلغاء بيع",
+  "@stockSaleVoid": {
+    "description": "History type: sale voided."
+  },
+  "stockAdjustment": "تسوية",
+  "@stockAdjustment": {
+    "description": "History type: stock adjustment."
+  },
+  "reasonDamage": "تالف",
+  "@reasonDamage": {
+    "description": "Adjustment reason: damaged."
+  },
+  "reasonCount": "جرد",
+  "@reasonCount": {
+    "description": "Adjustment reason: stock count."
+  },
+  "reasonOther": "أخرى",
+  "@reasonOther": {
+    "description": "Adjustment reason: other."
+  },
+  "adjustTitle": "تسوية المخزون",
+  "@adjustTitle": {
+    "description": "Title of the stock adjustment screen."
+  },
+  "adjustReasonLabel": "السبب",
+  "@adjustReasonLabel": {
+    "description": "Label above the adjustment reasons."
+  },
+  "adjustOnHand": "الموجود حاليًا: {qty}",
+  "@adjustOnHand": {
+    "description": "Current stock on the adjustment screen. {qty} includes the unit.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "adjustCountedLabel": "الكمية التي تم عدّها",
+  "@adjustCountedLabel": {
+    "description": "Field label for a stock count."
+  },
+  "adjustRemoveLabel": "الكمية المطلوب خصمها",
+  "@adjustRemoveLabel": {
+    "description": "Field label for damaged stock."
+  },
+  "adjustAdd": "إضافة",
+  "@adjustAdd": {
+    "description": "Direction option: add stock."
+  },
+  "adjustRemove": "خصم",
+  "@adjustRemove": {
+    "description": "Direction option: remove stock."
+  },
+  "adjustQtyLabel": "الكمية",
+  "@adjustQtyLabel": {
+    "description": "Field label for the other reason."
+  },
+  "adjustNoteLabel": "ملاحظة",
+  "@adjustNoteLabel": {
+    "description": "Label of the note field."
+  },
+  "adjustNoteRequired": "اكتب ملاحظة توضح السبب.",
+  "@adjustNoteRequired": {
+    "description": "Error when the other reason has no note."
+  },
+  "adjustExceedsStock": "الموجود {qty} فقط.",
+  "@adjustExceedsStock": {
+    "description": "Error when removing more than is on hand. {qty} includes the unit.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "adjustAlreadyMatches": "المخزون مطابق بالفعل، لم يتم تسجيل شيء.",
+  "@adjustAlreadyMatches": {
+    "description": "Info when a count equals the stock."
+  },
+  "adjustSaved": "تم الحفظ. المخزون الآن {qty}.",
+  "@adjustSaved": {
+    "description": "Notice after an adjustment. {qty} includes the unit.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "categoriesTitle": "الأقسام",
+  "@categoriesTitle": {
+    "description": "Title of the categories screen."
+  },
+  "categoryAddHint": "اسم قسم جديد",
+  "@categoryAddHint": {
+    "description": "Hint of the add category field."
+  },
+  "categoryNameLabel": "اسم القسم",
+  "@categoryNameLabel": {
+    "description": "Label of the category name field in the rename dialog."
+  },
+  "categoryAddAction": "إضافة",
+  "@categoryAddAction": {
+    "description": "Button that adds the typed category."
+  },
+  "categoryRename": "تغيير الاسم",
+  "@categoryRename": {
+    "description": "Action that renames a category."
+  },
+  "categoryMoveUp": "تحريك لأعلى",
+  "@categoryMoveUp": {
+    "description": "Action that moves a category up."
+  },
+  "categoryMoveDown": "تحريك لأسفل",
+  "@categoryMoveDown": {
+    "description": "Action that moves a category down."
+  },
+  "categoryArchive": "أرشفة القسم",
+  "@categoryArchive": {
+    "description": "Action that archives a category."
+  },
+  "categoryArchiveConfirm": "أرشفة القسم؟ منتجاته تبقى وتظهر «بدون قسم».",
+  "@categoryArchiveConfirm": {
+    "description": "Category archive confirmation."
+  },
+  "categoryProductCount": "{count, plural, =0{لا منتجات} =1{منتج واحد} =2{منتجان} few{{countText} منتجات} other{{countText} منتج}}",
+  "@categoryProductCount": {
+    "description": "Number of products in a category. {count} picks the plural form; {countText} is the same number in the active digit style.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "countText": {
+        "type": "String"
+      }
+    }
+  },
+  "categoriesEmpty": "لا توجد أقسام بعد.",
+  "@categoriesEmpty": {
+    "description": "Empty categories list."
+  },
+  "errorCategoryNameRequired": "اكتب اسم القسم.",
+  "@errorCategoryNameRequired": {
+    "description": "Error when a category name is empty."
+  },
+  "errorCategoryDuplicate": "يوجد قسم بنفس الاسم.",
+  "@errorCategoryDuplicate": {
+    "description": "Error when an active category has the same name."
+  },
+  "errorCategoryNameTooLong": "اسم القسم لا يزيد على {max} حرفًا.",
+  "@errorCategoryNameTooLong": {
+    "description": "Error when a category name is too long. {max} is already formatted.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "productsFilterEmpty": "لا توجد منتجات تطابق هذا الاختيار.",
+  "@productsFilterEmpty": {
+    "description": "Empty list when filters (no search text) match nothing."
+  },
+  "productNotFound": "هذا المنتج غير موجود.",
+  "@productNotFound": {
+    "description": "Shown when a product page is opened for a product that does not exist."
+  },
+  "productsArchivedEmpty": "لا توجد منتجات مؤرشفة.",
+  "@productsArchivedEmpty": {
+    "description": "Empty archived products list."
+  },
+  "demoSeedMenu": "أدوات المطور",
+  "@demoSeedMenu": {
+    "description": "Menu of debug-only tools on the archived products screen."
+  },
+  "demoSeedAction": "إضافة منتجات تجريبية",
+  "@demoSeedAction": {
+    "description": "Debug-only action that adds demo products."
+  },
+  "demoSeedDone": "تمت إضافة المنتجات التجريبية: {count}.",
+  "@demoSeedDone": {
+    "description": "After seeding demo products. {count} is the number added, already formatted.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "salesNewAction": "بيع جديد",
+  "@salesNewAction": {
+    "description": "Button that starts a new sale."
+  },
+  "salesListEmpty": "لا توجد فواتير بعد.",
+  "@salesListEmpty": {
+    "description": "Invoice list with no invoices."
+  },
+  "salesNoMatch": "لا توجد فواتير مطابقة.",
+  "@salesNoMatch": {
+    "description": "Invoice search or filter with no result."
+  },
+  "salesSearchHint": "ابحث برقم الفاتورة أو اسم العميل",
+  "@salesSearchHint": {
+    "description": "Hint of the invoice search field."
+  },
+  "salesFilterUnpaid": "غير مدفوعة بالكامل",
+  "@salesFilterUnpaid": {
+    "description": "Filter chip: credit or partly paid invoices."
+  },
+  "listShowMore": "عرض المزيد",
+  "@listShowMore": {
+    "description": "Loads more rows of a list."
+  },
+  "walkInCustomer": "عميل نقدي",
+  "@walkInCustomer": {
+    "description": "Shown instead of a customer name on a sale without a customer."
+  },
+  "saleKindCredit": "آجل",
+  "@saleKindCredit": {
+    "description": "Mark on an invoice nothing of which was paid."
+  },
+  "saleKindPartial": "مدفوعة جزئيًا",
+  "@saleKindPartial": {
+    "description": "Mark on an invoice partly paid."
+  },
+  "saleVoidedBadge": "ملغاة",
+  "@saleVoidedBadge": {
+    "description": "Mark on a voided invoice."
+  },
+  "saleNewTitle": "فاتورة بيع جديدة",
+  "@saleNewTitle": {
+    "description": "Title of the new sale screen."
+  },
+  "saleAddProductAction": "إضافة منتج",
+  "@saleAddProductAction": {
+    "description": "Opens the product picker on the sale screen."
+  },
+  "saleBarcodeLabel": "امسح أو اكتب الباركود",
+  "@saleBarcodeLabel": {
+    "description": "Barcode field on the sale screen; Enter adds the product."
+  },
+  "saleBarcodeNotFound": "لا يوجد منتج نشط بهذا الباركود.",
+  "@saleBarcodeNotFound": {
+    "description": "Barcode on the sale screen matched nothing."
+  },
+  "saleEmpty": "أضف منتجًا للبدء.",
+  "@saleEmpty": {
+    "description": "Sale with no lines yet."
+  },
+  "saleQtyLabel": "الكمية",
+  "@saleQtyLabel": {
+    "description": "Quantity field of a sale line."
+  },
+  "salePriceLabel": "سعر الوحدة",
+  "@salePriceLabel": {
+    "description": "Unit price field of a sale line."
+  },
+  "saleLineDiscountLabel": "خصم السطر",
+  "@saleLineDiscountLabel": {
+    "description": "Discount field of a sale line."
+  },
+  "saleRemoveLine": "إزالة {name} من الفاتورة",
+  "@saleRemoveLine": {
+    "description": "Spoken label of the button that removes a line. {name} is the product.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLineTotal": "إجمالي السطر: {amount}",
+  "@saleLineTotal": {
+    "description": "Total of one line. {amount} is formatted money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "saleSubtotal": "المجموع",
+  "@saleSubtotal": {
+    "description": "Sum of the line totals."
+  },
+  "saleInvoiceDiscountLabel": "خصم على الفاتورة",
+  "@saleInvoiceDiscountLabel": {
+    "description": "Discount on the whole invoice."
+  },
+  "saleTotal": "الإجمالي",
+  "@saleTotal": {
+    "description": "Invoice total after discounts."
+  },
+  "salePaidLabel": "المدفوع الآن",
+  "@salePaidLabel": {
+    "description": "Amount paid at the time of sale."
+  },
+  "salePaidHint": "اتركه فارغًا لدفع الإجمالي كاملًا",
+  "@salePaidHint": {
+    "description": "Helper of the paid-now field."
+  },
+  "saleRemaining": "المتبقي",
+  "@saleRemaining": {
+    "description": "Amount not paid now."
+  },
+  "saleMethodLabel": "طريقة الدفع",
+  "@saleMethodLabel": {
+    "description": "Label above the payment method choices."
+  },
+  "methodCash": "نقدي",
+  "@methodCash": {
+    "description": "Payment method."
+  },
+  "methodWallet": "محفظة إلكترونية",
+  "@methodWallet": {
+    "description": "Payment method."
+  },
+  "methodInstapay": "إنستاباي",
+  "@methodInstapay": {
+    "description": "Payment method."
+  },
+  "methodCard": "بطاقة",
+  "@methodCard": {
+    "description": "Payment method (stored, not offered)."
+  },
+  "saleCustomerLabel": "العميل",
+  "@saleCustomerLabel": {
+    "description": "Label of the customer on a sale or invoice."
+  },
+  "saleCustomerPick": "اختيار عميل",
+  "@saleCustomerPick": {
+    "description": "Opens the customer picker."
+  },
+  "saleCustomerClear": "بدون عميل",
+  "@saleCustomerClear": {
+    "description": "Removes the customer from the sale."
+  },
+  "saleSaveAction": "حفظ الفاتورة",
+  "@saleSaveAction": {
+    "description": "Saves the sale."
+  },
+  "saleSaved": "تم حفظ الفاتورة {number}.",
+  "@saleSaved": {
+    "description": "After a sale is saved. {number} is like S-000012.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "saleDiscardTitle": "تجاهل الفاتورة؟",
+  "@saleDiscardTitle": {
+    "description": "Leaving a sale with lines."
+  },
+  "saleDiscardBody": "المنتجات المضافة لن تُحفظ.",
+  "@saleDiscardBody": {
+    "description": "Body of the leave dialog."
+  },
+  "saleDiscardAction": "تجاهل",
+  "@saleDiscardAction": {
+    "description": "Leaves and drops the sale."
+  },
+  "saleKeepAction": "متابعة البيع",
+  "@saleKeepAction": {
+    "description": "Stays on the sale."
+  },
+  "shortageTitle": "المخزون لا يكفي",
+  "@shortageTitle": {
+    "description": "Title of the stock shortage warning."
+  },
+  "shortageBody": "سيصبح المخزون أقل من صفر لهذه المنتجات:",
+  "@shortageBody": {
+    "description": "Body of the stock shortage warning."
+  },
+  "shortageLine": "{name}: المتاح {stock}، المطلوب {need}",
+  "@shortageLine": {
+    "description": "One short product. Quantities are formatted with their unit.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "stock": {
+        "type": "String"
+      },
+      "need": {
+        "type": "String"
+      }
+    }
+  },
+  "shortageConfirm": "حفظ على أي حال",
+  "@shortageConfirm": {
+    "description": "Saves despite the shortage."
+  },
+  "errorSaleNoLines": "أضف منتجًا واحدًا على الأقل.",
+  "@errorSaleNoLines": {
+    "description": "Saving a sale with no lines."
+  },
+  "errorCreditNeedsCustomer": "البيع الآجل أو الدفع الجزئي يحتاج إلى عميل مسمّى.",
+  "@errorCreditNeedsCustomer": {
+    "description": "Paid now below the total without a customer."
+  },
+  "errorPaidTooLarge": "المدفوع أكبر من الإجمالي.",
+  "@errorPaidTooLarge": {
+    "description": "Paid now above the total."
+  },
+  "errorLineDiscountTooLarge": "الخصم أكبر من قيمة السطر.",
+  "@errorLineDiscountTooLarge": {
+    "description": "Line discount above the line."
+  },
+  "errorInvoiceDiscountTooLarge": "الخصم أكبر من المجموع.",
+  "@errorInvoiceDiscountTooLarge": {
+    "description": "Invoice discount above the subtotal."
+  },
+  "errorProductUnavailable": "المنتج «{name}» لم يعد متاحًا؛ أزله من الفاتورة.",
+  "@errorProductUnavailable": {
+    "description": "A product on the sale was archived.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorCustomerUnavailable": "العميل لم يعد متاحًا؛ اختر عميلًا آخر.",
+  "@errorCustomerUnavailable": {
+    "description": "The picked customer was archived."
+  },
+  "invoiceTitle": "فاتورة بيع {number}",
+  "@invoiceTitle": {
+    "description": "Title of an invoice. {number} is like S-000012. Never a tax invoice.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceDateLabel": "التاريخ",
+  "@invoiceDateLabel": {
+    "description": "Date and time of an invoice."
+  },
+  "invoiceLineDetail": "{qty} × {price}",
+  "@invoiceLineDetail": {
+    "description": "Quantity times unit price on an invoice line.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceLineDiscount": "خصم {amount}",
+  "@invoiceLineDiscount": {
+    "description": "Line discount on an invoice line.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceVoidAction": "إلغاء الفاتورة",
+  "@invoiceVoidAction": {
+    "description": "Starts voiding an invoice."
+  },
+  "invoiceVoidTitle": "إلغاء الفاتورة؟",
+  "@invoiceVoidTitle": {
+    "description": "Title of the void dialog."
+  },
+  "invoiceVoidBody": "يرجع المخزون ورصيد العميل كما كانا قبل البيع، ولا يمكن التراجع.",
+  "@invoiceVoidBody": {
+    "description": "Body of the void dialog."
+  },
+  "reasonLabel": "السبب",
+  "@reasonLabel": {
+    "description": "Reason field of a void or cancel."
+  },
+  "invoiceVoidedOn": "ملغاة في {date}: {reason}",
+  "@invoiceVoidedOn": {
+    "description": "Shown on a voided invoice.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceVoided": "تم إلغاء الفاتورة.",
+  "@invoiceVoided": {
+    "description": "After voiding."
+  },
+  "invoiceNotFound": "هذه الفاتورة غير موجودة.",
+  "@invoiceNotFound": {
+    "description": "Invoice id not found."
+  },
+  "invoiceAlreadyVoided": "هذه الفاتورة ملغاة بالفعل.",
+  "@invoiceAlreadyVoided": {
+    "description": "Void refused: the invoice was already voided."
+  },
+  "paymentAlreadyCancelled": "هذه الدفعة ملغاة بالفعل.",
+  "@paymentAlreadyCancelled": {
+    "description": "Cancel refused: the payment was already cancelled."
+  },
+  "paymentNotCancellable": "دفعة الفاتورة لا تُلغى وحدها. ألغِ الفاتورة نفسها.",
+  "@paymentNotCancellable": {
+    "description": "Cancel refused: the payment was made with a sale."
+  },
+  "errorActionFailed": "تعذّر إتمام العملية. لم يتغيّر شيء، حاول مرة أخرى.",
+  "@errorActionFailed": {
+    "description": "An unexpected failure while voiding or cancelling; nothing was saved."
+  },
+  "errorReasonRequired": "اكتب السبب.",
+  "@errorReasonRequired": {
+    "description": "Void or cancel without a reason."
+  },
+  "errorReasonTooLong": "يمكن أن يصل السبب إلى {max} حرفًا كحد أقصى.",
+  "@errorReasonTooLong": {
+    "description": "Reason over the limit.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "customersTitle": "العملاء",
+  "@customersTitle": {
+    "description": "Title of the customer list."
+  },
+  "customersSearchHint": "ابحث بالاسم أو رقم الهاتف",
+  "@customersSearchHint": {
+    "description": "Hint of the customer search."
+  },
+  "customersFilterOwes": "المدينون",
+  "@customersFilterOwes": {
+    "description": "Filter chip: customers who owe the shop."
+  },
+  "customersEmpty": "لا يوجد عملاء بعد.",
+  "@customersEmpty": {
+    "description": "Customer list with no customers."
+  },
+  "customersNoMatch": "لا يوجد عملاء مطابقون.",
+  "@customersNoMatch": {
+    "description": "Customer search with no result."
+  },
+  "customerAddTitle": "إضافة عميل",
+  "@customerAddTitle": {
+    "description": "Title and button for adding a customer."
+  },
+  "customerAddNamed": "إضافة «{name}»",
+  "@customerAddNamed": {
+    "description": "Adds a customer with the searched name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "customersArchivedTitle": "العملاء المؤرشفون",
+  "@customersArchivedTitle": {
+    "description": "Title of the archived customers view."
+  },
+  "customersArchivedEmpty": "لا يوجد عملاء مؤرشفون.",
+  "@customersArchivedEmpty": {
+    "description": "Archived customers view is empty."
+  },
+  "customerEditTitle": "تعديل العميل",
+  "@customerEditTitle": {
+    "description": "Title of the customer edit form."
+  },
+  "customerNameLabel": "اسم العميل",
+  "@customerNameLabel": {
+    "description": "Name field."
+  },
+  "customerPhoneLabel": "رقم الهاتف",
+  "@customerPhoneLabel": {
+    "description": "Phone field."
+  },
+  "customerAddressLabel": "العنوان",
+  "@customerAddressLabel": {
+    "description": "Address field."
+  },
+  "customerNoteLabel": "ملاحظة",
+  "@customerNoteLabel": {
+    "description": "Note field."
+  },
+  "customerOpeningSection": "رصيد سابق",
+  "@customerOpeningSection": {
+    "description": "Section of the add form."
+  },
+  "customerOpeningHint": "إن كان للعميل حساب قبل استخدام التطبيق. لا يمكن تعديله بعد الحفظ.",
+  "@customerOpeningHint": {
+    "description": "Help for the opening balance."
+  },
+  "customerOpeningAmount": "المبلغ",
+  "@customerOpeningAmount": {
+    "description": "Opening balance amount."
+  },
+  "customerOpeningOwes": "العميل مدين للمحل",
+  "@customerOpeningOwes": {
+    "description": "Direction of the opening balance."
+  },
+  "customerOpeningInFavour": "المحل مدين للعميل",
+  "@customerOpeningInFavour": {
+    "description": "Direction of the opening balance."
+  },
+  "customerNameExistsNotice": "تم الحفظ. يوجد عميل آخر بالاسم نفسه.",
+  "@customerNameExistsNotice": {
+    "description": "Same-name notice."
+  },
+  "customerDetailsTitle": "بيانات العميل",
+  "@customerDetailsTitle": {
+    "description": "Title of the customer page."
+  },
+  "customerBalanceLabel": "الرصيد",
+  "@customerBalanceLabel": {
+    "description": "Label of the balance."
+  },
+  "balanceOwes": "عليه {amount}",
+  "@balanceOwes": {
+    "description": "Balance the customer owes.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "balanceInFavour": "له {amount}",
+  "@balanceInFavour": {
+    "description": "Balance the shop owes the customer.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "balanceZero": "لا رصيد",
+  "@balanceZero": {
+    "description": "Zero balance."
+  },
+  "customerReceivePayment": "استلام دفعة",
+  "@customerReceivePayment": {
+    "description": "Opens the payment screen."
+  },
+  "customerArchiveAction": "أرشفة العميل",
+  "@customerArchiveAction": {
+    "description": "Archives a customer."
+  },
+  "customerArchiveConfirm": "أرشفة العميل؟ فواتيره وكشف حسابه تبقى ويمكن استعادته.",
+  "@customerArchiveConfirm": {
+    "description": "Archive confirmation."
+  },
+  "customerArchiveConfirmBalance": "أرشفة العميل؟ رصيده {balance} يبقى كما هو، وفواتيره وكشف حسابه تبقى ويمكن استعادته.",
+  "@customerArchiveConfirmBalance": {
+    "description": "Archive confirmation with a non-zero balance.",
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      }
+    }
+  },
+  "customerArchivedBadge": "مؤرشف",
+  "@customerArchivedBadge": {
+    "description": "Mark on an archived customer."
+  },
+  "customerRestoreAction": "استعادة",
+  "@customerRestoreAction": {
+    "description": "Restores a customer."
+  },
+  "customerRestored": "تمت استعادة العميل.",
+  "@customerRestored": {
+    "description": "After restoring."
+  },
+  "customerNotFound": "هذا العميل غير موجود.",
+  "@customerNotFound": {
+    "description": "Customer id not found."
+  },
+  "statementTitle": "كشف الحساب",
+  "@statementTitle": {
+    "description": "Section with the customer's account rows."
+  },
+  "statementEmpty": "لا توجد حركات بعد.",
+  "@statementEmpty": {
+    "description": "Empty statement."
+  },
+  "ledgerOpening": "رصيد سابق",
+  "@ledgerOpening": {
+    "description": "Statement row type."
+  },
+  "ledgerSale": "فاتورة {number}",
+  "@ledgerSale": {
+    "description": "Statement row for a sale.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerPayment": "دفعة",
+  "@ledgerPayment": {
+    "description": "Statement row for a payment made with a sale."
+  },
+  "ledgerPaymentReceipt": "دفعة {number}",
+  "@ledgerPaymentReceipt": {
+    "description": "Statement row for a payment. {number} is like RC-000001.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerSaleVoid": "إلغاء فاتورة {number}",
+  "@ledgerSaleVoid": {
+    "description": "Statement row reversing a sale.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerReversal": "قيد عكسي",
+  "@ledgerReversal": {
+    "description": "Statement row reversing a payment."
+  },
+  "ledgerBalanceAfter": "الرصيد: {amount}",
+  "@ledgerBalanceAfter": {
+    "description": "Running balance after a row.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerCancelled": "ملغاة",
+  "@ledgerCancelled": {
+    "description": "Mark on a cancelled payment."
+  },
+  "paymentCancelAction": "إلغاء الدفعة",
+  "@paymentCancelAction": {
+    "description": "Starts cancelling a payment."
+  },
+  "paymentCancelTitle": "إلغاء الدفعة؟",
+  "@paymentCancelTitle": {
+    "description": "Title of the cancel dialog."
+  },
+  "paymentCancelBody": "يُضاف قيد عكسي بالمبلغ نفسه ويرجع الرصيد كما كان.",
+  "@paymentCancelBody": {
+    "description": "Body of the cancel dialog."
+  },
+  "paymentCancelled": "تم إلغاء الدفعة.",
+  "@paymentCancelled": {
+    "description": "After cancelling."
+  },
+  "customerInvoicesTitle": "الفواتير",
+  "@customerInvoicesTitle": {
+    "description": "Section with the customer's invoices."
+  },
+  "paymentTitle": "استلام دفعة",
+  "@paymentTitle": {
+    "description": "Title of the payment screen."
+  },
+  "paymentBalanceNow": "الرصيد الحالي: {amount}",
+  "@paymentBalanceNow": {
+    "description": "Shown on the payment screen.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentAmountLabel": "المبلغ",
+  "@paymentAmountLabel": {
+    "description": "Payment amount."
+  },
+  "paymentCreditTitle": "الدفعة أكبر من الرصيد",
+  "@paymentCreditTitle": {
+    "description": "Title of the credit notice."
+  },
+  "paymentCreditBody": "سيصبح للعميل رصيد دائن قدره {amount}.",
+  "@paymentCreditBody": {
+    "description": "Body of the credit notice.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentSaved": "تم حفظ الدفعة {number}.",
+  "@paymentSaved": {
+    "description": "After saving. {number} is like RC-000001.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "errorAmountRequired": "أدخل المبلغ.",
+  "@errorAmountRequired": {
+    "description": "Amount empty or zero."
+  },
+  "errorCustomerNameRequired": "أدخل اسم العميل.",
+  "@errorCustomerNameRequired": {
+    "description": "Name empty."
+  },
+  "errorCustomerArchived": "العميل مؤرشف؛ استعده أولًا.",
+  "@errorCustomerArchived": {
+    "description": "Payment for an archived customer."
+  },
+  "partiesCustomersTab": "العملاء",
+  "@partiesCustomersTab": {
+    "description": "Parties switch: the customers list."
+  },
+  "partiesSuppliersTab": "الموردون",
+  "@partiesSuppliersTab": {
+    "description": "Parties switch: the suppliers list."
+  },
+  "suppliersTitle": "الموردون",
+  "@suppliersTitle": {
+    "description": "Suppliers list title."
+  },
+  "suppliersSearchHint": "ابحث بالاسم أو رقم الهاتف",
+  "@suppliersSearchHint": {
+    "description": "Supplier search field."
+  },
+  "suppliersFilterOwed": "مستحق لهم",
+  "@suppliersFilterOwed": {
+    "description": "Filter: suppliers the shop owes."
+  },
+  "suppliersEmpty": "لا يوجد موردون بعد.",
+  "@suppliersEmpty": {
+    "description": "Empty supplier list."
+  },
+  "suppliersNoMatch": "لا يوجد موردون مطابقون.",
+  "@suppliersNoMatch": {
+    "description": "Search or filter found nothing."
+  },
+  "supplierAddTitle": "إضافة مورد",
+  "@supplierAddTitle": {
+    "description": "Add supplier button and form title."
+  },
+  "supplierAddNamed": "إضافة «{name}»",
+  "@supplierAddNamed": {
+    "description": "Adds a supplier with the searched name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "suppliersArchivedTitle": "الموردون المؤرشفون",
+  "@suppliersArchivedTitle": {
+    "description": "Archived suppliers screen."
+  },
+  "suppliersArchivedEmpty": "لا يوجد موردون مؤرشفون.",
+  "@suppliersArchivedEmpty": {
+    "description": "Empty archived list."
+  },
+  "supplierEditTitle": "تعديل المورد",
+  "@supplierEditTitle": {
+    "description": "Edit form title."
+  },
+  "supplierNameLabel": "اسم المورد",
+  "@supplierNameLabel": {
+    "description": "Name field."
+  },
+  "supplierOpeningHint": "إذا كان للمورد حساب قبل استخدام التطبيق. لا يمكن تغييره بعد الحفظ.",
+  "@supplierOpeningHint": {
+    "description": "Opening balance help."
+  },
+  "supplierOpeningOwed": "المحل مدين للمورد",
+  "@supplierOpeningOwed": {
+    "description": "Opening direction: positive."
+  },
+  "supplierOpeningInShopFavour": "المورد مدين للمحل",
+  "@supplierOpeningInShopFavour": {
+    "description": "Opening direction: negative."
+  },
+  "supplierNameExistsNotice": "تم الحفظ. يوجد مورد آخر بالاسم نفسه.",
+  "@supplierNameExistsNotice": {
+    "description": "Same-name notice."
+  },
+  "supplierDetailsTitle": "المورد",
+  "@supplierDetailsTitle": {
+    "description": "Supplier page title."
+  },
+  "supplierBalanceOwed": "مستحق له {amount}",
+  "@supplierBalanceOwed": {
+    "description": "Balance the shop owes the supplier.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierBalanceInShopFavour": "عليه للمحل {amount}",
+  "@supplierBalanceInShopFavour": {
+    "description": "Balance the supplier owes the shop.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierPayAction": "دفع للمورد",
+  "@supplierPayAction": {
+    "description": "Opens the payment screen."
+  },
+  "supplierArchiveAction": "أرشفة المورد",
+  "@supplierArchiveAction": {
+    "description": "Archive button."
+  },
+  "supplierArchiveConfirm": "أرشفة المورد؟ تبقى مشترياته وكشف حسابه ويمكن استعادته.",
+  "@supplierArchiveConfirm": {
+    "description": "Archive confirmation, zero balance."
+  },
+  "supplierArchiveConfirmBalance": "أرشفة المورد؟ رصيده {balance} يبقى كما هو، ومشترياته وكشف حسابه تبقى ويمكن استعادته.",
+  "@supplierArchiveConfirmBalance": {
+    "description": "Archive confirmation with a non-zero balance.",
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierRestored": "تمت استعادة المورد.",
+  "@supplierRestored": {
+    "description": "After restoring."
+  },
+  "supplierNotFound": "هذا المورد غير موجود.",
+  "@supplierNotFound": {
+    "description": "Unknown supplier id."
+  },
+  "supplierPurchasesTitle": "المشتريات",
+  "@supplierPurchasesTitle": {
+    "description": "Supplier page: their purchases."
+  },
+  "errorSupplierNameRequired": "أدخل اسم المورد.",
+  "@errorSupplierNameRequired": {
+    "description": "Name empty."
+  },
+  "errorSupplierArchived": "المورد مؤرشف؛ استعده أولًا.",
+  "@errorSupplierArchived": {
+    "description": "Payment to an archived supplier."
+  },
+  "ledgerPurchase": "فاتورة شراء {number}",
+  "@ledgerPurchase": {
+    "description": "Statement row for a purchase.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerPurchaseVoid": "فاتورة شراء ملغاة {number}",
+  "@ledgerPurchaseVoid": {
+    "description": "Statement row for a purchase void.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierPaymentNotCancellable": "لا يمكن إلغاء دفعة تمت مع فاتورة شراء وحدها. ألغِ الفاتورة بدلًا من ذلك.",
+  "@supplierPaymentNotCancellable": {
+    "description": "Cancel refused."
+  },
+  "supplierPaymentTitle": "دفع للمورد",
+  "@supplierPaymentTitle": {
+    "description": "Payment screen title."
+  },
+  "supplierOverpayTitle": "أكثر من المستحق",
+  "@supplierOverpayTitle": {
+    "description": "Overpay confirmation title."
+  },
+  "supplierOverpayBody": "سيصبح المورد مدينًا للمحل بمبلغ {amount}.",
+  "@supplierOverpayBody": {
+    "description": "Overpay confirmation body.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "purchasesNewAction": "فاتورة شراء جديدة",
+  "@purchasesNewAction": {
+    "description": "Opens a new purchase."
+  },
+  "purchasesListEmpty": "لا توجد فواتير شراء بعد.",
+  "@purchasesListEmpty": {
+    "description": "Empty purchase list."
+  },
+  "purchasesNoMatch": "لا توجد فواتير شراء مطابقة.",
+  "@purchasesNoMatch": {
+    "description": "Search found nothing."
+  },
+  "purchasesSearchHint": "ابحث برقم الفاتورة أو المورد أو رقم فاتورة المورد",
+  "@purchasesSearchHint": {
+    "description": "Purchase search field."
+  },
+  "purchaseNoSupplier": "بدون مورد",
+  "@purchaseNoSupplier": {
+    "description": "A purchase without a supplier."
+  },
+  "purchaseNewTitle": "فاتورة شراء جديدة",
+  "@purchaseNewTitle": {
+    "description": "New purchase screen."
+  },
+  "purchaseCostLabel": "تكلفة الوحدة",
+  "@purchaseCostLabel": {
+    "description": "Cost field."
+  },
+  "purchaseCostNotice": "التكلفة تساوي سعر البيع أو تزيد عليه.",
+  "@purchaseCostNotice": {
+    "description": "Notice under a line; does not block saving."
+  },
+  "purchaseRemoveLine": "إزالة {name} من الفاتورة",
+  "@purchaseRemoveLine": {
+    "description": "Remove-line button label.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "purchaseSupplierLabel": "المورد",
+  "@purchaseSupplierLabel": {
+    "description": "Supplier chip."
+  },
+  "purchaseSupplierPick": "اختر موردًا",
+  "@purchaseSupplierPick": {
+    "description": "Supplier picker title."
+  },
+  "purchaseSupplierRefLabel": "رقم فاتورة المورد",
+  "@purchaseSupplierRefLabel": {
+    "description": "Supplier reference field."
+  },
+  "purchaseDateLabel": "تاريخ الفاتورة",
+  "@purchaseDateLabel": {
+    "description": "Invoice date field."
+  },
+  "purchaseSaveAction": "حفظ فاتورة الشراء",
+  "@purchaseSaveAction": {
+    "description": "Save button."
+  },
+  "purchaseSaved": "تم حفظ فاتورة الشراء {number}.",
+  "@purchaseSaved": {
+    "description": "After saving. {number} is like P-000001.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "purchaseDiscardTitle": "تجاهل فاتورة الشراء؟",
+  "@purchaseDiscardTitle": {
+    "description": "Leave guard title."
+  },
+  "purchaseKeepAction": "متابعة الفاتورة",
+  "@purchaseKeepAction": {
+    "description": "Leave guard: stay."
+  },
+  "purchaseAddProductNamed": "إضافة «{name}» كمنتج جديد",
+  "@purchaseAddProductNamed": {
+    "description": "Quick add from the product picker.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "purchaseQuickAddTitle": "منتج جديد",
+  "@purchaseQuickAddTitle": {
+    "description": "Quick add product form title."
+  },
+  "errorCreditNeedsSupplier": "الشراء الآجل أو الدفع الجزئي يحتاج إلى مورد.",
+  "@errorCreditNeedsSupplier": {
+    "description": "Paid less than the total without a supplier."
+  },
+  "errorPurchaseDateInFuture": "لا يمكن أن يكون تاريخ الفاتورة بعد اليوم.",
+  "@errorPurchaseDateInFuture": {
+    "description": "Future date."
+  },
+  "errorPurchaseProductUnavailable": "«{name}» لم يعد متاحًا؛ أزله من الفاتورة.",
+  "@errorPurchaseProductUnavailable": {
+    "description": "Archived product on save.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSupplierUnavailable": "المورد لم يعد متاحًا؛ اختر غيره.",
+  "@errorSupplierUnavailable": {
+    "description": "Archived supplier on save."
+  },
+  "purchaseTitle": "فاتورة شراء {number}",
+  "@purchaseTitle": {
+    "description": "Purchase screen title.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "purchaseVoidAction": "إلغاء الفاتورة",
+  "@purchaseVoidAction": {
+    "description": "Void button."
+  },
+  "purchaseVoidTitle": "إلغاء فاتورة الشراء؟",
+  "@purchaseVoidTitle": {
+    "description": "Void dialog title."
+  },
+  "purchaseVoidBody": "يعود المخزون ومتوسط التكلفة ورصيد المورد إلى ما كانت عليه قبل الشراء. لا يمكن التراجع عن ذلك.",
+  "@purchaseVoidBody": {
+    "description": "Void dialog body."
+  },
+  "purchaseVoided": "تم إلغاء فاتورة الشراء.",
+  "@purchaseVoided": {
+    "description": "After voiding."
+  },
+  "purchaseNotFound": "فاتورة الشراء هذه غير موجودة.",
+  "@purchaseNotFound": {
+    "description": "Unknown purchase id."
+  },
+  "purchaseAlreadyVoided": "فاتورة الشراء هذه ملغاة بالفعل.",
+  "@purchaseAlreadyVoided": {
+    "description": "Void refused."
+  },
+  "voidShortageLine": "{name}: {stock} بعد الإلغاء",
+  "@voidShortageLine": {
+    "description": "One product that would go below zero.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "stock": {
+        "type": "String"
+      }
+    }
+  },
+  "voidShortageConfirm": "إلغاء على أي حال",
+  "@voidShortageConfirm": {
+    "description": "Confirms a void that takes stock below zero."
+  },
+  "customersEmptyTitle": "لا يوجد عملاء بعد",
+  "@customersEmptyTitle": {
+    "description": "Title of the empty customers list."
+  },
+  "customersEmptyBody": "أضف عميلًا لتسجّل البيع الآجل وتتابع ما عليه.",
+  "@customersEmptyBody": {
+    "description": "Body of the empty customers list."
+  },
+  "suppliersEmptyTitle": "لا يوجد موردون بعد",
+  "@suppliersEmptyTitle": {
+    "description": "Title of the empty suppliers list."
+  },
+  "suppliersEmptyBody": "أضف موردًا لتسجّل مشترياتك وما عليك له.",
+  "@suppliersEmptyBody": {
+    "description": "Body of the empty suppliers list."
+  },
+  "purchasesEmptyTitle": "لا توجد مشتريات بعد",
+  "@purchasesEmptyTitle": {
+    "description": "Title of the empty purchases list."
+  },
+  "purchasesEmptyBody": "سجّل أول شراء ليزيد المخزون وتُحسب التكلفة.",
+  "@purchasesEmptyBody": {
+    "description": "Body of the empty purchases list."
+  },
+  "searchEmptyTitle": "لا توجد نتائج",
+  "@searchEmptyTitle": {
+    "description": "Title when a search or filter matches nothing."
+  },
+  "searchClearAction": "مسح البحث",
+  "@searchClearAction": {
+    "description": "Clears the search text and filters."
+  },
+  "retryAction": "إعادة المحاولة",
+  "@retryAction": {
+    "description": "Retries loading a list that failed."
+  },
+  "undoAction": "تراجع",
+  "@undoAction": {
+    "description": "Undoes the last action from a bottom message."
+  },
+  "savingLabel": "جارٍ الحفظ…",
+  "@savingLabel": {
+    "description": "Save button label while saving."
+  },
+  "discardChangesTitle": "تجاهل التغييرات؟",
+  "@discardChangesTitle": {
+    "description": "Asked when leaving a form with unsaved changes."
+  },
+  "discardChangesBody": "لم تُحفظ التغييرات. إذا خرجت الآن فستضيع.",
+  "@discardChangesBody": {
+    "description": "Body of the discard-changes question."
+  },
+  "discardAction": "تجاهل",
+  "@discardAction": {
+    "description": "Leaves the form and drops the changes."
+  },
+  "keepEditingAction": "متابعة التعديل",
+  "@keepEditingAction": {
+    "description": "Stays on the form."
+  },
+  "creditNeedsCustomerTitle": "اختر عميلًا للبيع الآجل",
+  "@creditNeedsCustomerTitle": {
+    "description": "Warning banner title on a credit sale with no customer."
+  },
+  "chooseAction": "اختيار",
+  "@chooseAction": {
+    "description": "Opens a picker from a banner."
+  },
+  "openingDataLabel": "جارٍ فتح بياناتك…",
+  "@openingDataLabel": {
+    "description": "Shown while the app opens the database."
+  },
+  "productArchivedMessage": "أُرشف المنتج.",
+  "@productArchivedMessage": {
+    "description": "Bottom message after archiving a product; offers Undo."
+  },
+  "customerArchivedMessage": "أُرشف العميل.",
+  "@customerArchivedMessage": {
+    "description": "Bottom message after archiving a customer; offers Undo."
+  },
+  "supplierArchivedMessage": "أُرشف المورد.",
+  "@supplierArchivedMessage": {
+    "description": "Bottom message after archiving a supplier; offers Undo."
+  },
+  "loadFailedTitle": "تعذّر عرض البيانات",
+  "@loadFailedTitle": {
+    "description": "Title when a list could not load."
+  },
+  "loadFailedBody": "لم يتغيّر شيء في بياناتك. حاول مرة أخرى.",
+  "@loadFailedBody": {
+    "description": "Body when a list could not load."
   }
 }

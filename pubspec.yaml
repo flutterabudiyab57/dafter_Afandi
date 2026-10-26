@@ -42,8 +42,6 @@ dev_dependencies:
 dependency_overrides:
   sqlite3: 3.7.0 # remove after 2026-10-27
   cupertino_ui: 1.1.1 # remove after 2026-10-28
-  # Runtime transitive via path_provider_android (approved 2026-10-19).
-  jni_flutter: 1.0.3 # remove after 2026-10-20
   # Dev-only transitives (build_runner / drift_dev / test), approval A2.
   build_daemon: 4.1.6 # remove after 2026-10-28
   coverage: 1.15.1 # remove after 2026-10-27
@@ -55,3 +53,22 @@ dependency_overrides:
 flutter:
   generate: true
   uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+    - assets/fonts/OFL.txt
+    - assets/illustrations/light/
+    - assets/illustrations/dark/
+
+  # Only the four weights the typography uses (400/500/600/700).
+  fonts:
+    - family: IBMPlexSansArabic
+      fonts:
+        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexSansArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
+          weight: 700

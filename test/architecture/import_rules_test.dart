@@ -16,13 +16,19 @@ void main() {
   group('no-material-cupertino', () {
     test('flags legacy material and cupertino imports', () {
       expect(
-        _rulesHit('lib/a.dart', "import 'package:flutter/material.dart';",
-            noMaterialOrCupertino),
+        _rulesHit(
+          'lib/a.dart',
+          "import 'package:flutter/material.dart';",
+          noMaterialOrCupertino,
+        ),
         ['no-material-cupertino'],
       );
       expect(
-        _rulesHit('lib/a.dart', "import 'package:flutter/cupertino.dart';",
-            noMaterialOrCupertino),
+        _rulesHit(
+          'lib/a.dart',
+          "import 'package:flutter/cupertino.dart';",
+          noMaterialOrCupertino,
+        ),
         ['no-material-cupertino'],
       );
     });
@@ -50,8 +56,9 @@ void main() {
         "import '../../../core/database/daos/settings_dao.dart';",
         "import 'package:daftar_afandi/features/settings/data/settings_repository_impl.dart';",
       ]) {
-        expect(_rulesHit(screen, import, layerDirection), ['layer-direction'],
-            reason: import);
+        expect(_rulesHit(screen, import, layerDirection), [
+          'layer-direction',
+        ], reason: import);
       }
     });
 
@@ -78,16 +85,22 @@ void main() {
   group('domain-pure-dart', () {
     test('flags flutter imports in domain', () {
       expect(
-        _rulesHit('lib/features/settings/domain/x.dart',
-            "import 'package:flutter/foundation.dart';", domainIsPureDart),
+        _rulesHit(
+          'lib/features/settings/domain/x.dart',
+          "import 'package:flutter/foundation.dart';",
+          domainIsPureDart,
+        ),
         ['domain-pure-dart'],
       );
     });
 
     test('allows flutter imports outside domain', () {
       expect(
-        _rulesHit('lib/features/settings/presentation/x.dart',
-            "import 'package:flutter/foundation.dart';", domainIsPureDart),
+        _rulesHit(
+          'lib/features/settings/presentation/x.dart',
+          "import 'package:flutter/foundation.dart';",
+          domainIsPureDart,
+        ),
         isEmpty,
       );
     });
@@ -96,8 +109,11 @@ void main() {
   group('no-legacy-delegates', () {
     test('flags AppLocalizations.localizationsDelegates', () {
       expect(
-        _rulesHit('lib/app.dart',
-            'final d = AppLocalizations.localizationsDelegates;', noLegacyDelegates),
+        _rulesHit(
+          'lib/app.dart',
+          'final d = AppLocalizations.localizationsDelegates;',
+          noLegacyDelegates,
+        ),
         ['no-legacy-delegates'],
       );
     });
@@ -146,21 +162,27 @@ void main() {
         'lib/core/utils/money.dart',
         'lib/core/utils/quantity.dart',
       ]) {
-        expect(_rulesHit(path, 'double price = 1;', noDoubleInMoneyPaths),
-            ['no-double'],
-            reason: path);
+        expect(_rulesHit(path, 'double price = 1;', noDoubleInMoneyPaths), [
+          'no-double',
+        ], reason: path);
       }
     });
 
     test('ignores comments and other paths', () {
       expect(
-        _rulesHit('lib/core/utils/money.dart', '// never use double here',
-            noDoubleInMoneyPaths),
+        _rulesHit(
+          'lib/core/utils/money.dart',
+          '// never use double here',
+          noDoubleInMoneyPaths,
+        ),
         isEmpty,
       );
       expect(
-        _rulesHit('lib/core/theme/app_spacing.dart', 'const double md = 16;',
-            noDoubleInMoneyPaths),
+        _rulesHit(
+          'lib/core/theme/app_spacing.dart',
+          'const double md = 16;',
+          noDoubleInMoneyPaths,
+        ),
         isEmpty,
       );
     });
@@ -175,27 +197,36 @@ void main() {
         'Socket.connect(host, 80);',
         'WebSocket.connect(url);',
       ]) {
-        expect(_rulesHit('lib/a.dart', source, noNetwork), isNotEmpty,
-            reason: source);
+        expect(
+          _rulesHit('lib/a.dart', source, noNetwork),
+          isNotEmpty,
+          reason: source,
+        );
       }
     });
 
     test('allows unrelated identifiers', () {
-      expect(_rulesHit('lib/a.dart', 'final socketCount = 0;', noNetwork),
-          isEmpty);
+      expect(
+        _rulesHit('lib/a.dart', 'final socketCount = 0;', noNetwork),
+        isEmpty,
+      );
     });
   });
 
   group('no-sp', () {
     test('flags .sp', () {
-      expect(_rulesHit('lib/a.dart', 'final s = 14.sp;', noScreenUtilSp),
-          ['no-sp']);
+      expect(_rulesHit('lib/a.dart', 'final s = 14.sp;', noScreenUtilSp), [
+        'no-sp',
+      ]);
     });
 
     test('allows .spacing and .w', () {
       expect(
-        _rulesHit('lib/a.dart', 'final a = t.spacing; final b = 4.w;',
-            noScreenUtilSp),
+        _rulesHit(
+          'lib/a.dart',
+          'final a = t.spacing; final b = 4.w;',
+          noScreenUtilSp,
+        ),
         isEmpty,
       );
     });
@@ -212,8 +243,11 @@ void main() {
         'const t = TextAlign.right;',
       ]) {
         expect(
-          _rulesHit('lib/features/home/presentation/home_screen.dart', source,
-              visualsOnlyInTheme),
+          _rulesHit(
+            'lib/features/home/presentation/home_screen.dart',
+            source,
+            visualsOnlyInTheme,
+          ),
           ['visuals-only-in-theme'],
           reason: source,
         );
@@ -222,8 +256,11 @@ void main() {
 
     test('allows them in lib/core/theme and allows directional APIs', () {
       expect(
-        _rulesHit('lib/core/theme/app_colors.dart',
-            'const c = Color(0xFF326CE9);', visualsOnlyInTheme),
+        _rulesHit(
+          'lib/core/theme/app_colors.dart',
+          'const c = Color(0xFF326CE9);',
+          visualsOnlyInTheme,
+        ),
         isEmpty,
       );
       expect(
@@ -240,35 +277,85 @@ void main() {
   group('no-literal-text', () {
     test('flags literal strings in presentation Text widgets', () {
       expect(
-        _rulesHit('lib/features/home/presentation/home_screen.dart',
-            "Text('Home')", noLiteralTextInPresentation),
+        _rulesHit(
+          'lib/features/home/presentation/home_screen.dart',
+          "Text('Home')",
+          noLiteralTextInPresentation,
+        ),
         ['no-literal-text'],
       );
       expect(
-        _rulesHit('lib/features/home/presentation/home_screen.dart',
-            'Text("Home")', noLiteralTextInPresentation),
+        _rulesHit(
+          'lib/features/home/presentation/home_screen.dart',
+          'Text("Home")',
+          noLiteralTextInPresentation,
+        ),
         ['no-literal-text'],
       );
     });
 
     test('allows localized text and literals outside presentation', () {
       expect(
-        _rulesHit('lib/features/home/presentation/home_screen.dart',
-            'Text(l10n.navHome)', noLiteralTextInPresentation),
+        _rulesHit(
+          'lib/features/home/presentation/home_screen.dart',
+          'Text(l10n.navHome)',
+          noLiteralTextInPresentation,
+        ),
         isEmpty,
       );
       expect(
-        _rulesHit('lib/core/widgets/x.dart', "Text('x')",
-            noLiteralTextInPresentation),
+        _rulesHit(
+          'lib/core/widgets/x.dart',
+          "Text('x')",
+          noLiteralTextInPresentation,
+        ),
         isEmpty,
       );
     });
   });
 
+  group('no-delete', () {
+    test('flags deletes and stock movement updates', () {
+      for (final code in [
+        'await delete(products).go();',
+        "customStatement('DELETE FROM products')",
+        "customStatement('delete from categories')",
+        "customStatement('UPDATE stock_movements SET note = 1')",
+        'update(stockMovements).write(x);',
+      ]) {
+        expect(
+          _rulesHit(
+            'lib/core/database/daos/x.dart',
+            code,
+            noDeleteOrMovementUpdate,
+          ),
+          ['no-delete'],
+          reason: code,
+        );
+      }
+    });
+
+    test('allows other updates and the no-delete triggers', () {
+      for (final code in [
+        'update(products).write(x);',
+        "'CREATE TRIGGER t BEFORE DELETE ON products'",
+        'await sl.reset();',
+      ]) {
+        expect(
+          _rulesHit('lib/core/database/x.dart', code, noDeleteOrMovementUpdate),
+          isEmpty,
+          reason: code,
+        );
+      }
+    });
+  });
+
   group('stripComments', () {
     test('keeps URLs inside strings', () {
-      expect(stripComments("final u = 'https://pub.dev'; // note"),
-          "final u = 'https://pub.dev'; ");
+      expect(
+        stripComments("final u = 'https://pub.dev'; // note"),
+        "final u = 'https://pub.dev'; ",
+      );
     });
   });
 }

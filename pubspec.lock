@@ -430,7 +430,7 @@ packages:
     source: hosted
     version: "1.1.0"
   jni_flutter:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: jni_flutter
       sha256: b2310cdd4c18c65c081ab141a41efa94aa26c65431803703ece51996f174f351

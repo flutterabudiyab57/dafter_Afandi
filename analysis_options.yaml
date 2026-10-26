@@ -11,6 +11,7 @@ analyzer:
     - ios/**
     - "**/*.g.dart"
     - lib/core/l10n/generated/**
+    - test/drift/**/generated/**
 
 linter:
   rules:
