@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../core/utils/money.dart';
 import '../../../core/utils/quantity.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/domain/payment_split.dart';
 import '../../products/domain/product_errors.dart';
 import 'sale_errors.dart';
 
@@ -95,6 +96,10 @@ final class SaleDraft extends Equatable {
   int get paid => paidPiasters ?? (total < 0 ? 0 : total);
 
   int get remaining => total - paid;
+
+  /// How [paid] was paid: one part in [method] for now (006). Empty when
+  /// nothing is paid.
+  PaymentSplit get split => PaymentSplit.single(method, paid);
 
   /// Each line's share of the invoice discount; they add up to it exactly
   /// (FR-004). Only meaningful when [validate] is empty.

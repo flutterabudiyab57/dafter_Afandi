@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import '../../features/customers/data/customer_repository_impl.dart';
 import '../../features/customers/domain/customer_repository.dart';
 import '../../features/customers/presentation/customers_cubits.dart';
+import '../../features/payments/data/payment_parts_writer.dart';
 import '../../features/products/data/category_repository_impl.dart';
 import '../../features/products/data/inventory_repository_impl.dart';
 import '../../features/products/data/product_repository_impl.dart';
@@ -33,6 +34,7 @@ import '../database/daos/categories_dao.dart';
 import '../database/daos/counters_dao.dart';
 import '../database/daos/customer_ledger_dao.dart';
 import '../database/daos/customers_dao.dart';
+import '../database/daos/payment_parts_dao.dart';
 import '../database/daos/products_dao.dart';
 import '../database/daos/purchases_dao.dart';
 import '../database/daos/sales_dao.dart';
@@ -105,6 +107,12 @@ Future<void> configureDependencies({
       ),
     )
     ..registerLazySingleton<CountersDao>(() => sl<AppDatabase>().countersDao)
+    ..registerLazySingleton<PaymentPartsDao>(
+      () => sl<AppDatabase>().paymentPartsDao,
+    )
+    ..registerLazySingleton<PaymentPartsWriter>(
+      () => PaymentPartsWriter(sl<PaymentPartsDao>(), sl<IdGenerator>()),
+    )
     ..registerLazySingleton<CustomersDao>(() => sl<AppDatabase>().customersDao)
     ..registerLazySingleton<CustomerLedgerDao>(
       () => sl<AppDatabase>().customerLedgerDao,
@@ -118,6 +126,7 @@ Future<void> configureDependencies({
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),
+        sl<PaymentPartsWriter>(),
       ),
     )
     ..registerLazySingleton<SalesRepository>(
@@ -131,6 +140,7 @@ Future<void> configureDependencies({
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),
+        sl<PaymentPartsWriter>(),
       ),
     )
     ..registerLazySingleton<SuppliersDao>(() => sl<AppDatabase>().suppliersDao)
@@ -146,6 +156,7 @@ Future<void> configureDependencies({
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),
+        sl<PaymentPartsWriter>(),
       ),
     )
     ..registerLazySingleton<PurchaseRepository>(
@@ -159,6 +170,7 @@ Future<void> configureDependencies({
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),
+        sl<PaymentPartsWriter>(),
       ),
     )
     ..registerLazySingleton<ProductsCubits>(() => AppProductsCubits(sl))

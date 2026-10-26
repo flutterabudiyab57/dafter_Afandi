@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../core/utils/result.dart';
 import '../../../core/utils/text_length.dart';
 import '../../payments/domain/payment_method.dart';
+import '../../payments/domain/payment_split.dart';
 import 'customer_draft.dart';
 import 'customer_errors.dart';
 
@@ -19,6 +20,10 @@ final class PaymentRequest extends Equatable {
   /// Above 0.
   final int amountPiasters;
   final PaymentMethod method;
+
+  /// How it was paid: one part in [method] for now (006).
+  PaymentSplit get split => PaymentSplit.single(method, amountPiasters);
+
   final String? note;
 
   static Result<PaymentRequest, List<CustomerFieldError>> create({

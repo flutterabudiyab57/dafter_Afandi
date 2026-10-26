@@ -15,6 +15,7 @@ import '../../customers/data/customer_repository_impl.dart'
     show CustomerRepositoryImpl;
 import '../../customers/domain/ledger_entry.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/data/payment_parts_writer.dart';
 import '../domain/supplier.dart';
 import '../domain/supplier_draft.dart';
 import '../domain/supplier_entry.dart';
@@ -30,6 +31,7 @@ final class SupplierRepositoryImpl implements SupplierRepository {
     this._tx,
     this._ids,
     this._clock,
+    this._parts,
   );
 
   final SuppliersDao _suppliers;
@@ -38,6 +40,7 @@ final class SupplierRepositoryImpl implements SupplierRepository {
   final TransactionRunner _tx;
   final IdGenerator _ids;
   final Clock _clock;
+  final PaymentPartsWriter _parts;
 
   @override
   Stream<List<SupplierSummary>> watchActive(SupplierQuery query) => _suppliers
@@ -160,7 +163,8 @@ final class SupplierRepositoryImpl implements SupplierRepository {
   Stream<void> watchStatementChanges(String supplierId) =>
       _ledger.watchCountOf(supplierId).distinct();
 
-  /// R1 supplier active; P1 SUPPLIER_PAYMENT number; P2 PAYMENT_MADE.
+  /// R1 supplier active; P1 SUPPLIER_PAYMENT number; P2 PAYMENT_MADE; P3
+  /// its payment parts (006).
   @override
   Future<Result<int, SupplierPaymentError>> pay(
     String supplierId,
@@ -173,9 +177,10 @@ final class SupplierRepositoryImpl implements SupplierRepository {
     }
     final now = _clock.nowUtc();
     final number = await _counters.take(db.DocType.SUPPLIER_PAYMENT, now);
+    final entryId = _ids.newId();
     await _ledger.insertEntry(
       SupplierLedgerCompanion.insert(
-        id: _ids.newId(),
+        id: entryId,
         supplierId: supplierId,
         entryType: db.SupplierEntryType.PAYMENT_MADE,
         amountPiasters: -request.amountPiasters,
@@ -184,6 +189,12 @@ final class SupplierRepositoryImpl implements SupplierRepository {
         note: Value(request.note),
         createdAt: now,
       ),
+    );
+    await _parts.write(
+      SupplierPaymentParent(entryId),
+      request.split,
+      paidPiasters: request.amountPiasters,
+      at: now,
     );
     return Ok(number);
   });

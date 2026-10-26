@@ -18,6 +18,7 @@ import '../../../core/utils/quantity.dart';
 import '../../../core/utils/result.dart';
 import '../../customers/data/customer_mappers.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/data/payment_parts_writer.dart';
 import '../../products/data/inventory_repository_impl.dart'
     show replayedAverageCost;
 import '../domain/purchase.dart';
@@ -36,6 +37,7 @@ final class PurchaseRepositoryImpl implements PurchaseRepository {
     this._tx,
     this._ids,
     this._clock,
+    this._parts,
   );
 
   final PurchasesDao _purchases;
@@ -47,10 +49,11 @@ final class PurchaseRepositoryImpl implements PurchaseRepository {
   final TransactionRunner _tx;
   final IdGenerator _ids;
   final Clock _clock;
+  final PaymentPartsWriter _parts;
 
   /// Reads first, then W1 number, W2 header, per line W3 item, W4 PURCHASE
   /// movement and W5 average cost, then W6 PURCHASE and W7 PAYMENT_MADE rows
-  /// for a supplier (research R7).
+  /// for a supplier (research R7), then W8 payment parts on the invoice (006).
   @override
   Future<Result<PurchaseSaved, PurchaseSaveError>> create(
     PurchaseDraft draft,
@@ -176,6 +179,12 @@ final class PurchaseRepositoryImpl implements PurchaseRepository {
         );
       }
     }
+    await _parts.write(
+      PurchaseParent(invoiceId),
+      draft.split,
+      paidPiasters: draft.paid,
+      at: now,
+    );
     return Ok(PurchaseSaved(id: invoiceId, number: number));
   });
 

@@ -124,37 +124,43 @@ payment. After this phase the app behaves exactly as before for the user.
 
 ### Payment parts in existing flows (unsplit)
 
-- [ ] T016 `lib/core/database/daos/payment_parts_dao.dart` (register in `AppDatabase`):
+- [X] T016 `lib/core/database/daos/payment_parts_dao.dart` (register in `AppDatabase`):
   `insertPart`, `partsOfSale`, `partsOfPurchase`, `partsOfLedgerEntry` (customer),
   `partsOfSupplierEntry`, `partsOfExpense`, and `suggestions(method, {limit = 5})`: distinct
   `account_ref` for the method, most recent first.
-- [ ] T017 `lib/features/payments/data/payment_parts_writer.dart` (contracts "Payments"):
+- [X] T017 `lib/features/payments/data/payment_parts_writer.dart` (contracts "Payments"):
   `sealed class PaymentParent` (Sale, Purchase, Receipt, SupplierPayment, Expense) and
   `write(parent, split, {required int paidPiasters, required DateTime at})`. It throws
   `PaymentPartsMismatch` unless `split.total == paidPiasters`, so the caller's transaction rolls
   back. It writes `part_no` 1..n in order. Also `partsOf(parent)`, mapping rows to `PaymentPart`.
   Register it in `lib/core/di/service_locator.dart`.
-- [ ] T018 Change `SaleDraft` (`lib/features/sales/domain/`) from `method` to
+- [X] T018 Change `SaleDraft` (`lib/features/sales/domain/`) from `method` to
   `split: PaymentSplit`, over `paid`. When `paid == 0` the split is empty and no parts are asked
   for. `SalesRepositoryImpl.create` writes `payment_method` = `split.first.method` on the header and
   the `PAYMENT_RECEIVED` row, then W7 parts on the invoice through `PaymentPartsWriter`. Update the
   doc comment's write list. `SaleCubit` keeps one method: `methodChanged(m)` builds
   `PaymentSplit.single(m, paid)`.
-- [ ] T019 Same for the customer receipt: `PaymentRequest.split`;
+- [X] T019 Same for the customer receipt: `PaymentRequest.split`;
   `CustomerRepositoryImpl.receivePayment` writes parts on the new ledger row; `PaymentCubit`
   builds a single split.
-- [ ] T020 Same for purchases: `PurchaseDraft.split` over `paid`; `PurchaseRepositoryImpl.create`
+- [X] T020 Same for purchases: `PurchaseDraft.split` over `paid`; `PurchaseRepositoryImpl.create`
   writes parts on the invoice; `PurchaseCubit` builds a single split.
-- [ ] T021 Same for supplier payments: `SupplierPaymentRequest.split`;
+- [X] T021 Same for supplier payments: `SupplierPaymentRequest.split`;
   `SupplierRepositoryImpl.pay` writes parts on the new ledger row; `SupplierPaymentCubit` builds
   a single split.
-- [ ] T022 Repository tests for T018–T021 on `NativeDatabase.memory()`: one part per paid save;
+- [X] T022 Repository tests for T018–T021 on `NativeDatabase.memory()`: one part per paid save;
   none for credit; a forced mismatch rolls back every write, including the counter; the header and
   ledger method equal part 1's. Property test in `test/features/payments/data/parts_sum_test.dart`:
   random sales, receipts, purchases and supplier payments → Σ parts = paid for every parent.
-- [ ] T023 Update the fakes (`test/helpers/fake_sales.dart`, `fake_purchases.dart`) and existing
+- [X] T023 Update the fakes (`test/helpers/fake_sales.dart`, `fake_purchases.dart`) and existing
   cubit and screen tests for the `split` change. No behaviour visible to the user changes.
-- [ ] T024 Gate: `flutter analyze` clean and `flutter test` green. Commit
+> **As built (T018–T023):** the drafts and `PaymentRequest` keep `method` and gain a derived
+> `split` getter (`PaymentSplit.single(method, paid)`), so the split can never disagree with the
+> amount paid. Cubits, fakes and screens needed no change. Customer and supplier payments share
+> `PaymentRequest`. US6 (T073) replaces the getter with typed parts. `PaymentPartsWriter` is a
+> plain `class` so a test can subclass it to force a mismatch.
+
+- [X] T024 Gate: `flutter analyze` clean and `flutter test` green. Commit
   `feat(006): existing payments write parts`.
 
 ## Phase 3: User Story 1 - Today at a glance (P1) 🎯 MVP

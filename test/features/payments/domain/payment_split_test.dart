@@ -35,8 +35,10 @@ void main() {
   });
 
   test('a total of 0 is nothing paid', () {
-    expect(_ok(_create(0, [const PaymentPartInput(method: _cash)])).isEmpty,
-        isTrue);
+    expect(
+      _ok(_create(0, [const PaymentPartInput(method: _cash)])).isEmpty,
+      isTrue,
+    );
     expect(PaymentSplit.single(_cash, 0).isEmpty, isTrue);
   });
 
@@ -87,7 +89,9 @@ void main() {
       [const TooManyParts(4)],
     );
     expect(
-      _errors(_create(100, [const PaymentPartInput(method: PaymentMethod.card)])),
+      _errors(
+        _create(100, [const PaymentPartInput(method: PaymentMethod.card)]),
+      ),
       [const MethodRepeated(0)],
     );
   });

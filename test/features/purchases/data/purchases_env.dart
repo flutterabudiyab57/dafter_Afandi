@@ -27,6 +27,7 @@ final class PurchasesEnv {
       tx,
       products.ids,
       products.clock,
+      sales.parts,
     );
     purchases = PurchaseRepositoryImpl(
       purchasesDao?.call(this) ?? db.purchasesDao,
@@ -38,6 +39,7 @@ final class PurchasesEnv {
       tx,
       products.ids,
       products.clock,
+      sales.parts,
     );
   }
 

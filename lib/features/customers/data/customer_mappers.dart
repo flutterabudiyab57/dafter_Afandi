@@ -1,6 +1,7 @@
 import '../../../core/database/daos/customer_ledger_dao.dart';
 import '../../../core/database/daos/customers_dao.dart';
 import '../../../core/database/tables/enums.dart' as db;
+import '../../payments/data/payment_parts_writer.dart';
 import '../domain/customer.dart';
 import '../domain/ledger_entry.dart';
 import '../domain/payment.dart';
@@ -50,17 +51,7 @@ abstract final class CustomerMappers {
     db.CustomerEntryType.ADJUSTMENT => LedgerEntryType.reversal,
   };
 
-  static PaymentMethod method(db.PaymentMethod m) => switch (m) {
-    db.PaymentMethod.cash => PaymentMethod.cash,
-    db.PaymentMethod.wallet => PaymentMethod.wallet,
-    db.PaymentMethod.instapay => PaymentMethod.instapay,
-    db.PaymentMethod.card => PaymentMethod.card,
-  };
+  static PaymentMethod method(db.PaymentMethod m) => PaymentMappers.method(m);
 
-  static db.PaymentMethod toDb(PaymentMethod m) => switch (m) {
-    PaymentMethod.cash => db.PaymentMethod.cash,
-    PaymentMethod.wallet => db.PaymentMethod.wallet,
-    PaymentMethod.instapay => db.PaymentMethod.instapay,
-    PaymentMethod.card => db.PaymentMethod.card,
-  };
+  static db.PaymentMethod toDb(PaymentMethod m) => PaymentMappers.toDb(m);
 }
