@@ -231,6 +231,7 @@ final class SalesRepositoryImpl implements SalesRepository {
           subtotalPiasters: i.subtotalPiasters,
           invoiceDiscountPiasters: i.discountPiasters,
           method: CustomerMappers.method(i.paymentMethod),
+          parts: await _parts.partsOf(SaleParent(id)),
           note: i.note,
           voidedAt: i.voidedAt,
           voidReason: i.voidReason,

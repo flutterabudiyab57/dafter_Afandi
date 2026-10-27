@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../payments/domain/payment_split.dart';
 import 'payment.dart';
 
 /// The kinds of customer account rows this feature shows.
@@ -18,6 +19,7 @@ final class LedgerEntry extends Equatable {
     this.invoiceNumber,
     this.receiptNumber,
     this.method,
+    this.parts = const [],
     this.note,
     this.reversed = false,
   });
@@ -41,6 +43,10 @@ final class LedgerEntry extends Equatable {
   final int? invoiceNumber;
   final int? receiptNumber;
   final PaymentMethod? method;
+
+  /// The payment's parts with their methods and account numbers (FR-039);
+  /// empty for a record saved before 006 or with nothing paid.
+  final List<PaymentPart> parts;
   final String? note;
 
   /// A later reversal row points to this one (a cancelled payment).
@@ -64,6 +70,7 @@ final class LedgerEntry extends Equatable {
     invoiceNumber,
     receiptNumber,
     method,
+    parts,
     note,
     reversed,
   ];

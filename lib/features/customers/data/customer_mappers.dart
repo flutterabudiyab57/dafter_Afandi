@@ -2,6 +2,7 @@ import '../../../core/database/daos/customer_ledger_dao.dart';
 import '../../../core/database/daos/customers_dao.dart';
 import '../../../core/database/tables/enums.dart' as db;
 import '../../payments/data/payment_parts_writer.dart';
+import '../../payments/domain/payment_split.dart';
 import '../domain/customer.dart';
 import '../domain/ledger_entry.dart';
 import '../domain/payment.dart';
@@ -24,7 +25,10 @@ abstract final class CustomerMappers {
         : row.customer.archivedAt?.add(kArchivePurgeAfter),
   );
 
-  static LedgerEntry entry(StatementRow s) {
+  static LedgerEntry entry(
+    StatementRow s, {
+    List<PaymentPart> parts = const [],
+  }) {
     final r = s.row;
     return LedgerEntry(
       id: r.id,
@@ -39,6 +43,7 @@ abstract final class CustomerMappers {
       method: r.paymentMethod == null ? null : method(r.paymentMethod!),
       note: r.note,
       reversed: s.reversed,
+      parts: parts,
     );
   }
 

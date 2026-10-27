@@ -13,6 +13,7 @@ import 'package:daftar_afandi/features/customers/presentation/cubits/customer_fo
 import 'package:daftar_afandi/features/customers/presentation/cubits/customers_list_cubit.dart';
 import 'package:daftar_afandi/features/customers/presentation/cubits/payment_cubit.dart';
 import 'package:daftar_afandi/features/customers/presentation/customers_cubits.dart';
+import 'package:daftar_afandi/features/payments/domain/payment_split.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/product_picker_cubit.dart';
 import 'package:daftar_afandi/features/sales/domain/sale.dart';
@@ -36,6 +37,7 @@ final class _Row {
     this.invoiceId,
     this.receipt,
     this.method,
+    this.parts = const [],
     this.note,
     this.reverses,
   });
@@ -49,6 +51,7 @@ final class _Row {
   final String? invoiceId;
   final int? receipt;
   final PaymentMethod? method;
+  final List<PaymentPart> parts;
   final String? note;
   final String? reverses;
 }
@@ -148,6 +151,7 @@ final class FakeSalesStore {
     String? invoiceId,
     int? receipt,
     PaymentMethod? method,
+    List<PaymentPart> parts = const [],
     String? note,
     String? reverses,
   }) {
@@ -161,6 +165,7 @@ final class FakeSalesStore {
       invoiceId: invoiceId,
       receipt: receipt,
       method: method,
+      parts: parts,
       note: note,
       reverses: reverses,
     );
@@ -241,6 +246,7 @@ final class FakeSalesStore {
               : invoice(r.invoiceId!)?.summary.number,
           receiptNumber: r.receipt,
           method: r.method,
+          parts: r.parts,
           note: r.note,
           reversed: _ledger.any((x) => x.reverses == r.id),
         ),
@@ -304,6 +310,7 @@ final class FakeSalesStore {
           subtotalPiasters: draft.subtotal,
           invoiceDiscountPiasters: draft.invoiceDiscountPiasters,
           method: draft.method,
+          parts: draft.split.parts,
           items: [
             for (final (i, l) in draft.lines.indexed)
               SaleItem(
@@ -332,6 +339,7 @@ final class FakeSalesStore {
           -draft.paid,
           invoiceId: id,
           method: draft.method,
+          parts: draft.split.parts,
         );
       }
     }
@@ -507,6 +515,7 @@ final class FakeCustomerRepository implements CustomerRepository {
       -request.amountPiasters,
       receipt: number,
       method: request.method,
+      parts: request.split.parts,
       note: request.note,
     );
     _s._changed();
@@ -640,6 +649,7 @@ final class FakeSalesRepository implements SalesRepository {
       subtotalPiasters: inv.subtotalPiasters,
       invoiceDiscountPiasters: inv.invoiceDiscountPiasters,
       method: inv.method,
+      parts: inv.parts,
       items: inv.items,
       note: inv.note,
       voidedAt: at,

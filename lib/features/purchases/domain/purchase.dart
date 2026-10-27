@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../core/utils/digits.dart';
 import '../../../core/utils/quantity.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/domain/payment_split.dart';
 
 /// How a purchase was paid, derived from its amounts.
 enum PurchaseKind { cash, partial, credit }
@@ -107,6 +108,7 @@ final class Purchase extends Equatable {
     required this.subtotalPiasters,
     required this.invoiceDiscountPiasters,
     required this.method,
+    this.parts = const [],
     required this.items,
     this.note,
     this.voidedAt,
@@ -117,6 +119,10 @@ final class Purchase extends Equatable {
   final int subtotalPiasters;
   final int invoiceDiscountPiasters;
   final PaymentMethod method;
+
+  /// The payment's parts with their methods and account numbers (FR-039);
+  /// empty for a record saved before 006 or with nothing paid.
+  final List<PaymentPart> parts;
   final List<PurchaseItem> items;
   final String? note;
   final DateTime? voidedAt;
@@ -128,6 +134,7 @@ final class Purchase extends Equatable {
     subtotalPiasters,
     invoiceDiscountPiasters,
     method,
+    parts,
     items,
     note,
     voidedAt,

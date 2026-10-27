@@ -13,10 +13,10 @@ import '../../../../core/widgets/number_fields.dart';
 import '../../../../core/widgets/save_button.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/domain/customer.dart';
-import '../../../customers/domain/payment.dart';
 import '../../../customers/presentation/cubits/customer_form_cubit.dart';
 import '../../../customers/presentation/cubits/customers_list_cubit.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
+import '../../../payments/presentation/widgets/payment_split_field.dart';
 import '../../../products/domain/product.dart';
 import '../../../products/domain/quantity_input.dart';
 import '../../../products/presentation/cubits/product_picker_cubit.dart';
@@ -167,6 +167,9 @@ class _BodyState extends State<_Body> {
   final _invoiceDiscount = TextEditingController();
   final _paid = TextEditingController();
 
+  /// Bumped after each saved sale, so the payment field starts again.
+  var _payments = 0;
+
   @override
   void dispose() {
     _barcode.dispose();
@@ -277,6 +280,7 @@ class _BodyState extends State<_Body> {
         if (s.status != SaleStatus.saved) return;
         _invoiceDiscount.clear();
         _barcode.clear();
+        setState(() => _payments++);
       },
       child: SafeArea(
         child: SingleChildScrollView(
@@ -370,18 +374,14 @@ class _BodyState extends State<_Body> {
                   piasters: draft.remaining,
                 ),
               gap,
-              Text(l10n.saleMethodLabel, style: theme.textTheme.labelLarge),
-              SizedBox(height: tokens.spaceXs),
-              Wrap(
-                spacing: tokens.spaceSm,
-                runSpacing: tokens.spaceSm,
-                children: [
-                  for (final m in offeredPaymentMethods)
-                    ChoiceChip(
-                      label: Text(context.methodLabel(m)),
-                      selected: draft.method == m,
-                      onSelected: (_) => _cubit.methodChanged(m),
-                    ),
+              PaymentSplitField(
+                // A new sale starts again with one cash part.
+                key: ValueKey(_payments),
+                totalPiasters: draft.paid,
+                onChanged: _cubit.paymentChanged,
+                errors: [
+                  for (final e in state.errors)
+                    if (e is SalePaymentInvalid) ...e.errors,
                 ],
               ),
               SizedBox(height: tokens.spaceXl),

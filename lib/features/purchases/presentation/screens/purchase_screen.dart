@@ -9,8 +9,8 @@ import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/load_failed_view.dart';
 import '../../../../core/widgets/status_banner.dart';
-import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
+import '../../../payments/presentation/widgets/payment_parts_text.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../../suppliers/presentation/widgets/supplier_text.dart';
 import '../../domain/purchase.dart';
@@ -167,7 +167,10 @@ class _Body extends StatelessWidget {
           if (s.paidPiasters > 0)
             ListTile(
               title: Text(l10n.saleMethodLabel),
-              subtitle: Text(context.methodLabel(purchase.method)),
+              subtitle: PaymentPartsText(
+                parts: purchase.parts,
+                method: purchase.method,
+              ),
             ),
           if (note != null)
             ListTile(title: Text(l10n.customerNoteLabel), subtitle: Text(note)),

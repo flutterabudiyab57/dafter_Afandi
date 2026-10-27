@@ -11,6 +11,7 @@ import 'core/theme/app_tokens.dart';
 import 'core/widgets/digit_style_scope.dart';
 import 'features/customers/presentation/customers_cubits.dart';
 import 'features/expenses/presentation/expenses_cubits.dart';
+import 'features/payments/presentation/payments_cubits.dart';
 import 'features/products/presentation/products_cubits.dart';
 import 'features/purchases/presentation/purchases_cubits.dart';
 import 'features/reports/presentation/cubits/reports_cubits.dart';
@@ -33,6 +34,7 @@ class App extends StatefulWidget {
     required this.purchases,
     required this.reports,
     required this.expenses,
+    required this.payments,
     super.key,
   });
 
@@ -61,6 +63,9 @@ class App extends StatefulWidget {
   /// Builds the expenses screens' cubits (006).
   final ExpensesCubits expenses;
 
+  /// Builds the payment field's cubit on every payment form (006).
+  final PaymentsCubits payments;
+
   @override
   State<App> createState() => _AppState();
 }
@@ -88,8 +93,11 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: widget.preferences,
-      child: RepositoryProvider.value(
-        value: widget.appVersion,
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider.value(value: widget.appVersion),
+          RepositoryProvider.value(value: widget.payments),
+        ],
         child: ScreenUtilInit(
           designSize: const Size(420, 812),
           builder: (context, _) => _buildApp(context),

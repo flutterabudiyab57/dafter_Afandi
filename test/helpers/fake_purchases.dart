@@ -8,6 +8,7 @@ import 'package:daftar_afandi/features/customers/domain/customer.dart'
     show kArchivePurgeAfter;
 import 'package:daftar_afandi/features/customers/domain/ledger_entry.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
+import 'package:daftar_afandi/features/payments/domain/payment_split.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/product_form_cubit.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/product_picker_cubit.dart';
@@ -42,6 +43,7 @@ final class _Row {
     this.purchaseId,
     this.paymentNumber,
     this.method,
+    this.parts = const [],
     this.note,
     this.reverses,
   });
@@ -55,6 +57,7 @@ final class _Row {
   final String? purchaseId;
   final int? paymentNumber;
   final PaymentMethod? method;
+  final List<PaymentPart> parts;
   final String? note;
   final String? reverses;
 }
@@ -155,6 +158,7 @@ final class FakePurchasesStore {
     String? purchaseId,
     int? paymentNumber,
     PaymentMethod? method,
+    List<PaymentPart> parts = const [],
     String? note,
     String? reverses,
   }) {
@@ -168,6 +172,7 @@ final class FakePurchasesStore {
       purchaseId: purchaseId,
       paymentNumber: paymentNumber,
       method: method,
+      parts: parts,
       note: note,
       reverses: reverses,
     );
@@ -249,6 +254,7 @@ final class FakePurchasesStore {
               : purchase(r.purchaseId!)?.summary.number,
           paymentNumber: r.paymentNumber,
           method: r.method,
+          parts: r.parts,
           note: r.note,
           reversed: _ledger.any((x) => x.reverses == r.id),
         ),
@@ -311,6 +317,7 @@ final class FakePurchasesStore {
         subtotalPiasters: draft.subtotal,
         invoiceDiscountPiasters: draft.invoiceDiscountPiasters,
         method: draft.method,
+        parts: draft.split.parts,
         items: [
           for (final (i, l) in draft.lines.indexed)
             PurchaseItem(
@@ -338,6 +345,7 @@ final class FakePurchasesStore {
           -draft.paid,
           purchaseId: id,
           method: draft.method,
+          parts: draft.split.parts,
         );
       }
     }
@@ -499,6 +507,7 @@ final class FakeSupplierRepository implements SupplierRepository {
       -request.amountPiasters,
       paymentNumber: number,
       method: request.method,
+      parts: request.split.parts,
       note: request.note,
     );
     _s._changed();
@@ -654,6 +663,7 @@ final class FakePurchaseRepository implements PurchaseRepository {
       subtotalPiasters: p.subtotalPiasters,
       invoiceDiscountPiasters: p.invoiceDiscountPiasters,
       method: p.method,
+      parts: p.parts,
       items: p.items,
       note: p.note,
       voidedAt: at,

@@ -1717,4 +1717,92 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get reportBalancesSuppliersNone =>
       'لا توجد مبالغ مستحقة على المحل لأي مورد.';
+
+  @override
+  String get paymentSplitAction => 'تقسيم الدفع';
+
+  @override
+  String paymentPartTitle(String n) {
+    return 'الجزء $n';
+  }
+
+  @override
+  String paymentPartRemove(String n) {
+    return 'حذف الجزء $n';
+  }
+
+  @override
+  String get paymentPartAmountLabel => 'مبلغ الجزء';
+
+  @override
+  String get paymentAccountLabel => 'رقم حسابك (اختياري)';
+
+  @override
+  String get paymentAccountHint => 'مثل رقم محفظتك أو عنوان إنستاباي';
+
+  @override
+  String get paymentAccountSuggestions => 'حسابات استخدمتها من قبل';
+
+  @override
+  String paymentRemaining(String amount) {
+    return 'المتبقي توزيعه: $amount';
+  }
+
+  @override
+  String paymentOverBy(String amount) {
+    return 'الأجزاء أكثر من المبلغ بـ $amount';
+  }
+
+  @override
+  String get paymentSplitBalanced => 'الأجزاء مساوية للمبلغ.';
+
+  @override
+  String get errorPartAmountInvalid =>
+      'أدخل مبلغًا صحيحًا بحد أقصى منزلتين عشريتين.';
+
+  @override
+  String get errorPartAmountZero => 'يجب أن يكون الجزء أكبر من صفر.';
+
+  @override
+  String get errorPaymentMethodRepeated =>
+      'كل طريقة دفع تُستخدم مرة واحدة فقط.';
+
+  @override
+  String get errorAccountInvalid =>
+      'استخدم الأرقام والحروف اللاتينية و@ . _ - فقط.';
+
+  @override
+  String errorAccountTooLong(String max) {
+    return 'رقم الحساب $max حرفًا على الأكثر.';
+  }
+
+  @override
+  String get errorAccountNotAllowed => 'الدفع النقدي ليس له رقم حساب.';
+
+  @override
+  String get errorTooManyParts =>
+      'يمكن تقسيم الدفع إلى ثلاثة أجزاء على الأكثر.';
+
+  @override
+  String errorPartsOver(String amount) {
+    return 'مجموع الأجزاء أكثر من المبلغ المدفوع بـ $amount. اجعلها مساوية له.';
+  }
+
+  @override
+  String errorPartsShort(String amount) {
+    return 'مجموع الأجزاء أقل من المبلغ المدفوع بـ $amount. اجعلها مساوية له.';
+  }
+
+  @override
+  String paymentPartLine(String method, String amount) {
+    return '$method: $amount';
+  }
+
+  @override
+  String paymentPartAccount(String account) {
+    return 'إلى/من حسابك $account';
+  }
+
+  @override
+  String get paymentPartsTitle => 'طريقة الدفع';
 }

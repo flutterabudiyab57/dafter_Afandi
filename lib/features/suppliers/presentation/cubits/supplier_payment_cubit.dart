@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/result.dart';
 import '../../../customers/domain/customer_errors.dart';
 import '../../../customers/domain/payment.dart';
+import '../../../payments/domain/payment_split.dart';
 import '../../domain/supplier.dart';
 import '../../domain/supplier_errors.dart';
 import '../../domain/supplier_repository.dart';
@@ -29,7 +30,8 @@ final class SupplierPaymentState extends Equatable {
     this.supplierName = '',
     this.balancePiasters = 0,
     this.amount = '',
-    this.method = PaymentMethod.cash,
+    this.payment = const [PaymentPartInput(method: PaymentMethod.cash)],
+    this.paymentErrors = const [],
     this.note = '',
     this.errors = const [],
     this.pending,
@@ -43,7 +45,14 @@ final class SupplierPaymentState extends Equatable {
   /// What the shop owes the supplier now.
   final int balancePiasters;
   final String amount;
-  final PaymentMethod method;
+
+  /// How it is paid, as typed: one part, or up to three (FR-036).
+  final List<PaymentPartInput> payment;
+
+  /// Why the parts were refused; shown on the payment field.
+  final List<PaymentSplitError> paymentErrors;
+
+  PaymentMethod get method => payment.first.method;
   final String note;
   final List<CustomerFieldError> errors;
 
@@ -63,7 +72,8 @@ final class SupplierPaymentState extends Equatable {
     String? supplierName,
     int? balancePiasters,
     String? amount,
-    PaymentMethod? method,
+    List<PaymentPartInput>? payment,
+    List<PaymentSplitError>? paymentErrors,
     String? note,
     List<CustomerFieldError>? errors,
     PaymentRequest? Function()? pending,
@@ -74,7 +84,8 @@ final class SupplierPaymentState extends Equatable {
     supplierName: supplierName ?? this.supplierName,
     balancePiasters: balancePiasters ?? this.balancePiasters,
     amount: amount ?? this.amount,
-    method: method ?? this.method,
+    payment: payment ?? this.payment,
+    paymentErrors: paymentErrors ?? this.paymentErrors,
     note: note ?? this.note,
     errors: errors ?? this.errors,
     pending: pending == null ? this.pending : pending(),
@@ -88,9 +99,10 @@ final class SupplierPaymentState extends Equatable {
     supplierName,
     balancePiasters,
     amount,
-    method,
+    payment,
     note,
     errors,
+    paymentErrors,
     pending,
     paymentNumber,
     refusal,
@@ -117,7 +129,8 @@ class SupplierPaymentCubit extends Cubit<SupplierPaymentState> {
       _baseline != null &&
       _fields(state) != _baseline;
 
-  static Object _fields(SupplierPaymentState s) => (s.amount, s.method, s.note);
+  static Object _fields(SupplierPaymentState s) =>
+      (s.amount, s.payment, s.note);
 
   @override
   void onChange(Change<SupplierPaymentState> change) {
@@ -148,12 +161,20 @@ class SupplierPaymentCubit extends Cubit<SupplierPaymentState> {
   }
 
   void amountChanged(String v) => _edit(state.copyWith(amount: v));
-  void methodChanged(PaymentMethod m) => _edit(state.copyWith(method: m));
+  void methodChanged(PaymentMethod m) =>
+      _edit(state.copyWith(payment: [PaymentPartInput(method: m)]));
+
+  /// The payment parts as typed (US6).
+  void paymentChanged(List<PaymentPartInput> parts) {
+    if (parts != state.payment) _edit(state.copyWith(payment: parts));
+  }
+
   void noteChanged(String v) => _edit(state.copyWith(note: v));
 
   void _edit(SupplierPaymentState next) => emit(
     next.copyWith(
       errors: const [],
+      paymentErrors: const [],
       refusal: () => null,
       status: state.status == SupplierPaymentStatus.failed
           ? SupplierPaymentStatus.editing
@@ -175,7 +196,18 @@ class SupplierPaymentCubit extends Cubit<SupplierPaymentState> {
     )) {
       case Err(:final error):
         emit(state.copyWith(errors: error));
-      case Ok(:final value):
+      case Ok(value: final request):
+        final PaymentRequest value;
+        switch (PaymentSplit.create(
+          totalPiasters: request.amountPiasters,
+          inputs: state.payment,
+        )) {
+          case Err(:final error):
+            emit(state.copyWith(paymentErrors: error));
+            return;
+          case Ok(value: final split):
+            value = split.isEmpty ? request : request.withSplit(split);
+        }
         if (value.amountPiasters > state.balancePiasters) {
           emit(
             state.copyWith(

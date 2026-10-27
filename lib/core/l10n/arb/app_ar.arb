@@ -2397,5 +2397,141 @@
   "reportBalancesSuppliersNone": "لا توجد مبالغ مستحقة على المحل لأي مورد.",
   "@reportBalancesSuppliersNone": {
     "description": "Balances: the shop owes no supplier."
+  },
+  "paymentSplitAction": "تقسيم الدفع",
+  "@paymentSplitAction": {
+    "description": "Payment field: adds another part paid by another method."
+  },
+  "paymentPartTitle": "الجزء {n}",
+  "@paymentPartTitle": {
+    "description": "Payment field: heading of one part of a split payment. {n} is 1, 2 or 3 in the digit style.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartRemove": "حذف الجزء {n}",
+  "@paymentPartRemove": {
+    "description": "Payment field: spoken label of the button that removes a part; its amount goes back to part 1.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartAmountLabel": "مبلغ الجزء",
+  "@paymentPartAmountLabel": {
+    "description": "Payment field: the amount of one part."
+  },
+  "paymentAccountLabel": "رقم حسابك (اختياري)",
+  "@paymentAccountLabel": {
+    "description": "Payment field, wallet or InstaPay: the owner's own wallet number or InstaPay address the money arrived in or left from."
+  },
+  "paymentAccountHint": "مثل رقم محفظتك أو عنوان إنستاباي",
+  "@paymentAccountHint": {
+    "description": "Helper under the account number field."
+  },
+  "paymentAccountSuggestions": "حسابات استخدمتها من قبل",
+  "@paymentAccountSuggestions": {
+    "description": "Payment field: label above the chips of account numbers used before."
+  },
+  "paymentRemaining": "المتبقي توزيعه: {amount}",
+  "@paymentRemaining": {
+    "description": "Payment field, split: how much of the amount is not in any part yet. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentOverBy": "الأجزاء أكثر من المبلغ بـ {amount}",
+  "@paymentOverBy": {
+    "description": "Payment field, split: the parts add up to more than the amount. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentSplitBalanced": "الأجزاء مساوية للمبلغ.",
+  "@paymentSplitBalanced": {
+    "description": "Payment field, split: the parts add up exactly."
+  },
+  "errorPartAmountInvalid": "أدخل مبلغًا صحيحًا بحد أقصى منزلتين عشريتين.",
+  "@errorPartAmountInvalid": {
+    "description": "Payment part error."
+  },
+  "errorPartAmountZero": "يجب أن يكون الجزء أكبر من صفر.",
+  "@errorPartAmountZero": {
+    "description": "Payment part error."
+  },
+  "errorPaymentMethodRepeated": "كل طريقة دفع تُستخدم مرة واحدة فقط.",
+  "@errorPaymentMethodRepeated": {
+    "description": "Payment part error: the same method is on two parts."
+  },
+  "errorAccountInvalid": "استخدم الأرقام والحروف اللاتينية و@ . _ - فقط.",
+  "@errorAccountInvalid": {
+    "description": "Account number error."
+  },
+  "errorAccountTooLong": "رقم الحساب {max} حرفًا على الأكثر.",
+  "@errorAccountTooLong": {
+    "description": "Account number error. {max} is 40 in the digit style.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorAccountNotAllowed": "الدفع النقدي ليس له رقم حساب.",
+  "@errorAccountNotAllowed": {
+    "description": "Account number error on a cash part."
+  },
+  "errorTooManyParts": "يمكن تقسيم الدفع إلى ثلاثة أجزاء على الأكثر.",
+  "@errorTooManyParts": {
+    "description": "Payment error."
+  },
+  "errorPartsOver": "مجموع الأجزاء أكثر من المبلغ المدفوع بـ {amount}. اجعلها مساوية له.",
+  "@errorPartsOver": {
+    "description": "Payment error: the parts add up to more. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPartsShort": "مجموع الأجزاء أقل من المبلغ المدفوع بـ {amount}. اجعلها مساوية له.",
+  "@errorPartsShort": {
+    "description": "Payment error: the parts add up to less. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartLine": "{method}: {amount}",
+  "@paymentPartLine": {
+    "description": "One part of a payment on a details screen or statement. {method} is the method name; {amount} is money.",
+    "placeholders": {
+      "method": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartAccount": "حسابك: {account}",
+  "@paymentPartAccount": {
+    "description": "Under a payment part: the owner's account number. {account} is kept left-to-right.",
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartsTitle": "طريقة الدفع",
+  "@paymentPartsTitle": {
+    "description": "Details screens: heading of the payment parts."
   }
 }

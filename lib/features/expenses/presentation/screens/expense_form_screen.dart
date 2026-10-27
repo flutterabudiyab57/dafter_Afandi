@@ -6,6 +6,7 @@ import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/digits.dart';
+import '../../../../core/utils/money.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
 import '../../../../core/widgets/digit_style_scope.dart';
@@ -13,8 +14,7 @@ import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
 import '../../../../core/widgets/save_button.dart';
 import '../../../../core/widgets/unsaved_changes_guard.dart';
-import '../../../customers/presentation/widgets/customer_text.dart';
-import '../../../payments/domain/payment_method.dart';
+import '../../../payments/presentation/widgets/payment_split_field.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/expense.dart';
 import '../../domain/expense_errors.dart';
@@ -123,7 +123,6 @@ class _FormState extends State<_Form> {
           e is ExpenseAmountInvalid ||
           e is ExpenseAmountTooLarge,
     );
-    final methodError = err((e) => e is ExpenseSplitInvalid);
     final dateError = err((e) => e is ExpenseDateInFuture);
     final noteError = err((e) => e is ExpenseNoteTooLong);
     final errorStyle = theme.textTheme.bodySmall?.copyWith(
@@ -178,24 +177,14 @@ class _FormState extends State<_Form> {
               errorText: amountError,
             ),
             gap,
-            Text(l10n.saleMethodLabel, style: theme.textTheme.labelLarge),
-            SizedBox(height: tokens.spaceXs),
-            Wrap(
-              spacing: tokens.spaceSm,
-              runSpacing: tokens.spaceSm,
-              children: [
-                for (final m in offeredPaymentMethods)
-                  ChoiceChip(
-                    label: Text(context.methodLabel(m)),
-                    selected: state.method == m,
-                    onSelected: (_) => _cubit.methodChanged(m),
-                  ),
+            PaymentSplitField(
+              totalPiasters: tryParsePiasters(state.amount) ?? 0,
+              onChanged: _cubit.paymentChanged,
+              errors: [
+                for (final e in state.errors)
+                  if (e is ExpenseSplitInvalid) e.error,
               ],
             ),
-            if (methodError != null) ...[
-              SizedBox(height: tokens.spaceXs),
-              Text(methodError, style: errorStyle),
-            ],
             gap,
             ListTile(
               contentPadding: EdgeInsetsDirectional.zero,

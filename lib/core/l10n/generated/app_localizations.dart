@@ -3030,6 +3030,138 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لا توجد مبالغ مستحقة على المحل لأي مورد.'**
   String get reportBalancesSuppliersNone;
+
+  /// Payment field: adds another part paid by another method.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقسيم الدفع'**
+  String get paymentSplitAction;
+
+  /// Payment field: heading of one part of a split payment. {n} is 1, 2 or 3 in the digit style.
+  ///
+  /// In ar, this message translates to:
+  /// **'الجزء {n}'**
+  String paymentPartTitle(String n);
+
+  /// Payment field: spoken label of the button that removes a part; its amount goes back to part 1.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف الجزء {n}'**
+  String paymentPartRemove(String n);
+
+  /// Payment field: the amount of one part.
+  ///
+  /// In ar, this message translates to:
+  /// **'مبلغ الجزء'**
+  String get paymentPartAmountLabel;
+
+  /// Payment field, wallet or InstaPay: the owner's own wallet number or InstaPay address the money arrived in or left from.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم حسابك (اختياري)'**
+  String get paymentAccountLabel;
+
+  /// Helper under the account number field.
+  ///
+  /// In ar, this message translates to:
+  /// **'مثل رقم محفظتك أو عنوان إنستاباي'**
+  String get paymentAccountHint;
+
+  /// Payment field: label above the chips of account numbers used before.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسابات استخدمتها من قبل'**
+  String get paymentAccountSuggestions;
+
+  /// Payment field, split: how much of the amount is not in any part yet. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'المتبقي توزيعه: {amount}'**
+  String paymentRemaining(String amount);
+
+  /// Payment field, split: the parts add up to more than the amount. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأجزاء أكثر من المبلغ بـ {amount}'**
+  String paymentOverBy(String amount);
+
+  /// Payment field, split: the parts add up exactly.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأجزاء مساوية للمبلغ.'**
+  String get paymentSplitBalanced;
+
+  /// Payment part error.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل مبلغًا صحيحًا بحد أقصى منزلتين عشريتين.'**
+  String get errorPartAmountInvalid;
+
+  /// Payment part error.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجب أن يكون الجزء أكبر من صفر.'**
+  String get errorPartAmountZero;
+
+  /// Payment part error: the same method is on two parts.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل طريقة دفع تُستخدم مرة واحدة فقط.'**
+  String get errorPaymentMethodRepeated;
+
+  /// Account number error.
+  ///
+  /// In ar, this message translates to:
+  /// **'استخدم الأرقام والحروف اللاتينية و@ . _ - فقط.'**
+  String get errorAccountInvalid;
+
+  /// Account number error. {max} is 40 in the digit style.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الحساب {max} حرفًا على الأكثر.'**
+  String errorAccountTooLong(String max);
+
+  /// Account number error on a cash part.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدفع النقدي ليس له رقم حساب.'**
+  String get errorAccountNotAllowed;
+
+  /// Payment error.
+  ///
+  /// In ar, this message translates to:
+  /// **'يمكن تقسيم الدفع إلى ثلاثة أجزاء على الأكثر.'**
+  String get errorTooManyParts;
+
+  /// Payment error: the parts add up to more. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'مجموع الأجزاء أكثر من المبلغ المدفوع بـ {amount}. اجعلها مساوية له.'**
+  String errorPartsOver(String amount);
+
+  /// Payment error: the parts add up to less. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'مجموع الأجزاء أقل من المبلغ المدفوع بـ {amount}. اجعلها مساوية له.'**
+  String errorPartsShort(String amount);
+
+  /// One part of a payment on a details screen or statement. {method} is the method name; {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'{method}: {amount}'**
+  String paymentPartLine(String method, String amount);
+
+  /// Under a payment part: the owner's account number. {account} is kept left-to-right.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلى/من حسابك {account}'**
+  String paymentPartAccount(String account);
+
+  /// Details screens: heading of the payment parts.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة الدفع'**
+  String get paymentPartsTitle;
 }
 
 class _AppLocalizationsDelegate

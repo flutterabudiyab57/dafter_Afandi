@@ -12,6 +12,7 @@ import '../../../core/utils/digits.dart';
 import '../../../core/utils/id.dart';
 import '../../../core/utils/result.dart';
 import '../../payments/data/payment_parts_writer.dart';
+import '../../payments/domain/payment_split.dart';
 import '../domain/customer.dart';
 import '../domain/customer_draft.dart';
 import '../domain/customer_errors.dart';
@@ -164,7 +165,20 @@ final class CustomerRepositoryImpl implements CustomerRepository {
       beforeRowOrder: before?.rowOrder,
       limit: limit,
     );
-    return rows.map(CustomerMappers.entry).toList();
+    return [
+      for (final s in rows)
+        CustomerMappers.entry(s, parts: await _partsOfEntry(s.row)),
+    ];
+  }
+
+  /// A payment row's parts: the invoice's when paid at sale time, else the
+  /// receipt's own (FR-039). Other rows have none.
+  Future<List<PaymentPart>> _partsOfEntry(CustomerLedgerRow r) async {
+    if (r.entryType != db.CustomerEntryType.PAYMENT_RECEIVED) return const [];
+    final invoice = r.salesInvoiceId;
+    return _parts.partsOf(
+      invoice != null ? SaleParent(invoice) : ReceiptParent(r.id),
+    );
   }
 
   @override

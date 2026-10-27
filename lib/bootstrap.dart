@@ -17,6 +17,7 @@ import 'core/widgets/update_required_app.dart';
 import 'features/customers/domain/customer_repository.dart';
 import 'features/customers/presentation/customers_cubits.dart';
 import 'features/expenses/presentation/expenses_cubits.dart';
+import 'features/payments/presentation/payments_cubits.dart';
 import 'features/products/presentation/products_cubits.dart';
 import 'features/purchases/presentation/purchases_cubits.dart';
 import 'features/reports/presentation/cubits/reports_cubits.dart';
@@ -107,6 +108,7 @@ Future<void> bootstrap({
       purchases: sl<PurchasesCubits>(),
       reports: sl<ReportsCubits>(),
       expenses: sl<ExpensesCubits>(),
+      payments: sl<PaymentsCubits>(),
     ),
   );
 }

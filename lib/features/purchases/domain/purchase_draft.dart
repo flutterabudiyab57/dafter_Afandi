@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/money.dart';
 import '../../../core/utils/quantity.dart';
+import '../../../core/utils/result.dart';
 import '../../../core/utils/text_length.dart';
 import '../../customers/domain/payment.dart';
 import '../../payments/domain/payment_split.dart';
@@ -86,7 +87,7 @@ final class PurchaseDraft extends Equatable {
     this.lines = const [],
     this.invoiceDiscountPiasters = 0,
     this.paidPiasters,
-    this.method = PaymentMethod.cash,
+    this.payment = const [PaymentPartInput(method: PaymentMethod.cash)],
     this.supplier,
     this.supplierRef,
     this.invoiceDate,
@@ -98,7 +99,9 @@ final class PurchaseDraft extends Equatable {
 
   /// Paid now; null means the whole total (FR-006).
   final int? paidPiasters;
-  final PaymentMethod method;
+
+  /// How [paid] is paid, as typed: one part, or up to three (FR-036).
+  final List<PaymentPartInput> payment;
   final PurchaseSupplier? supplier;
 
   /// The supplier's own invoice number, trimmed; null when not given.
@@ -119,9 +122,16 @@ final class PurchaseDraft extends Equatable {
 
   int get remaining => total - paid;
 
-  /// How [paid] was paid: one part in [method] for now (006). Empty when
-  /// nothing is paid.
-  PaymentSplit get split => PaymentSplit.single(method, paid);
+  /// Part 1's method, kept on the invoice header.
+  PaymentMethod get method => payment.first.method;
+
+  /// [payment] read against [paid]; empty when nothing is paid. Only
+  /// meaningful when [validate] is empty.
+  PaymentSplit get split =>
+      switch (PaymentSplit.create(totalPiasters: paid, inputs: payment)) {
+        Ok(:final value) => value,
+        Err() => PaymentSplit.none,
+      };
 
   /// Each line's share of the invoice discount; they add up to it exactly
   /// (FR-004). Only meaningful when [validate] is empty.
@@ -198,7 +208,12 @@ final class PurchaseDraft extends Equatable {
   /// [piasters] null pays the whole total.
   PurchaseDraft withPaid(int? piasters) => _copy(paidPiasters: () => piasters);
 
-  PurchaseDraft withMethod(PaymentMethod method) => _with(method: method);
+  /// One part in [method] that takes the whole amount paid.
+  PurchaseDraft withMethod(PaymentMethod method) =>
+      withPayment([PaymentPartInput(method: method)]);
+
+  PurchaseDraft withPayment(List<PaymentPartInput> payment) =>
+      _with(payment: payment);
 
   PurchaseDraft withSupplier(PurchaseSupplier? supplier) =>
       _copy(supplier: () => supplier);
@@ -224,13 +239,13 @@ final class PurchaseDraft extends Equatable {
   PurchaseDraft _with({
     List<PurchaseLine>? lines,
     int? invoiceDiscountPiasters,
-    PaymentMethod? method,
+    List<PaymentPartInput>? payment,
   }) => PurchaseDraft(
     lines: lines ?? this.lines,
     invoiceDiscountPiasters:
         invoiceDiscountPiasters ?? this.invoiceDiscountPiasters,
     paidPiasters: paidPiasters,
-    method: method ?? this.method,
+    payment: payment ?? this.payment,
     supplier: supplier,
     supplierRef: supplierRef,
     invoiceDate: invoiceDate,
@@ -248,7 +263,7 @@ final class PurchaseDraft extends Equatable {
     lines: lines,
     invoiceDiscountPiasters: invoiceDiscountPiasters,
     paidPiasters: paidPiasters != null ? paidPiasters() : this.paidPiasters,
-    method: method,
+    payment: payment,
     supplier: supplier != null ? supplier() : this.supplier,
     supplierRef: supplierRef != null ? supplierRef() : this.supplierRef,
     invoiceDate: invoiceDate != null ? invoiceDate() : this.invoiceDate,
@@ -282,6 +297,13 @@ final class PurchaseDraft extends Equatable {
     final p = paid;
     if (p < 0 || p > total) errors.add(const PurchasePaidTooLarge());
     if (p < total && supplier == null) errors.add(const CreditNeedsSupplier());
+    if (p > 0 && p <= total) {
+      if (PaymentSplit.create(totalPiasters: p, inputs: payment) case Err(
+        :final error,
+      )) {
+        errors.add(PurchasePaymentInvalid(error));
+      }
+    }
     final date = invoiceDate;
     if (date != null &&
         date.isAfter(DateTime(today.year, today.month, today.day))) {
@@ -303,7 +325,7 @@ final class PurchaseDraft extends Equatable {
     lines,
     invoiceDiscountPiasters,
     paidPiasters,
-    method,
+    payment,
     supplier,
     supplierRef,
     invoiceDate,

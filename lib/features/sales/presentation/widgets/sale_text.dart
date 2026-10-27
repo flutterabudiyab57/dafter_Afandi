@@ -63,6 +63,8 @@ extension SaleText on BuildContext {
     LineQuantityInvalid() => _l10n.errorQuantityInvalid,
     LinePriceInvalid() => _l10n.errorPriceInvalid,
     DuplicateLine() => null,
+    // The parts' own errors show on the payment field.
+    SalePaymentInvalid() => _l10n.errorPaymentDetails,
   };
 
   String voidError(VoidError e) => switch (e) {

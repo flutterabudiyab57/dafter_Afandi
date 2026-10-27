@@ -1721,4 +1721,92 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportBalancesSuppliersNone => 'The shop owes no supplier.';
+
+  @override
+  String get paymentSplitAction => 'Split payment';
+
+  @override
+  String paymentPartTitle(String n) {
+    return 'Part $n';
+  }
+
+  @override
+  String paymentPartRemove(String n) {
+    return 'Remove part $n';
+  }
+
+  @override
+  String get paymentPartAmountLabel => 'Part amount';
+
+  @override
+  String get paymentAccountLabel => 'Your account number (optional)';
+
+  @override
+  String get paymentAccountHint =>
+      'Like your wallet number or InstaPay address';
+
+  @override
+  String get paymentAccountSuggestions => 'Accounts you used before';
+
+  @override
+  String paymentRemaining(String amount) {
+    return 'Left to split: $amount';
+  }
+
+  @override
+  String paymentOverBy(String amount) {
+    return 'The parts are over by $amount';
+  }
+
+  @override
+  String get paymentSplitBalanced => 'The parts add up to the amount.';
+
+  @override
+  String get errorPartAmountInvalid =>
+      'Enter a valid amount with at most two decimal places.';
+
+  @override
+  String get errorPartAmountZero => 'A part must be more than zero.';
+
+  @override
+  String get errorPaymentMethodRepeated =>
+      'Each payment method can be used only once.';
+
+  @override
+  String get errorAccountInvalid =>
+      'Use only digits, Latin letters and @ . _ -';
+
+  @override
+  String errorAccountTooLong(String max) {
+    return 'The account number can be at most $max characters.';
+  }
+
+  @override
+  String get errorAccountNotAllowed => 'Cash has no account number.';
+
+  @override
+  String get errorTooManyParts => 'A payment can have at most three parts.';
+
+  @override
+  String errorPartsOver(String amount) {
+    return 'The parts are $amount more than the amount paid. Make them add up to it.';
+  }
+
+  @override
+  String errorPartsShort(String amount) {
+    return 'The parts are $amount less than the amount paid. Make them add up to it.';
+  }
+
+  @override
+  String paymentPartLine(String method, String amount) {
+    return '$method: $amount';
+  }
+
+  @override
+  String paymentPartAccount(String account) {
+    return 'Your account $account';
+  }
+
+  @override
+  String get paymentPartsTitle => 'Paid by';
 }

@@ -3,6 +3,7 @@ import '../../../core/database/daos/suppliers_dao.dart';
 import '../../../core/database/tables/enums.dart' as db;
 import '../../customers/data/customer_mappers.dart';
 import '../../customers/domain/customer.dart' show kArchivePurgeAfter;
+import '../../payments/domain/payment_split.dart';
 import '../domain/supplier.dart';
 import '../domain/supplier_entry.dart';
 
@@ -24,7 +25,10 @@ abstract final class SupplierMappers {
         : row.supplier.archivedAt?.add(kArchivePurgeAfter),
   );
 
-  static SupplierEntry entry(SupplierStatementRow s) {
+  static SupplierEntry entry(
+    SupplierStatementRow s, {
+    List<PaymentPart> parts = const [],
+  }) {
     final r = s.row;
     return SupplierEntry(
       id: r.id,
@@ -41,6 +45,7 @@ abstract final class SupplierMappers {
           : CustomerMappers.method(r.paymentMethod!),
       note: r.note,
       reversed: s.reversed,
+      parts: parts,
     );
   }
 

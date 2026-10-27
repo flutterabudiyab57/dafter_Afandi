@@ -383,31 +383,31 @@ scenarios 1–4.
 **Goal**: split payments and the owner's account number in all five forms, shown everywhere a
 payment is shown. **Independent test**: spec US6 scenarios 1–8.
 
-- [ ] T069 [US6] `lib/features/payments/domain/account_suggestions_repository.dart` and
+- [X] T069 [US6] `lib/features/payments/domain/account_suggestions_repository.dart` and
   `lib/features/payments/data/account_suggestions_repository_impl.dart` (T016 `suggestions`).
   Register in DI. Repository test: most recent first, at most 5, per method, no cash.
-- [ ] T070 [US6] `lib/features/payments/presentation/cubits/payment_split_cubit.dart`: parts,
+- [X] T070 [US6] `lib/features/payments/presentation/cubits/payment_split_cubit.dart`: parts,
   errors, suggestions per method; `split()`, `removePart(i)` (its amount goes back to part 1),
   `methodChanged`, `amountChanged`, `accountChanged`, `totalChanged`. Bloc tests, including
   "remaining" and "over by".
-- [ ] T071 [US6] ARB keys: "Split payment", "Part {n}", "Your account number (optional)",
+- [X] T071 [US6] ARB keys: "Split payment", "Part {n}", "Your account number (optional)",
   "Remaining {amount}", "Over by {amount}", every `PaymentSplitError` message.
-- [ ] T072 [US6] `lib/features/payments/presentation/widgets/payment_split_field.dart` (contracts
+- [X] T072 [US6] `lib/features/payments/presentation/widgets/payment_split_field.dart` (contracts
   "PaymentSplitField"): unsplit looks as today (chips, cash selected, no extra field for cash);
   wallet or InstaPay shows the optional account field with suggestion chips; "Split payment" adds
   up to three parts; errors per part and the sum error below. No more taps than today when not
   split (SC-008).
-- [ ] T073 [US6] Use `PaymentSplitField` in new sale (over "paid now"), customer payment, new
+- [X] T073 [US6] Use `PaymentSplitField` in new sale (over "paid now"), customer payment, new
   purchase (over "paid now"), supplier payment and the expense form. The cubits from T018–T021 and
   T051 take a full `PaymentSplit`.
-- [ ] T074 [US6] Show the parts: `SaleInvoice.parts` and `Purchase.parts` from
+- [X] T074 [US6] Show the parts: `SaleInvoice.parts` and `Purchase.parts` from
   `PaymentPartsWriter.partsOf`; `LedgerEntry.parts` and `SupplierEntry.parts` (the invoice's for
   sale and purchase payments, their own for receipts and payments). Invoice, purchase, expense
   details and both statements list each part with its method and account number.
-- [ ] T075 [US6] Tests: repository tests for a 3-part sale, receipt, purchase, supplier payment and
+- [X] T075 [US6] Tests: repository tests for a 3-part sale, receipt, purchase, supplier payment and
   expense; widget tests for spec US6 scenarios 1–8 in each form; ar/en × 1.0/2.0. Money collected
   shows a split sale per method (spec US5 scenario 5).
-- [ ] T076 [US6] Gate: analyze clean, all tests green. Commit `feat(006): split payments and
+- [X] T076 [US6] Gate: analyze clean, all tests green. Commit `feat(006): split payments and
   account numbers`.
 
 ## Phase 9: Polish

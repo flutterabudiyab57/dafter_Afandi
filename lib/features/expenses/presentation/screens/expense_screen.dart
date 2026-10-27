@@ -6,8 +6,8 @@ import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/load_failed_view.dart';
 import '../../../../core/widgets/status_banner.dart';
-import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
+import '../../../payments/presentation/widgets/payment_parts_text.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/expense.dart';
 import '../cubits/expense_cubit.dart';
@@ -94,19 +94,7 @@ class _Body extends StatelessWidget {
           ),
           ListTile(
             title: Text(l10n.saleMethodLabel),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (final p in e.parts)
-                  Text(
-                    [
-                      context.methodLabel(p.method),
-                      if (e.parts.length > 1) context.money(p.amountPiasters),
-                      ?p.accountRef,
-                    ].join(' · '),
-                  ),
-              ],
-            ),
+            subtitle: PaymentPartsText(parts: e.parts),
           ),
           if (note != null)
             ListTile(title: Text(l10n.customerNoteLabel), subtitle: Text(note)),

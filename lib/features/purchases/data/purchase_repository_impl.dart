@@ -229,6 +229,7 @@ final class PurchaseRepositoryImpl implements PurchaseRepository {
           subtotalPiasters: i.subtotalPiasters,
           invoiceDiscountPiasters: i.discountPiasters,
           method: CustomerMappers.method(i.paymentMethod),
+          parts: await _parts.partsOf(PurchaseParent(id)),
           note: i.note,
           voidedAt: i.voidedAt,
           voidReason: i.voidReason,

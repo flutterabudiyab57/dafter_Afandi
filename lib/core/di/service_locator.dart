@@ -8,7 +8,10 @@ import '../../features/expenses/data/expense_category_repository_impl.dart';
 import '../../features/expenses/data/expense_repository_impl.dart';
 import '../../features/expenses/domain/expense_repository.dart';
 import '../../features/expenses/presentation/expenses_cubits.dart';
+import '../../features/payments/data/account_suggestions_repository_impl.dart';
 import '../../features/payments/data/payment_parts_writer.dart';
+import '../../features/payments/domain/account_suggestions_repository.dart';
+import '../../features/payments/presentation/payments_cubits.dart';
 import '../../features/products/data/category_repository_impl.dart';
 import '../../features/products/data/inventory_repository_impl.dart';
 import '../../features/products/data/product_repository_impl.dart';
@@ -123,6 +126,9 @@ Future<void> configureDependencies({
     ..registerLazySingleton<PaymentPartsWriter>(
       () => PaymentPartsWriter(sl<PaymentPartsDao>(), sl<IdGenerator>()),
     )
+    ..registerLazySingleton<AccountSuggestionsRepository>(
+      () => AccountSuggestionsRepositoryImpl(sl<PaymentPartsDao>()),
+    )
     ..registerLazySingleton<CustomersDao>(() => sl<AppDatabase>().customersDao)
     ..registerLazySingleton<CustomerLedgerDao>(
       () => sl<AppDatabase>().customerLedgerDao,
@@ -217,6 +223,7 @@ Future<void> configureDependencies({
     ..registerLazySingleton<PurchasesCubits>(() => AppPurchasesCubits(sl))
     ..registerLazySingleton<ReportsCubits>(() => AppReportsCubits(sl))
     ..registerLazySingleton<ExpensesCubits>(() => AppExpensesCubits(sl))
+    ..registerLazySingleton<PaymentsCubits>(() => AppPaymentsCubits(sl))
     ..registerSingleton<AppVersionSource>(
       versionSource ?? const PackageInfoAppVersionSource(),
     )

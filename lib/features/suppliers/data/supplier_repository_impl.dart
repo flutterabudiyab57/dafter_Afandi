@@ -17,6 +17,7 @@ import '../../customers/domain/customer.dart' show kArchivePurgeAfter;
 import '../../customers/domain/ledger_entry.dart';
 import '../../customers/domain/payment.dart';
 import '../../payments/data/payment_parts_writer.dart';
+import '../../payments/domain/payment_split.dart';
 import '../domain/supplier.dart';
 import '../domain/supplier_draft.dart';
 import '../domain/supplier_entry.dart';
@@ -164,7 +165,20 @@ final class SupplierRepositoryImpl implements SupplierRepository {
       beforeRowOrder: before?.rowOrder,
       limit: limit,
     );
-    return rows.map(SupplierMappers.entry).toList();
+    return [
+      for (final s in rows)
+        SupplierMappers.entry(s, parts: await _partsOfEntry(s.row)),
+    ];
+  }
+
+  /// A payment row's parts: the purchase's when paid at purchase time, else
+  /// the payment's own (FR-039). Other rows have none.
+  Future<List<PaymentPart>> _partsOfEntry(SupplierLedgerRow r) async {
+    if (r.entryType != db.SupplierEntryType.PAYMENT_MADE) return const [];
+    final purchase = r.purchaseInvoiceId;
+    return _parts.partsOf(
+      purchase != null ? PurchaseParent(purchase) : SupplierPaymentParent(r.id),
+    );
   }
 
   @override

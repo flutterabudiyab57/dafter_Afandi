@@ -21,7 +21,7 @@ final class ExpenseFormState extends Equatable {
     this.categories = const [],
     this.categoryId,
     this.amount = '',
-    this.method = PaymentMethod.cash,
+    this.payment = const [PaymentPartInput(method: PaymentMethod.cash)],
     this.note = '',
     this.errors = const [],
     this.saveError,
@@ -34,7 +34,11 @@ final class ExpenseFormState extends Equatable {
   final List<ExpenseCategory> categories;
   final String? categoryId;
   final String amount;
-  final PaymentMethod method;
+
+  /// How it was paid, as typed: one part, or up to three (FR-022).
+  final List<PaymentPartInput> payment;
+
+  PaymentMethod get method => payment.first.method;
 
   /// Local midnight; today to start.
   final DateTime spentOn;
@@ -54,7 +58,7 @@ final class ExpenseFormState extends Equatable {
     List<ExpenseCategory>? categories,
     String? Function()? categoryId,
     String? amount,
-    PaymentMethod? method,
+    List<PaymentPartInput>? payment,
     DateTime? spentOn,
     String? note,
     List<ExpenseFieldError>? errors,
@@ -65,7 +69,7 @@ final class ExpenseFormState extends Equatable {
     categories: categories ?? this.categories,
     categoryId: categoryId == null ? this.categoryId : categoryId(),
     amount: amount ?? this.amount,
-    method: method ?? this.method,
+    payment: payment ?? this.payment,
     spentOn: spentOn ?? this.spentOn,
     note: note ?? this.note,
     errors: errors ?? this.errors,
@@ -79,7 +83,7 @@ final class ExpenseFormState extends Equatable {
     categories,
     categoryId,
     amount,
-    method,
+    payment,
     spentOn,
     note,
     errors,
@@ -88,8 +92,7 @@ final class ExpenseFormState extends Equatable {
   ];
 }
 
-/// The new expense form (US3-1, US3-2): one payment part for now; split
-/// payments come with US6.
+/// The new expense form (US3-1, US3-2), paid in one part or split (US6).
 class ExpenseFormCubit extends Cubit<ExpenseFormState> {
   ExpenseFormCubit(this._expenses, this._categories, this._clock)
     : super(ExpenseFormState(spentOn: _localToday(_clock))) {
@@ -115,7 +118,7 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
   DateTime get today => _localToday(_clock);
 
   static Object _fields(ExpenseFormState s) =>
-      (s.categoryId, s.amount, s.method, s.spentOn, s.note);
+      (s.categoryId, s.amount, s.payment, s.spentOn, s.note);
 
   /// True when a field differs from when the form opened, until saved.
   bool get hasUnsavedChanges =>
@@ -129,7 +132,14 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
   void categoryChanged(String id) =>
       _edit(state.copyWith(categoryId: () => id));
   void amountChanged(String v) => _edit(state.copyWith(amount: v));
-  void methodChanged(PaymentMethod m) => _edit(state.copyWith(method: m));
+  void methodChanged(PaymentMethod m) =>
+      _edit(state.copyWith(payment: [PaymentPartInput(method: m)]));
+
+  /// The payment parts as typed (US6).
+  void paymentChanged(List<PaymentPartInput> parts) {
+    if (parts != state.payment) _edit(state.copyWith(payment: parts));
+  }
+
   void dateChanged(DateTime d) =>
       _edit(state.copyWith(spentOn: DateTime(d.year, d.month, d.day)));
   void noteChanged(String v) => _edit(state.copyWith(note: v));
@@ -156,7 +166,7 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
       amountText: state.amount,
       spentOn: state.spentOn,
       today: today,
-      parts: [PaymentPartInput(method: state.method)],
+      parts: state.payment,
       note: state.note,
     )) {
       case Ok(:final value):

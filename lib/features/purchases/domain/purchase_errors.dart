@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/quantity.dart';
+import '../../payments/domain/payment_split.dart';
 
 /// The supplier's own invoice number, in code points (FR-005).
 const int maxSupplierRefLength = 50;
@@ -86,6 +87,17 @@ final class SupplierRefTooLong extends PurchaseError {
 
 final class PurchaseNoteTooLong extends PurchaseError {
   const PurchaseNoteTooLong();
+}
+
+/// The payment parts are wrong (FR-036, FR-037); shown on the payment
+/// field.
+final class PurchasePaymentInvalid extends PurchaseError {
+  const PurchasePaymentInvalid(this.errors);
+
+  final List<PaymentSplitError> errors;
+
+  @override
+  List<Object?> get props => [errors];
 }
 
 /// Why saving a purchase did not happen.

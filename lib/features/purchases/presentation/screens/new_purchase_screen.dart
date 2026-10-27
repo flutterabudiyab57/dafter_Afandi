@@ -14,8 +14,7 @@ import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
 import '../../../../core/widgets/save_button.dart';
 import '../../../../core/widgets/status_banner.dart';
-import '../../../customers/domain/payment.dart';
-import '../../../customers/presentation/widgets/customer_text.dart';
+import '../../../payments/presentation/widgets/payment_split_field.dart';
 import '../../../products/domain/product.dart';
 import '../../../products/domain/quantity_input.dart';
 import '../../../products/presentation/cubits/product_form_cubit.dart';
@@ -131,6 +130,9 @@ class _BodyState extends State<_Body> {
   final _invoiceDiscount = TextEditingController();
   final _supplierRef = TextEditingController();
   final _paid = TextEditingController();
+
+  /// Bumped after each saved purchase, so the payment field starts again.
+  var _payments = 0;
   final _note = TextEditingController();
 
   @override
@@ -275,6 +277,7 @@ class _BodyState extends State<_Body> {
         for (final c in [_invoiceDiscount, _barcode, _supplierRef, _note]) {
           c.clear();
         }
+        setState(() => _payments++);
       },
       child: SafeArea(
         child: SingleChildScrollView(
@@ -402,18 +405,14 @@ class _BodyState extends State<_Body> {
                   piasters: draft.remaining,
                 ),
               gap,
-              Text(l10n.saleMethodLabel, style: theme.textTheme.labelLarge),
-              SizedBox(height: tokens.spaceXs),
-              Wrap(
-                spacing: tokens.spaceSm,
-                runSpacing: tokens.spaceSm,
-                children: [
-                  for (final m in offeredPaymentMethods)
-                    ChoiceChip(
-                      label: Text(context.methodLabel(m)),
-                      selected: draft.method == m,
-                      onSelected: (_) => _cubit.methodChanged(m),
-                    ),
+              PaymentSplitField(
+                // A new purchase starts again with one cash part.
+                key: ValueKey(_payments),
+                totalPiasters: draft.paid,
+                onChanged: _cubit.paymentChanged,
+                errors: [
+                  for (final e in state.errors)
+                    if (e is PurchasePaymentInvalid) ...e.errors,
                 ],
               ),
               gap,

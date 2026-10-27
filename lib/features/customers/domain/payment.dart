@@ -15,14 +15,27 @@ final class PaymentRequest extends Equatable {
     required this.amountPiasters,
     required this.method,
     this.note,
+    this._split,
   });
 
   /// Above 0.
   final int amountPiasters;
   final PaymentMethod method;
 
-  /// How it was paid: one part in [method] for now (006).
-  PaymentSplit get split => PaymentSplit.single(method, amountPiasters);
+  final PaymentSplit? _split;
+
+  /// How it was paid; one part in [method] unless a split was given.
+  PaymentSplit get split =>
+      _split ?? PaymentSplit.single(method, amountPiasters);
+
+  /// The same payment made in [split]'s parts; part 1's method is kept as
+  /// the ledger row's method.
+  PaymentRequest withSplit(PaymentSplit split) => PaymentRequest(
+    amountPiasters: amountPiasters,
+    method: split.first.method,
+    note: note,
+    split: split,
+  );
 
   final String? note;
 
@@ -60,7 +73,7 @@ final class PaymentRequest extends Equatable {
   }
 
   @override
-  List<Object?> get props => [amountPiasters, method, note];
+  List<Object?> get props => [amountPiasters, method, note, split];
 }
 
 /// A void or cancel reason: trimmed, 1–200 code points (FR-008a, FR-016a).

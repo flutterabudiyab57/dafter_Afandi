@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/result.dart';
+import '../../../payments/domain/payment_split.dart';
 import '../../domain/customer.dart';
 import '../../domain/customer_errors.dart';
 import '../../domain/customer_repository.dart';
@@ -28,7 +29,8 @@ final class PaymentState extends Equatable {
     this.customerName = '',
     this.balancePiasters = 0,
     this.amount = '',
-    this.method = PaymentMethod.cash,
+    this.payment = const [PaymentPartInput(method: PaymentMethod.cash)],
+    this.paymentErrors = const [],
     this.note = '',
     this.errors = const [],
     this.pending,
@@ -40,7 +42,14 @@ final class PaymentState extends Equatable {
   final String customerName;
   final int balancePiasters;
   final String amount;
-  final PaymentMethod method;
+
+  /// How it is paid, as typed: one part, or up to three (FR-036).
+  final List<PaymentPartInput> payment;
+
+  /// Why the parts were refused; shown on the payment field.
+  final List<PaymentSplitError> paymentErrors;
+
+  PaymentMethod get method => payment.first.method;
   final String note;
   final List<CustomerFieldError> errors;
 
@@ -60,7 +69,8 @@ final class PaymentState extends Equatable {
     String? customerName,
     int? balancePiasters,
     String? amount,
-    PaymentMethod? method,
+    List<PaymentPartInput>? payment,
+    List<PaymentSplitError>? paymentErrors,
     String? note,
     List<CustomerFieldError>? errors,
     PaymentRequest? Function()? pending,
@@ -71,7 +81,8 @@ final class PaymentState extends Equatable {
     customerName: customerName ?? this.customerName,
     balancePiasters: balancePiasters ?? this.balancePiasters,
     amount: amount ?? this.amount,
-    method: method ?? this.method,
+    payment: payment ?? this.payment,
+    paymentErrors: paymentErrors ?? this.paymentErrors,
     note: note ?? this.note,
     errors: errors ?? this.errors,
     pending: pending == null ? this.pending : pending(),
@@ -85,9 +96,10 @@ final class PaymentState extends Equatable {
     customerName,
     balancePiasters,
     amount,
-    method,
+    payment,
     note,
     errors,
+    paymentErrors,
     pending,
     receiptNumber,
     refusal,
@@ -114,7 +126,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       _baseline != null &&
       _fields(state) != _baseline;
 
-  static Object _fields(PaymentState s) => (s.amount, s.method, s.note);
+  static Object _fields(PaymentState s) => (s.amount, s.payment, s.note);
 
   @override
   void onChange(Change<PaymentState> change) {
@@ -145,12 +157,20 @@ class PaymentCubit extends Cubit<PaymentState> {
   }
 
   void amountChanged(String v) => _edit(state.copyWith(amount: v));
-  void methodChanged(PaymentMethod m) => _edit(state.copyWith(method: m));
+  void methodChanged(PaymentMethod m) =>
+      _edit(state.copyWith(payment: [PaymentPartInput(method: m)]));
+
+  /// The payment parts as typed (US6).
+  void paymentChanged(List<PaymentPartInput> parts) {
+    if (parts != state.payment) _edit(state.copyWith(payment: parts));
+  }
+
   void noteChanged(String v) => _edit(state.copyWith(note: v));
 
   void _edit(PaymentState next) => emit(
     next.copyWith(
       errors: const [],
+      paymentErrors: const [],
       refusal: () => null,
       status: state.status == PaymentStatus.failed
           ? PaymentStatus.editing
@@ -169,7 +189,18 @@ class PaymentCubit extends Cubit<PaymentState> {
     )) {
       case Err(:final error):
         emit(state.copyWith(errors: error));
-      case Ok(:final value):
+      case Ok(value: final request):
+        final PaymentRequest value;
+        switch (PaymentSplit.create(
+          totalPiasters: request.amountPiasters,
+          inputs: state.payment,
+        )) {
+          case Err(:final error):
+            emit(state.copyWith(paymentErrors: error));
+            return;
+          case Ok(value: final split):
+            value = split.isEmpty ? request : request.withSplit(split);
+        }
         if (value.amountPiasters > state.balancePiasters) {
           emit(
             state.copyWith(

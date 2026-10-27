@@ -17,6 +17,7 @@ import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/domain/customer.dart' show kArchivePurgeAfter;
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
+import '../../../payments/presentation/widgets/payment_parts_text.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../../purchases/presentation/cubits/purchases_list_cubit.dart';
 import '../../../purchases/presentation/widgets/purchase_row.dart';
@@ -294,7 +295,7 @@ class _EntryRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(context.dateTime(e.at)),
-          if (method != null) Text(context.methodLabel(method)),
+          PaymentPartsText(parts: e.parts, method: method),
           if (note != null && note.isNotEmpty) Text(note),
           if (e.reversed)
             Text(
