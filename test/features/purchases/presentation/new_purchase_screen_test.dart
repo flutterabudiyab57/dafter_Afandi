@@ -101,7 +101,7 @@ void main() {
         );
 
         testWidgets('US1-1: 10 × شاي at 11.00 for cash: P-000001, stock 20, '
-            'screen empty again', (tester) async {
+            'back on the list', (tester) async {
           await open(tester);
           await pick(tester, 'شاي');
           // No earlier purchase: the cost starts at the average cost.
@@ -124,8 +124,8 @@ void main() {
           final saved = store.purchaseList(const PurchaseQuery()).single;
           expect(saved.totalPiasters, 11000);
           expect(saved.kind, PurchaseKind.cash);
-          expect(find.text(l10n.saleEmpty), findsOneWidget);
-          expect(currentPath(tester), RoutePaths.purchasesNew);
+          // Back where the purchase was started, the message still showing.
+          expect(currentPath(tester), RoutePaths.purchases);
         });
 
         testWidgets('US1-2: the same barcode twice raises one line to 2', (
@@ -351,6 +351,41 @@ void main() {
           // Clearing the supplier goes back to no supplier.
           await tapVisible(tester, find.text(l10n.purchaseNoSupplier));
           expect(find.text('أحمد'), findsNothing);
+        });
+
+        testWidgets('the picker opens the full form, its name from the '
+            'search; the saved supplier is chosen and the lines kept', (
+          tester,
+        ) async {
+          await open(tester);
+          await pick(tester, 'شاي');
+          await tapVisible(tester, find.text(l10n.purchaseSupplierPick));
+          await tester.enterText(field(l10n.suppliersSearchHint), 'سامي');
+          await tester.pumpAndSettle();
+          await tapVisible(tester, find.text(l10n.supplierNewAction));
+          expect(find.text(l10n.supplierAddTitle), findsOneWidget);
+          expect(field(l10n.supplierNameLabel), findsOneWidget);
+          expect(find.text('سامي'), findsOneWidget);
+          await tester.enterText(field(l10n.customerPhoneLabel), '01001234567');
+          await tapVisible(tester, find.text(l10n.saveAction));
+
+          expect(currentPath(tester), RoutePaths.purchasesNew);
+          final added = store.activeSuppliers().single.supplier;
+          expect(added.name, 'سامي');
+          expect(added.phone, '01001234567');
+          expect(find.text('سامي'), findsOneWidget);
+          expect(find.textContaining('شاي'), findsWidgets);
+        });
+
+        testWidgets('the full form opens with an empty search too; going back '
+            'adds no one', (tester) async {
+          await open(tester);
+          await tapVisible(tester, find.text(l10n.purchaseSupplierPick));
+          await tapVisible(tester, find.text(l10n.supplierNewAction));
+          expect(find.text(l10n.supplierAddTitle), findsOneWidget);
+          await tapBack(tester);
+          expect(find.text(l10n.supplierNewAction), findsOneWidget);
+          expect(store.activeSuppliers(), isEmpty);
         });
 
         testWidgets('US2-5: paid more than the total is rejected', (

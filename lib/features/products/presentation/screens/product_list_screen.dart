@@ -65,6 +65,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
       floatingActionButton: emptyAction
           ? null
           : FloatingActionButton.extended(
+              // Section roots stay alive in the shell; a shared default tag
+              // would clash during page transitions.
+              heroTag: null,
               icon: const Icon(Icons.add),
               label: Text(l10n.productAddTitle),
               onPressed: () => context.push(RoutePaths.productNew),

@@ -99,8 +99,8 @@ void main() {
           find.widgetWithText(FilledButton, l10n.saleSaveAction),
         );
 
-        testWidgets('2 × شاي by barcode: cash sale 1, stock down, screen '
-            'empty again', (tester) async {
+        testWidgets('2 × شاي by barcode: cash sale 1, stock down, back on '
+            'the list', (tester) async {
           await open(tester);
           expect(find.text(l10n.saleEmpty), findsOneWidget);
           await scan(tester, '٦٢٢١');
@@ -117,8 +117,8 @@ void main() {
           );
           expect(store.products.stockOf(tea), 8000);
           expect(store.salesList(const SaleQuery()).single.kind, SaleKind.cash);
-          expect(find.text(l10n.saleEmpty), findsOneWidget);
-          expect(currentPath(tester), RoutePaths.salesNew);
+          // Back where the sale was started, the message still showing.
+          expect(currentPath(tester), RoutePaths.sales);
         });
 
         testWidgets('an unknown barcode says so', (tester) async {
@@ -246,6 +246,34 @@ void main() {
           final k = store.activeCustomers().single.customer.id;
           expect(store.balanceOf(k), 6000);
           expect(store.statementOf(k).first.method, PaymentMethod.wallet);
+        });
+
+        testWidgets('the picker opens the full form, its name from the '
+            'search; the saved customer is chosen and the lines kept', (
+          tester,
+        ) async {
+          await open(tester);
+          await pick(tester, 'شاي');
+          await tapVisible(tester, find.text(l10n.saleCustomerPick));
+          await tester.enterText(
+            find.widgetWithText(TextField, l10n.customersSearchHint),
+            'سامي',
+          );
+          await tester.pumpAndSettle();
+          await tapVisible(tester, find.text(l10n.customerNewAction));
+          expect(find.text(l10n.customerAddTitle), findsOneWidget);
+          expect(find.text('سامي'), findsOneWidget);
+          await tester.enterText(
+            find.widgetWithText(TextField, l10n.customerPhoneLabel),
+            '01001234567',
+          );
+          await tapVisible(tester, find.text(l10n.saveAction));
+
+          final added = store.activeCustomers().single.customer;
+          expect(added.name, 'سامي');
+          expect(added.phone, '01001234567');
+          expect(find.text('سامي'), findsOneWidget);
+          expect(find.textContaining('شاي'), findsWidgets);
         });
 
         testWidgets('paid more than the total is rejected', (tester) async {

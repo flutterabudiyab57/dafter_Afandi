@@ -71,10 +71,10 @@ void main() {
           await type(tester, l10n.customerNameLabel, 'محمد');
           await type(tester, l10n.customerPhoneLabel, '٠١٠١٢٣٤٥٦٧٨');
           await save(tester);
+          // Back to the list, where they are.
           final id = store.activeCustomers().single.customer.id;
-          expect(currentPath(tester), RoutePaths.customerDetails(id));
+          expect(currentPath(tester), RoutePaths.parties);
           expect(store.customer(id)!.customer.phone, '01012345678');
-          await goTo(tester, RoutePaths.parties);
           expect(find.text('محمد'), findsOneWidget);
           expect(find.text(l10n.balanceZero), findsOneWidget);
         });
@@ -85,6 +85,8 @@ void main() {
           await type(tester, l10n.customerNameLabel, 'أحمد');
           await type(tester, l10n.customerOpeningAmount, '50');
           await save(tester);
+          final id = store.activeCustomers().single.customer.id;
+          await goTo(tester, RoutePaths.customerDetails(id));
           expect(
             find.text(l10n.balanceOwes(egp('50.00', '٥٠٫٠٠'))),
             findsOneWidget,
@@ -97,6 +99,7 @@ void main() {
           await type(tester, l10n.customerOpeningAmount, '20');
           await tapVisible(tester, find.text(l10n.customerOpeningInFavour));
           await save(tester);
+          await goTo(tester, RoutePaths.parties);
           expect(
             find.text(l10n.balanceInFavour(egp('20.00', '٢٠٫٠٠'))),
             findsOneWidget,

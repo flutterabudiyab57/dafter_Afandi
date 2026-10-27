@@ -92,11 +92,10 @@ void main() {
           await type(tester, l10n.supplierNameLabel, 'شركة النور');
           await type(tester, l10n.customerPhoneLabel, '٠٢٢٣٤٥٦٧٨٩');
           await save(tester);
+          // Back to the list, where they are.
           final id = store.activeSuppliers().single.supplier.id;
-          expect(currentPath(tester), RoutePaths.supplierDetails(id));
+          expect(currentPath(tester), RoutePaths.suppliers);
           expect(store.supplier(id)!.supplier.phone, '0223456789');
-
-          await goTo(tester, RoutePaths.suppliers);
           expect(find.text('شركة النور'), findsOneWidget);
           expect(find.text(l10n.balanceZero), findsOneWidget);
           // And back to customers.
@@ -113,6 +112,8 @@ void main() {
           await type(tester, l10n.supplierNameLabel, 'شركة النور');
           await type(tester, l10n.customerOpeningAmount, '1000');
           await save(tester);
+          final id = store.activeSuppliers().single.supplier.id;
+          await goTo(tester, RoutePaths.supplierDetails(id));
           expect(
             find.text(l10n.supplierBalanceOwed(egp('1,000.00', '١٬٠٠٠٫٠٠'))),
             findsWidgets,
@@ -125,6 +126,7 @@ void main() {
           await type(tester, l10n.customerOpeningAmount, '50');
           await tapVisible(tester, find.text(l10n.supplierOpeningInShopFavour));
           await save(tester);
+          await goTo(tester, RoutePaths.suppliers);
           expect(
             find.text(l10n.supplierBalanceInShopFavour(egp('50.00', '٥٠٫٠٠'))),
             findsWidgets,

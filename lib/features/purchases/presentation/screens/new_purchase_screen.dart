@@ -23,6 +23,7 @@ import '../../../products/presentation/cubits/product_picker_cubit.dart';
 import '../../../products/presentation/screens/product_picker_page.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../../suppliers/domain/supplier.dart';
+import '../../../suppliers/presentation/cubits/supplier_form_cubit.dart';
 import '../../../suppliers/presentation/cubits/suppliers_list_cubit.dart';
 import '../../../suppliers/presentation/screens/supplier_picker_page.dart';
 import '../../../suppliers/presentation/widgets/supplier_text.dart';
@@ -40,12 +41,14 @@ class NewPurchaseScreen extends StatelessWidget {
     required this.productPicker,
     required this.quickAddProduct,
     required this.supplierPicker,
+    required this.newSupplier,
     super.key,
   });
 
   final ProductPickerCubit Function() productPicker;
   final ProductFormCubit Function(String name) quickAddProduct;
   final SuppliersListCubit Function() supplierPicker;
+  final SupplierFormCubit Function(String name) newSupplier;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +62,12 @@ class NewPurchaseScreen extends StatelessWidget {
           context,
           l10n.purchaseSaved(context.purchaseNumber(state.saved!.number)),
         );
-        cubit.startNew();
+        // Back to where the purchase was started; the message stays.
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          cubit.startNew();
+        }
       },
       child: BlocBuilder<PurchaseCubit, PurchaseState>(
         buildWhen: (a, b) => a.draft.isEmpty != b.draft.isEmpty,
@@ -76,6 +84,7 @@ class NewPurchaseScreen extends StatelessWidget {
               productPicker: productPicker,
               quickAddProduct: quickAddProduct,
               supplierPicker: supplierPicker,
+              newSupplier: newSupplier,
             ),
           ),
         ),
@@ -103,11 +112,13 @@ class _Body extends StatefulWidget {
     required this.productPicker,
     required this.quickAddProduct,
     required this.supplierPicker,
+    required this.newSupplier,
   });
 
   final ProductPickerCubit Function() productPicker;
   final ProductFormCubit Function(String name) quickAddProduct;
   final SuppliersListCubit Function() supplierPicker;
+  final SupplierFormCubit Function(String name) newSupplier;
 
   @override
   State<_Body> createState() => _BodyState();
@@ -182,7 +193,7 @@ class _BodyState extends State<_Body> {
       MaterialPageRoute(
         builder: (_) => BlocProvider(
           create: (_) => widget.supplierPicker(),
-          child: const SupplierPickerPage(),
+          child: SupplierPickerPage(newSupplier: widget.newSupplier),
         ),
       ),
     );

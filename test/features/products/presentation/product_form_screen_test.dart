@@ -78,8 +78,8 @@ void main() {
           expect(store.writes, isEmpty);
         });
 
-        testWidgets('name, unit and price only: saved, opens details with '
-            'stock 0', (tester) async {
+        testWidgets('name, unit and price only: saved with stock 0, back '
+            'on the list', (tester) async {
           final store = await open(tester);
           await type(tester, l10n.productNameLabel, 'أرز مصري');
           await pickUnit(tester, l10n.unitKg);
@@ -87,9 +87,10 @@ void main() {
           await save(tester);
           expect(store.writes, ['create أرز مصري']);
           final id = store.summaries(const ProductQuery()).single.product.id;
-          expect(currentPath(tester), RoutePaths.productDetails(id));
+          expect(currentPath(tester), RoutePaths.products);
           expect(store.summary(id)!.product.unit, UnitType.kg);
-          expect(find.text(ar ? '٠ كجم' : '0 kg'), findsOneWidget);
+          expect(store.stockOf(id), 0);
+          expect(find.text('أرز مصري'), findsOneWidget);
         });
 
         testWidgets('opening 12 at 7.50: confirmation, Back keeps the form, '
@@ -126,7 +127,7 @@ void main() {
           await tester.pumpAndSettle();
           final id = store.summaries(const ProductQuery()).single.product.id;
           expect(store.stockOf(id), 12000);
-          expect(currentPath(tester), RoutePaths.productDetails(id));
+          expect(currentPath(tester), RoutePaths.products);
         });
 
         testWidgets('a fraction of a piece is rejected with a message', (

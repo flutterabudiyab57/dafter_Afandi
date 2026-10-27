@@ -853,6 +853,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get customerAddTitle => 'إضافة عميل';
 
   @override
+  String get customerNewAction => 'إضافة عميل جديد';
+
+  @override
   String customerAddNamed(String name) {
     return 'إضافة «$name»';
   }
@@ -1053,6 +1056,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get supplierAddTitle => 'إضافة مورد';
+
+  @override
+  String get supplierNewAction => 'إضافة مورد جديد';
 
   @override
   String supplierAddNamed(String name) {

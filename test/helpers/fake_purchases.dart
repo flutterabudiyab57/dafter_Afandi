@@ -732,6 +732,13 @@ final class FakePurchasesCubits implements PurchasesCubits {
       SuppliersListCubit(store.suppliers, debounce: Duration.zero);
 
   @override
+  SupplierFormCubit newSupplier(String name) => SupplierFormCubit(
+    store.suppliers,
+    mode: SupplierFormMode.create,
+    initialName: name,
+  );
+
+  @override
   PurchasesListCubit purchasesList({String? supplierId}) => PurchasesListCubit(
     store.purchases,
     supplierId: supplierId,

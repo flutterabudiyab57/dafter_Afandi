@@ -13,6 +13,7 @@ import '../../../../core/widgets/save_button.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/domain/customer.dart';
 import '../../../customers/domain/payment.dart';
+import '../../../customers/presentation/cubits/customer_form_cubit.dart';
 import '../../../customers/presentation/cubits/customers_list_cubit.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../products/domain/product.dart';
@@ -32,11 +33,13 @@ class NewSaleScreen extends StatelessWidget {
   const NewSaleScreen({
     required this.productPicker,
     required this.customerPicker,
+    required this.newCustomer,
     super.key,
   });
 
   final ProductPickerCubit Function() productPicker;
   final CustomersListCubit Function() customerPicker;
+  final CustomerFormCubit Function(String name) newCustomer;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +62,7 @@ class NewSaleScreen extends StatelessWidget {
             body: _Body(
               productPicker: productPicker,
               customerPicker: customerPicker,
+              newCustomer: newCustomer,
             ),
           ),
         ),
@@ -81,7 +85,12 @@ class NewSaleScreen extends StatelessWidget {
           context,
           l10n.saleSaved(context.saleNumber(state.saved!.number)),
         );
-        cubit.startNew();
+        // Back to where the sale was started; the message stays.
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          cubit.startNew();
+        }
       default:
         break;
     }
@@ -127,10 +136,15 @@ class NewSaleScreen extends StatelessWidget {
 }
 
 class _Body extends StatefulWidget {
-  const _Body({required this.productPicker, required this.customerPicker});
+  const _Body({
+    required this.productPicker,
+    required this.customerPicker,
+    required this.newCustomer,
+  });
 
   final ProductPickerCubit Function() productPicker;
   final CustomersListCubit Function() customerPicker;
+  final CustomerFormCubit Function(String name) newCustomer;
 
   @override
   State<_Body> createState() => _BodyState();
@@ -185,7 +199,7 @@ class _BodyState extends State<_Body> {
       MaterialPageRoute(
         builder: (_) => BlocProvider(
           create: (_) => widget.customerPicker(),
-          child: const CustomerPickerPage(),
+          child: CustomerPickerPage(newCustomer: widget.newCustomer),
         ),
       ),
     );

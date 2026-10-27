@@ -99,6 +99,9 @@ class SuppliersListCubit extends Cubit<SuppliersListState> {
 
   /// Adds a supplier named like the search text, for the picker (US2).
   /// Returns it, or null when the name is not valid.
+  /// The supplier with [id], e.g. one just added from the full form.
+  Future<SupplierSummary?> byId(String id) => _repository.watchOne(id).first;
+
   Future<SupplierSummary?> quickAdd() async {
     final draft = SupplierDraft.create(name: state.query.text);
     if (draft case Ok(:final value)) {

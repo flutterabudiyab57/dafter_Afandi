@@ -1574,6 +1574,12 @@ abstract class AppLocalizations {
   /// **'إضافة عميل'**
   String get customerAddTitle;
 
+  /// Opens the full customer form from the sale's customer picker.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة عميل جديد'**
+  String get customerNewAction;
+
   /// Adds a customer with the searched name.
   ///
   /// In ar, this message translates to:
@@ -1927,6 +1933,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'إضافة مورد'**
   String get supplierAddTitle;
+
+  /// Opens the full supplier form from the purchase's supplier picker.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة مورد جديد'**
+  String get supplierNewAction;
 
   /// Adds a supplier with the searched name.
   ///

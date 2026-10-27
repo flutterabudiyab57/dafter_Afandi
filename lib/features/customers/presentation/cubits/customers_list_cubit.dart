@@ -100,6 +100,9 @@ class CustomersListCubit extends Cubit<CustomersListState> {
 
   /// Adds a customer named like the search text, for the picker (US2-4).
   /// Returns it, or null when the name is not valid.
+  /// The customer with [id], e.g. one just added from the full form.
+  Future<CustomerSummary?> byId(String id) => _repository.watchOne(id).first;
+
   Future<CustomerSummary?> quickAdd() async {
     final draft = CustomerDraft.create(name: state.query.text);
     if (draft case Ok(:final value)) {

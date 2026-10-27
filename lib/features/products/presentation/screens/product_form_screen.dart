@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
-import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/quantity.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
@@ -89,11 +88,8 @@ class ProductFormScreen extends StatelessWidget {
             tone: StatusTone.warning,
           );
         }
-        if (cubit.mode == ProductFormMode.create) {
-          context.pushReplacement(RoutePaths.productDetails(state.savedId!));
-        } else {
-          context.pop();
-        }
+        // Back to the list, or to the product being edited.
+        context.pop();
       default:
         break;
     }

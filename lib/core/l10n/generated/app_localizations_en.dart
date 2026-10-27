@@ -854,6 +854,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customerAddTitle => 'Add customer';
 
   @override
+  String get customerNewAction => 'Add new customer';
+
+  @override
   String customerAddNamed(String name) {
     return 'Add “$name”';
   }
@@ -1056,6 +1059,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get supplierAddTitle => 'Add supplier';
+
+  @override
+  String get supplierNewAction => 'Add new supplier';
 
   @override
   String supplierAddNamed(String name) {

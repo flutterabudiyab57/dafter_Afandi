@@ -1158,6 +1158,10 @@
   "@customerAddTitle": {
     "description": "Title and button for adding a customer."
   },
+  "customerNewAction": "إضافة عميل جديد",
+  "@customerNewAction": {
+    "description": "Opens the full customer form from the sale's customer picker."
+  },
   "customerAddNamed": "إضافة «{name}»",
   "@customerAddNamed": {
     "description": "Adds a customer with the searched name.",
@@ -1448,6 +1452,10 @@
   "supplierAddTitle": "إضافة مورد",
   "@supplierAddTitle": {
     "description": "Add supplier button and form title."
+  },
+  "supplierNewAction": "إضافة مورد جديد",
+  "@supplierNewAction": {
+    "description": "Opens the full supplier form from the purchase's supplier picker."
   },
   "supplierAddNamed": "إضافة «{name}»",
   "@supplierAddNamed": {

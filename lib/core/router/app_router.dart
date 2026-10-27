@@ -333,6 +333,7 @@ GoRoute _salesRoute(SalesCubits sales) => GoRoute(
         child: NewSaleScreen(
           productPicker: sales.productPicker,
           customerPicker: sales.customerPicker,
+          newCustomer: sales.newCustomer,
         ),
       ),
     ),
@@ -364,6 +365,7 @@ GoRoute _purchasesRoute(PurchasesCubits purchases) => GoRoute(
           productPicker: purchases.productPicker,
           quickAddProduct: purchases.quickAddProduct,
           supplierPicker: purchases.supplierPicker,
+          newSupplier: purchases.newSupplier,
         ),
       ),
     ),

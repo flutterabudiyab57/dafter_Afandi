@@ -694,6 +694,13 @@ final class FakeSalesCubits implements SalesCubits {
       CustomersListCubit(store.customers, debounce: Duration.zero);
 
   @override
+  CustomerFormCubit newCustomer(String name) => CustomerFormCubit(
+    store.customers,
+    mode: CustomerFormMode.create,
+    initialName: name,
+  );
+
+  @override
   SalesListCubit salesList({String? customerId}) => SalesListCubit(
     store.sales,
     customerId: customerId,
