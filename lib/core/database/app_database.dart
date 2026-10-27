@@ -8,6 +8,8 @@ import 'daos/categories_dao.dart';
 import 'daos/counters_dao.dart';
 import 'daos/customer_ledger_dao.dart';
 import 'daos/customers_dao.dart';
+import 'daos/expense_categories_dao.dart';
+import 'daos/expenses_dao.dart';
 import 'daos/payment_parts_dao.dart';
 import 'daos/products_dao.dart';
 import 'daos/purchases_dao.dart';
@@ -79,6 +81,8 @@ part 'app_database.g.dart';
     PurchasesDao,
     PaymentPartsDao,
     ReportsDao,
+    ExpensesDao,
+    ExpenseCategoriesDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

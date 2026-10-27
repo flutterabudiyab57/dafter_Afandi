@@ -8,7 +8,8 @@ import '../../products/presentation/widgets/low_stock_card.dart';
 import 'widgets/today_cards.dart';
 
 /// Home: today's numbers (006 US1), the low-stock warning and card (002
-/// FR-001a), and the Products and Categories shortcuts (002 FR-001).
+/// FR-001a), the Products and Categories shortcuts (002 FR-001) and
+/// Record expense (006 US3).
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -34,6 +35,13 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.category_outlined),
             label: Text(l10n.homeCategoriesAction),
             onPressed: () => context.push(RoutePaths.categories),
+          ),
+          SizedBox(height: tokens.spaceSm),
+          OutlinedButton.icon(
+            icon: const Icon(Icons.receipt_long_outlined),
+            label: Text(l10n.expenseNewAction),
+            // In the Reports section, so Back returns to the expenses list.
+            onPressed: () => context.go(RoutePaths.expenseNew),
           ),
           SizedBox(height: tokens.spaceLg),
           const LowStockCard(),

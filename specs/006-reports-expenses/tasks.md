@@ -276,7 +276,7 @@ costs, a voided sale, adjustments and expenses across two months; every line che
 **Goal**: record, list, filter and void expenses; manage categories. **Independent test**: spec US3
 scenarios 1–7, and the profit report changes by the expense.
 
-- [ ] T046 [P] [US3] `lib/features/expenses/domain/`: `ExpenseCategory`, `ExpenseDraft.create`,
+- [X] T046 [P] [US3] `lib/features/expenses/domain/`: `ExpenseCategory`, `ExpenseDraft.create`,
   `Expense`, `ExpenseQuery`, the errors and the two repository interfaces, exactly as data-model.md
   "Expenses domain" and contracts:
   - name "trimmed, 1–50 code points";
@@ -284,30 +284,30 @@ scenarios 1–7, and the profit report changes by the expense.
   - "spentOn: ≤ today (local)";
   - note "≤ 200 code points, empty → null".
   Unit tests at every limit.
-- [ ] T047 [US3] `lib/core/database/daos/expenses_dao.dart` and `expense_categories_dao.dart`
+- [X] T047 [US3] `lib/core/database/daos/expenses_dao.dart` and `expense_categories_dao.dart`
   (register both): list by period and category, newest first; the non-voided total; one with its
   category; insert; void fields only; categories active and archived; `activeNameExists`;
   `countAll`.
-- [ ] T048 [US3] `lib/features/expenses/data/expense_repository_impl.dart`: `create` in one
+- [X] T048 [US3] `lib/features/expenses/data/expense_repository_impl.dart`: `create` in one
   transaction: W1 `EXPENSE` number, W2 `expenses` row (`spent_at` = local day start in UTC), W3
   parts through `PaymentPartsWriter`. `voidExpense` once with `validateReason`. Register in DI.
-- [ ] T049 [US3] `lib/features/expenses/data/expense_category_repository_impl.dart`: create,
+- [X] T049 [US3] `lib/features/expenses/data/expense_category_repository_impl.dart`: create,
   rename, archive, restore with the `search_key` rule (`NameTaken`); `ensureDefaults(names)`
   inserts the four names in one transaction only when `countAll() == 0` (research R13).
-- [ ] T050 [US3] Repository tests: numbers E-1, E-2 in order and gap-free on rollback; void once;
+- [X] T050 [US3] Repository tests: numbers E-1, E-2 in order and gap-free on rollback; void once;
   voided excluded from the total and from `watchProfit`; a future date refused; defaults inserted
   once and never again after all are archived; a duplicate name refused ignoring case, Arabic
   letter forms and extra spaces; an archived category keeps its name on old expenses.
-- [ ] T051 [US3] Cubits `ExpensesListCubit`, `ExpenseFormCubit`, `ExpenseCubit`,
+- [X] T051 [US3] Cubits `ExpensesListCubit`, `ExpenseFormCubit`, `ExpenseCubit`,
   `ExpenseCategoriesCubit` and the `ExpensesCubits` / `AppExpensesCubits` bundle (App →
   `createAppRouter`, `pumpApp` `expenses:`), fake in `test/helpers/fake_expenses.dart`. The form
   uses `PaymentSplit.single`, cash by default. Bloc tests.
-- [ ] T052 [US3] ARB keys: expenses title, "E-{number}", form labels, the four default category
+- [X] T052 [US3] ARB keys: expenses title, "E-{number}", form labels, the four default category
   names, filters, total, void dialog, voided mark, category screen texts and errors.
-- [ ] T053 [US3] Routes in `lib/core/router/route_names.dart` and the router: `/reports/expenses`,
+- [X] T053 [US3] Routes in `lib/core/router/route_names.dart` and the router: `/reports/expenses`,
   `/reports/expenses/new`, `/reports/expenses/:id`, `/reports/expense-categories`. Replace the
   placeholder from T032.
-- [ ] T054 [US3] Screens in `lib/features/expenses/presentation/screens/`:
+- [X] T054 [US3] Screens in `lib/features/expenses/presentation/screens/`:
   - expenses list: period bar, category filter, newest first, total of non-voided, voided marked,
     005 empty state;
   - expense form: category, amount, method chips (cash, wallet, InstaPay), date (today, no future),
@@ -316,9 +316,26 @@ scenarios 1–7, and the profit report changes by the expense.
     hidden once voided;
   - categories: add, rename, archive, restore, archived section.
   Show the Reports link to expenses (T043).
-- [ ] T055 [US3] Widget tests for the four screens: spec US3 scenarios 1–7; ar/en × 1.0/2.0. Add
+- [X] T055 [US3] Widget tests for the four screens: spec US3 scenarios 1–7; ar/en × 1.0/2.0. Add
   the screens to `test/helpers/screens.dart`.
-- [ ] T056 [US3] Gate: analyze clean, all tests green. Commit `feat(006): expenses`.
+> **As built (T046–T055):**
+> - **Shared period:** `ReportPeriodCubit` is provided once by the shell, so Reports and the
+>   expenses list share it, and the chosen period stays while the owner visits other sections.
+> - **Numbers:** shown as `E-000001`, like every other document number (decision Q22).
+> - **Defaults:** the expense form and the categories screen each call `ensureDefaults` with the
+>   four names in the current language when they open; the repository inserts them only into an
+>   empty table.
+> - **Form:** the method chips only (cash, wallet, InstaPay). The account number field and split
+>   payments come with US6 (T072, T073); the draft already takes `PaymentPartInput`s.
+> - **Layout at 200%:** the list row shows the amount in its subtitle instead of as the trailing,
+>   and the category buttons sit under each name, so nothing overflows at large text.
+> - **Home shortcut:** "Record expense" opens the form in the Reports section, so Back returns to
+>   the expenses list.
+> - **Empty list:** uses the old Reports placeholder illustration (`emptyReports`).
+> - **Test fake:** `FakeExpensesStore` (expenses) with `FakeExpenseCategories` (categories) on the
+>   same data, as the two interfaces both have a `create`.
+
+- [X] T056 [US3] Gate: analyze clean, all tests green. Commit `feat(006): expenses`.
 
 ## Phase 6: User Story 4 - Low-stock message after a sale (P2)
 

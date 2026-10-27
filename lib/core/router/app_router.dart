@@ -9,6 +9,11 @@ import '../../features/customers/presentation/screens/customer_details_screen.da
 import '../../features/customers/presentation/screens/customer_form_screen.dart';
 import '../../features/customers/presentation/screens/customers_screen.dart';
 import '../../features/customers/presentation/screens/payment_screen.dart';
+import '../../features/expenses/presentation/expenses_cubits.dart';
+import '../../features/expenses/presentation/screens/expense_categories_screen.dart';
+import '../../features/expenses/presentation/screens/expense_form_screen.dart';
+import '../../features/expenses/presentation/screens/expense_screen.dart';
+import '../../features/expenses/presentation/screens/expenses_list_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/onboarding/presentation/shop_details_step_screen.dart';
 import '../../features/onboarding/presentation/welcome_screen.dart';
@@ -72,6 +77,7 @@ GoRouter createAppRouter(
   required SuppliersCubits suppliers,
   required PurchasesCubits purchases,
   required ReportsCubits reports,
+  required ExpensesCubits expenses,
 }) {
   return GoRouter(
     initialLocation: RoutePaths.welcome,
@@ -106,9 +112,14 @@ GoRouter createAppRouter(
       ),
       // The five sections, in the order of FR-008, each keeping its stack.
       StatefulShellRoute.indexedStack(
-        builder: (context, state, shell) => AppShellScaffold(
-          navigationShell: shell,
-          showAppBar: RoutePaths.isSectionRoot(state.uri.path),
+        // The report period is shared by every report screen (006 research
+        // R14) and kept while the owner visits other sections.
+        builder: (context, state, shell) => BlocProvider(
+          create: (_) => reports.reportPeriod(),
+          child: AppShellScaffold(
+            navigationShell: shell,
+            showAppBar: RoutePaths.isSectionRoot(state.uri.path),
+          ),
         ),
         branches: [
           StatefulShellBranch(routes: [_homeRoute(products, reports)]),
@@ -120,7 +131,7 @@ GoRouter createAppRouter(
             ],
           ),
           StatefulShellBranch(routes: [_purchasesRoute(purchases)]),
-          StatefulShellBranch(routes: [_reportsRoute(reports)]),
+          StatefulShellBranch(routes: [_reportsRoute(reports, expenses)]),
         ],
       ),
       // Settings are pushed above the shell.
@@ -149,17 +160,51 @@ GoRouter createAppRouter(
   );
 }
 
-/// Reports, with one period shared by its screens (006 research R14).
-GoRoute _reportsRoute(ReportsCubits reports) => GoRoute(
-  path: RoutePaths.reports,
-  builder: (context, state) => BlocProvider(
-    create: (_) => reports.reportPeriod(),
-    child: BlocProvider(
-      create: (context) => reports.profit(context.read<ReportPeriodCubit>()),
-      child: const ReportsScreen(),
-    ),
-  ),
-);
+/// Reports and the expenses screens below it, all on the shell's report
+/// period (006 research R14).
+GoRoute _reportsRoute(ReportsCubits reports, ExpensesCubits expenses) =>
+    GoRoute(
+      path: RoutePaths.reports,
+      builder: (context, state) => BlocProvider(
+        create: (context) => reports.profit(context.read<ReportPeriodCubit>()),
+        child: const ReportsScreen(),
+      ),
+      routes: [
+        GoRoute(
+          path: 'expenses',
+          builder: (context, state) => BlocProvider(
+            create: (context) =>
+                expenses.expensesList(context.read<ReportPeriodCubit>()),
+            child: const ExpensesListScreen(),
+          ),
+          routes: [
+            // Before ':id', so it never matches as an id.
+            GoRoute(
+              path: 'new',
+              builder: (context, state) => BlocProvider(
+                create: (_) => expenses.expenseForm(),
+                child: const ExpenseFormScreen(),
+              ),
+            ),
+            GoRoute(
+              path: ':id',
+              builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
+                create: (_) => expenses.expense(state.pathParameters['id']!),
+                child: const ExpenseScreen(),
+              ),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'expense-categories',
+          builder: (context, state) => BlocProvider(
+            create: (_) => expenses.expenseCategories(),
+            child: const ExpenseCategoriesScreen(),
+          ),
+        ),
+      ],
+    );
 
 /// Home and the products screens below it, so the bottom bar stays and Back
 /// returns to Home (002 research R10).

@@ -15,5 +15,8 @@ const String purchaseNumberPrefix = 'P-';
 /// Standalone payments to suppliers.
 const String supplierPaymentNumberPrefix = 'PY-';
 
+/// Shop expenses (006).
+const String expenseNumberPrefix = 'E-';
+
 String formatDocNumber(String prefix, int number) =>
     '$prefix${number.toString().padLeft(6, '0')}';

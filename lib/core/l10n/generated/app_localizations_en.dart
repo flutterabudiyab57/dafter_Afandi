@@ -1439,4 +1439,131 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get profitNoCostNote =>
       'Some products were sold with no recorded cost, so profit may look higher than it is.';
+
+  @override
+  String get expensesTitle => 'Expenses';
+
+  @override
+  String get expenseNewAction => 'Record expense';
+
+  @override
+  String get expenseNewTitle => 'New expense';
+
+  @override
+  String expenseTitle(String number) {
+    return 'Expense $number';
+  }
+
+  @override
+  String get expenseCategoryLabel => 'Category';
+
+  @override
+  String get expenseDateLabel => 'Date';
+
+  @override
+  String get expenseCategoryRent => 'Rent';
+
+  @override
+  String get expenseCategoryElectricity => 'Electricity';
+
+  @override
+  String get expenseCategorySalaries => 'Salaries';
+
+  @override
+  String get expenseCategoryOther => 'Other';
+
+  @override
+  String get expensesAllCategories => 'All categories';
+
+  @override
+  String expensesTotal(String amount) {
+    return 'Total, not voided: $amount';
+  }
+
+  @override
+  String get expensesEmptyTitle => 'No expenses in this period';
+
+  @override
+  String get expensesEmptyBody =>
+      'Record rent, electricity, salaries and other costs so the net profit is right.';
+
+  @override
+  String expenseSaved(String number) {
+    return 'Expense $number saved.';
+  }
+
+  @override
+  String get expenseVoidAction => 'Void expense';
+
+  @override
+  String get expenseVoidTitle => 'Void this expense?';
+
+  @override
+  String get expenseVoidBody =>
+      'It stays in the list marked voided and no longer counts in totals or profit. This cannot be undone.';
+
+  @override
+  String get expenseVoided => 'Expense voided.';
+
+  @override
+  String get expenseAlreadyVoided => 'This expense is already voided.';
+
+  @override
+  String get expenseNotFound => 'This expense doesn’t exist.';
+
+  @override
+  String get errorExpenseCategoryRequired => 'Choose a category.';
+
+  @override
+  String get errorExpenseCategoryArchived =>
+      'This category was archived. Choose another.';
+
+  @override
+  String get errorExpenseCategoryUnavailable =>
+      'This category no longer exists. Choose another.';
+
+  @override
+  String get errorExpenseAmountInvalid =>
+      'Enter an amount above zero with at most two decimal places.';
+
+  @override
+  String get errorExpenseDateInFuture => 'The date can’t be after today.';
+
+  @override
+  String get errorPaymentDetails => 'Check the payment details.';
+
+  @override
+  String get expenseCategoriesTitle => 'Expense categories';
+
+  @override
+  String get expenseCategoryArchiveConfirm =>
+      'Archive this category? Past expenses keep showing its name.';
+
+  @override
+  String get expenseCategoryArchive => 'Archive category';
+
+  @override
+  String get expenseCategoryRestore => 'Restore';
+
+  @override
+  String get expenseCategoriesArchived => 'Archived categories';
+
+  @override
+  String get expenseCategoriesEmpty => 'No active categories. Add one above.';
+
+  @override
+  String get errorExpenseCategoryNameRequired => 'Enter the category name.';
+
+  @override
+  String errorExpenseCategoryNameTooLong(String max) {
+    return 'The category name can be at most $max characters.';
+  }
+
+  @override
+  String errorExpenseCategoryNameTaken(String name) {
+    return 'An active category already has this name: $name.';
+  }
+
+  @override
+  String get errorExpenseCategoryNotFound => 'This category no longer exists.';
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:daftar_afandi/app.dart';
 import 'package:daftar_afandi/features/customers/presentation/customers_cubits.dart';
+import 'package:daftar_afandi/features/expenses/presentation/expenses_cubits.dart';
 import 'package:daftar_afandi/features/products/presentation/products_cubits.dart';
 import 'package:daftar_afandi/features/purchases/presentation/purchases_cubits.dart';
 import 'package:daftar_afandi/features/reports/presentation/cubits/reports_cubits.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'fake_expenses.dart';
 import 'fake_products.dart';
 import 'fake_purchases.dart';
 import 'fake_reports.dart';
@@ -119,6 +121,7 @@ Future<void> pumpApp(
   SuppliersCubits? suppliers,
   PurchasesCubits? purchases,
   ReportsCubits? reports,
+  ExpensesCubits? expenses,
 }) async {
   tester.view
     ..devicePixelRatio = devicePixelRatio
@@ -147,6 +150,7 @@ Future<void> pumpApp(
       suppliers: suppliers ?? FakeSuppliersCubits(),
       purchases: purchases ?? FakePurchasesCubits(),
       reports: reports ?? FakeReportsCubits(),
+      expenses: expenses ?? FakeExpensesCubits(),
     ),
   );
   await tester.pumpAndSettle();

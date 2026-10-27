@@ -1972,5 +1972,178 @@
   "profitNoCostNote": "بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.",
   "@profitNoCostNote": {
     "description": "Note when some sale lines had no cost when sold."
+  },
+  "expensesTitle": "المصروفات",
+  "@expensesTitle": {
+    "description": "Expenses list title and the Reports link."
+  },
+  "expenseNewAction": "تسجيل مصروف",
+  "@expenseNewAction": {
+    "description": "Button that opens the new expense form."
+  },
+  "expenseNewTitle": "مصروف جديد",
+  "@expenseNewTitle": {
+    "description": "New expense form title."
+  },
+  "expenseTitle": "المصروف {number}",
+  "@expenseTitle": {
+    "description": "Expense details title.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseCategoryLabel": "البند",
+  "@expenseCategoryLabel": {
+    "description": "Expense form: the category."
+  },
+  "expenseDateLabel": "التاريخ",
+  "@expenseDateLabel": {
+    "description": "Expense form and details: the day it was spent."
+  },
+  "expenseCategoryRent": "إيجار",
+  "@expenseCategoryRent": {
+    "description": "Default expense category."
+  },
+  "expenseCategoryElectricity": "كهرباء",
+  "@expenseCategoryElectricity": {
+    "description": "Default expense category."
+  },
+  "expenseCategorySalaries": "رواتب",
+  "@expenseCategorySalaries": {
+    "description": "Default expense category."
+  },
+  "expenseCategoryOther": "أخرى",
+  "@expenseCategoryOther": {
+    "description": "Default expense category."
+  },
+  "expensesAllCategories": "كل البنود",
+  "@expensesAllCategories": {
+    "description": "Expenses list filter: no category filter."
+  },
+  "expensesTotal": "إجمالي غير الملغى: {amount}",
+  "@expensesTotal": {
+    "description": "Expenses list total for the filters.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "expensesEmptyTitle": "لا توجد مصروفات في هذه الفترة",
+  "@expensesEmptyTitle": {
+    "description": "Expenses list empty state title."
+  },
+  "expensesEmptyBody": "سجّل الإيجار والكهرباء والرواتب وغيرها ليظهر صافي الربح صحيحًا.",
+  "@expensesEmptyBody": {
+    "description": "Expenses list empty state text."
+  },
+  "expenseSaved": "تم حفظ المصروف {number}.",
+  "@expenseSaved": {
+    "description": "Shown after saving an expense.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseVoidAction": "إلغاء المصروف",
+  "@expenseVoidAction": {
+    "description": "Expense details: void button."
+  },
+  "expenseVoidTitle": "إلغاء هذا المصروف؟",
+  "@expenseVoidTitle": {
+    "description": "Void dialog title."
+  },
+  "expenseVoidBody": "يبقى في القائمة مُعلَّمًا بأنه ملغى، ولا يُحسب في الإجماليات ولا في الربح. لا يمكن التراجع عن ذلك.",
+  "@expenseVoidBody": {
+    "description": "Void dialog text."
+  },
+  "expenseVoided": "تم إلغاء المصروف.",
+  "@expenseVoided": {
+    "description": "Shown after voiding an expense."
+  },
+  "expenseAlreadyVoided": "هذا المصروف ملغى بالفعل.",
+  "@expenseAlreadyVoided": {
+    "description": "Refusal: voided twice."
+  },
+  "expenseNotFound": "هذا المصروف غير موجود.",
+  "@expenseNotFound": {
+    "description": "Expense details for a missing id."
+  },
+  "errorExpenseCategoryRequired": "اختر البند.",
+  "@errorExpenseCategoryRequired": {
+    "description": "Expense form error."
+  },
+  "errorExpenseCategoryArchived": "أُرشف هذا البند. اختر بندًا آخر.",
+  "@errorExpenseCategoryArchived": {
+    "description": "Expense form error."
+  },
+  "errorExpenseCategoryUnavailable": "هذا البند لم يعد موجودًا. اختر بندًا آخر.",
+  "@errorExpenseCategoryUnavailable": {
+    "description": "Expense save refusal."
+  },
+  "errorExpenseAmountInvalid": "اكتب مبلغًا أكبر من صفر بخانتين عشريتين على الأكثر.",
+  "@errorExpenseAmountInvalid": {
+    "description": "Expense form error."
+  },
+  "errorExpenseDateInFuture": "لا يمكن أن يكون التاريخ بعد اليوم.",
+  "@errorExpenseDateInFuture": {
+    "description": "Expense form error."
+  },
+  "errorPaymentDetails": "راجع بيانات الدفع.",
+  "@errorPaymentDetails": {
+    "description": "Expense form error when how it was paid is invalid."
+  },
+  "expenseCategoriesTitle": "بنود المصروفات",
+  "@expenseCategoriesTitle": {
+    "description": "Expense categories screen title and link."
+  },
+  "expenseCategoryArchiveConfirm": "أرشفة هذا البند؟ تظل المصروفات السابقة تعرض اسمه.",
+  "@expenseCategoryArchiveConfirm": {
+    "description": "Archive category confirmation."
+  },
+  "expenseCategoryArchive": "أرشفة البند",
+  "@expenseCategoryArchive": {
+    "description": "Expense category archive button."
+  },
+  "expenseCategoryRestore": "استعادة",
+  "@expenseCategoryRestore": {
+    "description": "Restore an archived expense category."
+  },
+  "expenseCategoriesArchived": "البنود المؤرشفة",
+  "@expenseCategoriesArchived": {
+    "description": "Expense categories: archived section title."
+  },
+  "expenseCategoriesEmpty": "لا توجد بنود نشطة. أضف بندًا من الأعلى.",
+  "@expenseCategoriesEmpty": {
+    "description": "Expense categories empty text."
+  },
+  "errorExpenseCategoryNameRequired": "اكتب اسم البند.",
+  "@errorExpenseCategoryNameRequired": {
+    "description": "Expense category error."
+  },
+  "errorExpenseCategoryNameTooLong": "اسم البند لا يزيد على {max} حرفًا.",
+  "@errorExpenseCategoryNameTooLong": {
+    "description": "Expense category error.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorExpenseCategoryNameTaken": "يوجد بند نشط بنفس الاسم: {name}.",
+  "@errorExpenseCategoryNameTaken": {
+    "description": "Expense category error.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorExpenseCategoryNotFound": "هذا البند لم يعد موجودًا.",
+  "@errorExpenseCategoryNotFound": {
+    "description": "Expense category error."
   }
 }

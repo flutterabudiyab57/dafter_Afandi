@@ -1432,4 +1432,131 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get profitNoCostNote =>
       'بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.';
+
+  @override
+  String get expensesTitle => 'المصروفات';
+
+  @override
+  String get expenseNewAction => 'تسجيل مصروف';
+
+  @override
+  String get expenseNewTitle => 'مصروف جديد';
+
+  @override
+  String expenseTitle(String number) {
+    return 'المصروف $number';
+  }
+
+  @override
+  String get expenseCategoryLabel => 'البند';
+
+  @override
+  String get expenseDateLabel => 'التاريخ';
+
+  @override
+  String get expenseCategoryRent => 'إيجار';
+
+  @override
+  String get expenseCategoryElectricity => 'كهرباء';
+
+  @override
+  String get expenseCategorySalaries => 'رواتب';
+
+  @override
+  String get expenseCategoryOther => 'أخرى';
+
+  @override
+  String get expensesAllCategories => 'كل البنود';
+
+  @override
+  String expensesTotal(String amount) {
+    return 'إجمالي غير الملغى: $amount';
+  }
+
+  @override
+  String get expensesEmptyTitle => 'لا توجد مصروفات في هذه الفترة';
+
+  @override
+  String get expensesEmptyBody =>
+      'سجّل الإيجار والكهرباء والرواتب وغيرها ليظهر صافي الربح صحيحًا.';
+
+  @override
+  String expenseSaved(String number) {
+    return 'تم حفظ المصروف $number.';
+  }
+
+  @override
+  String get expenseVoidAction => 'إلغاء المصروف';
+
+  @override
+  String get expenseVoidTitle => 'إلغاء هذا المصروف؟';
+
+  @override
+  String get expenseVoidBody =>
+      'يبقى في القائمة مُعلَّمًا بأنه ملغى، ولا يُحسب في الإجماليات ولا في الربح. لا يمكن التراجع عن ذلك.';
+
+  @override
+  String get expenseVoided => 'تم إلغاء المصروف.';
+
+  @override
+  String get expenseAlreadyVoided => 'هذا المصروف ملغى بالفعل.';
+
+  @override
+  String get expenseNotFound => 'هذا المصروف غير موجود.';
+
+  @override
+  String get errorExpenseCategoryRequired => 'اختر البند.';
+
+  @override
+  String get errorExpenseCategoryArchived => 'أُرشف هذا البند. اختر بندًا آخر.';
+
+  @override
+  String get errorExpenseCategoryUnavailable =>
+      'هذا البند لم يعد موجودًا. اختر بندًا آخر.';
+
+  @override
+  String get errorExpenseAmountInvalid =>
+      'اكتب مبلغًا أكبر من صفر بخانتين عشريتين على الأكثر.';
+
+  @override
+  String get errorExpenseDateInFuture => 'لا يمكن أن يكون التاريخ بعد اليوم.';
+
+  @override
+  String get errorPaymentDetails => 'راجع بيانات الدفع.';
+
+  @override
+  String get expenseCategoriesTitle => 'بنود المصروفات';
+
+  @override
+  String get expenseCategoryArchiveConfirm =>
+      'أرشفة هذا البند؟ تظل المصروفات السابقة تعرض اسمه.';
+
+  @override
+  String get expenseCategoryArchive => 'أرشفة البند';
+
+  @override
+  String get expenseCategoryRestore => 'استعادة';
+
+  @override
+  String get expenseCategoriesArchived => 'البنود المؤرشفة';
+
+  @override
+  String get expenseCategoriesEmpty =>
+      'لا توجد بنود نشطة. أضف بندًا من الأعلى.';
+
+  @override
+  String get errorExpenseCategoryNameRequired => 'اكتب اسم البند.';
+
+  @override
+  String errorExpenseCategoryNameTooLong(String max) {
+    return 'اسم البند لا يزيد على $max حرفًا.';
+  }
+
+  @override
+  String errorExpenseCategoryNameTaken(String name) {
+    return 'يوجد بند نشط بنفس الاسم: $name.';
+  }
+
+  @override
+  String get errorExpenseCategoryNotFound => 'هذا البند لم يعد موجودًا.';
 }

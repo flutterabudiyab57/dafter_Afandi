@@ -2587,6 +2587,228 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.'**
   String get profitNoCostNote;
+
+  /// Expenses list title and the Reports link.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصروفات'**
+  String get expensesTitle;
+
+  /// Button that opens the new expense form.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسجيل مصروف'**
+  String get expenseNewAction;
+
+  /// New expense form title.
+  ///
+  /// In ar, this message translates to:
+  /// **'مصروف جديد'**
+  String get expenseNewTitle;
+
+  /// Expense details title.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصروف {number}'**
+  String expenseTitle(String number);
+
+  /// Expense form: the category.
+  ///
+  /// In ar, this message translates to:
+  /// **'البند'**
+  String get expenseCategoryLabel;
+
+  /// Expense form and details: the day it was spent.
+  ///
+  /// In ar, this message translates to:
+  /// **'التاريخ'**
+  String get expenseDateLabel;
+
+  /// Default expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'إيجار'**
+  String get expenseCategoryRent;
+
+  /// Default expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'كهرباء'**
+  String get expenseCategoryElectricity;
+
+  /// Default expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'رواتب'**
+  String get expenseCategorySalaries;
+
+  /// Default expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخرى'**
+  String get expenseCategoryOther;
+
+  /// Expenses list filter: no category filter.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل البنود'**
+  String get expensesAllCategories;
+
+  /// Expenses list total for the filters.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي غير الملغى: {amount}'**
+  String expensesTotal(String amount);
+
+  /// Expenses list empty state title.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد مصروفات في هذه الفترة'**
+  String get expensesEmptyTitle;
+
+  /// Expenses list empty state text.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل الإيجار والكهرباء والرواتب وغيرها ليظهر صافي الربح صحيحًا.'**
+  String get expensesEmptyBody;
+
+  /// Shown after saving an expense.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حفظ المصروف {number}.'**
+  String expenseSaved(String number);
+
+  /// Expense details: void button.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء المصروف'**
+  String get expenseVoidAction;
+
+  /// Void dialog title.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء هذا المصروف؟'**
+  String get expenseVoidTitle;
+
+  /// Void dialog text.
+  ///
+  /// In ar, this message translates to:
+  /// **'يبقى في القائمة مُعلَّمًا بأنه ملغى، ولا يُحسب في الإجماليات ولا في الربح. لا يمكن التراجع عن ذلك.'**
+  String get expenseVoidBody;
+
+  /// Shown after voiding an expense.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إلغاء المصروف.'**
+  String get expenseVoided;
+
+  /// Refusal: voided twice.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا المصروف ملغى بالفعل.'**
+  String get expenseAlreadyVoided;
+
+  /// Expense details for a missing id.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا المصروف غير موجود.'**
+  String get expenseNotFound;
+
+  /// Expense form error.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر البند.'**
+  String get errorExpenseCategoryRequired;
+
+  /// Expense form error.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُرشف هذا البند. اختر بندًا آخر.'**
+  String get errorExpenseCategoryArchived;
+
+  /// Expense save refusal.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا البند لم يعد موجودًا. اختر بندًا آخر.'**
+  String get errorExpenseCategoryUnavailable;
+
+  /// Expense form error.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب مبلغًا أكبر من صفر بخانتين عشريتين على الأكثر.'**
+  String get errorExpenseAmountInvalid;
+
+  /// Expense form error.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن أن يكون التاريخ بعد اليوم.'**
+  String get errorExpenseDateInFuture;
+
+  /// Expense form error when how it was paid is invalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'راجع بيانات الدفع.'**
+  String get errorPaymentDetails;
+
+  /// Expense categories screen title and link.
+  ///
+  /// In ar, this message translates to:
+  /// **'بنود المصروفات'**
+  String get expenseCategoriesTitle;
+
+  /// Archive category confirmation.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة هذا البند؟ تظل المصروفات السابقة تعرض اسمه.'**
+  String get expenseCategoryArchiveConfirm;
+
+  /// Expense category archive button.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة البند'**
+  String get expenseCategoryArchive;
+
+  /// Restore an archived expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'استعادة'**
+  String get expenseCategoryRestore;
+
+  /// Expense categories: archived section title.
+  ///
+  /// In ar, this message translates to:
+  /// **'البنود المؤرشفة'**
+  String get expenseCategoriesArchived;
+
+  /// Expense categories empty text.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد بنود نشطة. أضف بندًا من الأعلى.'**
+  String get expenseCategoriesEmpty;
+
+  /// Expense category error.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب اسم البند.'**
+  String get errorExpenseCategoryNameRequired;
+
+  /// Expense category error.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم البند لا يزيد على {max} حرفًا.'**
+  String errorExpenseCategoryNameTooLong(String max);
+
+  /// Expense category error.
+  ///
+  /// In ar, this message translates to:
+  /// **'يوجد بند نشط بنفس الاسم: {name}.'**
+  String errorExpenseCategoryNameTaken(String name);
+
+  /// Expense category error.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا البند لم يعد موجودًا.'**
+  String get errorExpenseCategoryNotFound;
 }
 
 class _AppLocalizationsDelegate

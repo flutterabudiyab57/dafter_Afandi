@@ -94,6 +94,17 @@ class PaymentPartsWriter {
     };
     return [for (final r in rows) PaymentMappers.part(r)];
   }
+
+  /// The parts of each expense in [expenseIds], in one read.
+  Future<Map<String, List<PaymentPart>>> partsOfExpenses(
+    List<String> expenseIds,
+  ) async {
+    final byExpense = <String, List<PaymentPart>>{};
+    for (final r in await _dao.partsOfExpenses(expenseIds)) {
+      (byExpense[r.expenseId!] ??= []).add(PaymentMappers.part(r));
+    }
+    return byExpense;
+  }
 }
 
 /// Row ↔ entity mapping for payments (constitution IV).

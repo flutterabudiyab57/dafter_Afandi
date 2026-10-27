@@ -5,6 +5,8 @@ import 'package:daftar_afandi/core/widgets/starting_app.dart';
 import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
+import 'package:daftar_afandi/features/expenses/domain/expense.dart';
+import 'package:daftar_afandi/features/payments/domain/payment_split.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
 import 'package:daftar_afandi/features/purchases/domain/purchase_draft.dart';
 import 'package:daftar_afandi/features/sales/domain/sale_draft.dart';
@@ -12,6 +14,7 @@ import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'fake_expenses.dart';
 import 'fake_products.dart';
 import 'fake_purchases.dart';
 import 'fake_sales.dart';
@@ -149,6 +152,33 @@ Future<void> visitEveryScreen(
     const PaymentRequest(amountPiasters: 5000, method: PaymentMethod.instapay),
   );
 
+  // Expenses: a wallet one, a voided one and an archived category.
+  final spending = FakeExpensesStore();
+  final rent = spending.addCategory('إيجار');
+  spending.addCategory('قديم', archived: true);
+  Expense expense(int number, {DateTime? voidedAt}) => spending.addExpense(
+    Expense(
+      id: 'e$number',
+      number: number,
+      category: ExpenseCategory(id: rent, name: 'إيجار'),
+      amountPiasters: 150000,
+      parts: [
+        PaymentSplit.single(
+          PaymentMethod.wallet,
+          150000,
+          accountRef: '01001234567',
+        ).first,
+      ],
+      spentOn: DateTime(2026, 10, 25),
+      createdAt: DateTime.utc(2026, 10, 25, 9),
+      note: 'إيجار أكتوبر',
+      voidedAt: voidedAt,
+      voidReason: voidedAt == null ? null : 'مكرر',
+    ),
+  );
+  final paidRent = expense(1);
+  final voidedRent = expense(2, voidedAt: DateTime.utc(2026, 10, 25, 10));
+
   Future<void> pump(bool onboarded) async => pumpApp(
     tester,
     await repo(onboarded),
@@ -157,6 +187,7 @@ Future<void> visitEveryScreen(
     sales: FakeSalesCubits(sales),
     suppliers: FakeSuppliersCubits(buying),
     purchases: FakePurchasesCubits(buying),
+    expenses: FakeExpensesCubits(spending),
     size: size,
     devicePixelRatio: devicePixelRatio,
     textScale: textScale,
@@ -196,6 +227,11 @@ Future<void> visitEveryScreen(
     RoutePaths.purchase(onCredit),
     RoutePaths.purchase(voidedPurchase),
     RoutePaths.supplierPayment(nour),
+    RoutePaths.expenses,
+    RoutePaths.expenseNew,
+    RoutePaths.expenseCategories,
+    RoutePaths.expense(paidRent.id),
+    RoutePaths.expense(voidedRent.id),
   ]) {
     // The list page is already open, so a new query alone would keep its
     // cubit; start it again from Home.
@@ -233,6 +269,12 @@ Future<void> visitEveryScreen(
   await goTo(tester, RoutePaths.saleInvoice(partPaid));
   await tap(find.text(l10n.invoiceVoidAction));
   await check('void dialog');
+  await tap(find.text(l10n.backAction));
+
+  // The expense void reason.
+  await goTo(tester, RoutePaths.expense(paidRent.id));
+  await tap(find.text(l10n.expenseVoidAction));
+  await check('expense void dialog');
   await tap(find.text(l10n.backAction));
 
   // The new sale's pickers, shortage warning and discard question.

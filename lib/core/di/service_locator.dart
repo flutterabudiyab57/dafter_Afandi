@@ -4,6 +4,10 @@ import 'package:get_it/get_it.dart';
 import '../../features/customers/data/customer_repository_impl.dart';
 import '../../features/customers/domain/customer_repository.dart';
 import '../../features/customers/presentation/customers_cubits.dart';
+import '../../features/expenses/data/expense_category_repository_impl.dart';
+import '../../features/expenses/data/expense_repository_impl.dart';
+import '../../features/expenses/domain/expense_repository.dart';
+import '../../features/expenses/presentation/expenses_cubits.dart';
 import '../../features/payments/data/payment_parts_writer.dart';
 import '../../features/products/data/category_repository_impl.dart';
 import '../../features/products/data/inventory_repository_impl.dart';
@@ -37,6 +41,8 @@ import '../database/daos/categories_dao.dart';
 import '../database/daos/counters_dao.dart';
 import '../database/daos/customer_ledger_dao.dart';
 import '../database/daos/customers_dao.dart';
+import '../database/daos/expense_categories_dao.dart';
+import '../database/daos/expenses_dao.dart';
 import '../database/daos/payment_parts_dao.dart';
 import '../database/daos/products_dao.dart';
 import '../database/daos/purchases_dao.dart';
@@ -177,6 +183,29 @@ Future<void> configureDependencies({
         sl<PaymentPartsWriter>(),
       ),
     )
+    ..registerLazySingleton<ExpensesDao>(() => sl<AppDatabase>().expensesDao)
+    ..registerLazySingleton<ExpenseCategoriesDao>(
+      () => sl<AppDatabase>().expenseCategoriesDao,
+    )
+    ..registerLazySingleton<ExpenseRepository>(
+      () => ExpenseRepositoryImpl(
+        sl<ExpensesDao>(),
+        sl<ExpenseCategoriesDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+        sl<PaymentPartsWriter>(),
+      ),
+    )
+    ..registerLazySingleton<ExpenseCategoryRepository>(
+      () => ExpenseCategoryRepositoryImpl(
+        sl<ExpenseCategoriesDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
     ..registerLazySingleton<ReportsDao>(() => sl<AppDatabase>().reportsDao)
     ..registerLazySingleton<ReportsRepository>(
       () => ReportsRepositoryImpl(sl<ReportsDao>(), sl<Clock>()),
@@ -187,6 +216,7 @@ Future<void> configureDependencies({
     ..registerLazySingleton<SuppliersCubits>(() => AppSuppliersCubits(sl))
     ..registerLazySingleton<PurchasesCubits>(() => AppPurchasesCubits(sl))
     ..registerLazySingleton<ReportsCubits>(() => AppReportsCubits(sl))
+    ..registerLazySingleton<ExpensesCubits>(() => AppExpensesCubits(sl))
     ..registerSingleton<AppVersionSource>(
       versionSource ?? const PackageInfoAppVersionSource(),
     )

@@ -43,6 +43,16 @@ class PaymentPartsDao extends DatabaseAccessor<AppDatabase>
   Future<List<PaymentPartRow>> partsOfExpense(String expenseId) =>
       _partsWhere((p) => p.expenseId.equals(expenseId));
 
+  /// The parts of every expense in [expenseIds], by expense then part.
+  Future<List<PaymentPartRow>> partsOfExpenses(List<String> expenseIds) =>
+      (select(paymentParts)
+            ..where((p) => p.expenseId.isIn(expenseIds))
+            ..orderBy([
+              (p) => OrderingTerm.asc(p.expenseId),
+              (p) => OrderingTerm.asc(p.partNo),
+            ]))
+          .get();
+
   Future<List<PaymentPartRow>> _partsWhere(
     Expression<bool> Function(PaymentParts p) filter,
   ) =>

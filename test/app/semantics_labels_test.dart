@@ -51,7 +51,7 @@ void main() {
           }
         },
       );
-      expect(screens, 64); // 005 adds the starting app and 4 states.
+      expect(screens, 70); // 006 adds the 5 expense pages and void dialog.
       expect(checked, greaterThan(30), reason: 'the walk found the buttons');
       semantics.dispose();
     });

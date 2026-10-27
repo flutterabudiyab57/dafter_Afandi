@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/l10n/generated/app_localizations.dart';
+import '../../../core/router/route_names.dart';
 import '../../../core/theme/app_tokens.dart';
 import '../../../core/widgets/skeleton_list.dart';
 import '../../../core/widgets/status_badge.dart';
@@ -12,19 +14,29 @@ import '../domain/profit_summary.dart';
 import 'cubits/profit_cubit.dart';
 import 'widgets/period_bar.dart';
 
-/// Reports: the period and the profit for it (US2, FR-003 to FR-012).
+/// Reports: the period, the profit for it (US2, FR-003 to FR-012) and the
+/// way to the expenses (US3).
 class ReportsScreen extends StatelessWidget {
   const ReportsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final tokens = context.tokens;
     return SingleChildScrollView(
       padding: tokens.pagePadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: tokens.spaceLg,
-        children: const [PeriodBar(), _ProfitCard()],
+        children: [
+          const PeriodBar(),
+          const _ProfitCard(),
+          OutlinedButton.icon(
+            icon: const Icon(Icons.receipt_long_outlined),
+            label: Text(l10n.expensesTitle),
+            onPressed: () => context.push(RoutePaths.expenses),
+          ),
+        ],
       ),
     );
   }
