@@ -5,12 +5,29 @@ import '../../../../core/utils/decimal_text.dart';
 import '../../../../core/widgets/digit_style_scope.dart';
 import '../../../products/domain/product_errors.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
+import '../../domain/sale.dart';
 import '../../domain/sale_errors.dart';
 import '../cubits/sale_cubit.dart';
 
 /// Sale messages in the active language and digit style.
 extension SaleText on BuildContext {
   AppLocalizations get _l10n => AppLocalizations.of(this);
+
+  /// The running-low part of the saved message (FR-028): up to two names
+  /// with what is left, then how many more. Null when nothing is low.
+  String? lowStockMessage(List<LowStockItem> items) {
+    if (items.isEmpty) return null;
+    String left(LowStockItem i) => quantity(i.stockMilli, i.unit);
+    if (items.length == 1) {
+      return _l10n.saleLowStockOne(items.single.name, left(items.single));
+    }
+    final first = _l10n.saleLowStockItem(items[0].name, left(items[0]));
+    final second = _l10n.saleLowStockItem(items[1].name, left(items[1]));
+    final more = items.length - 2;
+    return more == 0
+        ? _l10n.saleLowStockTwo(first, second)
+        : _l10n.saleLowStockTwoMore(first, second, more, count(more));
+  }
 
   /// A typed number that could not be read, by field.
   String inputProblem(SaleField field, SaleInputProblem p) {

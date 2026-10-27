@@ -1634,4 +1634,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorExpenseCategoryNotFound => 'This category no longer exists.';
+
+  @override
+  String saleLowStockOne(String name, String qty) {
+    return '$name is running low ($qty left).';
+  }
+
+  @override
+  String saleLowStockItem(String name, String qty) {
+    return '$name ($qty left)';
+  }
+
+  @override
+  String saleLowStockTwo(String first, String second) {
+    return '$first and $second are running low.';
+  }
+
+  @override
+  String saleLowStockTwoMore(
+    String first,
+    String second,
+    int count,
+    String countText,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$first, $second and $countText more are running low.',
+      one: '$first, $second and 1 more are running low.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get saleLowStockShow => 'Show';
 }

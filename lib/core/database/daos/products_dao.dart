@@ -134,6 +134,18 @@ LEFT JOIN categories c ON c.id = p.category_id AND c.archived_at IS NULL''';
         );
       });
 
+  /// Those of [ids] that match [lowStockSql], archived or not, in no order.
+  Future<List<ProductStockRow>> lowAmong(List<String> ids) async {
+    if (ids.isEmpty) return const [];
+    final marks = List.filled(ids.length, '?').join(', ');
+    final rows = await customSelect(
+      'SELECT * FROM ($_base) WHERE id IN ($marks) AND $lowStockSql',
+      variables: [for (final id in ids) Variable<String>(id)],
+      readsFrom: _reads,
+    ).get();
+    return rows.map(_read).toList();
+  }
+
   /// One product, archived or not.
   Stream<ProductStockRow?> watchSummary(String id) => customSelect(
     'SELECT * FROM ($_base) WHERE id = ?1',

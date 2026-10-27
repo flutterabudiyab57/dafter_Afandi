@@ -2905,6 +2905,41 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'هذا البند لم يعد موجودًا.'**
   String get errorExpenseCategoryNotFound;
+
+  /// After a sale is saved: one product on it is running low. {qty} is the quantity left with its unit.
+  ///
+  /// In ar, this message translates to:
+  /// **'مخزون {name} قليل (المتبقي {qty}).'**
+  String saleLowStockOne(String name, String qty);
+
+  /// One running-low product inside saleLowStockTwo and saleLowStockTwoMore. {qty} is the quantity left with its unit.
+  ///
+  /// In ar, this message translates to:
+  /// **'{name} (المتبقي {qty})'**
+  String saleLowStockItem(String name, String qty);
+
+  /// After a sale is saved: two products on it are running low. {first} and {second} are saleLowStockItem texts.
+  ///
+  /// In ar, this message translates to:
+  /// **'المخزون قليل: {first}، {second}.'**
+  String saleLowStockTwo(String first, String second);
+
+  /// After a sale is saved: more than two products on it are running low. {first} and {second} are saleLowStockItem texts; {count} is how many more and picks the plural form; {countText} is the same number in the active digit style.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, =1{المخزون قليل: {first}، {second}، ومنتج آخر.} =2{المخزون قليل: {first}، {second}، ومنتجان آخران.} few{المخزون قليل: {first}، {second}، و{countText} منتجات أخرى.} other{المخزون قليل: {first}، {second}، و{countText} منتجًا آخر.}}'**
+  String saleLowStockTwoMore(
+    String first,
+    String second,
+    int count,
+    String countText,
+  );
+
+  /// Snack bar action after a sale that opens the running-low product list.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض'**
+  String get saleLowStockShow;
 }
 
 class _AppLocalizationsDelegate

@@ -56,6 +56,9 @@ final class SaleState extends Equatable {
   final List<Shortage> shortages;
   final SaleSaved? saved;
 
+  /// The saved sale's products that now run low (FR-028).
+  List<LowStockItem> get lowStock => saved?.lowStock ?? const [];
+
   /// The key of a field: per line for qty, price and discount.
   static String inputKey(SaleField field, [String? productId]) =>
       productId == null ? field.name : '${field.name}:$productId';

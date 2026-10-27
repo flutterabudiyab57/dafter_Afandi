@@ -121,6 +121,75 @@ void main() {
           expect(currentPath(tester), RoutePaths.sales);
         });
 
+        group('running low after the sale (US4)', () {
+          String left(String latin, String arabic) => ar
+              ? '$arabic ${l10n.unitPieceShort}'
+              : '$latin ${l10n.unitPieceShort}';
+
+          testWidgets('one product: named with what is left; Show opens '
+              'the running-low list', (tester) async {
+            store.products.seedProduct(
+              'سكر',
+              stockMilli: 5000,
+              lowStockMilli: 3000,
+            );
+            await open(tester);
+            await pick(tester, 'سكر');
+            await typeIn(tester, lineField(l10n.saleQtyLabel), '2');
+            await save(tester);
+            final low = l10n.saleLowStockOne('سكر', left('3', '٣'));
+            expect(
+              find.text('${l10n.saleSaved(number('000001', '٠٠٠٠٠١'))}\n$low'),
+              findsOneWidget,
+            );
+            await tester.tap(find.text(l10n.saleLowStockShow));
+            await tester.pumpAndSettle();
+            expect(
+              routerOf(tester).state.uri.toString(),
+              RoutePaths.productsLow,
+            );
+          });
+
+          testWidgets('three products: two named and one more', (tester) async {
+            const names = ['أرز', 'زيت', 'ملح'];
+            for (final (i, name) in names.indexed) {
+              store.products.seedProduct(
+                name,
+                stockMilli: 5000,
+                lowStockMilli: 5000,
+                barcode: '10$i',
+              );
+            }
+            await open(tester);
+            // By barcode: the picker list is lazy at 200%.
+            for (final i in [0, 1, 2]) {
+              await scan(tester, '10$i');
+            }
+            await save(tester);
+            final low = l10n.saleLowStockTwoMore(
+              l10n.saleLowStockItem('أرز', left('4', '٤')),
+              l10n.saleLowStockItem('زيت', left('4', '٤')),
+              1,
+              ar ? '١' : '1',
+            );
+            expect(find.textContaining(low), findsOneWidget);
+            expect(find.text(l10n.saleLowStockShow), findsOneWidget);
+          });
+
+          testWidgets('nothing low: the plain saved message, no action', (
+            tester,
+          ) async {
+            await open(tester);
+            await pick(tester, 'شاي');
+            await save(tester);
+            expect(
+              find.text(l10n.saleSaved(number('000001', '٠٠٠٠٠١'))),
+              findsOneWidget,
+            );
+            expect(find.text(l10n.saleLowStockShow), findsNothing);
+          });
+        });
+
         testWidgets('an unknown barcode says so', (tester) async {
           await open(tester);
           await scan(tester, '999');

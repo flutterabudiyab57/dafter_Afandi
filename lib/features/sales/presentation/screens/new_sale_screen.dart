@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
+import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/decimal_text.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
@@ -81,9 +82,18 @@ class NewSaleScreen extends StatelessWidget {
           cubit.cancelShortage();
         }
       case SaleStatus.saved:
+        final saved = l10n.saleSaved(context.saleNumber(state.saved!.number));
+        final low = context.lowStockMessage(state.lowStock);
+        // The router outlives this screen, which closes right after.
+        final router = GoRouter.of(context);
         showAppSnackBar(
           context,
-          l10n.saleSaved(context.saleNumber(state.saved!.number)),
+          low == null ? saved : '$saved\n$low',
+          tone: low == null ? StatusTone.success : StatusTone.warning,
+          actionLabel: low == null ? null : l10n.saleLowStockShow,
+          onAction: low == null
+              ? null
+              : () => router.push(RoutePaths.productsLow),
         );
         // Back to where the sale was started; the message stays.
         if (context.canPop()) {

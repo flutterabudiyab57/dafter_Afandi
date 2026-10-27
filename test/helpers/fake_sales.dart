@@ -336,7 +336,21 @@ final class FakeSalesStore {
       }
     }
     _changed();
-    return SaleSaved(id: id, number: number);
+    return SaleSaved(
+      id: id,
+      number: number,
+      lowStock: [
+        for (final pid in draft.lines.map((l) => l.productId).toSet())
+          if (products.summary(pid) case final p? when p.isLow)
+            LowStockItem(
+              productId: pid,
+              name: p.product.name,
+              unit: p.product.unit,
+              stockMilli: p.stockMilli,
+              thresholdMilli: p.product.lowStockThresholdMilli,
+            ),
+      ],
+    );
   }
 }
 

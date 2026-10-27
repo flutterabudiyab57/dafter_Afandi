@@ -1627,4 +1627,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorExpenseCategoryNotFound => 'هذا البند لم يعد موجودًا.';
+
+  @override
+  String saleLowStockOne(String name, String qty) {
+    return 'مخزون $name قليل (المتبقي $qty).';
+  }
+
+  @override
+  String saleLowStockItem(String name, String qty) {
+    return '$name (المتبقي $qty)';
+  }
+
+  @override
+  String saleLowStockTwo(String first, String second) {
+    return 'المخزون قليل: $first، $second.';
+  }
+
+  @override
+  String saleLowStockTwoMore(
+    String first,
+    String second,
+    int count,
+    String countText,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'المخزون قليل: $first، $second، و$countText منتجًا آخر.',
+      few: 'المخزون قليل: $first، $second، و$countText منتجات أخرى.',
+      two: 'المخزون قليل: $first، $second، ومنتجان آخران.',
+      one: 'المخزون قليل: $first، $second، ومنتج آخر.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get saleLowStockShow => 'عرض';
 }

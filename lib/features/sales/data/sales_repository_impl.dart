@@ -50,7 +50,8 @@ final class SalesRepositoryImpl implements SalesRepository {
 
   /// Reads first, then W1 number, W2 header, W3 lines, W4 SALE movements,
   /// W5 SALE and W6 PAYMENT_RECEIVED rows for a named customer (research
-  /// R10), then W7 payment parts on the invoice (006).
+  /// R10), then W7 payment parts on the invoice (006). Last, it reads which
+  /// of the sale's products now run low (research R12).
   @override
   Future<Result<SaleSaved, SaleSaveError>> create(
     SaleDraft draft, {
@@ -179,8 +180,33 @@ final class SalesRepositoryImpl implements SalesRepository {
       paidPiasters: draft.paid,
       at: now,
     );
-    return Ok(SaleSaved(id: invoiceId, number: number));
+    return Ok(
+      SaleSaved(
+        id: invoiceId,
+        number: number,
+        lowStock: await _lowStock(draft),
+      ),
+    );
   });
+
+  /// The draft's products that run low after its movements, in line order.
+  Future<List<LowStockItem>> _lowStock(SaleDraft draft) async {
+    final ids = [for (final line in draft.lines) line.productId];
+    final low = {
+      for (final r in await _products.lowAmong(ids)) r.product.id: r,
+    };
+    return [
+      for (final id in ids.toSet())
+        if (low[id] case final r?)
+          LowStockItem(
+            productId: id,
+            name: r.product.name,
+            unit: r.product.unitType,
+            stockMilli: r.stockMilli,
+            thresholdMilli: r.product.lowStockThresholdMilli,
+          ),
+    ];
+  }
 
   @override
   Stream<List<SaleSummary>> watchList(SaleQuery query, {int limit = 50}) =>

@@ -467,5 +467,10 @@
   "errorExpenseCategoryNameRequired": "Enter the category name.",
   "errorExpenseCategoryNameTooLong": "The category name can be at most {max} characters.",
   "errorExpenseCategoryNameTaken": "An active category already has this name: {name}.",
-  "errorExpenseCategoryNotFound": "This category no longer exists."
+  "errorExpenseCategoryNotFound": "This category no longer exists.",
+  "saleLowStockOne": "{name} is running low ({qty} left).",
+  "saleLowStockItem": "{name} ({qty} left)",
+  "saleLowStockTwo": "{first} and {second} are running low.",
+  "saleLowStockTwoMore": "{count, plural, =1{{first}, {second} and 1 more are running low.} other{{first}, {second} and {countText} more are running low.}}",
+  "saleLowStockShow": "Show"
 }

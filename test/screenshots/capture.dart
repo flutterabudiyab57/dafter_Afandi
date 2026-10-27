@@ -30,7 +30,7 @@ Future<void> loadAppFonts() async {
   ]);
   final flutterRoot = Platform.environment['FLUTTER_ROOT']!;
   await load('MaterialIcons', [
-    '$flutterRoot/bin/cache/artifacts/material_fonts/materialicons-regular.otf',
+    '$flutterRoot/bin/cache/artifacts/material_fonts/MaterialIcons-Regular.otf',
   ]);
 }
 

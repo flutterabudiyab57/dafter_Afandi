@@ -342,17 +342,17 @@ scenarios 1–7, and the profit report changes by the expense.
 **Goal**: the saved message names products that ran low. **Independent test**: spec US4
 scenarios 1–4.
 
-- [ ] T057 [US4] `lib/features/sales/domain/`: `LowStockItem{productId, name, unit, stockMilli,
+- [X] T057 [US4] `lib/features/sales/domain/`: `LowStockItem{productId, name, unit, stockMilli,
   thresholdMilli}` and `SaleSaved.lowStock`. `SalesRepositoryImpl.create` reads, after W4, the
   sale's products that match `ProductsDao.lowStockSql`, in line order (research R12).
-- [ ] T058 [US4] Repository tests: crossing the level; already low; three products; a product
+- [X] T058 [US4] Repository tests: crossing the level; already low; three products; a product
   with no level that stays ≥ 0 is not listed; below zero is listed.
-- [ ] T059 [US4] ARB keys: "{name} is running low ({qty} left)", "{first} and {second} are running
+- [X] T059 [US4] ARB keys: "{name} is running low ({qty} left)", "{first} and {second} are running
   low", "and {count} more", "Show". `SaleCubit` exposes the list; `new_sale_screen.dart` shows it
   in the saved snack bar (up to two names, "and N more", action → `RoutePaths.productsLow`).
   Quantities through `core/utils/quantity.dart`.
-- [ ] T060 [US4] Widget tests for the message and its action; ar/en × 1.0/2.0.
-- [ ] T061 [US4] Gate: analyze clean, all tests green. Commit `feat(006): low-stock message`.
+- [X] T060 [US4] Widget tests for the message and its action; ar/en × 1.0/2.0.
+- [X] T061 [US4] Gate: analyze clean, all tests green. Commit `feat(006): low-stock message`.
 
 ## Phase 7: User Story 5 - Collected, top sellers and balances (P2)
 

@@ -156,11 +156,47 @@ final class SaleQuery extends Equatable {
 
 /// A saved sale.
 final class SaleSaved extends Equatable {
-  const SaleSaved({required this.id, required this.number});
+  const SaleSaved({
+    required this.id,
+    required this.number,
+    this.lowStock = const [],
+  });
 
   final String id;
   final int number;
 
+  /// The sale's products that are now running low, in line order (FR-028).
+  final List<LowStockItem> lowStock;
+
   @override
-  List<Object?> get props => [id, number];
+  List<Object?> get props => [id, number, lowStock];
+}
+
+/// A product on a saved sale that is below zero or at or below its
+/// low-stock level (FR-028, research R12).
+final class LowStockItem extends Equatable {
+  const LowStockItem({
+    required this.productId,
+    required this.name,
+    required this.unit,
+    required this.stockMilli,
+    this.thresholdMilli,
+  });
+
+  final String productId;
+  final String name;
+  final UnitType unit;
+  final int stockMilli;
+
+  /// Null when the product has no level and is only below zero.
+  final int? thresholdMilli;
+
+  @override
+  List<Object?> get props => [
+    productId,
+    name,
+    unit,
+    stockMilli,
+    thresholdMilli,
+  ];
 }

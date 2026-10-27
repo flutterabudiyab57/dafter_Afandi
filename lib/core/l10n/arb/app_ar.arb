@@ -2259,5 +2259,63 @@
   "errorExpenseCategoryNotFound": "هذا البند لم يعد موجودًا.",
   "@errorExpenseCategoryNotFound": {
     "description": "Expense category error."
+  },
+  "saleLowStockOne": "مخزون {name} قليل (المتبقي {qty}).",
+  "@saleLowStockOne": {
+    "description": "After a sale is saved: one product on it is running low. {qty} is the quantity left with its unit.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLowStockItem": "{name} (المتبقي {qty})",
+  "@saleLowStockItem": {
+    "description": "One running-low product inside saleLowStockTwo and saleLowStockTwoMore. {qty} is the quantity left with its unit.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLowStockTwo": "المخزون قليل: {first}، {second}.",
+  "@saleLowStockTwo": {
+    "description": "After a sale is saved: two products on it are running low. {first} and {second} are saleLowStockItem texts.",
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLowStockTwoMore": "{count, plural, =1{المخزون قليل: {first}، {second}، ومنتج آخر.} =2{المخزون قليل: {first}، {second}، ومنتجان آخران.} few{المخزون قليل: {first}، {second}، و{countText} منتجات أخرى.} other{المخزون قليل: {first}، {second}، و{countText} منتجًا آخر.}}",
+  "@saleLowStockTwoMore": {
+    "description": "After a sale is saved: more than two products on it are running low. {first} and {second} are saleLowStockItem texts; {count} is how many more and picks the plural form; {countText} is the same number in the active digit style.",
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "countText": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLowStockShow": "عرض",
+  "@saleLowStockShow": {
+    "description": "Snack bar action after a sale that opens the running-low product list."
   }
 }
