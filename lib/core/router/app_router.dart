@@ -26,6 +26,7 @@ import '../../features/purchases/presentation/purchases_cubits.dart';
 import '../../features/purchases/presentation/screens/new_purchase_screen.dart';
 import '../../features/purchases/presentation/screens/purchase_screen.dart';
 import '../../features/purchases/presentation/screens/purchases_list_screen.dart';
+import '../../features/reports/presentation/cubits/reports_cubits.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
 import '../../features/sales/presentation/screens/invoice_screen.dart';
@@ -69,6 +70,7 @@ GoRouter createAppRouter(
   required SalesCubits sales,
   required SuppliersCubits suppliers,
   required PurchasesCubits purchases,
+  required ReportsCubits reports,
 }) {
   StatefulShellBranch section(String path, Widget screen) =>
       StatefulShellBranch(
@@ -113,7 +115,7 @@ GoRouter createAppRouter(
           showAppBar: RoutePaths.isSectionRoot(state.uri.path),
         ),
         branches: [
-          StatefulShellBranch(routes: [_homeRoute(products)]),
+          StatefulShellBranch(routes: [_homeRoute(products, reports)]),
           StatefulShellBranch(routes: [_salesRoute(sales)]),
           StatefulShellBranch(
             routes: [
@@ -153,10 +155,13 @@ GoRouter createAppRouter(
 
 /// Home and the products screens below it, so the bottom bar stays and Back
 /// returns to Home (002 research R10).
-GoRoute _homeRoute(ProductsCubits products) => GoRoute(
+GoRoute _homeRoute(ProductsCubits products, ReportsCubits reports) => GoRoute(
   path: RoutePaths.home,
-  builder: (context, state) => BlocProvider(
-    create: (_) => products.lowStock(),
+  builder: (context, state) => MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (_) => products.lowStock()),
+      BlocProvider(create: (_) => reports.dashboard()),
+    ],
     child: const HomeScreen(),
   ),
   routes: [

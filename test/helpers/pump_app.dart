@@ -4,6 +4,7 @@ import 'package:daftar_afandi/app.dart';
 import 'package:daftar_afandi/features/customers/presentation/customers_cubits.dart';
 import 'package:daftar_afandi/features/products/presentation/products_cubits.dart';
 import 'package:daftar_afandi/features/purchases/presentation/purchases_cubits.dart';
+import 'package:daftar_afandi/features/reports/presentation/cubits/reports_cubits.dart';
 import 'package:daftar_afandi/features/sales/presentation/sales_cubits.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:daftar_afandi/features/settings/domain/app_settings.dart';
@@ -19,6 +20,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'fake_products.dart';
 import 'fake_purchases.dart';
+import 'fake_reports.dart';
 import 'fake_sales.dart';
 
 const AppVersion kTestVersion = AppVersion(name: '1.0.0', build: '1');
@@ -116,6 +118,7 @@ Future<void> pumpApp(
   SalesCubits? sales,
   SuppliersCubits? suppliers,
   PurchasesCubits? purchases,
+  ReportsCubits? reports,
 }) async {
   tester.view
     ..devicePixelRatio = devicePixelRatio
@@ -143,6 +146,7 @@ Future<void> pumpApp(
       sales: sales ?? FakeSalesCubits(),
       suppliers: suppliers ?? FakeSuppliersCubits(),
       purchases: purchases ?? FakePurchasesCubits(),
+      reports: reports ?? FakeReportsCubits(),
     ),
   );
   await tester.pumpAndSettle();

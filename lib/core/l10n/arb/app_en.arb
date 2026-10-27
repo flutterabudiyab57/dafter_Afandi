@@ -386,5 +386,13 @@
   "customerArchivedMessage": "Customer archived.",
   "supplierArchivedMessage": "Supplier archived.",
   "loadFailedTitle": "Couldn’t show the data",
-  "loadFailedBody": "Nothing in your data changed. Try again."
+  "loadFailedBody": "Nothing in your data changed. Try again.",
+  "dashboardTodayTitle": "Today",
+  "dashboardSalesTitle": "Today's sales",
+  "dashboardSalesCount": "{count, plural, =0{No sales yet} =1{1 sale} other{{countText} sales}}",
+  "dashboardCollectedTitle": "Collected today",
+  "dashboardRunningLowTitle": "Running low",
+  "dashboardDebtorsTitle": "Who owes most",
+  "dashboardDebtorsNone": "No customer owes the shop.",
+  "dashboardSeeAll": "See all"
 }

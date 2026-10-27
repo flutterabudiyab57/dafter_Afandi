@@ -1342,4 +1342,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadFailedBody => 'Nothing in your data changed. Try again.';
+
+  @override
+  String get dashboardTodayTitle => 'Today';
+
+  @override
+  String get dashboardSalesTitle => 'Today\'s sales';
+
+  @override
+  String dashboardSalesCount(int count, String countText) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countText sales',
+      one: '1 sale',
+      zero: 'No sales yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dashboardCollectedTitle => 'Collected today';
+
+  @override
+  String get dashboardRunningLowTitle => 'Running low';
+
+  @override
+  String get dashboardDebtorsTitle => 'Who owes most';
+
+  @override
+  String get dashboardDebtorsNone => 'No customer owes the shop.';
+
+  @override
+  String get dashboardSeeAll => 'See all';
 }

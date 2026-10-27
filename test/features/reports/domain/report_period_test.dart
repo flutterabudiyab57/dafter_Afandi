@@ -73,10 +73,13 @@ void main() {
       DateTime(2026, 10, 26, 9),
       clock,
     );
-    expect(switch (ok) {
-      Ok(:final value) => (value.from, value.to),
-      Err() => null,
-    }, (DateTime(2026, 10, 1), DateTime(2026, 10, 26)));
+    expect(
+      switch (ok) {
+        Ok(:final value) => (value.from, value.to),
+        Err() => null,
+      },
+      (DateTime(2026, 10, 1), DateTime(2026, 10, 26)),
+    );
   });
 
   test('custom is not a fixed kind', () {

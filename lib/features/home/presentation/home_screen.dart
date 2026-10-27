@@ -5,9 +5,10 @@ import '../../../core/l10n/generated/app_localizations.dart';
 import '../../../core/router/route_names.dart';
 import '../../../core/theme/app_tokens.dart';
 import '../../products/presentation/widgets/low_stock_card.dart';
+import 'widgets/today_cards.dart';
 
-/// Home: Products, Categories and the low-stock card (002 FR-001,
-/// FR-001a). The day's summary arrives with later features.
+/// Home: today's numbers (006 US1), the low-stock warning and card (002
+/// FR-001a), and the Products and Categories shortcuts (002 FR-001).
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -21,6 +22,8 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const LowStockBanner(),
+          const TodayCards(),
+          SizedBox(height: tokens.spaceLg),
           FilledButton.icon(
             icon: const Icon(Icons.inventory_2_outlined),
             label: Text(l10n.homeProductsAction),

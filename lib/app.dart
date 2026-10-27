@@ -12,6 +12,7 @@ import 'core/widgets/digit_style_scope.dart';
 import 'features/customers/presentation/customers_cubits.dart';
 import 'features/products/presentation/products_cubits.dart';
 import 'features/purchases/presentation/purchases_cubits.dart';
+import 'features/reports/presentation/cubits/reports_cubits.dart';
 import 'features/sales/presentation/sales_cubits.dart';
 import 'features/settings/domain/app_settings.dart';
 import 'features/settings/domain/app_version.dart';
@@ -29,6 +30,7 @@ class App extends StatefulWidget {
     required this.sales,
     required this.suppliers,
     required this.purchases,
+    required this.reports,
     super.key,
   });
 
@@ -51,6 +53,9 @@ class App extends StatefulWidget {
   final SuppliersCubits suppliers;
   final PurchasesCubits purchases;
 
+  /// Builds the dashboard and report cubits (006).
+  final ReportsCubits reports;
+
   @override
   State<App> createState() => _AppState();
 }
@@ -64,6 +69,7 @@ class _AppState extends State<App> {
     sales: widget.sales,
     suppliers: widget.suppliers,
     purchases: widget.purchases,
+    reports: widget.reports,
   );
 
   @override

@@ -168,13 +168,13 @@ payment. After this phase the app behaves exactly as before for the user.
 **Goal**: the home dashboard. **Independent test**: seed sales, receipts and low-stock products;
 open Home; check each card and where it leads (spec US1 scenarios 1–6).
 
-- [ ] T025 [P] [US1] `lib/features/reports/domain/report_types.dart`: `CollectedSummary`
+- [X] T025 [P] [US1] `lib/features/reports/domain/report_types.dart`: `CollectedSummary`
   (`Map<PaymentMethod, int>` for cash, wallet, InstaPay and `totalPiasters`), `BalanceRow{partyId,
   name, balancePiasters, archived}`, `DashboardSnapshot{todaySalesPiasters, todaySalesCount,
   todayCollected, runningLowCount, topDebtors}`. Equatable.
-- [ ] T026 [US1] `lib/features/reports/domain/reports_repository.dart`: the
+- [X] T026 [US1] `lib/features/reports/domain/reports_repository.dart`: the
   `ReportsRepository` interface from contracts (all six methods; later stories implement theirs).
-- [ ] T027 [US1] `lib/core/database/daos/reports_dao.dart` (register in `AppDatabase`), watched
+- [X] T027 [US1] `lib/core/database/daos/reports_dao.dart` (register in `AppDatabase`), watched
   `customSelect` queries with full `readsFrom` (research R8, R11):
   - `salesTotals(startUtc, endUtc)`: Σ total and count of non-voided sales;
   - `collected(startUtc, endUtc)`: Σ parts by method for non-voided sales and unreversed receipts
@@ -182,32 +182,44 @@ open Home; check each card and where it leads (spec US1 scenarios 1–6).
     `sale_returns.payment_method`, all by `created_at` in `[start, end)`;
   - `runningLowCount()`: active products matching `ProductsDao.lowStockSql`;
   - `customersOwing({limit})`: active and archived customers with balance > 0, largest first.
-- [ ] T028 [US1] `lib/features/reports/data/reports_repository_impl.dart`: `watchDashboard()` for
+- [X] T028 [US1] `lib/features/reports/data/reports_repository_impl.dart`: `watchDashboard()` for
   today by the injected `Clock`, combining T027; `watchCollected`; `watchCustomersOwing`. Register
   in DI.
-- [ ] T029 [US1] `test/features/reports/data/dashboard_test.dart`: spec US1 scenarios 1–3 and 5
+- [X] T029 [US1] `test/features/reports/data/dashboard_test.dart`: spec US1 scenarios 1–3 and 5
   exactly; a split sale counts per method; a reversed receipt and a voided sale count nowhere; a
   sale at 23:58 yesterday is not today; the stream emits again after a sale is saved.
-- [ ] T030 [US1] `lib/features/home/presentation/cubits/dashboard_cubit.dart`: loading / loaded /
+- [X] T030 [US1] `lib/features/home/presentation/cubits/dashboard_cubit.dart`: loading / loaded /
   failed with retry; re-subscribes when the app resumes on a new local day (research R11).
   `ReportsCubits` / `AppReportsCubits` bundle in
   `lib/features/reports/presentation/cubits/reports_cubits.dart`, passed App → `createAppRouter`
   and through `pumpApp` (`reports:` parameter). Fake in `test/helpers/fake_reports.dart`. Bloc
   tests.
-- [ ] T031 [US1] ARB keys in `app_ar.arb` and `app_en.arb` for the dashboard: card titles (today's
+- [X] T031 [US1] ARB keys in `app_ar.arb` and `app_en.arb` for the dashboard: card titles (today's
   sales, collected today, running low, who owes most), "N sales", "see all", the empty texts, and
   the "record expense" shortcut. MSA.
-- [ ] T032 [US1] Rebuild `lib/features/home/presentation/home_screen.dart` as the dashboard:
+- [X] T032 [US1] Rebuild `lib/features/home/presentation/home_screen.dart` as the dashboard:
   - cards: today's sales + count → `RoutePaths.sales`; collected → `/reports/collected`;
   - running low → `RoutePaths.productsLow`;
   - top 3 who owe, each → `customerDetails`, "see all" → `/reports/balances`.
   Keep the existing shortcuts and `LowStockCard`; add "record expense" → `/reports/expenses/new`
   (a placeholder route until US3). Use `SingleChildScrollView(Column)`, the 005 loading and
   failed states, and tokens only.
-- [ ] T033 [US1] `test/features/home/presentation/home_screen_test.dart`: every card's number and
+- [X] T033 [US1] `test/features/home/presentation/home_screen_test.dart`: every card's number and
   destination, the empty shop, a failed load with retry, live update after a save; ar/en ×
   1.0/2.0.
-- [ ] T034 [US1] Gate: analyze clean, all tests green. Commit `feat(006): home dashboard`.
+> **As built (T025–T033):**
+> - **Running low:** the count is the existing low-stock warning banner and card (005), not a
+>   new query or card; `DashboardSnapshot` has no `runningLowCount`.
+> - **Repository:** `ReportsRepository` has only the dashboard, collected and customers-owing
+>   streams so far; US2 and US5 add theirs. Each stream reloads on any change to the tables
+>   reports read (`ReportsDao.watchChanges`).
+> - **Links until their routes exist:** the collected card does not open anything until US5
+>   adds `/reports/collected`, and the debtors card's "See all" opens Parties until US5 adds
+>   `/reports/balances`. The "record expense" shortcut comes with US3 (T053), so no placeholder
+>   route was added.
+> - **Test fake:** `FakeReportsStore` holds a settable snapshot.
+
+- [X] T034 [US1] Gate: analyze clean, all tests green. Commit `feat(006): home dashboard`.
 
 ## Phase 4: User Story 2 - Real profit for a period (P1)
 

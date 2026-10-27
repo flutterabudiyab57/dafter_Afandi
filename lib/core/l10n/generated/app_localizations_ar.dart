@@ -1334,4 +1334,39 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loadFailedBody => 'لم يتغيّر شيء في بياناتك. حاول مرة أخرى.';
+
+  @override
+  String get dashboardTodayTitle => 'اليوم';
+
+  @override
+  String get dashboardSalesTitle => 'مبيعات اليوم';
+
+  @override
+  String dashboardSalesCount(int count, String countText) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countText عملية بيع',
+      few: '$countText عمليات بيع',
+      two: 'عمليتا بيع',
+      one: 'عملية بيع واحدة',
+      zero: 'لا توجد مبيعات بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dashboardCollectedTitle => 'المحصَّل اليوم';
+
+  @override
+  String get dashboardRunningLowTitle => 'منتجات قاربت على النفاد';
+
+  @override
+  String get dashboardDebtorsTitle => 'الأكثر مديونية';
+
+  @override
+  String get dashboardDebtorsNone => 'لا يوجد عملاء عليهم مبالغ للمحل.';
+
+  @override
+  String get dashboardSeeAll => 'عرض الكل';
 }

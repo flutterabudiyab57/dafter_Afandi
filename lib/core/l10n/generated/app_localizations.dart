@@ -2419,6 +2419,54 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لم يتغيّر شيء في بياناتك. حاول مرة أخرى.'**
   String get loadFailedBody;
+
+  /// Home heading above today's numbers (006 US1).
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get dashboardTodayTitle;
+
+  /// Home card: today's net sales total.
+  ///
+  /// In ar, this message translates to:
+  /// **'مبيعات اليوم'**
+  String get dashboardSalesTitle;
+
+  /// How many sales today, under the total. {count} picks the plural form; {countText} is the same number in the active digit style.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, =0{لا توجد مبيعات بعد} =1{عملية بيع واحدة} =2{عمليتا بيع} few{{countText} عمليات بيع} other{{countText} عملية بيع}}'**
+  String dashboardSalesCount(int count, String countText);
+
+  /// Home card: money that came in today, with a line per payment method.
+  ///
+  /// In ar, this message translates to:
+  /// **'المحصَّل اليوم'**
+  String get dashboardCollectedTitle;
+
+  /// Home card: how many products are at or below their low-stock level or below zero; opens the filtered list.
+  ///
+  /// In ar, this message translates to:
+  /// **'منتجات قاربت على النفاد'**
+  String get dashboardRunningLowTitle;
+
+  /// Home card: the three customers who owe the shop the most.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأكثر مديونية'**
+  String get dashboardDebtorsTitle;
+
+  /// Home card text when no customer owes the shop.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد عملاء عليهم مبالغ للمحل.'**
+  String get dashboardDebtorsNone;
+
+  /// Home card action that opens the full list.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض الكل'**
+  String get dashboardSeeAll;
 }
 
 class _AppLocalizationsDelegate

@@ -98,6 +98,7 @@ void main() {
           lowStockMilli: 2000,
         );
         await open(tester, store);
+        await tester.ensureVisible(find.text('شاي'));
         await tester.tap(find.text('شاي'));
         await tester.pumpAndSettle();
         expect(currentPath(tester), RoutePaths.productDetails(id));

@@ -11,6 +11,7 @@ import 'daos/customers_dao.dart';
 import 'daos/payment_parts_dao.dart';
 import 'daos/products_dao.dart';
 import 'daos/purchases_dao.dart';
+import 'daos/reports_dao.dart';
 import 'daos/sales_dao.dart';
 import 'daos/settings_dao.dart';
 import 'daos/stock_movements_dao.dart';
@@ -77,6 +78,7 @@ part 'app_database.g.dart';
     SupplierLedgerDao,
     PurchasesDao,
     PaymentPartsDao,
+    ReportsDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {

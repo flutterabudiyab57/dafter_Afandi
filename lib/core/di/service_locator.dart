@@ -15,6 +15,9 @@ import '../../features/products/presentation/products_cubits.dart';
 import '../../features/purchases/data/purchase_repository_impl.dart';
 import '../../features/purchases/domain/purchase_repository.dart';
 import '../../features/purchases/presentation/purchases_cubits.dart';
+import '../../features/reports/data/reports_repository_impl.dart';
+import '../../features/reports/domain/reports_repository.dart';
+import '../../features/reports/presentation/cubits/reports_cubits.dart';
 import '../../features/sales/data/sales_repository_impl.dart';
 import '../../features/sales/domain/sales_repository.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
@@ -37,6 +40,7 @@ import '../database/daos/customers_dao.dart';
 import '../database/daos/payment_parts_dao.dart';
 import '../database/daos/products_dao.dart';
 import '../database/daos/purchases_dao.dart';
+import '../database/daos/reports_dao.dart';
 import '../database/daos/sales_dao.dart';
 import '../database/daos/settings_dao.dart';
 import '../database/daos/stock_movements_dao.dart';
@@ -173,11 +177,16 @@ Future<void> configureDependencies({
         sl<PaymentPartsWriter>(),
       ),
     )
+    ..registerLazySingleton<ReportsDao>(() => sl<AppDatabase>().reportsDao)
+    ..registerLazySingleton<ReportsRepository>(
+      () => ReportsRepositoryImpl(sl<ReportsDao>(), sl<Clock>()),
+    )
     ..registerLazySingleton<ProductsCubits>(() => AppProductsCubits(sl))
     ..registerLazySingleton<CustomersCubits>(() => AppCustomersCubits(sl))
     ..registerLazySingleton<SalesCubits>(() => AppSalesCubits(sl))
     ..registerLazySingleton<SuppliersCubits>(() => AppSuppliersCubits(sl))
     ..registerLazySingleton<PurchasesCubits>(() => AppPurchasesCubits(sl))
+    ..registerLazySingleton<ReportsCubits>(() => AppReportsCubits(sl))
     ..registerSingleton<AppVersionSource>(
       versionSource ?? const PackageInfoAppVersionSource(),
     )

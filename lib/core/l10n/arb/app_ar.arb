@@ -1844,5 +1844,45 @@
   "loadFailedBody": "لم يتغيّر شيء في بياناتك. حاول مرة أخرى.",
   "@loadFailedBody": {
     "description": "Body when a list could not load."
+  },
+  "dashboardTodayTitle": "اليوم",
+  "@dashboardTodayTitle": {
+    "description": "Home heading above today's numbers (006 US1)."
+  },
+  "dashboardSalesTitle": "مبيعات اليوم",
+  "@dashboardSalesTitle": {
+    "description": "Home card: today's net sales total."
+  },
+  "dashboardSalesCount": "{count, plural, =0{لا توجد مبيعات بعد} =1{عملية بيع واحدة} =2{عمليتا بيع} few{{countText} عمليات بيع} other{{countText} عملية بيع}}",
+  "@dashboardSalesCount": {
+    "description": "How many sales today, under the total. {count} picks the plural form; {countText} is the same number in the active digit style.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "countText": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCollectedTitle": "المحصَّل اليوم",
+  "@dashboardCollectedTitle": {
+    "description": "Home card: money that came in today, with a line per payment method."
+  },
+  "dashboardRunningLowTitle": "منتجات قاربت على النفاد",
+  "@dashboardRunningLowTitle": {
+    "description": "Home card: how many products are at or below their low-stock level or below zero; opens the filtered list."
+  },
+  "dashboardDebtorsTitle": "الأكثر مديونية",
+  "@dashboardDebtorsTitle": {
+    "description": "Home card: the three customers who owe the shop the most."
+  },
+  "dashboardDebtorsNone": "لا يوجد عملاء عليهم مبالغ للمحل.",
+  "@dashboardDebtorsNone": {
+    "description": "Home card text when no customer owes the shop."
+  },
+  "dashboardSeeAll": "عرض الكل",
+  "@dashboardSeeAll": {
+    "description": "Home card action that opens the full list."
   }
 }
