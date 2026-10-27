@@ -1668,4 +1668,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saleLowStockShow => 'Show';
+
+  @override
+  String get reportCollectedTitle => 'Money collected';
+
+  @override
+  String reportCollectedTotal(String amount) {
+    return 'Total: $amount';
+  }
+
+  @override
+  String get reportCollectedEmpty => 'No money was collected in this period.';
+
+  @override
+  String get reportTopSellersTitle => 'Top sellers';
+
+  @override
+  String get reportTopByValue => 'By sales value';
+
+  @override
+  String get reportTopByQuantity => 'By quantity';
+
+  @override
+  String get reportTopEmpty => 'Nothing was sold in this period.';
+
+  @override
+  String reportTopSold(String qty) {
+    return 'Sold: $qty';
+  }
+
+  @override
+  String get reportBalancesTitle => 'Balances';
+
+  @override
+  String get reportBalancesCustomersTab => 'Customers owe';
+
+  @override
+  String get reportBalancesSuppliersTab => 'Shop owes';
+
+  @override
+  String reportBalancesCustomersTotal(String amount) {
+    return 'Total owed to the shop: $amount';
+  }
+
+  @override
+  String reportBalancesSuppliersTotal(String amount) {
+    return 'Total the shop owes: $amount';
+  }
+
+  @override
+  String get reportBalancesCustomersNone => 'No customer owes the shop.';
+
+  @override
+  String get reportBalancesSuppliersNone => 'The shop owes no supplier.';
 }

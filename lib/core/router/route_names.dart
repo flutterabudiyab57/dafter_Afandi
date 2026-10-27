@@ -48,6 +48,11 @@ abstract final class RoutePaths {
   static const String purchasesNew = '/purchases/new';
   static String purchase(String id) => '$purchases/$id';
 
+  // Report views, under the Reports branch (006 research R14).
+  static const String reportCollected = '/reports/collected';
+  static const String reportTopSellers = '/reports/top';
+  static const String reportBalances = '/reports/balances';
+
   // Expenses, under the Reports branch (006 research R14).
   static const String expenses = '/reports/expenses';
   static const String expenseNew = '/reports/expenses/new';

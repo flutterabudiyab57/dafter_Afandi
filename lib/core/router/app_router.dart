@@ -35,6 +35,9 @@ import '../../features/purchases/presentation/screens/purchases_list_screen.dart
 import '../../features/reports/presentation/cubits/report_period_cubit.dart';
 import '../../features/reports/presentation/cubits/reports_cubits.dart';
 import '../../features/reports/presentation/reports_screen.dart';
+import '../../features/reports/presentation/screens/balances_screen.dart';
+import '../../features/reports/presentation/screens/collected_screen.dart';
+import '../../features/reports/presentation/screens/top_sellers_screen.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
 import '../../features/sales/presentation/screens/invoice_screen.dart';
 import '../../features/sales/presentation/screens/new_sale_screen.dart';
@@ -171,6 +174,29 @@ GoRoute _reportsRoute(ReportsCubits reports, ExpensesCubits expenses) =>
         child: const ReportsScreen(),
       ),
       routes: [
+        GoRoute(
+          path: 'collected',
+          builder: (context, state) => BlocProvider(
+            create: (context) =>
+                reports.collected(context.read<ReportPeriodCubit>()),
+            child: const CollectedScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'top',
+          builder: (context, state) => BlocProvider(
+            create: (context) =>
+                reports.topSellers(context.read<ReportPeriodCubit>()),
+            child: const TopSellersScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'balances',
+          builder: (context, state) => BlocProvider(
+            create: (_) => reports.balances(),
+            child: const BalancesScreen(),
+          ),
+        ),
         GoRoute(
           path: 'expenses',
           builder: (context, state) => BlocProvider(

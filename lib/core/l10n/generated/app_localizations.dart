@@ -2940,6 +2940,96 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'عرض'**
   String get saleLowStockShow;
+
+  /// Reports: title of the money-collected view and its link.
+  ///
+  /// In ar, this message translates to:
+  /// **'المبالغ المحصَّلة'**
+  String get reportCollectedTitle;
+
+  /// Money collected: the grand total. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإجمالي: {amount}'**
+  String reportCollectedTotal(String amount);
+
+  /// Money collected: nothing in the period.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تُحصَّل أي مبالغ في هذه الفترة.'**
+  String get reportCollectedEmpty;
+
+  /// Reports: title of the top-sellers view and its link.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأكثر مبيعًا'**
+  String get reportTopSellersTitle;
+
+  /// Top sellers: order by net sales value.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب قيمة المبيعات'**
+  String get reportTopByValue;
+
+  /// Top sellers: order by quantity sold.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب الكمية'**
+  String get reportTopByQuantity;
+
+  /// Top sellers: nothing sold in the period.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يُبَع أي منتج في هذه الفترة.'**
+  String get reportTopEmpty;
+
+  /// Top sellers row: quantity sold, net of returns, with its unit.
+  ///
+  /// In ar, this message translates to:
+  /// **'المباع: {qty}'**
+  String reportTopSold(String qty);
+
+  /// Reports: title of the balances view and its link.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأرصدة'**
+  String get reportBalancesTitle;
+
+  /// Balances tab: customers who owe the shop.
+  ///
+  /// In ar, this message translates to:
+  /// **'على العملاء'**
+  String get reportBalancesCustomersTab;
+
+  /// Balances tab: suppliers the shop owes.
+  ///
+  /// In ar, this message translates to:
+  /// **'للموردين'**
+  String get reportBalancesSuppliersTab;
+
+  /// Balances: total that customers owe. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي المستحق للمحل: {amount}'**
+  String reportBalancesCustomersTotal(String amount);
+
+  /// Balances: total the shop owes suppliers. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي المستحق على المحل: {amount}'**
+  String reportBalancesSuppliersTotal(String amount);
+
+  /// Balances: no customer owes.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد عميل عليه مبالغ للمحل.'**
+  String get reportBalancesCustomersNone;
+
+  /// Balances: the shop owes no supplier.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد مبالغ مستحقة على المحل لأي مورد.'**
+  String get reportBalancesSuppliersNone;
 }
 
 class _AppLocalizationsDelegate

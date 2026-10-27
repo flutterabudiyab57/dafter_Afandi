@@ -2317,5 +2317,85 @@
   "saleLowStockShow": "عرض",
   "@saleLowStockShow": {
     "description": "Snack bar action after a sale that opens the running-low product list."
+  },
+  "reportCollectedTitle": "المبالغ المحصَّلة",
+  "@reportCollectedTitle": {
+    "description": "Reports: title of the money-collected view and its link."
+  },
+  "reportCollectedTotal": "الإجمالي: {amount}",
+  "@reportCollectedTotal": {
+    "description": "Money collected: the grand total. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reportCollectedEmpty": "لم تُحصَّل أي مبالغ في هذه الفترة.",
+  "@reportCollectedEmpty": {
+    "description": "Money collected: nothing in the period."
+  },
+  "reportTopSellersTitle": "الأكثر مبيعًا",
+  "@reportTopSellersTitle": {
+    "description": "Reports: title of the top-sellers view and its link."
+  },
+  "reportTopByValue": "حسب قيمة المبيعات",
+  "@reportTopByValue": {
+    "description": "Top sellers: order by net sales value."
+  },
+  "reportTopByQuantity": "حسب الكمية",
+  "@reportTopByQuantity": {
+    "description": "Top sellers: order by quantity sold."
+  },
+  "reportTopEmpty": "لم يُبَع أي منتج في هذه الفترة.",
+  "@reportTopEmpty": {
+    "description": "Top sellers: nothing sold in the period."
+  },
+  "reportTopSold": "المباع: {qty}",
+  "@reportTopSold": {
+    "description": "Top sellers row: quantity sold, net of returns, with its unit.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "reportBalancesTitle": "الأرصدة",
+  "@reportBalancesTitle": {
+    "description": "Reports: title of the balances view and its link."
+  },
+  "reportBalancesCustomersTab": "على العملاء",
+  "@reportBalancesCustomersTab": {
+    "description": "Balances tab: customers who owe the shop."
+  },
+  "reportBalancesSuppliersTab": "للموردين",
+  "@reportBalancesSuppliersTab": {
+    "description": "Balances tab: suppliers the shop owes."
+  },
+  "reportBalancesCustomersTotal": "إجمالي المستحق للمحل: {amount}",
+  "@reportBalancesCustomersTotal": {
+    "description": "Balances: total that customers owe. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reportBalancesSuppliersTotal": "إجمالي المستحق على المحل: {amount}",
+  "@reportBalancesSuppliersTotal": {
+    "description": "Balances: total the shop owes suppliers. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reportBalancesCustomersNone": "لا يوجد عميل عليه مبالغ للمحل.",
+  "@reportBalancesCustomersNone": {
+    "description": "Balances: no customer owes."
+  },
+  "reportBalancesSuppliersNone": "لا توجد مبالغ مستحقة على المحل لأي مورد.",
+  "@reportBalancesSuppliersNone": {
+    "description": "Balances: the shop owes no supplier."
   }
 }

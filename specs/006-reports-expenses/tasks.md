@@ -358,24 +358,24 @@ scenarios 1–4.
 
 **Goal**: three report views. **Independent test**: spec US5 scenarios 1–5.
 
-- [ ] T062 [P] [US5] `lib/features/reports/domain/report_types.dart`: `TopSeller{productId, name,
+- [X] T062 [P] [US5] `lib/features/reports/domain/report_types.dart`: `TopSeller{productId, name,
   unit, qtyMilli, netSalesPiasters}` and `enum TopSellerOrder { value, quantity }`.
-- [ ] T063 [US5] `reports_dao.dart`: `topSellers(startUtc, endUtc, order, limit 10)` (sold minus
+- [X] T063 [US5] `reports_dao.dart`: `topSellers(startUtc, endUtc, order, limit 10)` (sold minus
   returned, non-voided sales, latest name snapshot) and `suppliersOwed()`;
   `ReportsRepositoryImpl.watchTopSellers` and `watchSuppliersOwed`.
-- [ ] T064 [US5] Repository tests: order by value and by quantity, returns subtracted, voided
+- [X] T064 [US5] Repository tests: order by value and by quantity, returns subtracted, voided
   excluded, archived products still listed; suppliers owed largest first with the total.
-- [ ] T065 [US5] `CollectedCubit`, `TopSellersCubit`, `BalancesCubit`; bundle and fake. Bloc tests.
-- [ ] T066 [US5] ARB keys for the three views. Routes `/reports/collected`, `/reports/top`,
+- [X] T065 [US5] `CollectedCubit`, `TopSellersCubit`, `BalancesCubit`; bundle and fake. Bloc tests.
+- [X] T066 [US5] ARB keys for the three views. Routes `/reports/collected`, `/reports/top`,
   `/reports/balances`. Screens in `lib/features/reports/presentation/screens/`:
   - collected: one row per method and the total, with the period bar;
   - top sellers: value / quantity switch, quantities in each product's unit;
   - balances: two tabs, customers owing and suppliers owed, each with its total; rows open the
     party.
   Show their links on the Reports screen.
-- [ ] T067 [US5] Widget tests for the three screens; ar/en × 1.0/2.0. Add them to
+- [X] T067 [US5] Widget tests for the three screens; ar/en × 1.0/2.0. Add them to
   `test/helpers/screens.dart`.
-- [ ] T068 [US5] Gate: analyze clean, all tests green. Commit `feat(006): collected, top sellers
+- [X] T068 [US5] Gate: analyze clean, all tests green. Commit `feat(006): collected, top sellers
   and balances`.
 
 ## Phase 8: User Story 6 - Account number and split payment (P2)

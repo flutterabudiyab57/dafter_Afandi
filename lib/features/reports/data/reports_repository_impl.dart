@@ -75,6 +75,43 @@ final class ReportsRepositoryImpl implements ReportsRepository {
   Stream<List<BalanceRow>> watchCustomersOwing({int? limit}) =>
       _dao.watchChanges().asyncMap((_) => _owing(limit));
 
+  @override
+  Stream<List<TopSeller>> watchTopSellers(
+    ReportPeriod period,
+    TopSellerOrder order,
+  ) {
+    final r = period.range();
+    return _dao.watchChanges().asyncMap(
+      (_) async => [
+        for (final t in await _dao.topSellers(
+          r.startUtc,
+          r.endUtc,
+          byQuantity: order == TopSellerOrder.quantity,
+        ))
+          TopSeller(
+            productId: t.productId,
+            name: t.name,
+            unit: t.unit,
+            qtyMilli: t.qtyMilli,
+            netSalesPiasters: t.netPiasters,
+          ),
+      ],
+    );
+  }
+
+  @override
+  Stream<List<BalanceRow>> watchSuppliersOwed() => _dao.watchChanges().asyncMap(
+    (_) async => [
+      for (final r in await _dao.suppliersOwed())
+        BalanceRow(
+          partyId: r.id,
+          name: r.name,
+          balancePiasters: r.balancePiasters,
+          archived: r.archived,
+        ),
+    ],
+  );
+
   Future<CollectedSummary> _collected(DateTime start, DateTime end) async {
     final rows = await _dao.collected(start, end);
     return CollectedSummary(<PaymentMethod, int>{

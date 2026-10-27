@@ -13,9 +13,10 @@ import '../../products/presentation/widgets/unit_label.dart';
 import '../domain/profit_summary.dart';
 import 'cubits/profit_cubit.dart';
 import 'widgets/period_bar.dart';
+import 'widgets/report_line.dart';
 
 /// Reports: the period, the profit for it (US2, FR-003 to FR-012) and the
-/// way to the expenses (US3).
+/// ways to the other views (US5) and the expenses (US3).
 class ReportsScreen extends StatelessWidget {
   const ReportsScreen({super.key});
 
@@ -31,11 +32,33 @@ class ReportsScreen extends StatelessWidget {
         children: [
           const PeriodBar(),
           const _ProfitCard(),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.receipt_long_outlined),
-            label: Text(l10n.expensesTitle),
-            onPressed: () => context.push(RoutePaths.expenses),
-          ),
+          for (final (icon, label, path) in [
+            (
+              Icons.payments_outlined,
+              l10n.reportCollectedTitle,
+              RoutePaths.reportCollected,
+            ),
+            (
+              Icons.trending_up,
+              l10n.reportTopSellersTitle,
+              RoutePaths.reportTopSellers,
+            ),
+            (
+              Icons.account_balance_wallet_outlined,
+              l10n.reportBalancesTitle,
+              RoutePaths.reportBalances,
+            ),
+            (
+              Icons.receipt_long_outlined,
+              l10n.expensesTitle,
+              RoutePaths.expenses,
+            ),
+          ])
+            OutlinedButton.icon(
+              icon: Icon(icon),
+              label: Text(label),
+              onPressed: () => context.push(path),
+            ),
         ],
       ),
     );
@@ -92,14 +115,14 @@ class _ProfitCard extends StatelessWidget {
     final losses = s.inventoryLossesPiasters;
     return [
       if (s.isEmpty) Text(l10n.profitEmpty),
-      _Line(l10n.profitNetSales, context.money(s.netSalesPiasters)),
-      _Line(l10n.profitCostOfGoods, context.money(s.costOfGoodsPiasters)),
-      _Line(
+      ReportLine(l10n.profitNetSales, context.money(s.netSalesPiasters)),
+      ReportLine(l10n.profitCostOfGoods, context.money(s.costOfGoodsPiasters)),
+      ReportLine(
         l10n.profitGross,
         context.money(s.grossProfitPiasters),
         strong: true,
       ),
-      _Line(
+      ReportLine(
         losses < 0 ? l10n.profitInventoryNetGain : l10n.profitInventoryLosses,
         context.money(losses.abs()),
       ),
@@ -108,12 +131,12 @@ class _ProfitCard extends StatelessWidget {
           Padding(
             padding: EdgeInsetsDirectional.only(start: tokens.spaceMd),
             // A gain from a count reads with a plus.
-            child: _Line(
+            child: ReportLine(
               adjustmentKindLabel(l10n, kind),
               context.money(value.abs(), sign: value < 0 ? '+' : ''),
             ),
           ),
-      _Line(l10n.profitExpenses, context.money(s.expensesPiasters)),
+      ReportLine(l10n.profitExpenses, context.money(s.expensesPiasters)),
       const Divider(),
       if (s.isLoss)
         Wrap(
@@ -129,31 +152,13 @@ class _ProfitCard extends StatelessWidget {
           ],
         )
       else
-        _Line(l10n.profitNet, context.money(s.netProfitPiasters), strong: true),
+        ReportLine(
+          l10n.profitNet,
+          context.money(s.netProfitPiasters),
+          strong: true,
+        ),
       if (s.linesWithoutCost > 0)
         Text(l10n.profitNoCostNote, style: theme.textTheme.bodySmall),
     ];
-  }
-}
-
-/// A label and an amount, wrapping under each other when they do not fit.
-class _Line extends StatelessWidget {
-  const _Line(this.label, this.amount, {this.strong = false});
-
-  final String label;
-  final String amount;
-  final bool strong;
-
-  @override
-  Widget build(BuildContext context) {
-    final style = strong ? Theme.of(context).textTheme.titleMedium : null;
-    return Wrap(
-      alignment: WrapAlignment.spaceBetween,
-      spacing: context.tokens.spaceSm,
-      children: [
-        Text(label, style: style),
-        Text(amount, style: style),
-      ],
-    );
   }
 }

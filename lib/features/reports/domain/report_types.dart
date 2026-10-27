@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../core/utils/quantity.dart';
 import '../../payments/domain/payment_method.dart';
 
 /// Money that came in during a period, by method (FR-013, research R8):
@@ -69,5 +70,39 @@ final class DashboardSnapshot extends Equatable {
     todaySalesCount,
     todayCollected,
     topDebtors,
+  ];
+}
+
+/// How the top sellers are ordered (FR-014).
+enum TopSellerOrder { value, quantity }
+
+/// A product sold in a period: sold minus returned, on sales not voided
+/// (FR-014). Archived products are still listed.
+final class TopSeller extends Equatable {
+  const TopSeller({
+    required this.productId,
+    required this.name,
+    required this.unit,
+    required this.qtyMilli,
+    required this.netSalesPiasters,
+  });
+
+  final String productId;
+
+  /// The name on its latest sale.
+  final String name;
+  final UnitType unit;
+  final int qtyMilli;
+
+  /// After line and invoice discounts, minus refunds.
+  final int netSalesPiasters;
+
+  @override
+  List<Object?> get props => [
+    productId,
+    name,
+    unit,
+    qtyMilli,
+    netSalesPiasters,
   ];
 }

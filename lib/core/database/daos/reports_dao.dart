@@ -7,10 +7,12 @@ import '../tables/enums.dart';
 import '../tables/expenses_table.dart';
 import '../tables/payment_parts_table.dart';
 import '../tables/sale_items_table.dart';
+import '../tables/sale_return_items_table.dart';
 import '../tables/sale_returns_table.dart';
 import '../tables/sales_invoices_table.dart';
 import '../tables/stock_movements_table.dart';
 import '../tables/supplier_ledger_table.dart';
+import '../tables/suppliers_table.dart';
 
 part 'reports_dao.g.dart';
 
@@ -20,6 +22,23 @@ final class SalesTotalsRow {
 
   final int netPiasters;
   final int count;
+}
+
+/// A product's sales in a period, net of returns.
+final class TopSellerRow {
+  const TopSellerRow({
+    required this.productId,
+    required this.name,
+    required this.unit,
+    required this.qtyMilli,
+    required this.netPiasters,
+  });
+
+  final String productId;
+  final String name;
+  final UnitType unit;
+  final int qtyMilli;
+  final int netPiasters;
 }
 
 /// A party and what it owes or is owed.
@@ -80,10 +99,12 @@ final class AdjustmentValueRow {
     SalesInvoices,
     SaleItems,
     SaleReturns,
+    SaleReturnItems,
     PaymentParts,
     CustomerLedger,
     Customers,
     SupplierLedger,
+    Suppliers,
     StockMovements,
     Expenses,
   ],
@@ -98,10 +119,12 @@ class ReportsDao extends DatabaseAccessor<AppDatabase> with _$ReportsDaoMixin {
       salesInvoices,
       saleItems,
       saleReturns,
+      saleReturnItems,
       paymentParts,
       customerLedger,
       customers,
       supplierLedger,
+      suppliers,
       stockMovements,
       expenses,
     },
@@ -177,6 +200,73 @@ class ReportsDao extends DatabaseAccessor<AppDatabase> with _$ReportsDaoMixin {
           name: r.read<String>('name'),
           balancePiasters: r.read<int>('balance'),
           archived: r.readNullable<int>('archived_at') != null,
+        ),
+    ];
+  }
+
+  /// Suppliers, active or archived, whose balance is above 0 (the shop
+  /// owes them), largest first.
+  Future<List<PartyBalanceRow>> suppliersOwed() async {
+    final rows = await customSelect(
+      'SELECT * FROM (SELECT s.id, s.name, s.archived_at, '
+      ' COALESCE((SELECT SUM(l.amount_piasters) FROM supplier_ledger l '
+      '  WHERE l.supplier_id = s.id), 0) AS balance FROM suppliers s) '
+      'WHERE balance > 0 ORDER BY balance DESC, name ASC, id ASC',
+      readsFrom: {suppliers, supplierLedger},
+    ).get();
+    return [
+      for (final r in rows)
+        PartyBalanceRow(
+          id: r.read<String>('id'),
+          name: r.read<String>('name'),
+          balancePiasters: r.read<int>('balance'),
+          archived: r.readNullable<int>('archived_at') != null,
+        ),
+    ];
+  }
+
+  /// Up to [limit] products sold in the period: lines of sales not voided
+  /// (after the invoice discount share) minus returns made in the period.
+  /// [byQuantity] orders by quantity, else by value; the name is the one on
+  /// the product's latest sale line.
+  Future<List<TopSellerRow>> topSellers(
+    DateTime start,
+    DateTime end, {
+    required bool byQuantity,
+    int limit = 10,
+  }) async {
+    final order = byQuantity ? 'qty DESC, net DESC' : 'net DESC, qty DESC';
+    final rows = await customSelect(
+      'SELECT t.pid, t.qty, t.net, '
+      ' (SELECT i.product_name_snapshot FROM sale_items i '
+      '  JOIN sales_invoices s ON s.id = i.sales_invoice_id '
+      '  WHERE i.product_id = t.pid '
+      '  ORDER BY s.created_at DESC, s.number DESC LIMIT 1) AS name, '
+      ' (SELECT i.unit_type_snapshot FROM sale_items i '
+      '  JOIN sales_invoices s ON s.id = i.sales_invoice_id '
+      '  WHERE i.product_id = t.pid '
+      '  ORDER BY s.created_at DESC, s.number DESC LIMIT 1) AS unit '
+      'FROM (SELECT pid, SUM(qty) AS qty, SUM(net) AS net FROM ('
+      ' SELECT i.product_id AS pid, i.qty_milli AS qty, '
+      '  i.line_total_piasters - i.invoice_discount_share_piasters AS net '
+      ' FROM sale_items i JOIN sales_invoices s ON s.id = i.sales_invoice_id '
+      ' WHERE s.voided_at IS NULL AND s.created_at >= ?1 AND s.created_at < ?2'
+      ' UNION ALL'
+      ' SELECT product_id, -qty_milli, -refund_piasters FROM sale_return_items'
+      ' WHERE created_at >= ?1 AND created_at < ?2'
+      ') GROUP BY pid HAVING SUM(qty) > 0) t '
+      'ORDER BY $order, name ASC, t.pid ASC LIMIT ?3',
+      variables: [..._range(start, end), Variable<int>(limit)],
+      readsFrom: {saleItems, salesInvoices, saleReturnItems},
+    ).get();
+    return [
+      for (final r in rows)
+        TopSellerRow(
+          productId: r.read<String>('pid'),
+          name: r.read<String>('name'),
+          unit: UnitType.values.byName(r.read<String>('unit')),
+          qtyMilli: r.read<int>('qty'),
+          netPiasters: r.read<int>('net'),
         ),
     ];
   }

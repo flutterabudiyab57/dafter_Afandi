@@ -472,5 +472,20 @@
   "saleLowStockItem": "{name} ({qty} left)",
   "saleLowStockTwo": "{first} and {second} are running low.",
   "saleLowStockTwoMore": "{count, plural, =1{{first}, {second} and 1 more are running low.} other{{first}, {second} and {countText} more are running low.}}",
-  "saleLowStockShow": "Show"
+  "saleLowStockShow": "Show",
+  "reportCollectedTitle": "Money collected",
+  "reportCollectedTotal": "Total: {amount}",
+  "reportCollectedEmpty": "No money was collected in this period.",
+  "reportTopSellersTitle": "Top sellers",
+  "reportTopByValue": "By sales value",
+  "reportTopByQuantity": "By quantity",
+  "reportTopEmpty": "Nothing was sold in this period.",
+  "reportTopSold": "Sold: {qty}",
+  "reportBalancesTitle": "Balances",
+  "reportBalancesCustomersTab": "Customers owe",
+  "reportBalancesSuppliersTab": "Shop owes",
+  "reportBalancesCustomersTotal": "Total owed to the shop: {amount}",
+  "reportBalancesSuppliersTotal": "Total the shop owes: {amount}",
+  "reportBalancesCustomersNone": "No customer owes the shop.",
+  "reportBalancesSuppliersNone": "The shop owes no supplier."
 }

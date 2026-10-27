@@ -10,6 +10,7 @@ mixin _$ReportsDaoMixin on DatabaseAccessor<AppDatabase> {
   $ProductsTable get products => attachedDatabase.products;
   $SaleItemsTable get saleItems => attachedDatabase.saleItems;
   $SaleReturnsTable get saleReturns => attachedDatabase.saleReturns;
+  $SaleReturnItemsTable get saleReturnItems => attachedDatabase.saleReturnItems;
   $SuppliersTable get suppliers => attachedDatabase.suppliers;
   $PurchaseInvoicesTable get purchaseInvoices =>
       attachedDatabase.purchaseInvoices;
@@ -19,7 +20,6 @@ mixin _$ReportsDaoMixin on DatabaseAccessor<AppDatabase> {
       attachedDatabase.expenseCategories;
   $ExpensesTable get expenses => attachedDatabase.expenses;
   $PaymentPartsTable get paymentParts => attachedDatabase.paymentParts;
-  $SaleReturnItemsTable get saleReturnItems => attachedDatabase.saleReturnItems;
   $PurchaseItemsTable get purchaseItems => attachedDatabase.purchaseItems;
   $StockMovementsTable get stockMovements => attachedDatabase.stockMovements;
   ReportsDaoManager get managers => ReportsDaoManager(this);
@@ -40,6 +40,11 @@ class ReportsDaoManager {
       $$SaleItemsTableTableManager(_db.attachedDatabase, _db.saleItems);
   $$SaleReturnsTableTableManager get saleReturns =>
       $$SaleReturnsTableTableManager(_db.attachedDatabase, _db.saleReturns);
+  $$SaleReturnItemsTableTableManager get saleReturnItems =>
+      $$SaleReturnItemsTableTableManager(
+        _db.attachedDatabase,
+        _db.saleReturnItems,
+      );
   $$SuppliersTableTableManager get suppliers =>
       $$SuppliersTableTableManager(_db.attachedDatabase, _db.suppliers);
   $$PurchaseInvoicesTableTableManager get purchaseInvoices =>
@@ -66,11 +71,6 @@ class ReportsDaoManager {
       $$ExpensesTableTableManager(_db.attachedDatabase, _db.expenses);
   $$PaymentPartsTableTableManager get paymentParts =>
       $$PaymentPartsTableTableManager(_db.attachedDatabase, _db.paymentParts);
-  $$SaleReturnItemsTableTableManager get saleReturnItems =>
-      $$SaleReturnItemsTableTableManager(
-        _db.attachedDatabase,
-        _db.saleReturnItems,
-      );
   $$PurchaseItemsTableTableManager get purchaseItems =>
       $$PurchaseItemsTableTableManager(_db.attachedDatabase, _db.purchaseItems);
   $$StockMovementsTableTableManager get stockMovements =>

@@ -9,6 +9,7 @@ import 'package:daftar_afandi/features/expenses/domain/expense.dart';
 import 'package:daftar_afandi/features/payments/domain/payment_split.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
 import 'package:daftar_afandi/features/purchases/domain/purchase_draft.dart';
+import 'package:daftar_afandi/features/reports/domain/report_types.dart';
 import 'package:daftar_afandi/features/sales/domain/sale_draft.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,6 +18,7 @@ import 'package:material_ui/material_ui.dart';
 import 'fake_expenses.dart';
 import 'fake_products.dart';
 import 'fake_purchases.dart';
+import 'fake_reports.dart';
 import 'fake_sales.dart';
 import 'pump_app.dart';
 
@@ -179,6 +181,47 @@ Future<void> visitEveryScreen(
   final paidRent = expense(1);
   final voidedRent = expense(2, voidedAt: DateTime.utc(2026, 10, 25, 10));
 
+  // Report views: every method, long names, both balance lists.
+  final reports = FakeReportsStore()
+    ..collected = const CollectedSummary({
+      PaymentMethod.cash: 1234500,
+      PaymentMethod.wallet: 20000,
+      PaymentMethod.instapay: 5000,
+    })
+    ..topSellers = {
+      for (final order in TopSellerOrder.values)
+        order: [
+          TopSeller(
+            productId: tea,
+            name: 'شاي العروسة ٢٥٠ جرام',
+            unit: UnitType.piece,
+            qtyMilli: 120000,
+            netSalesPiasters: 1500000,
+          ),
+          TopSeller(
+            productId: sugar,
+            name: 'سكر',
+            unit: UnitType.kg,
+            qtyMilli: 12750,
+            netSalesPiasters: 38250,
+          ),
+        ],
+    }
+    ..customersOwing = [
+      BalanceRow(
+        partyId: ahmad,
+        name: 'أحمد محمود عبد الرحمن',
+        balancePiasters: 250000,
+      ),
+    ]
+    ..suppliersOwed = [
+      BalanceRow(
+        partyId: nour,
+        name: 'شركة النور للتوريدات',
+        balancePiasters: 30000,
+      ),
+    ];
+
   Future<void> pump(bool onboarded) async => pumpApp(
     tester,
     await repo(onboarded),
@@ -188,6 +231,7 @@ Future<void> visitEveryScreen(
     suppliers: FakeSuppliersCubits(buying),
     purchases: FakePurchasesCubits(buying),
     expenses: FakeExpensesCubits(spending),
+    reports: FakeReportsCubits(reports),
     size: size,
     devicePixelRatio: devicePixelRatio,
     textScale: textScale,
@@ -228,6 +272,9 @@ Future<void> visitEveryScreen(
     RoutePaths.purchase(onCredit),
     RoutePaths.purchase(voidedPurchase),
     RoutePaths.supplierPayment(nour),
+    RoutePaths.reportCollected,
+    RoutePaths.reportTopSellers,
+    RoutePaths.reportBalances,
     RoutePaths.expenses,
     RoutePaths.expenseNew,
     RoutePaths.expenseCategories,

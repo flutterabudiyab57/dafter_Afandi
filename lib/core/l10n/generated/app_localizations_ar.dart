@@ -1663,4 +1663,58 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get saleLowStockShow => 'عرض';
+
+  @override
+  String get reportCollectedTitle => 'المبالغ المحصَّلة';
+
+  @override
+  String reportCollectedTotal(String amount) {
+    return 'الإجمالي: $amount';
+  }
+
+  @override
+  String get reportCollectedEmpty => 'لم تُحصَّل أي مبالغ في هذه الفترة.';
+
+  @override
+  String get reportTopSellersTitle => 'الأكثر مبيعًا';
+
+  @override
+  String get reportTopByValue => 'حسب قيمة المبيعات';
+
+  @override
+  String get reportTopByQuantity => 'حسب الكمية';
+
+  @override
+  String get reportTopEmpty => 'لم يُبَع أي منتج في هذه الفترة.';
+
+  @override
+  String reportTopSold(String qty) {
+    return 'المباع: $qty';
+  }
+
+  @override
+  String get reportBalancesTitle => 'الأرصدة';
+
+  @override
+  String get reportBalancesCustomersTab => 'على العملاء';
+
+  @override
+  String get reportBalancesSuppliersTab => 'للموردين';
+
+  @override
+  String reportBalancesCustomersTotal(String amount) {
+    return 'إجمالي المستحق للمحل: $amount';
+  }
+
+  @override
+  String reportBalancesSuppliersTotal(String amount) {
+    return 'إجمالي المستحق على المحل: $amount';
+  }
+
+  @override
+  String get reportBalancesCustomersNone => 'لا يوجد عميل عليه مبالغ للمحل.';
+
+  @override
+  String get reportBalancesSuppliersNone =>
+      'لا توجد مبالغ مستحقة على المحل لأي مورد.';
 }

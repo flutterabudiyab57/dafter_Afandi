@@ -29,7 +29,7 @@ void main() {
           );
           expect(
             screens,
-            71,
+            74,
           ); // 006 adds the 5 expense pages, void dialog, stock.
         });
       }
