@@ -1369,4 +1369,67 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dashboardSeeAll => 'عرض الكل';
+
+  @override
+  String get reportPeriodToday => 'اليوم';
+
+  @override
+  String get reportPeriodYesterday => 'أمس';
+
+  @override
+  String get reportPeriodThisWeek => 'هذا الأسبوع';
+
+  @override
+  String get reportPeriodThisMonth => 'هذا الشهر';
+
+  @override
+  String get reportPeriodLastMonth => 'الشهر الماضي';
+
+  @override
+  String get reportPeriodCustom => 'فترة أخرى';
+
+  @override
+  String reportPeriodRange(String from, String to) {
+    return 'من $from إلى $to';
+  }
+
+  @override
+  String get reportPeriodEndBeforeStart => 'تاريخ النهاية قبل تاريخ البداية.';
+
+  @override
+  String get reportPeriodInFuture => 'لا يمكن اختيار يوم بعد اليوم.';
+
+  @override
+  String get profitTitle => 'الربح';
+
+  @override
+  String get profitNetSales => 'صافي المبيعات';
+
+  @override
+  String get profitCostOfGoods => 'تكلفة البضاعة المباعة';
+
+  @override
+  String get profitGross => 'مجمل الربح';
+
+  @override
+  String get profitInventoryLosses => 'خسائر المخزون';
+
+  @override
+  String get profitInventoryNetGain => 'صافي مكسب المخزون';
+
+  @override
+  String get profitExpenses => 'المصروفات';
+
+  @override
+  String get profitNet => 'صافي الربح';
+
+  @override
+  String get profitNetLoss => 'صافي الخسارة';
+
+  @override
+  String get profitEmpty => 'لا توجد عمليات في هذه الفترة.';
+
+  @override
+  String get profitNoCostNote =>
+      'بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.';
 }

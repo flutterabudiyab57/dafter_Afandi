@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:daftar_afandi/core/utils/clock.dart';
 import 'package:daftar_afandi/features/home/presentation/cubits/dashboard_cubit.dart';
+import 'package:daftar_afandi/features/reports/domain/profit_summary.dart';
 import 'package:daftar_afandi/features/reports/domain/report_period.dart';
 import 'package:daftar_afandi/features/reports/domain/report_types.dart';
 import 'package:daftar_afandi/features/reports/domain/reports_repository.dart';
+import 'package:daftar_afandi/features/reports/presentation/cubits/profit_cubit.dart';
+import 'package:daftar_afandi/features/reports/presentation/cubits/report_period_cubit.dart';
 import 'package:daftar_afandi/features/reports/presentation/cubits/reports_cubits.dart';
 
 const DashboardSnapshot kEmptyDashboard = DashboardSnapshot(
@@ -24,6 +27,18 @@ final class FakeReportsStore implements ReportsRepository {
 
   /// When set, the next subscription fails with it.
   Object? failNextWatch;
+
+  ProfitSummary _profit = ProfitSummary.empty;
+
+  /// The periods the profit report asked for, in order.
+  final List<ReportPeriod> profitPeriods = [];
+
+  ProfitSummary get profit => _profit;
+
+  set profit(ProfitSummary value) {
+    _profit = value;
+    _changes.add(null);
+  }
 
   DashboardSnapshot get dashboard => _dashboard;
 
@@ -45,6 +60,12 @@ final class FakeReportsStore implements ReportsRepository {
   Stream<DashboardSnapshot> watchDashboard() => _watch(() => _dashboard);
 
   @override
+  Stream<ProfitSummary> watchProfit(ReportPeriod period) {
+    profitPeriods.add(period);
+    return _watch(() => _profit);
+  }
+
+  @override
   Stream<CollectedSummary> watchCollected(ReportPeriod period) =>
       _watch(() => _dashboard.todayCollected);
 
@@ -63,4 +84,10 @@ final class FakeReportsCubits implements ReportsCubits {
 
   @override
   DashboardCubit dashboard() => DashboardCubit(store, clock);
+
+  @override
+  ReportPeriodCubit reportPeriod() => ReportPeriodCubit(clock);
+
+  @override
+  ProfitCubit profit(ReportPeriodCubit periods) => ProfitCubit(store, periods);
 }

@@ -2467,6 +2467,126 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'عرض الكل'**
   String get dashboardSeeAll;
+
+  /// Report period chip (006 FR-001).
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get reportPeriodToday;
+
+  /// Report period chip.
+  ///
+  /// In ar, this message translates to:
+  /// **'أمس'**
+  String get reportPeriodYesterday;
+
+  /// Report period chip; the week starts on Saturday.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الأسبوع'**
+  String get reportPeriodThisWeek;
+
+  /// Report period chip.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الشهر'**
+  String get reportPeriodThisMonth;
+
+  /// Report period chip.
+  ///
+  /// In ar, this message translates to:
+  /// **'الشهر الماضي'**
+  String get reportPeriodLastMonth;
+
+  /// Report period chip that opens a date range picker.
+  ///
+  /// In ar, this message translates to:
+  /// **'فترة أخرى'**
+  String get reportPeriodCustom;
+
+  /// The chosen period's first and last days.
+  ///
+  /// In ar, this message translates to:
+  /// **'من {from} إلى {to}'**
+  String reportPeriodRange(String from, String to);
+
+  /// Why a custom range is refused.
+  ///
+  /// In ar, this message translates to:
+  /// **'تاريخ النهاية قبل تاريخ البداية.'**
+  String get reportPeriodEndBeforeStart;
+
+  /// Why a custom range is refused.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن اختيار يوم بعد اليوم.'**
+  String get reportPeriodInFuture;
+
+  /// Profit report heading (006 US2).
+  ///
+  /// In ar, this message translates to:
+  /// **'الربح'**
+  String get profitTitle;
+
+  /// Profit line: sales not voided minus returns.
+  ///
+  /// In ar, this message translates to:
+  /// **'صافي المبيعات'**
+  String get profitNetSales;
+
+  /// Profit line: the cost recorded on each sale line.
+  ///
+  /// In ar, this message translates to:
+  /// **'تكلفة البضاعة المباعة'**
+  String get profitCostOfGoods;
+
+  /// Profit line: net sales minus cost of goods sold.
+  ///
+  /// In ar, this message translates to:
+  /// **'مجمل الربح'**
+  String get profitGross;
+
+  /// Profit line: stock adjustments at cost, losses net of count gains.
+  ///
+  /// In ar, this message translates to:
+  /// **'خسائر المخزون'**
+  String get profitInventoryLosses;
+
+  /// Shown instead of inventory losses when count gains are larger.
+  ///
+  /// In ar, this message translates to:
+  /// **'صافي مكسب المخزون'**
+  String get profitInventoryNetGain;
+
+  /// Profit line: expenses not voided in the period.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصروفات'**
+  String get profitExpenses;
+
+  /// Profit line: gross profit minus inventory losses minus expenses.
+  ///
+  /// In ar, this message translates to:
+  /// **'صافي الربح'**
+  String get profitNet;
+
+  /// Shown instead of net profit when it is negative.
+  ///
+  /// In ar, this message translates to:
+  /// **'صافي الخسارة'**
+  String get profitNetLoss;
+
+  /// Profit report text when nothing happened in the period.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد عمليات في هذه الفترة.'**
+  String get profitEmpty;
+
+  /// Note when some sale lines had no cost when sold.
+  ///
+  /// In ar, this message translates to:
+  /// **'بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.'**
+  String get profitNoCostNote;
 }
 
 class _AppLocalizationsDelegate

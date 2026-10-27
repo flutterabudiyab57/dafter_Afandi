@@ -1375,4 +1375,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardSeeAll => 'See all';
+
+  @override
+  String get reportPeriodToday => 'Today';
+
+  @override
+  String get reportPeriodYesterday => 'Yesterday';
+
+  @override
+  String get reportPeriodThisWeek => 'This week';
+
+  @override
+  String get reportPeriodThisMonth => 'This month';
+
+  @override
+  String get reportPeriodLastMonth => 'Last month';
+
+  @override
+  String get reportPeriodCustom => 'Other dates';
+
+  @override
+  String reportPeriodRange(String from, String to) {
+    return '$from to $to';
+  }
+
+  @override
+  String get reportPeriodEndBeforeStart =>
+      'The end date is before the start date.';
+
+  @override
+  String get reportPeriodInFuture => 'You can’t pick a day after today.';
+
+  @override
+  String get profitTitle => 'Profit';
+
+  @override
+  String get profitNetSales => 'Net sales';
+
+  @override
+  String get profitCostOfGoods => 'Cost of goods sold';
+
+  @override
+  String get profitGross => 'Gross profit';
+
+  @override
+  String get profitInventoryLosses => 'Inventory losses';
+
+  @override
+  String get profitInventoryNetGain => 'Net inventory gain';
+
+  @override
+  String get profitExpenses => 'Expenses';
+
+  @override
+  String get profitNet => 'Net profit';
+
+  @override
+  String get profitNetLoss => 'Net loss';
+
+  @override
+  String get profitEmpty => 'Nothing happened in this period.';
+
+  @override
+  String get profitNoCostNote =>
+      'Some products were sold with no recorded cost, so profit may look higher than it is.';
 }

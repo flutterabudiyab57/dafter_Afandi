@@ -1884,5 +1884,93 @@
   "dashboardSeeAll": "عرض الكل",
   "@dashboardSeeAll": {
     "description": "Home card action that opens the full list."
+  },
+  "reportPeriodToday": "اليوم",
+  "@reportPeriodToday": {
+    "description": "Report period chip (006 FR-001)."
+  },
+  "reportPeriodYesterday": "أمس",
+  "@reportPeriodYesterday": {
+    "description": "Report period chip."
+  },
+  "reportPeriodThisWeek": "هذا الأسبوع",
+  "@reportPeriodThisWeek": {
+    "description": "Report period chip; the week starts on Saturday."
+  },
+  "reportPeriodThisMonth": "هذا الشهر",
+  "@reportPeriodThisMonth": {
+    "description": "Report period chip."
+  },
+  "reportPeriodLastMonth": "الشهر الماضي",
+  "@reportPeriodLastMonth": {
+    "description": "Report period chip."
+  },
+  "reportPeriodCustom": "فترة أخرى",
+  "@reportPeriodCustom": {
+    "description": "Report period chip that opens a date range picker."
+  },
+  "reportPeriodRange": "من {from} إلى {to}",
+  "@reportPeriodRange": {
+    "description": "The chosen period's first and last days.",
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "reportPeriodEndBeforeStart": "تاريخ النهاية قبل تاريخ البداية.",
+  "@reportPeriodEndBeforeStart": {
+    "description": "Why a custom range is refused."
+  },
+  "reportPeriodInFuture": "لا يمكن اختيار يوم بعد اليوم.",
+  "@reportPeriodInFuture": {
+    "description": "Why a custom range is refused."
+  },
+  "profitTitle": "الربح",
+  "@profitTitle": {
+    "description": "Profit report heading (006 US2)."
+  },
+  "profitNetSales": "صافي المبيعات",
+  "@profitNetSales": {
+    "description": "Profit line: sales not voided minus returns."
+  },
+  "profitCostOfGoods": "تكلفة البضاعة المباعة",
+  "@profitCostOfGoods": {
+    "description": "Profit line: the cost recorded on each sale line."
+  },
+  "profitGross": "مجمل الربح",
+  "@profitGross": {
+    "description": "Profit line: net sales minus cost of goods sold."
+  },
+  "profitInventoryLosses": "خسائر المخزون",
+  "@profitInventoryLosses": {
+    "description": "Profit line: stock adjustments at cost, losses net of count gains."
+  },
+  "profitInventoryNetGain": "صافي مكسب المخزون",
+  "@profitInventoryNetGain": {
+    "description": "Shown instead of inventory losses when count gains are larger."
+  },
+  "profitExpenses": "المصروفات",
+  "@profitExpenses": {
+    "description": "Profit line: expenses not voided in the period."
+  },
+  "profitNet": "صافي الربح",
+  "@profitNet": {
+    "description": "Profit line: gross profit minus inventory losses minus expenses."
+  },
+  "profitNetLoss": "صافي الخسارة",
+  "@profitNetLoss": {
+    "description": "Shown instead of net profit when it is negative."
+  },
+  "profitEmpty": "لا توجد عمليات في هذه الفترة.",
+  "@profitEmpty": {
+    "description": "Profit report text when nothing happened in the period."
+  },
+  "profitNoCostNote": "بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.",
+  "@profitNoCostNote": {
+    "description": "Note when some sale lines had no cost when sold."
   }
 }

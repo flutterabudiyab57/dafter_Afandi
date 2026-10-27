@@ -1,7 +1,11 @@
 import '../../../core/database/daos/reports_dao.dart';
 import '../../../core/utils/clock.dart';
+import '../../../core/utils/money.dart';
 import '../../payments/data/payment_parts_writer.dart';
 import '../../payments/domain/payment_method.dart';
+import '../../products/data/mappers.dart';
+import '../../products/domain/stock_entry.dart';
+import '../domain/profit_summary.dart';
 import '../domain/report_period.dart';
 import '../domain/report_types.dart';
 import '../domain/reports_repository.dart';
@@ -34,6 +38,37 @@ final class ReportsRepositoryImpl implements ReportsRepository {
     return _dao.watchChanges().asyncMap(
       (_) => _collected(r.startUtc, r.endUtc),
     );
+  }
+
+  @override
+  Stream<ProfitSummary> watchProfit(ReportPeriod period) {
+    final r = period.range();
+    return _dao.watchChanges().asyncMap((_) async {
+      final t = await _dao.profitTotals(r.startUtc, r.endUtc);
+      final adjustments = await _dao.adjustments(r.startUtc, r.endUtc);
+      final losses = <AdjustmentKind, int>{};
+      for (final a in adjustments) {
+        final kind = ProductMappers.adjustmentKind(a.reason);
+        // Removed stock is a loss (positive); stock found is a gain.
+        final value = roundHalfUpDiv(
+          -a.qtyDeltaMilli * a.unitCostPiasters,
+          1000,
+        );
+        losses[kind] = (losses[kind] ?? 0) + value;
+      }
+      return ProfitSummary(
+        salesPiasters: t.salesPiasters,
+        returnsPiasters: t.returnsPiasters,
+        saleCostPiasters: t.saleCostPiasters,
+        returnedCostPiasters: t.returnedCostPiasters,
+        inventoryLossesByReason: losses,
+        expensesPiasters: t.expensesPiasters,
+        salesCount: t.salesCount,
+        linesWithoutCost: t.linesWithoutCost,
+        hasAdjustments: adjustments.isNotEmpty,
+        hasReturns: t.returnCount > 0,
+      );
+    });
   }
 
   @override

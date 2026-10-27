@@ -26,6 +26,7 @@ import '../../features/purchases/presentation/purchases_cubits.dart';
 import '../../features/purchases/presentation/screens/new_purchase_screen.dart';
 import '../../features/purchases/presentation/screens/purchase_screen.dart';
 import '../../features/purchases/presentation/screens/purchases_list_screen.dart';
+import '../../features/reports/presentation/cubits/report_period_cubit.dart';
 import '../../features/reports/presentation/cubits/reports_cubits.dart';
 import '../../features/reports/presentation/reports_screen.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
@@ -72,11 +73,6 @@ GoRouter createAppRouter(
   required PurchasesCubits purchases,
   required ReportsCubits reports,
 }) {
-  StatefulShellBranch section(String path, Widget screen) =>
-      StatefulShellBranch(
-        routes: [GoRoute(path: path, builder: (context, state) => screen)],
-      );
-
   return GoRouter(
     initialLocation: RoutePaths.welcome,
     refreshListenable: StreamListenable(prefs.stream),
@@ -124,7 +120,7 @@ GoRouter createAppRouter(
             ],
           ),
           StatefulShellBranch(routes: [_purchasesRoute(purchases)]),
-          section(RoutePaths.reports, const ReportsScreen()),
+          StatefulShellBranch(routes: [_reportsRoute(reports)]),
         ],
       ),
       // Settings are pushed above the shell.
@@ -152,6 +148,18 @@ GoRouter createAppRouter(
     ],
   );
 }
+
+/// Reports, with one period shared by its screens (006 research R14).
+GoRoute _reportsRoute(ReportsCubits reports) => GoRoute(
+  path: RoutePaths.reports,
+  builder: (context, state) => BlocProvider(
+    create: (_) => reports.reportPeriod(),
+    child: BlocProvider(
+      create: (context) => reports.profit(context.read<ReportPeriodCubit>()),
+      child: const ReportsScreen(),
+    ),
+  ),
+);
 
 /// Home and the products screens below it, so the bottom bar stays and Back
 /// returns to Home (002 research R10).

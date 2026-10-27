@@ -37,6 +37,42 @@ final class PartyBalanceRow {
   final bool archived;
 }
 
+/// The sums behind a profit report.
+final class ProfitTotalsRow {
+  const ProfitTotalsRow({
+    required this.salesPiasters,
+    required this.salesCount,
+    required this.saleCostPiasters,
+    required this.linesWithoutCost,
+    required this.returnCount,
+    required this.returnsPiasters,
+    required this.returnedCostPiasters,
+    required this.expensesPiasters,
+  });
+
+  final int salesPiasters;
+  final int salesCount;
+  final int saleCostPiasters;
+  final int linesWithoutCost;
+  final int returnCount;
+  final int returnsPiasters;
+  final int returnedCostPiasters;
+  final int expensesPiasters;
+}
+
+/// One stock adjustment, as recorded.
+final class AdjustmentValueRow {
+  const AdjustmentValueRow({
+    required this.qtyDeltaMilli,
+    required this.unitCostPiasters,
+    required this.reason,
+  });
+
+  final int qtyDeltaMilli;
+  final int unitCostPiasters;
+  final AdjustmentReason reason;
+}
+
 /// Read-only report queries (006 research R8, R9, R11). Times are UTC epoch
 /// ms, `[start, end)`.
 @DriftAccessor(
@@ -141,6 +177,74 @@ class ReportsDao extends DatabaseAccessor<AppDatabase> with _$ReportsDaoMixin {
           name: r.read<String>('name'),
           balancePiasters: r.read<int>('balance'),
           archived: r.readNullable<int>('archived_at') != null,
+        ),
+    ];
+  }
+
+  /// The sums behind the profit report (research R9): sales not voided
+  /// and their recorded line costs, returns, and expenses not voided.
+  Future<ProfitTotalsRow> profitTotals(DateTime start, DateTime end) async {
+    final row = await customSelect(
+      'SELECT '
+      '(SELECT COALESCE(SUM(total_piasters), 0) FROM sales_invoices '
+      ' WHERE voided_at IS NULL AND created_at >= ?1 AND created_at < ?2) '
+      ' AS sales, '
+      '(SELECT COUNT(*) FROM sales_invoices '
+      ' WHERE voided_at IS NULL AND created_at >= ?1 AND created_at < ?2) '
+      ' AS n, '
+      '(SELECT COALESCE(SUM(i.line_cost_piasters), 0) FROM sale_items i '
+      ' JOIN sales_invoices s ON s.id = i.sales_invoice_id '
+      ' WHERE s.voided_at IS NULL AND s.created_at >= ?1 AND s.created_at < ?2) '
+      ' AS cost, '
+      '(SELECT COUNT(*) FROM sale_items i '
+      ' JOIN sales_invoices s ON s.id = i.sales_invoice_id '
+      ' WHERE s.voided_at IS NULL AND s.created_at >= ?1 AND s.created_at < ?2 '
+      ' AND i.unit_cost_piasters = 0) AS no_cost, '
+      '(SELECT COUNT(*) FROM sale_returns '
+      ' WHERE created_at >= ?1 AND created_at < ?2) AS return_count, '
+      '(SELECT COALESCE(SUM(total_refund_piasters), 0) FROM sale_returns '
+      ' WHERE created_at >= ?1 AND created_at < ?2) AS returns, '
+      '(SELECT COALESCE(SUM(total_cost_piasters), 0) FROM sale_returns '
+      ' WHERE created_at >= ?1 AND created_at < ?2) AS returned_cost, '
+      '(SELECT COALESCE(SUM(amount_piasters), 0) FROM expenses '
+      ' WHERE voided_at IS NULL AND spent_at >= ?1 AND spent_at < ?2) '
+      ' AS expenses',
+      variables: _range(start, end),
+      readsFrom: {salesInvoices, saleItems, saleReturns, expenses},
+    ).getSingle();
+    return ProfitTotalsRow(
+      salesPiasters: row.read<int>('sales'),
+      salesCount: row.read<int>('n'),
+      saleCostPiasters: row.read<int>('cost'),
+      linesWithoutCost: row.read<int>('no_cost'),
+      returnCount: row.read<int>('return_count'),
+      returnsPiasters: row.read<int>('returns'),
+      returnedCostPiasters: row.read<int>('returned_cost'),
+      expensesPiasters: row.read<int>('expenses'),
+    );
+  }
+
+  /// Stock adjustments made in the period, as rows: they are few, and each
+  /// is valued in Dart with the money helpers.
+  Future<List<AdjustmentValueRow>> adjustments(
+    DateTime start,
+    DateTime end,
+  ) async {
+    final rows = await customSelect(
+      'SELECT qty_delta_milli, unit_cost_piasters, adjustment_reason '
+      "FROM stock_movements WHERE movement_type = 'ADJUSTMENT' "
+      'AND created_at >= ?1 AND created_at < ?2',
+      variables: _range(start, end),
+      readsFrom: {stockMovements},
+    ).get();
+    return [
+      for (final r in rows)
+        AdjustmentValueRow(
+          qtyDeltaMilli: r.read<int>('qty_delta_milli'),
+          unitCostPiasters: r.read<int>('unit_cost_piasters'),
+          reason: AdjustmentReason.values.byName(
+            r.read<String>('adjustment_reason'),
+          ),
         ),
     ];
   }
