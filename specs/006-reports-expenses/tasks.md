@@ -412,18 +412,22 @@ payment is shown. **Independent test**: spec US6 scenarios 1–8.
 
 ## Phase 9: Polish
 
-- [ ] T077 Run every-screen semantics and layout-stress walks (`test/app/`) with all new screens;
+- [X] T077 Run every-screen semantics and layout-stress walks (`test/app/`) with all new screens;
   fix any clipping at 200% and any missing spoken label.
-- [ ] T078 [P] ARB review: every new key in both files, MSA in Arabic, no "tax" wording on any
+- [X] T078 [P] ARB review: every new key in both files, MSA in Arabic, no "tax" wording on any
   document; `test/l10n/arb_test.dart` green.
-- [ ] T079 [P] Screenshot tests: add Home, Reports, expenses list and form, and a split sale to
+- [X] T079 [P] Screenshot tests: add Home, Reports, expenses list and form, and a split sale to
   `test/screenshots/screenshots_test.dart`; run with `--dart-define=SCREENSHOTS=true` and review.
 - [ ] T080 `flutter build apk --debug`. Run [quickstart.md](quickstart.md) on a phone over a 005
   install, or list its steps for the owner if no device is available. Do not unlock a device or
   enter a PIN.
-- [ ] T081 Lock audit again; update `CLAUDE.md` only where 006 changed a fact it states (schema
+  > **Not done in the cloud session:** the container has no Android SDK and its network
+  > blocks dl.google.com, so the APK was not built and no phone was used. Instead
+  > `test/app/real_app_flow_test.dart` runs the real app (bootstrap, DI, real repositories)
+  > on a SQLite file through a whole day. The owner builds the APK and runs quickstart.md.
+- [X] T081 Lock audit again; update `CLAUDE.md` only where 006 changed a fact it states (schema
   version, the payments feature).
-- [ ] T082 Gate: analyze clean, all tests green. Commit `chore(006): polish`.
+- [X] T082 Gate: analyze clean, all tests green. Commit `chore(006): polish`.
 
 ## Dependencies
 

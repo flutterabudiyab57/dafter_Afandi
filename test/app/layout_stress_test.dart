@@ -27,10 +27,9 @@ void main() {
               expect(tester.takeException(), isNull, reason: screen);
             },
           );
-          expect(
-            screens,
-            74,
-          ); // 006 adds the 5 expense pages, void dialog, stock.
+          // 006 adds the 5 expense pages, void dialog, stock, 3 report
+          // views, a split invoice and a split payment.
+          expect(screens, 76);
         });
       }
     }

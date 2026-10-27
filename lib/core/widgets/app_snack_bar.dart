@@ -42,6 +42,9 @@ void showAppSnackBarOn(
         duration: actionLabel == null
             ? kSnackBarDuration
             : kSnackBarActionDuration,
+        // A snack bar with an action would otherwise stay until tapped and
+        // cover the Save buttons of the screens after it.
+        persist: false,
         // Built under the Scaffold, so it reads the app's theme; the
         // messenger itself sits above it.
         content: Builder(

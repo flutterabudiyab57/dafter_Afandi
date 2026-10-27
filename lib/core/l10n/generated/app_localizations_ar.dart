@@ -1800,7 +1800,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String paymentPartAccount(String account) {
-    return 'إلى/من حسابك $account';
+    return 'حسابك: $account';
   }
 
   @override

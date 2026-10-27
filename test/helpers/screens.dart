@@ -16,6 +16,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'fake_expenses.dart';
+import 'fake_payments.dart';
 import 'fake_products.dart';
 import 'fake_purchases.dart';
 import 'fake_reports.dart';
@@ -120,6 +121,17 @@ Future<void> visitEveryScreen(
   );
   final voided = sales.seedSale(teaSale());
   await sales.sales.voidSale(voided, 'خطأ في الكمية');
+  // Paid in two parts, the wallet one with the owner's number (US6).
+  final splitSale = sales.seedSale(
+    teaSale().withPayment(const [
+      PaymentPartInput(method: PaymentMethod.cash, amountText: '4'),
+      PaymentPartInput(
+        method: PaymentMethod.wallet,
+        amountText: '6',
+        accountText: '01012345678',
+      ),
+    ]),
+  );
   await sales.customers.receivePayment(
     ahmad,
     const PaymentRequest(amountPiasters: 1000, method: PaymentMethod.wallet),
@@ -232,6 +244,12 @@ Future<void> visitEveryScreen(
     purchases: FakePurchasesCubits(buying),
     expenses: FakeExpensesCubits(spending),
     reports: FakeReportsCubits(reports),
+    payments: FakePaymentsCubits(
+      FakeAccountSuggestions({
+        PaymentMethod.wallet: ['01012345678', '01198765432'],
+        PaymentMethod.instapay: ['shop@instapay'],
+      }),
+    ),
     size: size,
     devicePixelRatio: devicePixelRatio,
     textScale: textScale,
@@ -258,6 +276,7 @@ Future<void> visitEveryScreen(
     RoutePaths.salesNew,
     RoutePaths.saleInvoice(partPaid),
     RoutePaths.saleInvoice(voided),
+    RoutePaths.saleInvoice(splitSale),
     RoutePaths.customerNew,
     RoutePaths.customersArchived,
     RoutePaths.customerDetails(ahmad),
@@ -303,6 +322,11 @@ Future<void> visitEveryScreen(
   await tap(find.widgetWithText(FilledButton, l10n.saveAction));
   await check('payment credit dialog');
   await tap(find.text(l10n.backAction));
+
+  // A payment split across methods, with the account suggestions (US6).
+  await tap(find.text(l10n.paymentSplitAction));
+  await tap(find.text(l10n.paymentSplitAction));
+  await check('payment split');
 
   // The archive confirmation and the cancel-payment reason.
   await goTo(tester, RoutePaths.customerDetails(ahmad));

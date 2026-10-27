@@ -51,8 +51,9 @@ void main() {
           }
         },
       );
-      // 006 adds the 5 expense pages, void dialog, stock and 3 report views.
-      expect(screens, 74);
+      // 006 adds the 5 expense pages, void dialog, stock, 3 report views,
+      // a split invoice and a split payment.
+      expect(screens, 76);
       expect(checked, greaterThan(30), reason: 'the walk found the buttons');
       semantics.dispose();
     });

@@ -3154,7 +3154,7 @@ abstract class AppLocalizations {
   /// Under a payment part: the owner's account number. {account} is kept left-to-right.
   ///
   /// In ar, this message translates to:
-  /// **'إلى/من حسابك {account}'**
+  /// **'حسابك: {account}'**
   String paymentPartAccount(String account);
 
   /// Details screens: heading of the payment parts.

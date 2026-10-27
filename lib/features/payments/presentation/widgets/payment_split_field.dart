@@ -197,6 +197,7 @@ class _BodyState extends State<_Body> {
                   decoration: InputDecoration(
                     labelText: l10n.paymentAccountLabel,
                     helperText: l10n.paymentAccountHint,
+                    helperMaxLines: 3,
                     errorText: _errorAt(
                       i,
                       (e) =>

@@ -65,11 +65,12 @@ Strict layer direction: **Screen → Cubit → Repository interface (`domain/`) 
 - The raw schema SQL, triggers and the startup guard are in schema_sql.dart and schema_guard.dart.
 - Stock is derived: `stock = SUM(stock_movements)`, computed with correlated subqueries in the DAOs. The only cached value is `products.avgCostPiasters` (weighted average cost), written only by inbound-movement paths in the same transaction.
 - Search folds text with `arabicNormalize` (core/utils/arabic_normalize.dart) into a `search_key` column.
-- **Schema changes:** bump `schemaVersion`, run `dart run drift_dev make-migrations`, write a step-by-step migration, and keep the exported JSON in `drift_schemas/` with passing tests in `test/drift/`. Feature 002 must not change the schema (it stays at v1).
+- **Schema changes:** bump `schemaVersion`, run `dart run drift_dev make-migrations`, write a step-by-step migration, and keep the exported JSON in `drift_schemas/` with passing tests in `test/drift/`. The schema is at v3: feature 006 added `payment_parts` in v2 (a payment split into up to three methods, with the owner's account number) and, in v3, the delete permission for purging unused customers and suppliers.
 
 **App wiring:**
 - `main.dart` calls `bootstrap.dart` (DB open, schema guard, get_it in `core/di/service_locator.dart`), which builds `app.dart` (MaterialApp.router).
 - Cubits for a feature are created through a factory bundle (e.g. `ProductsCubits` / `AppProductsCubits` in `features/products/presentation/cubits/products_cubits.dart`). The bundle is passed App → `createAppRouter`, so tests can swap in fakes.
+- Payments (006): every form that takes money uses `PaymentSplitField` (features/payments/presentation). Its cubit comes from the `PaymentsCubits` bundle that `App` provides once; parts are written only through `PaymentPartsWriter`, inside the caller's transaction.
 - Routes and paths are in `core/router/route_names.dart`. `AppShellScaffold` is the bottom-nav shell and hides its AppBar below section roots (`RoutePaths.isSectionRoot`).
 
 ## Testing conventions
@@ -83,4 +84,5 @@ Strict layer direction: **Screen → Cubit → Repository interface (`domain/`) 
   - For short pages, prefer `SingleChildScrollView(Column)` over lazy lists so every row is built at 200%.
   - In fakes, don't return a broadcast stream's cancel future from `onCancel` (it hangs under fake async).
 - **Every-screen coverage:** `test/helpers/screens.dart` (`visitEveryScreen`, `kOnboardedPaths`) drives the semantics and layout-stress tests in `test/app/`. Add new screens there.
+- **Real app flow:** `test/app/real_app_flow_test.dart` boots the real app (bootstrap, DI, every real repository) on a SQLite file and drives a whole day through the screens. Extend it when a feature adds a main flow.
 - **ARB keys:** `test/l10n/arb_test.dart` checks that ar and en have the same keys.

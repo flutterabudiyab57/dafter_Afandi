@@ -46,4 +46,21 @@ void main() {
     await tester.tap(find.text(l10n.undoAction));
     expect(undone, isTrue);
   });
+
+  testVariants('a message with an action still closes by itself', (
+    tester,
+    l10n,
+  ) async {
+    final context = await open(tester, l10n);
+    showAppSnackBar(
+      context,
+      l10n.discardChangesTitle,
+      actionLabel: l10n.undoAction,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.undoAction), findsOneWidget);
+    await tester.pump(const Duration(seconds: 11));
+    await tester.pumpAndSettle();
+    expect(find.byType(SnackBar), findsNothing);
+  });
 }

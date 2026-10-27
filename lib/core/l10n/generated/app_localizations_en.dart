@@ -1804,7 +1804,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String paymentPartAccount(String account) {
-    return 'Your account $account';
+    return 'Your account: $account';
   }
 
   @override
