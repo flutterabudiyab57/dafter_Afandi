@@ -1469,6 +1469,68 @@ class AppLocalizationsAr extends AppLocalizations {
   String get expensesAllCategories => 'كل البنود';
 
   @override
+  String customersTotalOwing(String amount) {
+    return 'إجمالي المستحق على العملاء: $amount';
+  }
+
+  @override
+  String suppliersTotalOwed(String amount) {
+    return 'إجمالي المستحق للموردين: $amount';
+  }
+
+  @override
+  String get stockSummaryTitle => 'ملخص المخزون';
+
+  @override
+  String stockValueAtCost(String amount) {
+    return 'قيمة المخزون بسعر الشراء: $amount';
+  }
+
+  @override
+  String stockValueAtSale(String amount) {
+    return 'وبسعر البيع: $amount';
+  }
+
+  @override
+  String stockWithoutCost(String count) {
+    return '$count من الأصناف المتوفرة بلا سعر شراء، فلم تُحسب في القيمة بسعر الشراء.';
+  }
+
+  @override
+  String get stockByCategory => 'حسب التصنيف';
+
+  @override
+  String stockProductCount(String count) {
+    return 'الأصناف: $count';
+  }
+
+  @override
+  String stockGroupValue(String amount) {
+    return 'القيمة: $amount';
+  }
+
+  @override
+  String get stockNone => 'لا يوجد مخزون';
+
+  @override
+  String get stockSummaryEmpty => 'لا توجد أصناف بعد.';
+
+  @override
+  String customerArchiveConfirmPurge(String days) {
+    return 'أرشفة العميل؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد $days أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.';
+  }
+
+  @override
+  String supplierArchiveConfirmPurge(String days) {
+    return 'أرشفة المورد؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد $days أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.';
+  }
+
+  @override
+  String partyPurgeOn(String date) {
+    return 'يُحذف نهائيًا في $date';
+  }
+
+  @override
   String expensesTotal(String amount) {
     return 'إجمالي غير الملغى: $amount';
   }

@@ -1476,6 +1476,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get expensesAllCategories => 'All categories';
 
   @override
+  String customersTotalOwing(String amount) {
+    return 'Customers owe in total: $amount';
+  }
+
+  @override
+  String suppliersTotalOwed(String amount) {
+    return 'Owed to suppliers in total: $amount';
+  }
+
+  @override
+  String get stockSummaryTitle => 'Stock summary';
+
+  @override
+  String stockValueAtCost(String amount) {
+    return 'Stock value at cost: $amount';
+  }
+
+  @override
+  String stockValueAtSale(String amount) {
+    return 'At sale price: $amount';
+  }
+
+  @override
+  String stockWithoutCost(String count) {
+    return '$count products in stock have no purchase cost, so they add nothing to the value at cost.';
+  }
+
+  @override
+  String get stockByCategory => 'By category';
+
+  @override
+  String stockProductCount(String count) {
+    return 'Products: $count';
+  }
+
+  @override
+  String stockGroupValue(String amount) {
+    return 'Value: $amount';
+  }
+
+  @override
+  String get stockNone => 'None in stock';
+
+  @override
+  String get stockSummaryEmpty => 'No products yet.';
+
+  @override
+  String customerArchiveConfirmPurge(String days) {
+    return 'Archive this customer? They have no history, so they will be deleted for good after $days days in the archive unless you restore them first. Deletion cannot be undone.';
+  }
+
+  @override
+  String supplierArchiveConfirmPurge(String days) {
+    return 'Archive this supplier? They have no history, so they will be deleted for good after $days days in the archive unless you restore them first. Deletion cannot be undone.';
+  }
+
+  @override
+  String partyPurgeOn(String date) {
+    return 'Deleted for good on $date';
+  }
+
+  @override
   String expensesTotal(String amount) {
     return 'Total, not voided: $amount';
   }

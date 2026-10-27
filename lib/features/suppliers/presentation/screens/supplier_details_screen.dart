@@ -14,6 +14,7 @@ import '../../../../core/widgets/confirm_dialog.dart';
 import '../../../../core/widgets/list_load_state.dart';
 import '../../../../core/widgets/load_failed_view.dart';
 import '../../../../core/widgets/status_banner.dart';
+import '../../../customers/domain/customer.dart' show kArchivePurgeAfter;
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
@@ -216,7 +217,11 @@ class _Actions extends StatelessWidget {
       context,
       tone: StatusTone.warning,
       title: null,
-      message: b == 0
+      message: !summary.hasHistory
+          ? l10n.supplierArchiveConfirmPurge(
+              context.count(kArchivePurgeAfter.inDays),
+            )
+          : b == 0
           ? l10n.supplierArchiveConfirm
           : l10n.supplierArchiveConfirmBalance(context.supplierBalance(b)),
       confirmLabel: l10n.supplierArchiveAction,

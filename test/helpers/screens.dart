@@ -205,6 +205,7 @@ Future<void> visitEveryScreen(
     RoutePaths.productsLow,
     RoutePaths.productNew,
     RoutePaths.productsArchived,
+    RoutePaths.productsStock,
     RoutePaths.categories,
     RoutePaths.productDetails(tea),
     RoutePaths.productEdit(tea),

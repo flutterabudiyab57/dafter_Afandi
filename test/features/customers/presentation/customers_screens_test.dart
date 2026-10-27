@@ -124,6 +124,10 @@ void main() {
             ..seedCustomer('محمد', openingPiasters: 900)
             ..seedCustomer('علي');
           await open(tester, store, RoutePaths.parties);
+          final total = find.text(
+            l10n.customersTotalOwing(egp('10.00', '١٠٫٠٠')),
+          );
+          expect(total, findsOneWidget);
           await tester.enterText(
             find.widgetWithText(TextField, l10n.customersSearchHint),
             'احمد',
@@ -131,6 +135,8 @@ void main() {
           await tester.pumpAndSettle();
           expect(find.text('أحمد'), findsOneWidget);
           expect(find.text('محمد'), findsNothing);
+          // The total is everyone's, whatever the search.
+          expect(total, findsOneWidget);
           await tester.enterText(
             find.widgetWithText(TextField, l10n.customersSearchHint),
             '',
@@ -215,6 +221,26 @@ void main() {
           await tapVisible(tester, find.text(l10n.customerRestoreAction));
           expect(store.activeCustomers(), hasLength(1));
           expect(store.balanceOf(k), 6000);
+        });
+
+        testWidgets('archive with no history warns of the deletion; the '
+            'archive shows its day', (tester) async {
+          final store = FakeSalesStore();
+          final k = store.seedCustomer('سعيد');
+          await open(tester, store, RoutePaths.customerDetails(k));
+          await tapVisible(tester, find.text(l10n.customerArchiveAction));
+          expect(
+            find.text(l10n.customerArchiveConfirmPurge(ar ? '٧' : '7')),
+            findsOneWidget,
+          );
+          await tester.tap(find.text(l10n.customerArchiveAction).last);
+          await tester.pumpAndSettle();
+
+          await goTo(tester, RoutePaths.customersArchived);
+          expect(
+            find.textContaining(ar ? '٢٠٢٦/١٠/٢٧' : '2026/10/27'),
+            findsOneWidget,
+          );
         });
 
         testWidgets('a cancelled payment shows a reversal and its mark', (

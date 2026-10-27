@@ -173,11 +173,26 @@ final class FakeSalesStore {
   int balanceOf(String id) =>
       _ledger.where((r) => r.customerId == id).fold(0, (s, r) => s + r.amount);
 
+  /// When each archived customer was archived, for the purge date.
+  final Map<String, DateTime> _archivedAt = {};
+
+  bool hasHistory(String id) =>
+      _ledger.any((r) => r.customerId == id) ||
+      _sales.any((s) => s.invoice.summary.customerId == id);
+
   CustomerSummary? customer(String id) {
     final c = _customers[id];
-    return c == null
-        ? null
-        : CustomerSummary(customer: c, balancePiasters: balanceOf(id));
+    if (c == null) return null;
+    final history = hasHistory(id);
+    final archivedAt = _archivedAt[id];
+    return CustomerSummary(
+      customer: c,
+      balancePiasters: balanceOf(id),
+      hasHistory: history,
+      purgeAt: history || archivedAt == null
+          ? null
+          : archivedAt.add(kArchivePurgeAfter),
+    );
   }
 
   List<CustomerSummary> activeCustomers([
@@ -330,6 +345,10 @@ final class FakeCustomerRepository implements CustomerRepository {
 
   final FakeSalesStore _s;
 
+  /// The fake keeps no archive dates; purging is tested on the database.
+  @override
+  Future<int> purgeArchived() async => 0;
+
   @override
   Stream<List<CustomerSummary>> watchActive(CustomerQuery query) =>
       _s._watch(() => _s.activeCustomers(query));
@@ -337,6 +356,14 @@ final class FakeCustomerRepository implements CustomerRepository {
   @override
   Stream<CustomerSummary?> watchOne(String id) =>
       _s._watch(() => _s.customer(id));
+
+  @override
+  Stream<int> watchTotalOwing() => _s._watch(
+    () => _s._customers.keys
+        .map(_s.balanceOf)
+        .where((b) => b > 0)
+        .fold(0, (sum, b) => sum + b),
+  );
 
   @override
   Stream<List<CustomerSummary>> watchArchived() => _s._watch(
@@ -411,6 +438,11 @@ final class FakeCustomerRepository implements CustomerRepository {
       note: c.note,
       archived: archived,
     );
+    if (archived) {
+      _s._archivedAt[id] = _s._now();
+    } else {
+      _s._archivedAt.remove(id);
+    }
     _s._changed();
   }
 

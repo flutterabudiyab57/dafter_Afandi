@@ -13,6 +13,7 @@ import '../../../core/utils/result.dart';
 import '../../customers/data/customer_mappers.dart';
 import '../../customers/data/customer_repository_impl.dart'
     show CustomerRepositoryImpl;
+import '../../customers/domain/customer.dart' show kArchivePurgeAfter;
 import '../../customers/domain/ledger_entry.dart';
 import '../../customers/domain/payment.dart';
 import '../../payments/data/payment_parts_writer.dart';
@@ -55,6 +56,9 @@ final class SupplierRepositoryImpl implements SupplierRepository {
   Stream<SupplierSummary?> watchOne(String id) => _suppliers
       .watchOne(id)
       .map((row) => row == null ? null : SupplierMappers.summary(row));
+
+  @override
+  Stream<int> watchTotalOwed() => _suppliers.watchTotalOwed();
 
   @override
   Stream<List<SupplierSummary>> watchArchived() => _suppliers
@@ -143,6 +147,10 @@ final class SupplierRepositoryImpl implements SupplierRepository {
   @override
   Future<void> restore(String id) =>
       _tx.run(() => _suppliers.setArchivedAt(id, null, _clock.nowUtc()));
+
+  @override
+  Future<int> purgeArchived() =>
+      _suppliers.purgeArchived(_clock.nowUtc().subtract(kArchivePurgeAfter));
 
   @override
   Future<List<SupplierEntry>> statement(

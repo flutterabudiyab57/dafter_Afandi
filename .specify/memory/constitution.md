@@ -1,6 +1,15 @@
 <!--
 Sync Impact Report
-- Version: 1.0.0 → 1.1.0 (MINOR: Technical Rules expanded)
+- Version: 1.1.0 → 1.2.0 (MINOR: Principle III narrowed exception)
+- Changed: Principle III, the no-hard-delete rule.
+- Added: a customer or supplier with no history (no ledger row, invoice or return) may be removed
+  for good after 7 days in the archive; archiving such a party warns that it will be removed.
+- Removed: none.
+- Templates: no change needed. Follow-up: schema v3 replaces the customers and suppliers delete
+  triggers.
+- Approved by the owner on 2026-10-27.
+
+Previous: 1.0.0 → 1.1.0 (MINOR: Technical Rules expanded)
 - Changed: Technical Rules, the paymentMethod rule; amends decision Q23.
 - Added: split payments in `payment_parts` with the owner's optional account number; expenses
   record their method through their parts.
@@ -49,6 +58,9 @@ Rationale: the users read Arabic first; mislabeling a document as a tax receipt 
   updating only `voidedAt`, `voidReason`, and `updatedAt`.
 - Ledgers and stock movements are append-only. No hard deletes of referenced data; archive via
   `archivedAt` instead. DB triggers enforce both.
+- The one exception: a customer or supplier with no history (no ledger row, invoice or return)
+  is removed for good once it has been archived for 7 days. Archiving it MUST warn the owner
+  first, and the archive shows when it will go. The delete triggers refuse any other delete.
 - Every financial operation runs in ONE database transaction (`TransactionRunner` in a repository impl).
 - Every sale line snapshots its unit cost and product name. Purchases update WAC; returns and voids
   re-enter stock at the original snapshot cost.
@@ -135,4 +147,4 @@ Workflow (human-in-the-loop):
 - `docs/research/M0-DECISIONS.md` records decisions that shaped this document; new product decisions
   are folded in here by amendment.
 
-**Version**: 1.1.0 | **Ratified**: 2026-10-19 | **Last Amended**: 2026-10-26
+**Version**: 1.2.0 | **Ratified**: 2026-10-19 | **Last Amended**: 2026-10-27

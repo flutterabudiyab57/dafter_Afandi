@@ -2,6 +2,7 @@ import '../../../core/database/daos/supplier_ledger_dao.dart';
 import '../../../core/database/daos/suppliers_dao.dart';
 import '../../../core/database/tables/enums.dart' as db;
 import '../../customers/data/customer_mappers.dart';
+import '../../customers/domain/customer.dart' show kArchivePurgeAfter;
 import '../domain/supplier.dart';
 import '../domain/supplier_entry.dart';
 
@@ -17,6 +18,10 @@ abstract final class SupplierMappers {
       archived: row.supplier.archivedAt != null,
     ),
     balancePiasters: row.balancePiasters,
+    hasHistory: row.hasHistory,
+    purgeAt: row.hasHistory
+        ? null
+        : row.supplier.archivedAt?.add(kArchivePurgeAfter),
   );
 
   static SupplierEntry entry(SupplierStatementRow s) {

@@ -10,7 +10,9 @@ import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
 import '../../domain/product_query.dart';
 import '../cubits/product_list_cubit.dart';
+import '../cubits/stock_summary_cubit.dart';
 import '../widgets/product_row.dart';
+import '../widgets/unit_label.dart';
 
 /// Products: search, filters, marks and empty states (US2).
 class ProductListScreen extends StatefulWidget {
@@ -36,6 +38,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     final cubit = context.read<ProductListCubit>();
     final state = context.watch<ProductListCubit>().state;
     final query = state.query;
+    final stock = context.watch<StockSummaryCubit>().state.summary;
     // The empty list has its own Add product button; one is enough.
     final emptyAction =
         !state.loading &&
@@ -85,6 +88,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
               ),
             ),
           ),
+          if (stock != null && !emptyAction)
+            ListTile(
+              title: Text(
+                l10n.stockValueAtCost(context.money(stock.costPiasters)),
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push(RoutePaths.productsStock),
+            ),
           _Filters(state: state),
           Expanded(
             child: _Body(

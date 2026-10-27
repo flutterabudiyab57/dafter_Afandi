@@ -23,6 +23,7 @@ import 'package:daftar_afandi/features/products/presentation/cubits/product_form
 import 'package:daftar_afandi/features/products/presentation/cubits/product_list_cubit.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/stock_adjustment_cubit.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/stock_history_cubit.dart';
+import 'package:daftar_afandi/features/products/presentation/cubits/stock_summary_cubit.dart';
 import 'package:daftar_afandi/features/products/presentation/products_cubits.dart';
 
 final class _StoredProduct {
@@ -646,4 +647,7 @@ final class FakeProductsCubits implements ProductsCubits {
   @override
   ArchivedProductsCubit archivedProducts() =>
       ArchivedProductsCubit(store.products);
+
+  @override
+  StockSummaryCubit stockSummary() => StockSummaryCubit(store.products);
 }

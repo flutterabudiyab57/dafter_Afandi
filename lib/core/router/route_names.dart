@@ -17,6 +17,7 @@ abstract final class RoutePaths {
   static const String productsLow = '/home/products?filter=low';
   static const String productNew = '/home/products/new';
   static const String productsArchived = '/home/products/archived';
+  static const String productsStock = '/home/products/stock';
   static const String categories = '/home/categories';
 
   static String productDetails(String id) => '$products/$id';

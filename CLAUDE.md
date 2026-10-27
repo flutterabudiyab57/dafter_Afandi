@@ -48,6 +48,7 @@ A phase is not done until `flutter analyze` is clean and `flutter test` passes.
   - Elsewhere, use `context.tokens` (app_tokens.dart), `EdgeInsetsDirectional` and start/end.
   - flutter_screenutil is for sizes only: no `.sp`, and system text scaling is never clamped.
 - **No hard deletes and no updates to `stock_movements`:** DB triggers refuse them and the import rules ban them. Archive instead (`archivedAt`).
+  - The one exception (constitution 1.2.0): a customer or supplier with no history is removed for good 7 days after it was archived (`purgeArchived` at startup). Only their DAOs may delete.
 - **Secrets:** they never go in the database. The PIN hash and salt live in flutter_secure_storage.
 
 ## Architecture

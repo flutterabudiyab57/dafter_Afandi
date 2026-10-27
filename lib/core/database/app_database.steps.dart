@@ -1751,8 +1751,517 @@ i1.GeneratedColumn<String> _column_94(String aliasedName) =>
       type: i1.DriftSqlType.string,
       $customConstraints: 'NULL',
     );
+
+final class Schema3 extends i0.VersionedSchema {
+  Schema3({required super.database}) : super(version: 3);
+  @override
+  late final List<i1.DatabaseSchemaEntity> entities = [
+    appSettings,
+    counters,
+    categories,
+    products,
+    customers,
+    suppliers,
+    expenseCategories,
+    salesInvoices,
+    saleItems,
+    saleReturns,
+    saleReturnItems,
+    purchaseInvoices,
+    purchaseItems,
+    stockMovements,
+    customerLedger,
+    supplierLedger,
+    expenses,
+    paymentParts,
+  ];
+  late final Shape0 appSettings = Shape0(
+    source: i0.VersionedTable(
+      entityName: 'app_settings',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(singleton = 1)',
+        'CHECK(shop_phone IS NULL OR(shop_phone GLOB \'[+0-9]*\' AND NOT(substr(shop_phone, 2) GLOB \'*[^0-9]*\')AND length(ltrim(shop_phone, \'+\')) BETWEEN 7 AND 15))',
+        'CHECK(locale_code IN (\'ar\', \'en\'))',
+        'CHECK(digit_style IN (\'follow\', \'arabic\', \'latin\'))',
+        'CHECK(negative_stock_policy IN (\'warn\', \'block\'))',
+        'CHECK(onboarding_completed_at IS NULL OR(shop_name IS NOT NULL AND length(trim(shop_name)) BETWEEN 1 AND 60))',
+      ],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_6,
+        _column_7,
+        _column_8,
+        _column_9,
+        _column_10,
+        _column_11,
+        _column_12,
+        _column_13,
+        _column_14,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape1 counters = Shape1(
+    source: i0.VersionedTable(
+      entityName: 'counters',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(next_value >= 1)',
+        'CHECK(doc_type IN (\'SALE\', \'SALE_RETURN\', \'PURCHASE\', \'EXPENSE\', \'CUSTOMER_RECEIPT\', \'SUPPLIER_PAYMENT\'))',
+      ],
+      columns: [_column_0, _column_15, _column_16, _column_13, _column_14],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape2 categories = Shape2(
+    source: i0.VersionedTable(
+      entityName: 'categories',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_17,
+        _column_18,
+        _column_19,
+        _column_13,
+        _column_14,
+        _column_20,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape3 products = Shape3(
+    source: i0.VersionedTable(
+      entityName: 'products',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(unit_type IN (\'piece\', \'kg\', \'liter\', \'meter\'))',
+        'CHECK(sale_price_piasters >= 0)',
+        'CHECK(avg_cost_piasters >= 0)',
+      ],
+      columns: [
+        _column_0,
+        _column_21,
+        _column_17,
+        _column_18,
+        _column_22,
+        _column_23,
+        _column_24,
+        _column_25,
+        _column_26,
+        _column_27,
+        _column_13,
+        _column_14,
+        _column_20,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape4 customers = Shape4(
+    source: i0.VersionedTable(
+      entityName: 'customers',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_17,
+        _column_18,
+        _column_28,
+        _column_29,
+        _column_30,
+        _column_13,
+        _column_14,
+        _column_20,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape4 suppliers = Shape4(
+    source: i0.VersionedTable(
+      entityName: 'suppliers',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_17,
+        _column_18,
+        _column_28,
+        _column_29,
+        _column_30,
+        _column_13,
+        _column_14,
+        _column_20,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape5 expenseCategories = Shape5(
+    source: i0.VersionedTable(
+      entityName: 'expense_categories',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_17,
+        _column_18,
+        _column_13,
+        _column_14,
+        _column_20,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape6 salesInvoices = Shape6(
+    source: i0.VersionedTable(
+      entityName: 'sales_invoices',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(discount_piasters >= 0 AND discount_piasters <= subtotal_piasters)',
+        'CHECK(total_piasters = subtotal_piasters - discount_piasters)',
+        'CHECK(paid_at_sale_piasters >= 0 AND paid_at_sale_piasters <= total_piasters)',
+        'CHECK(paid_at_sale_piasters = total_piasters OR customer_id IS NOT NULL)',
+        'CHECK(payment_method IN (\'cash\', \'wallet\', \'instapay\', \'card\'))',
+        'CHECK((voided_at IS NULL)=(void_reason IS NULL))',
+      ],
+      columns: [
+        _column_0,
+        _column_31,
+        _column_32,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_36,
+        _column_37,
+        _column_30,
+        _column_13,
+        _column_14,
+        _column_38,
+        _column_39,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape7 saleItems = Shape7(
+    source: i0.VersionedTable(
+      entityName: 'sale_items',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'UNIQUE(sales_invoice_id, line_no)',
+        'CHECK(unit_type_snapshot IN (\'piece\', \'kg\', \'liter\', \'meter\'))',
+        'CHECK(qty_milli > 0)',
+        'CHECK(unit_price_piasters >= 0)',
+        'CHECK(discount_piasters >= 0 AND discount_piasters <=(qty_milli * unit_price_piasters + 500)/ 1000)',
+      ],
+      columns: [
+        _column_0,
+        _column_40,
+        _column_41,
+        _column_42,
+        _column_43,
+        _column_44,
+        _column_45,
+        _column_46,
+        _column_47,
+        _column_48,
+        _column_49,
+        _column_50,
+        _column_51,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape8 saleReturns = Shape8(
+    source: i0.VersionedTable(
+      entityName: 'sale_returns',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(refund_paid_piasters >= 0 AND refund_paid_piasters <= total_refund_piasters)',
+        'CHECK(refund_paid_piasters = total_refund_piasters OR customer_id IS NOT NULL)',
+        'CHECK(payment_method IN (\'cash\', \'wallet\', \'instapay\', \'card\'))',
+      ],
+      columns: [
+        _column_0,
+        _column_31,
+        _column_40,
+        _column_32,
+        _column_52,
+        _column_53,
+        _column_54,
+        _column_37,
+        _column_55,
+        _column_13,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape9 saleReturnItems = Shape9(
+    source: i0.VersionedTable(
+      entityName: 'sale_return_items',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)', 'CHECK(qty_milli > 0)'],
+      columns: [
+        _column_0,
+        _column_56,
+        _column_57,
+        _column_42,
+        _column_45,
+        _column_46,
+        _column_50,
+        _column_58,
+        _column_59,
+        _column_13,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape10 purchaseInvoices = Shape10(
+    source: i0.VersionedTable(
+      entityName: 'purchase_invoices',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(discount_piasters >= 0 AND discount_piasters <= subtotal_piasters)',
+        'CHECK(total_piasters = subtotal_piasters - discount_piasters)',
+        'CHECK(paid_piasters >= 0 AND paid_piasters <= total_piasters)',
+        'CHECK(paid_piasters = total_piasters OR supplier_id IS NOT NULL)',
+        'CHECK(payment_method IN (\'cash\', \'wallet\', \'instapay\', \'card\'))',
+        'CHECK((voided_at IS NULL)=(void_reason IS NULL))',
+      ],
+      columns: [
+        _column_0,
+        _column_31,
+        _column_60,
+        _column_61,
+        _column_62,
+        _column_33,
+        _column_34,
+        _column_35,
+        _column_63,
+        _column_37,
+        _column_30,
+        _column_13,
+        _column_14,
+        _column_38,
+        _column_39,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape11 purchaseItems = Shape11(
+    source: i0.VersionedTable(
+      entityName: 'purchase_items',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'UNIQUE(purchase_invoice_id, line_no)',
+        'CHECK(qty_milli > 0)',
+      ],
+      columns: [
+        _column_0,
+        _column_64,
+        _column_41,
+        _column_42,
+        _column_43,
+        _column_45,
+        _column_50,
+        _column_34,
+        _column_48,
+        _column_49,
+        _column_65,
+        _column_66,
+        _column_67,
+        _column_13,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape12 stockMovements = Shape12(
+    source: i0.VersionedTable(
+      entityName: 'stock_movements',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(movement_type IN (\'OPENING\', \'PURCHASE\', \'PURCHASE_VOID\', \'SALE\', \'SALE_RETURN\', \'SALE_VOID\', \'ADJUSTMENT\'))',
+        'CHECK(adjustment_reason IS NULL OR adjustment_reason IN (\'damage\', \'count\', \'other\'))',
+        'CHECK(qty_delta_milli != 0)',
+        'CHECK((adjustment_reason IS NOT NULL)=(movement_type = \'ADJUSTMENT\'))',
+        'CHECK(CASE movement_type WHEN \'OPENING\' THEN qty_delta_milli > 0 AND sale_item_id IS NULL AND sale_return_item_id IS NULL AND purchase_item_id IS NULL AND reverses_movement_id IS NULL WHEN \'PURCHASE\' THEN qty_delta_milli > 0 AND purchase_item_id IS NOT NULL AND sale_item_id IS NULL AND sale_return_item_id IS NULL AND reverses_movement_id IS NULL WHEN \'PURCHASE_VOID\' THEN qty_delta_milli < 0 AND purchase_item_id IS NOT NULL AND reverses_movement_id IS NOT NULL AND sale_item_id IS NULL AND sale_return_item_id IS NULL WHEN \'SALE\' THEN qty_delta_milli < 0 AND sale_item_id IS NOT NULL AND sale_return_item_id IS NULL AND purchase_item_id IS NULL AND reverses_movement_id IS NULL WHEN \'SALE_RETURN\' THEN qty_delta_milli > 0 AND sale_return_item_id IS NOT NULL AND sale_item_id IS NULL AND purchase_item_id IS NULL AND reverses_movement_id IS NULL WHEN \'SALE_VOID\' THEN qty_delta_milli > 0 AND sale_item_id IS NOT NULL AND reverses_movement_id IS NOT NULL AND sale_return_item_id IS NULL AND purchase_item_id IS NULL WHEN \'ADJUSTMENT\' THEN sale_item_id IS NULL AND sale_return_item_id IS NULL AND purchase_item_id IS NULL AND reverses_movement_id IS NULL ELSE 0 END)',
+      ],
+      columns: [
+        _column_0,
+        _column_42,
+        _column_68,
+        _column_69,
+        _column_50,
+        _column_70,
+        _column_71,
+        _column_72,
+        _column_73,
+        _column_74,
+        _column_30,
+        _column_13,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape13 customerLedger = Shape13(
+    source: i0.VersionedTable(
+      entityName: 'customer_ledger',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(entry_type IN (\'OPENING_BALANCE\', \'SALE\', \'PAYMENT_RECEIVED\', \'SALE_RETURN\', \'REFUND_PAID\', \'SALE_VOID\', \'ADJUSTMENT\', \'REVERSAL\'))',
+        'CHECK(payment_method IS NULL OR payment_method IN (\'cash\', \'wallet\', \'instapay\', \'card\'))',
+        'CHECK(amount_piasters != 0)',
+        'CHECK((entry_type IN (\'PAYMENT_RECEIVED\', \'REFUND_PAID\'))=(payment_method IS NOT NULL))',
+      ],
+      columns: [
+        _column_0,
+        _column_75,
+        _column_76,
+        _column_77,
+        _column_78,
+        _column_79,
+        _column_80,
+        _column_81,
+        _column_82,
+        _column_30,
+        _column_13,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape14 supplierLedger = Shape14(
+    source: i0.VersionedTable(
+      entityName: 'supplier_ledger',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(entry_type IN (\'OPENING_BALANCE\', \'PURCHASE\', \'PAYMENT_MADE\', \'PURCHASE_VOID\', \'ADJUSTMENT\', \'REVERSAL\'))',
+        'CHECK(payment_method IS NULL OR payment_method IN (\'cash\', \'wallet\', \'instapay\', \'card\'))',
+        'CHECK(amount_piasters != 0)',
+        'CHECK((entry_type = \'PAYMENT_MADE\')=(payment_method IS NOT NULL))',
+      ],
+      columns: [
+        _column_0,
+        _column_83,
+        _column_76,
+        _column_77,
+        _column_84,
+        _column_85,
+        _column_81,
+        _column_86,
+        _column_30,
+        _column_13,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape15 expenses = Shape15(
+    source: i0.VersionedTable(
+      entityName: 'expenses',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK(amount_piasters > 0)',
+        'CHECK((voided_at IS NULL)=(void_reason IS NULL))',
+      ],
+      columns: [
+        _column_0,
+        _column_31,
+        _column_87,
+        _column_77,
+        _column_88,
+        _column_30,
+        _column_13,
+        _column_14,
+        _column_38,
+        _column_39,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape16 paymentParts = Shape16(
+    source: i0.VersionedTable(
+      entityName: 'payment_parts',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: [
+        'PRIMARY KEY(id)',
+        'CHECK((sales_invoice_id IS NOT NULL)+(purchase_invoice_id IS NOT NULL)+(customer_ledger_id IS NOT NULL)+(supplier_ledger_id IS NOT NULL)+(expense_id IS NOT NULL)= 1)',
+        'CHECK(amount_piasters > 0)',
+        'CHECK(part_no BETWEEN 1 AND 3)',
+        'CHECK(method IN (\'cash\', \'wallet\', \'instapay\', \'card\'))',
+        'CHECK(account_ref IS NULL OR(method IN (\'wallet\', \'instapay\') AND length(account_ref) BETWEEN 1 AND 40))',
+      ],
+      columns: [
+        _column_0,
+        _column_78,
+        _column_84,
+        _column_89,
+        _column_90,
+        _column_91,
+        _column_92,
+        _column_93,
+        _column_77,
+        _column_94,
+        _column_13,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+}
+
 i0.MigrationStepWithVersion migrationSteps({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
+  required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
 }) {
   return (currentVersion, database) async {
     switch (currentVersion) {
@@ -1761,6 +2270,11 @@ i0.MigrationStepWithVersion migrationSteps({
         final migrator = i1.Migrator(database, schema);
         await from1To2(migrator, schema);
         return 2;
+      case 2:
+        final schema = Schema3(database: database);
+        final migrator = i1.Migrator(database, schema);
+        await from2To3(migrator, schema);
+        return 3;
       default:
         throw ArgumentError.value('Unknown migration from $currentVersion');
     }
@@ -1769,6 +2283,7 @@ i0.MigrationStepWithVersion migrationSteps({
 
 i1.OnUpgrade stepByStep({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
+  required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
 }) => i0.VersionedSchema.stepByStepHelper(
-  step: migrationSteps(from1To2: from1To2),
+  step: migrationSteps(from1To2: from1To2, from2To3: from2To3),
 );

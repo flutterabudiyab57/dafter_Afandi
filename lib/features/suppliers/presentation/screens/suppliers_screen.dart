@@ -10,6 +10,7 @@ import '../../../../core/widgets/balance_tile.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
 import '../../../customers/presentation/widgets/parties_switch.dart';
+import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/supplier.dart';
 import '../cubits/suppliers_list_cubit.dart';
 import '../widgets/supplier_text.dart';
@@ -110,6 +111,16 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
               ),
             ),
           ),
+          if (state.totalOwedPiasters case final total? when !emptyAction)
+            Padding(
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: tokens.spaceMd,
+              ),
+              child: Text(
+                l10n.suppliersTotalOwed(context.money(total)),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
           Expanded(
             child: _Body(
               state: state,

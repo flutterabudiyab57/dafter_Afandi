@@ -15,6 +15,7 @@ final class CustomersListState extends Equatable {
     this.items = const [],
     this.loading = true,
     this.loadFailed = false,
+    this.totalOwingPiasters,
   });
 
   final CustomerQuery query;
@@ -26,20 +27,31 @@ final class CustomersListState extends Equatable {
   /// The stream failed; [retry] tries again (research R7).
   final bool loadFailed;
 
+  /// What all customers owe the shop; null until it loads.
+  final int? totalOwingPiasters;
+
   CustomersListState copyWith({
     CustomerQuery? query,
     List<CustomerSummary>? items,
     bool? loading,
     bool? loadFailed,
+    int? totalOwingPiasters,
   }) => CustomersListState(
     query: query ?? this.query,
     items: items ?? this.items,
     loading: loading ?? this.loading,
     loadFailed: loadFailed ?? this.loadFailed,
+    totalOwingPiasters: totalOwingPiasters ?? this.totalOwingPiasters,
   );
 
   @override
-  List<Object?> get props => [query, items, loading, loadFailed];
+  List<Object?> get props => [
+    query,
+    items,
+    loading,
+    loadFailed,
+    totalOwingPiasters,
+  ];
 }
 
 /// The customer list and the sale's customer picker (FR-014). Typing waits
@@ -50,11 +62,17 @@ class CustomersListCubit extends Cubit<CustomersListState> {
     this.debounce = const Duration(milliseconds: 200),
   }) : super(const CustomersListState()) {
     _subscribe();
+    // Everyone, whatever the search. A failed total is just not shown.
+    _totalSub = _repository.watchTotalOwing().listen(
+      (total) => emit(state.copyWith(totalOwingPiasters: total)),
+      onError: addError,
+    );
   }
 
   final CustomerRepository _repository;
   final Duration debounce;
   StreamSubscription<List<CustomerSummary>>? _sub;
+  StreamSubscription<int>? _totalSub;
   Timer? _timer;
 
   void search(String text) {
@@ -120,6 +138,7 @@ class CustomersListCubit extends Cubit<CustomersListState> {
   Future<void> close() async {
     _timer?.cancel();
     await _sub?.cancel();
+    await _totalSub?.cancel();
     return super.close();
   }
 }

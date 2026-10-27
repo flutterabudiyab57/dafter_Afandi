@@ -4,6 +4,8 @@ import 'package:daftar_afandi/core/utils/arabic_normalize.dart';
 import 'package:daftar_afandi/core/utils/clock.dart';
 import 'package:daftar_afandi/core/utils/digits.dart';
 import 'package:daftar_afandi/core/utils/result.dart';
+import 'package:daftar_afandi/features/customers/domain/customer.dart'
+    show kArchivePurgeAfter;
 import 'package:daftar_afandi/features/customers/domain/ledger_entry.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
@@ -178,11 +180,26 @@ final class FakePurchasesStore {
   int balanceOf(String id) =>
       _ledger.where((r) => r.supplierId == id).fold(0, (s, r) => s + r.amount);
 
+  /// When each archived supplier was archived, for the purge date.
+  final Map<String, DateTime> _archivedAt = {};
+
+  bool hasHistory(String id) =>
+      _ledger.any((r) => r.supplierId == id) ||
+      _purchases.any((s) => s.summary.supplierId == id);
+
   SupplierSummary? supplier(String id) {
     final s = _suppliers[id];
-    return s == null
-        ? null
-        : SupplierSummary(supplier: s, balancePiasters: balanceOf(id));
+    if (s == null) return null;
+    final history = hasHistory(id);
+    final archivedAt = _archivedAt[id];
+    return SupplierSummary(
+      supplier: s,
+      balancePiasters: balanceOf(id),
+      hasHistory: history,
+      purgeAt: history || archivedAt == null
+          ? null
+          : archivedAt.add(kArchivePurgeAfter),
+    );
   }
 
   List<SupplierSummary> activeSuppliers([
@@ -334,6 +351,10 @@ final class FakeSupplierRepository implements SupplierRepository {
 
   final FakePurchasesStore _s;
 
+  /// The fake keeps no archive dates; purging is tested on the database.
+  @override
+  Future<int> purgeArchived() async => 0;
+
   @override
   Stream<List<SupplierSummary>> watchActive(SupplierQuery query) =>
       _s._watch(() => _s.activeSuppliers(query));
@@ -341,6 +362,14 @@ final class FakeSupplierRepository implements SupplierRepository {
   @override
   Stream<SupplierSummary?> watchOne(String id) =>
       _s._watch(() => _s.supplier(id));
+
+  @override
+  Stream<int> watchTotalOwed() => _s._watch(
+    () => _s._suppliers.keys
+        .map(_s.balanceOf)
+        .where((b) => b > 0)
+        .fold(0, (sum, b) => sum + b),
+  );
 
   @override
   Stream<List<SupplierSummary>> watchArchived() => _s._watch(
@@ -415,6 +444,11 @@ final class FakeSupplierRepository implements SupplierRepository {
       note: s.note,
       archived: archived,
     );
+    if (archived) {
+      _s._archivedAt[id] = _s._now();
+    } else {
+      _s._archivedAt.remove(id);
+    }
     _s._changed();
   }
 

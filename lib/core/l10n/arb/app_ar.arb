@@ -2022,6 +2022,112 @@
   "@expensesAllCategories": {
     "description": "Expenses list filter: no category filter."
   },
+  "customersTotalOwing": "إجمالي المستحق على العملاء: {amount}",
+  "@customersTotalOwing": {
+    "description": "Above the customer list: what all customers, active or archived, owe the shop.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "suppliersTotalOwed": "إجمالي المستحق للموردين: {amount}",
+  "@suppliersTotalOwed": {
+    "description": "Above the supplier list: what the shop owes all suppliers, active or archived.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockSummaryTitle": "ملخص المخزون",
+  "@stockSummaryTitle": {
+    "description": "Stock summary screen title."
+  },
+  "stockValueAtCost": "قيمة المخزون بسعر الشراء: {amount}",
+  "@stockValueAtCost": {
+    "description": "The stock of active products at their average purchase cost.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockValueAtSale": "وبسعر البيع: {amount}",
+  "@stockValueAtSale": {
+    "description": "The same stock at the sale prices.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockWithoutCost": "{count} من الأصناف المتوفرة بلا سعر شراء، فلم تُحسب في القيمة بسعر الشراء.",
+  "@stockWithoutCost": {
+    "description": "Note under the stock value.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "stockByCategory": "حسب التصنيف",
+  "@stockByCategory": {
+    "description": "Stock summary section header."
+  },
+  "stockProductCount": "الأصناف: {count}",
+  "@stockProductCount": {
+    "description": "How many active products a category has.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "stockGroupValue": "القيمة: {amount}",
+  "@stockGroupValue": {
+    "description": "A category's stock at cost.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockNone": "لا يوجد مخزون",
+  "@stockNone": {
+    "description": "A category whose products have no stock."
+  },
+  "stockSummaryEmpty": "لا توجد أصناف بعد.",
+  "@stockSummaryEmpty": {
+    "description": "Stock summary with no active products."
+  },
+  "customerArchiveConfirmPurge": "أرشفة العميل؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد {days} أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.",
+  "@customerArchiveConfirmPurge": {
+    "description": "Archive confirmation for a customer with no history (constitution 1.2.0).",
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierArchiveConfirmPurge": "أرشفة المورد؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد {days} أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.",
+  "@supplierArchiveConfirmPurge": {
+    "description": "Archive confirmation for a supplier with no history (constitution 1.2.0).",
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "partyPurgeOn": "يُحذف نهائيًا في {date}",
+  "@partyPurgeOn": {
+    "description": "Under an archived customer or supplier with no history.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "expensesTotal": "إجمالي غير الملغى: {amount}",
   "@expensesTotal": {
     "description": "Expenses list total for the filters.",

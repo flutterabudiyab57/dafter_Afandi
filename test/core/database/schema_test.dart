@@ -26,8 +26,8 @@ void main() {
   test('header pragmas', () async {
     expect(await t.db.scalar('PRAGMA application_id'), 0x44414641);
     expect(kAppApplicationId, 0x44414641);
-    expect(await t.db.scalar('PRAGMA user_version'), 2);
-    expect(kSchemaVersion, 2);
+    expect(await t.db.scalar('PRAGMA user_version'), 3);
+    expect(kSchemaVersion, 3);
     expect(t.db.schemaVersion, kSchemaVersion);
   });
 

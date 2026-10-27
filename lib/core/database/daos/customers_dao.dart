@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../app_database.dart';
+import '../schema_sql.dart';
 import '../tables/customer_ledger_table.dart';
 import '../tables/customers_table.dart';
 
@@ -8,22 +9,31 @@ part 'customers_dao.g.dart';
 
 /// A customer with their derived balance (003 research R8).
 final class CustomerBalanceRow {
-  const CustomerBalanceRow(this.customer, this.balancePiasters);
+  const CustomerBalanceRow(
+    this.customer,
+    this.balancePiasters, {
+    required this.hasHistory,
+  });
 
   final CustomerRow customer;
 
   /// `SUM(amount_piasters)` of the customer's ledger; 0 without rows.
   final int balancePiasters;
+
+  /// Any ledger row, invoice or return names them (constitution 1.2.0).
+  final bool hasHistory;
 }
 
-/// Customers. Never deletes (constitution III).
+/// Customers. Never deletes but [purgeArchived] (constitution 1.2.0).
 @DriftAccessor(tables: [Customers, CustomerLedger])
 class CustomersDao extends DatabaseAccessor<AppDatabase>
     with _$CustomersDaoMixin {
   CustomersDao(super.attachedDatabase);
 
-  static const String _base = '''
+  static final String _base =
+      '''
 SELECT c.*,
+  ${partyHistorySql('customers', 'c.id')} AS has_history,
   COALESCE((SELECT SUM(l.amount_piasters) FROM customer_ledger l
             WHERE l.customer_id = c.id), 0) AS balance_piasters
 FROM customers c''';
@@ -76,6 +86,25 @@ FROM customers c''';
     readsFrom: _reads,
   ).watch().map((rows) => rows.map(_read).toList());
 
+  /// What all customers, active or archived, owe the shop: the sum of
+  /// the balances above 0.
+  Stream<int> watchTotalOwing() => customSelect(
+    'SELECT COALESCE(SUM(balance_piasters), 0) AS total FROM ($_base) '
+    'WHERE balance_piasters > 0',
+    readsFrom: _reads,
+  ).watchSingle().map((row) => row.read<int>('total'));
+
+  /// Deletes the archived customers with no history archived at or before
+  /// [cutoff] (constitution 1.2.0); the v3 trigger refuses any other.
+  /// Returns how many went.
+  Future<int> purgeArchived(DateTime cutoff) => customUpdate(
+    'DELETE FROM customers WHERE archived_at IS NOT NULL AND archived_at <= ?1 '
+    "AND NOT (${partyHistorySql('customers', 'customers.id')})",
+    variables: [Variable<int>(cutoff.millisecondsSinceEpoch)],
+    updates: {customers},
+    updateKind: UpdateKind.delete,
+  );
+
   Future<CustomerRow?> byId(String id) =>
       (select(customers)..where((c) => c.id.equals(id))).getSingleOrNull();
 
@@ -114,5 +143,6 @@ FROM customers c''';
   CustomerBalanceRow _read(QueryRow row) => CustomerBalanceRow(
     customers.map(row.data),
     row.read<int>('balance_piasters'),
+    hasHistory: row.read<int>('has_history') != 0,
   );
 }

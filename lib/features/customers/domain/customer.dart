@@ -2,6 +2,10 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/arabic_normalize.dart';
 
+/// How long an archived customer or supplier with no history stays before
+/// it is removed for good (constitution 1.2.0).
+const Duration kArchivePurgeAfter = Duration(days: 7);
+
 /// Someone who buys from the shop (data-model.md).
 final class Customer extends Equatable {
   const Customer({
@@ -30,15 +34,25 @@ final class CustomerSummary extends Equatable {
   const CustomerSummary({
     required this.customer,
     required this.balancePiasters,
+    this.hasHistory = true,
+    this.purgeAt,
   });
 
   final Customer customer;
   final int balancePiasters;
 
+  /// Any account row, invoice or return names them. Without, archiving
+  /// removes them for good after [kArchivePurgeAfter].
+  final bool hasHistory;
+
+  /// When an archived customer with no history goes for good (UTC); null
+  /// otherwise.
+  final DateTime? purgeAt;
+
   bool get owes => balancePiasters > 0;
 
   @override
-  List<Object?> get props => [customer, balancePiasters];
+  List<Object?> get props => [customer, balancePiasters, hasHistory, purgeAt];
 }
 
 /// The customer list's search and filter (FR-014).

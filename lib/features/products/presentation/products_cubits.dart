@@ -13,6 +13,7 @@ import 'cubits/product_form_cubit.dart';
 import 'cubits/product_list_cubit.dart';
 import 'cubits/stock_adjustment_cubit.dart';
 import 'cubits/stock_history_cubit.dart';
+import 'cubits/stock_summary_cubit.dart';
 
 /// Builds every products cubit (research R11). The app uses
 /// [AppProductsCubits]; widget tests pass a bundle built on fakes.
@@ -40,6 +41,8 @@ abstract class ProductsCubits {
   CategoriesCubit categories();
 
   ArchivedProductsCubit archivedProducts();
+
+  StockSummaryCubit stockSummary();
 }
 
 /// Cubits built on the repositories in [locator].
@@ -94,4 +97,7 @@ final class AppProductsCubits implements ProductsCubits {
 
   @override
   ArchivedProductsCubit archivedProducts() => ArchivedProductsCubit(_products);
+
+  @override
+  StockSummaryCubit stockSummary() => StockSummaryCubit(_products);
 }

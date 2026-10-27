@@ -3,7 +3,7 @@
 /// them from this same source.
 library;
 
-/// Every table, as of schema v2.
+/// Every table, as of schema v2 (v3 added none).
 const List<String> kAllTables = [
   'app_settings',
   'counters',
@@ -150,6 +150,37 @@ String _noDelete(String table) =>
     'CREATE TRIGGER trg_${table}_no_delete BEFORE DELETE ON $table '
     "BEGIN SELECT RAISE(ABORT, 'no hard delete: $table'); END";
 
+/// What makes a party's row history: any row naming it (constitution
+/// 1.2.0). v3 lets such a party be deleted only when archived and without
+/// any of these; the 7 days are the app's to check.
+const Map<String, List<(String, String)>> kPurgeableHistory = {
+  'customers': [
+    ('customer_ledger', 'customer_id'),
+    ('sales_invoices', 'customer_id'),
+    ('sale_returns', 'customer_id'),
+  ],
+  'suppliers': [
+    ('supplier_ledger', 'supplier_id'),
+    ('purchase_invoices', 'supplier_id'),
+  ],
+};
+
+/// True when the party [idRef] (e.g. `OLD.id`, `c.id`) has any history
+/// row; [table] is a key of [kPurgeableHistory].
+String partyHistorySql(String table, String idRef) => [
+  for (final (t, column) in kPurgeableHistory[table]!)
+    'EXISTS(SELECT 1 FROM $t WHERE $column = $idRef)',
+].join(' OR ');
+
+/// The no-delete trigger, with v3's one opening for a party with no
+/// history, when [kPurgeableHistory] lists [table].
+String _noDeleteFor(String table) {
+  if (!kPurgeableHistory.containsKey(table)) return _noDelete(table);
+  return 'CREATE TRIGGER trg_${table}_no_delete BEFORE DELETE ON $table '
+      'WHEN OLD.archived_at IS NULL OR ${partyHistorySql(table, 'OLD.id')} '
+      "BEGIN SELECT RAISE(ABORT, 'no hard delete: $table'); END";
+}
+
 String _immutable(String table) =>
     'CREATE TRIGGER trg_${table}_immutable BEFORE UPDATE ON $table '
     "BEGIN SELECT RAISE(ABORT, 'immutable: $table'); END";
@@ -178,11 +209,19 @@ final List<String> kV2Sql = List.unmodifiable([
   _immutable('payment_parts'),
 ]);
 
+/// The v2 → v3 step: the party delete triggers, replaced.
+final List<String> kV3Sql = List.unmodifiable([
+  for (final table in kPurgeableHistory.keys) ...[
+    'DROP TRIGGER IF EXISTS trg_${table}_no_delete',
+    _noDeleteFor(table),
+  ],
+]);
+
 /// All statements, in the order `onCreate` runs them.
 final List<String> kSchemaSql = List.unmodifiable([
   ..._indexes,
   ..._v2Indexes,
-  for (final table in kAllTables) _noDelete(table),
+  for (final table in kAllTables) _noDeleteFor(table),
   for (final table in kImmutableTables) _immutable(table),
   for (final MapEntry(key: table, value: frozen)
       in kVoidableFrozenColumns.entries)

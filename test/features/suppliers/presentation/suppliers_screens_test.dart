@@ -158,6 +158,11 @@ void main() {
             ..seedSupplier('مخازن الأمل', openingPiasters: 900)
             ..seedSupplier('الفجر', openingPiasters: -500);
           await open(tester, store, RoutePaths.suppliers);
+          // Only what the shop owes: 1 + 9, not the 5 in its favour.
+          expect(
+            find.text(l10n.suppliersTotalOwed(egp('10.00', '١٠٫٠٠'))),
+            findsOneWidget,
+          );
           final search = find.widgetWithText(
             TextField,
             l10n.suppliersSearchHint,
@@ -271,14 +276,26 @@ void main() {
           expect(store.balanceOf(v), 6000);
         });
 
-        testWidgets('archive with no balance asks plainly', (tester) async {
+        testWidgets('archive with no history warns of the deletion; the '
+            'archive shows its day', (tester) async {
           final store = FakePurchasesStore();
           final v = store.seedSupplier('شركة النور');
           await open(tester, store, RoutePaths.supplierDetails(v));
           await tapVisible(tester, find.text(l10n.supplierArchiveAction));
-          expect(find.text(l10n.supplierArchiveConfirm), findsOneWidget);
-          await tapVisible(tester, find.text(l10n.cancelAction));
-          expect(store.activeSuppliers(), hasLength(1));
+          expect(
+            find.text(l10n.supplierArchiveConfirmPurge(ar ? '٧' : '7')),
+            findsOneWidget,
+          );
+          await tester.tap(find.text(l10n.supplierArchiveAction).last);
+          await tester.pumpAndSettle();
+          expect(store.activeSuppliers(), isEmpty);
+
+          await goTo(tester, RoutePaths.suppliersArchived);
+          // Archived 2026-10-20 10:01 UTC, gone 7 days later.
+          expect(
+            find.textContaining(ar ? '٢٠٢٦/١٠/٢٧' : '2026/10/27'),
+            findsOneWidget,
+          );
         });
 
         testWidgets('a missing supplier says so', (tester) async {

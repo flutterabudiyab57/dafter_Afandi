@@ -216,7 +216,11 @@ class _Actions extends StatelessWidget {
       context,
       tone: StatusTone.warning,
       title: null,
-      message: b == 0
+      message: !summary.hasHistory
+          ? l10n.customerArchiveConfirmPurge(
+              context.count(kArchivePurgeAfter.inDays),
+            )
+          : b == 0
           ? l10n.customerArchiveConfirm
           : l10n.customerArchiveConfirmBalance(context.balance(b)),
       confirmLabel: l10n.customerArchiveAction,

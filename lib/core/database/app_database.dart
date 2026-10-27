@@ -106,7 +106,7 @@ class AppDatabase extends _$AppDatabase {
       // One transaction, as in _create: a crash leaves the old schema and
       // data whole, never half upgraded.
       await transaction(() async {
-        await stepByStep(from1To2: _from1To2)(m, from, to);
+        await stepByStep(from1To2: _from1To2, from2To3: _from2To3)(m, from, to);
         await customStatement('PRAGMA user_version = $to');
       });
     },
@@ -174,6 +174,14 @@ class AppDatabase extends _$AppDatabase {
           ],
         );
       }
+    }
+  }
+
+  /// v2 → v3 (constitution 1.2.0): the customer and supplier delete
+  /// triggers let a party with no history go once it is archived.
+  Future<void> _from2To3(Migrator m, Schema3 schema) async {
+    for (final statement in kV3Sql) {
+      await customStatement(statement);
     }
   }
 

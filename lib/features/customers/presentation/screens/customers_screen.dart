@@ -9,6 +9,7 @@ import '../../../../core/widgets/app_illustration.dart';
 import '../../../../core/widgets/balance_tile.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
+import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/customer.dart';
 import '../cubits/customers_list_cubit.dart';
 import '../widgets/customer_text.dart';
@@ -110,6 +111,16 @@ class _CustomersScreenState extends State<CustomersScreen> {
               ),
             ),
           ),
+          if (state.totalOwingPiasters case final total? when !emptyAction)
+            Padding(
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: tokens.spaceMd,
+              ),
+              child: Text(
+                l10n.customersTotalOwing(context.money(total)),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
           Expanded(
             child: _Body(
               state: state,

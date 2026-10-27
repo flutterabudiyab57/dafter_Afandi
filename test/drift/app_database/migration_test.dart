@@ -174,6 +174,34 @@ void main() {
     await db.close();
   });
 
+  test('v2 upgrades to v3 with the party triggers a new file gets', () async {
+    // The verifier's v2 has tables only; the party triggers are compared.
+    Future<Map<String, String>> triggers(AppDatabase db) async => {
+      for (final r
+          in await db
+              .customSelect(
+                "SELECT name, sql FROM sqlite_master WHERE type = 'trigger' "
+                "AND name IN ('trg_customers_no_delete', "
+                "'trg_suppliers_no_delete')",
+              )
+              .get())
+        r.read<String>('name'): r.read<String>('sql'),
+    };
+
+    final schema = await verifier.schemaAt(2);
+    final db = open(schema.newConnection());
+    await verifier.migrateAndValidate(db, 3);
+    final fresh = open(NativeDatabase.memory());
+    expect(await triggers(db), hasLength(2));
+    expect(await triggers(db), await triggers(fresh));
+    expect(
+      (await triggers(db))['trg_customers_no_delete'],
+      contains('OLD.archived_at IS NULL'),
+    );
+    await db.close();
+    await fresh.close();
+  });
+
   test('a database built by onCreate matches the schema in code', () async {
     final db = open(NativeDatabase.memory());
     await db.validateDatabaseSchema();

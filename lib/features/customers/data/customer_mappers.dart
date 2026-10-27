@@ -18,6 +18,10 @@ abstract final class CustomerMappers {
       archived: row.customer.archivedAt != null,
     ),
     balancePiasters: row.balancePiasters,
+    hasHistory: row.hasHistory,
+    purgeAt: row.hasHistory
+        ? null
+        : row.customer.archivedAt?.add(kArchivePurgeAfter),
   );
 
   static LedgerEntry entry(StatementRow s) {

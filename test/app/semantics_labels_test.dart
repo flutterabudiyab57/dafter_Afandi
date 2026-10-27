@@ -51,7 +51,7 @@ void main() {
           }
         },
       );
-      expect(screens, 70); // 006 adds the 5 expense pages and void dialog.
+      expect(screens, 71); // 006 adds the 5 expense pages, void dialog, stock.
       expect(checked, greaterThan(30), reason: 'the walk found the buttons');
       semantics.dispose();
     });

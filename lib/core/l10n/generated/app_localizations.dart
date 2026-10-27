@@ -2654,6 +2654,90 @@ abstract class AppLocalizations {
   /// **'كل البنود'**
   String get expensesAllCategories;
 
+  /// Above the customer list: what all customers, active or archived, owe the shop.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي المستحق على العملاء: {amount}'**
+  String customersTotalOwing(String amount);
+
+  /// Above the supplier list: what the shop owes all suppliers, active or archived.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي المستحق للموردين: {amount}'**
+  String suppliersTotalOwed(String amount);
+
+  /// Stock summary screen title.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملخص المخزون'**
+  String get stockSummaryTitle;
+
+  /// The stock of active products at their average purchase cost.
+  ///
+  /// In ar, this message translates to:
+  /// **'قيمة المخزون بسعر الشراء: {amount}'**
+  String stockValueAtCost(String amount);
+
+  /// The same stock at the sale prices.
+  ///
+  /// In ar, this message translates to:
+  /// **'وبسعر البيع: {amount}'**
+  String stockValueAtSale(String amount);
+
+  /// Note under the stock value.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} من الأصناف المتوفرة بلا سعر شراء، فلم تُحسب في القيمة بسعر الشراء.'**
+  String stockWithoutCost(String count);
+
+  /// Stock summary section header.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب التصنيف'**
+  String get stockByCategory;
+
+  /// How many active products a category has.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأصناف: {count}'**
+  String stockProductCount(String count);
+
+  /// A category's stock at cost.
+  ///
+  /// In ar, this message translates to:
+  /// **'القيمة: {amount}'**
+  String stockGroupValue(String amount);
+
+  /// A category whose products have no stock.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد مخزون'**
+  String get stockNone;
+
+  /// Stock summary with no active products.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد أصناف بعد.'**
+  String get stockSummaryEmpty;
+
+  /// Archive confirmation for a customer with no history (constitution 1.2.0).
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة العميل؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد {days} أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.'**
+  String customerArchiveConfirmPurge(String days);
+
+  /// Archive confirmation for a supplier with no history (constitution 1.2.0).
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة المورد؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد {days} أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.'**
+  String supplierArchiveConfirmPurge(String days);
+
+  /// Under an archived customer or supplier with no history.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُحذف نهائيًا في {date}'**
+  String partyPurgeOn(String date);
+
   /// Expenses list total for the filters.
   ///
   /// In ar, this message translates to:

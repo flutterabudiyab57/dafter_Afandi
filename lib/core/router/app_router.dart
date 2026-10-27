@@ -27,6 +27,7 @@ import '../../features/products/presentation/screens/product_details_screen.dart
 import '../../features/products/presentation/screens/product_form_screen.dart';
 import '../../features/products/presentation/screens/product_list_screen.dart';
 import '../../features/products/presentation/screens/stock_adjustment_screen.dart';
+import '../../features/products/presentation/screens/stock_summary_screen.dart';
 import '../../features/purchases/presentation/purchases_cubits.dart';
 import '../../features/purchases/presentation/screens/new_purchase_screen.dart';
 import '../../features/purchases/presentation/screens/purchase_screen.dart';
@@ -220,12 +221,17 @@ GoRoute _homeRoute(ProductsCubits products, ReportsCubits reports) => GoRoute(
   routes: [
     GoRoute(
       path: 'products',
-      builder: (context, state) => BlocProvider(
-        create: (_) => products.productList(
-          initialQuery: ProductQuery(
-            lowOnly: state.uri.queryParameters['filter'] == 'low',
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => products.productList(
+              initialQuery: ProductQuery(
+                lowOnly: state.uri.queryParameters['filter'] == 'low',
+              ),
+            ),
           ),
-        ),
+          BlocProvider(create: (_) => products.stockSummary()),
+        ],
         child: const ProductListScreen(),
       ),
       routes: [
@@ -245,6 +251,13 @@ GoRoute _homeRoute(ProductsCubits products, ReportsCubits reports) => GoRoute(
           builder: (context, state) => BlocProvider(
             create: (_) => products.archivedProducts(),
             child: const ArchivedProductsScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'stock',
+          builder: (context, state) => BlocProvider(
+            create: (_) => products.stockSummary(),
+            child: const StockSummaryScreen(),
           ),
         ),
         GoRoute(

@@ -58,6 +58,9 @@ final class CustomerRepositoryImpl implements CustomerRepository {
       .map((row) => row == null ? null : CustomerMappers.summary(row));
 
   @override
+  Stream<int> watchTotalOwing() => _customers.watchTotalOwing();
+
+  @override
   Stream<List<CustomerSummary>> watchArchived() => _customers
       .watchArchived()
       .map((rows) => rows.map(CustomerMappers.summary).toList());
@@ -144,6 +147,10 @@ final class CustomerRepositoryImpl implements CustomerRepository {
   @override
   Future<void> restore(String id) =>
       _tx.run(() => _customers.setArchivedAt(id, null, _clock.nowUtc()));
+
+  @override
+  Future<int> purgeArchived() =>
+      _customers.purgeArchived(_clock.nowUtc().subtract(kArchivePurgeAfter));
 
   @override
   Future<List<LedgerEntry>> statement(

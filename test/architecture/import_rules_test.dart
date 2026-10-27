@@ -335,6 +335,29 @@ void main() {
       }
     });
 
+    test('allows only each party DAO to purge its own table', () {
+      expect(
+        _rulesHit(
+          'lib/core/database/daos/customers_dao.dart',
+          "'DELETE FROM customers WHERE archived_at IS NOT NULL'",
+          noDeleteOrMovementUpdate,
+        ),
+        isEmpty,
+      );
+      for (final (path, code) in [
+        ('lib/core/database/daos/customers_dao.dart', "'DELETE FROM sales'"),
+        ('lib/core/database/daos/products_dao.dart', "'DELETE FROM customers'"),
+        (
+          'lib/core/database/daos/suppliers_dao.dart',
+          'await delete(suppliers).go();',
+        ),
+      ]) {
+        expect(_rulesHit(path, code, noDeleteOrMovementUpdate), [
+          'no-delete',
+        ], reason: '$path: $code');
+      }
+    });
+
     test('allows other updates and the no-delete triggers', () {
       for (final code in [
         'update(products).write(x);',
