@@ -32,11 +32,12 @@ extension ProductFormatting on BuildContext {
       ? AppLocaleCode.ar
       : AppLocaleCode.en;
 
-  /// E.g. "٧٫٥٠ ج.م" or "EGP 7.50".
-  String money(int piasters) => formatPiasters(
+  /// E.g. "٧٫٥٠ ج.م" or "EGP 7.50"; see [formatPiasters] for [sign].
+  String money(int piasters, {String sign = ''}) => formatPiasters(
     piasters,
     locale: _localeCode,
     digits: DigitStyleScope.of(this),
+    sign: sign,
   );
 
   /// A plain number in the digit style, e.g. "٢٠٠" for limits in messages.

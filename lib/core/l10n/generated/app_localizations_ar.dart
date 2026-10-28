@@ -853,6 +853,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get customerAddTitle => 'إضافة عميل';
 
   @override
+  String get customerNewAction => 'إضافة عميل جديد';
+
+  @override
   String customerAddNamed(String name) {
     return 'إضافة «$name»';
   }
@@ -1053,6 +1056,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get supplierAddTitle => 'إضافة مورد';
+
+  @override
+  String get supplierNewAction => 'إضافة مورد جديد';
 
   @override
   String supplierAddNamed(String name) {
@@ -1334,4 +1340,469 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loadFailedBody => 'لم يتغيّر شيء في بياناتك. حاول مرة أخرى.';
+
+  @override
+  String get dashboardTodayTitle => 'اليوم';
+
+  @override
+  String get dashboardSalesTitle => 'مبيعات اليوم';
+
+  @override
+  String dashboardSalesCount(int count, String countText) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countText عملية بيع',
+      few: '$countText عمليات بيع',
+      two: 'عمليتا بيع',
+      one: 'عملية بيع واحدة',
+      zero: 'لا توجد مبيعات بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dashboardCollectedTitle => 'المحصَّل اليوم';
+
+  @override
+  String get dashboardRunningLowTitle => 'منتجات قاربت على النفاد';
+
+  @override
+  String get dashboardDebtorsTitle => 'الأكثر مديونية';
+
+  @override
+  String get dashboardDebtorsNone => 'لا يوجد عملاء عليهم مبالغ للمحل.';
+
+  @override
+  String get dashboardSeeAll => 'عرض الكل';
+
+  @override
+  String get reportPeriodToday => 'اليوم';
+
+  @override
+  String get reportPeriodYesterday => 'أمس';
+
+  @override
+  String get reportPeriodThisWeek => 'هذا الأسبوع';
+
+  @override
+  String get reportPeriodThisMonth => 'هذا الشهر';
+
+  @override
+  String get reportPeriodLastMonth => 'الشهر الماضي';
+
+  @override
+  String get reportPeriodCustom => 'فترة أخرى';
+
+  @override
+  String reportPeriodRange(String from, String to) {
+    return 'من $from إلى $to';
+  }
+
+  @override
+  String get reportPeriodEndBeforeStart => 'تاريخ النهاية قبل تاريخ البداية.';
+
+  @override
+  String get reportPeriodInFuture => 'لا يمكن اختيار يوم بعد اليوم.';
+
+  @override
+  String get profitTitle => 'الربح';
+
+  @override
+  String get profitNetSales => 'صافي المبيعات';
+
+  @override
+  String get profitCostOfGoods => 'تكلفة البضاعة المباعة';
+
+  @override
+  String get profitGross => 'مجمل الربح';
+
+  @override
+  String get profitInventoryLosses => 'خسائر المخزون';
+
+  @override
+  String get profitInventoryNetGain => 'صافي مكسب المخزون';
+
+  @override
+  String get profitExpenses => 'المصروفات';
+
+  @override
+  String get profitNet => 'صافي الربح';
+
+  @override
+  String get profitNetLoss => 'صافي الخسارة';
+
+  @override
+  String get profitEmpty => 'لا توجد عمليات في هذه الفترة.';
+
+  @override
+  String get profitNoCostNote =>
+      'بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.';
+
+  @override
+  String get expensesTitle => 'المصروفات';
+
+  @override
+  String get expenseNewAction => 'تسجيل مصروف';
+
+  @override
+  String get expenseNewTitle => 'مصروف جديد';
+
+  @override
+  String expenseTitle(String number) {
+    return 'المصروف $number';
+  }
+
+  @override
+  String get expenseCategoryLabel => 'البند';
+
+  @override
+  String get expenseDateLabel => 'التاريخ';
+
+  @override
+  String get expenseCategoryRent => 'إيجار';
+
+  @override
+  String get expenseCategoryElectricity => 'كهرباء';
+
+  @override
+  String get expenseCategorySalaries => 'رواتب';
+
+  @override
+  String get expenseCategoryOther => 'أخرى';
+
+  @override
+  String get expensesAllCategories => 'كل البنود';
+
+  @override
+  String customersTotalOwing(String amount) {
+    return 'إجمالي المستحق على العملاء: $amount';
+  }
+
+  @override
+  String suppliersTotalOwed(String amount) {
+    return 'إجمالي المستحق للموردين: $amount';
+  }
+
+  @override
+  String get stockSummaryTitle => 'ملخص المخزون';
+
+  @override
+  String stockValueAtCost(String amount) {
+    return 'قيمة المخزون بسعر الشراء: $amount';
+  }
+
+  @override
+  String stockValueAtSale(String amount) {
+    return 'وبسعر البيع: $amount';
+  }
+
+  @override
+  String stockWithoutCost(String count) {
+    return '$count من الأصناف المتوفرة بلا سعر شراء، فلم تُحسب في القيمة بسعر الشراء.';
+  }
+
+  @override
+  String get stockByCategory => 'حسب التصنيف';
+
+  @override
+  String stockProductCount(String count) {
+    return 'الأصناف: $count';
+  }
+
+  @override
+  String stockGroupValue(String amount) {
+    return 'القيمة: $amount';
+  }
+
+  @override
+  String get stockNone => 'لا يوجد مخزون';
+
+  @override
+  String get stockSummaryEmpty => 'لا توجد أصناف بعد.';
+
+  @override
+  String customerArchiveConfirmPurge(String days) {
+    return 'أرشفة العميل؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد $days أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.';
+  }
+
+  @override
+  String supplierArchiveConfirmPurge(String days) {
+    return 'أرشفة المورد؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد $days أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.';
+  }
+
+  @override
+  String partyPurgeOn(String date) {
+    return 'يُحذف نهائيًا في $date';
+  }
+
+  @override
+  String expensesTotal(String amount) {
+    return 'إجمالي غير الملغى: $amount';
+  }
+
+  @override
+  String get expensesEmptyTitle => 'لا توجد مصروفات في هذه الفترة';
+
+  @override
+  String get expensesEmptyBody =>
+      'سجّل الإيجار والكهرباء والرواتب وغيرها ليظهر صافي الربح صحيحًا.';
+
+  @override
+  String expenseSaved(String number) {
+    return 'تم حفظ المصروف $number.';
+  }
+
+  @override
+  String get expenseVoidAction => 'إلغاء المصروف';
+
+  @override
+  String get expenseVoidTitle => 'إلغاء هذا المصروف؟';
+
+  @override
+  String get expenseVoidBody =>
+      'يبقى في القائمة مُعلَّمًا بأنه ملغى، ولا يُحسب في الإجماليات ولا في الربح. لا يمكن التراجع عن ذلك.';
+
+  @override
+  String get expenseVoided => 'تم إلغاء المصروف.';
+
+  @override
+  String get expenseAlreadyVoided => 'هذا المصروف ملغى بالفعل.';
+
+  @override
+  String get expenseNotFound => 'هذا المصروف غير موجود.';
+
+  @override
+  String get errorExpenseCategoryRequired => 'اختر البند.';
+
+  @override
+  String get errorExpenseCategoryArchived => 'أُرشف هذا البند. اختر بندًا آخر.';
+
+  @override
+  String get errorExpenseCategoryUnavailable =>
+      'هذا البند لم يعد موجودًا. اختر بندًا آخر.';
+
+  @override
+  String get errorExpenseAmountInvalid =>
+      'اكتب مبلغًا أكبر من صفر بخانتين عشريتين على الأكثر.';
+
+  @override
+  String get errorExpenseDateInFuture => 'لا يمكن أن يكون التاريخ بعد اليوم.';
+
+  @override
+  String get errorPaymentDetails => 'راجع بيانات الدفع.';
+
+  @override
+  String get expenseCategoriesTitle => 'بنود المصروفات';
+
+  @override
+  String get expenseCategoryArchiveConfirm =>
+      'أرشفة هذا البند؟ تظل المصروفات السابقة تعرض اسمه.';
+
+  @override
+  String get expenseCategoryArchive => 'أرشفة البند';
+
+  @override
+  String get expenseCategoryRestore => 'استعادة';
+
+  @override
+  String get expenseCategoriesArchived => 'البنود المؤرشفة';
+
+  @override
+  String get expenseCategoriesEmpty =>
+      'لا توجد بنود نشطة. أضف بندًا من الأعلى.';
+
+  @override
+  String get errorExpenseCategoryNameRequired => 'اكتب اسم البند.';
+
+  @override
+  String errorExpenseCategoryNameTooLong(String max) {
+    return 'اسم البند لا يزيد على $max حرفًا.';
+  }
+
+  @override
+  String errorExpenseCategoryNameTaken(String name) {
+    return 'يوجد بند نشط بنفس الاسم: $name.';
+  }
+
+  @override
+  String get errorExpenseCategoryNotFound => 'هذا البند لم يعد موجودًا.';
+
+  @override
+  String saleLowStockOne(String name, String qty) {
+    return 'مخزون $name قليل (المتبقي $qty).';
+  }
+
+  @override
+  String saleLowStockItem(String name, String qty) {
+    return '$name (المتبقي $qty)';
+  }
+
+  @override
+  String saleLowStockTwo(String first, String second) {
+    return 'المخزون قليل: $first، $second.';
+  }
+
+  @override
+  String saleLowStockTwoMore(
+    String first,
+    String second,
+    int count,
+    String countText,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'المخزون قليل: $first، $second، و$countText منتجًا آخر.',
+      few: 'المخزون قليل: $first، $second، و$countText منتجات أخرى.',
+      two: 'المخزون قليل: $first، $second، ومنتجان آخران.',
+      one: 'المخزون قليل: $first، $second، ومنتج آخر.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get saleLowStockShow => 'عرض';
+
+  @override
+  String get reportCollectedTitle => 'المبالغ المحصَّلة';
+
+  @override
+  String reportCollectedTotal(String amount) {
+    return 'الإجمالي: $amount';
+  }
+
+  @override
+  String get reportCollectedEmpty => 'لم تُحصَّل أي مبالغ في هذه الفترة.';
+
+  @override
+  String get reportTopSellersTitle => 'الأكثر مبيعًا';
+
+  @override
+  String get reportTopByValue => 'حسب قيمة المبيعات';
+
+  @override
+  String get reportTopByQuantity => 'حسب الكمية';
+
+  @override
+  String get reportTopEmpty => 'لم يُبَع أي منتج في هذه الفترة.';
+
+  @override
+  String reportTopSold(String qty) {
+    return 'المباع: $qty';
+  }
+
+  @override
+  String get reportBalancesTitle => 'الأرصدة';
+
+  @override
+  String get reportBalancesCustomersTab => 'على العملاء';
+
+  @override
+  String get reportBalancesSuppliersTab => 'للموردين';
+
+  @override
+  String reportBalancesCustomersTotal(String amount) {
+    return 'إجمالي المستحق للمحل: $amount';
+  }
+
+  @override
+  String reportBalancesSuppliersTotal(String amount) {
+    return 'إجمالي المستحق على المحل: $amount';
+  }
+
+  @override
+  String get reportBalancesCustomersNone => 'لا يوجد عميل عليه مبالغ للمحل.';
+
+  @override
+  String get reportBalancesSuppliersNone =>
+      'لا توجد مبالغ مستحقة على المحل لأي مورد.';
+
+  @override
+  String get paymentSplitAction => 'تقسيم الدفع';
+
+  @override
+  String paymentPartTitle(String n) {
+    return 'الجزء $n';
+  }
+
+  @override
+  String paymentPartRemove(String n) {
+    return 'حذف الجزء $n';
+  }
+
+  @override
+  String get paymentPartAmountLabel => 'مبلغ الجزء';
+
+  @override
+  String get paymentAccountLabel => 'رقم حسابك (اختياري)';
+
+  @override
+  String get paymentAccountHint => 'مثل رقم محفظتك أو عنوان إنستاباي';
+
+  @override
+  String get paymentAccountSuggestions => 'حسابات استخدمتها من قبل';
+
+  @override
+  String paymentRemaining(String amount) {
+    return 'المتبقي توزيعه: $amount';
+  }
+
+  @override
+  String paymentOverBy(String amount) {
+    return 'الأجزاء أكثر من المبلغ بـ $amount';
+  }
+
+  @override
+  String get paymentSplitBalanced => 'الأجزاء مساوية للمبلغ.';
+
+  @override
+  String get errorPartAmountInvalid =>
+      'أدخل مبلغًا صحيحًا بحد أقصى منزلتين عشريتين.';
+
+  @override
+  String get errorPartAmountZero => 'يجب أن يكون الجزء أكبر من صفر.';
+
+  @override
+  String get errorPaymentMethodRepeated =>
+      'كل طريقة دفع تُستخدم مرة واحدة فقط.';
+
+  @override
+  String get errorAccountInvalid =>
+      'استخدم الأرقام والحروف اللاتينية و@ . _ - فقط.';
+
+  @override
+  String errorAccountTooLong(String max) {
+    return 'رقم الحساب $max حرفًا على الأكثر.';
+  }
+
+  @override
+  String get errorAccountNotAllowed => 'الدفع النقدي ليس له رقم حساب.';
+
+  @override
+  String get errorTooManyParts =>
+      'يمكن تقسيم الدفع إلى ثلاثة أجزاء على الأكثر.';
+
+  @override
+  String errorPartsOver(String amount) {
+    return 'مجموع الأجزاء أكثر من المبلغ المدفوع بـ $amount. اجعلها مساوية له.';
+  }
+
+  @override
+  String errorPartsShort(String amount) {
+    return 'مجموع الأجزاء أقل من المبلغ المدفوع بـ $amount. اجعلها مساوية له.';
+  }
+
+  @override
+  String paymentPartLine(String method, String amount) {
+    return '$method: $amount';
+  }
+
+  @override
+  String paymentPartAccount(String account) {
+    return 'حسابك: $account';
+  }
+
+  @override
+  String get paymentPartsTitle => 'طريقة الدفع';
 }

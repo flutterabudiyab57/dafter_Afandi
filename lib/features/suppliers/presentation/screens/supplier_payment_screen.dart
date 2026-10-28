@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
+import '../../../../core/utils/money.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
@@ -13,9 +14,9 @@ import '../../../../core/widgets/save_button.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../../../core/widgets/unsaved_changes_guard.dart';
 import '../../../customers/domain/customer_errors.dart';
-import '../../../customers/domain/payment.dart';
 import '../../../customers/presentation/cubits/customers_list_cubit.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
+import '../../../payments/presentation/widgets/payment_split_field.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../cubits/supplier_payment_cubit.dart';
 import '../widgets/supplier_text.dart';
@@ -159,19 +160,10 @@ class _FormState extends State<_Form> {
               errorText: err(CustomerField.amount),
             ),
             gap,
-            Text(l10n.saleMethodLabel, style: theme.textTheme.labelLarge),
-            SizedBox(height: tokens.spaceXs),
-            Wrap(
-              spacing: tokens.spaceSm,
-              runSpacing: tokens.spaceSm,
-              children: [
-                for (final m in offeredPaymentMethods)
-                  ChoiceChip(
-                    label: Text(context.methodLabel(m)),
-                    selected: state.method == m,
-                    onSelected: (_) => _cubit.methodChanged(m),
-                  ),
-              ],
+            PaymentSplitField(
+              totalPiasters: tryParsePiasters(state.amount) ?? 0,
+              onChanged: _cubit.paymentChanged,
+              errors: state.paymentErrors,
             ),
             gap,
             TextField(

@@ -68,52 +68,57 @@ void main() {
       },
     );
 
-    testWidgets(
-      '${locale.name}: Home, Sales, Parties and Purchases show content; the others a placeholder',
-      (tester) async {
-        await open(tester);
-        for (final (index, (path, title, body)) in sections.indexed) {
-          await tester.tap(find.text(labels[index]).last);
-          await tester.pumpAndSettle();
+    testWidgets('${locale.name}: every section shows its own content', (
+      tester,
+    ) async {
+      await open(tester);
+      for (final (index, (path, title, body)) in sections.indexed) {
+        await tester.tap(find.text(labels[index]).last);
+        await tester.pumpAndSettle();
 
-          expect(currentPath(tester), path);
-          final bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
-          expect(bar.selectedIndex, index);
-          if (path == RoutePaths.home) {
-            // Home has real content since 002: Products, Categories and the
-            // low-stock card.
-            expect(find.text(l10n.homeProductsAction), findsOneWidget);
-            expect(find.text(l10n.homeCategoriesAction), findsOneWidget);
-            expect(find.text(l10n.lowStockCardTitle), findsOneWidget);
-            continue;
-          }
-          if (path == RoutePaths.sales) {
-            // The invoice list since 003.
-            expect(find.text(l10n.salesNewAction), findsOneWidget);
-            expect(find.text(l10n.salesListEmpty), findsOneWidget);
-            continue;
-          }
-          if (path == RoutePaths.purchases) {
-            // The purchase list since 004.
-            // The button and the empty state's action.
-            expect(find.text(l10n.purchasesNewAction), findsWidgets);
-            expect(find.text(l10n.purchasesEmptyTitle), findsOneWidget);
-            continue;
-          }
-          if (path == RoutePaths.parties) {
-            // The customer list since 003.
-            expect(find.text(l10n.customersTitle), findsOneWidget);
-            expect(find.text(l10n.customersEmptyTitle), findsOneWidget);
-            continue;
-          }
-          expect(find.text(body), findsOneWidget);
-          expect(find.text(title), findsWidgets);
-          // A placeholder, not a list of sample data.
-          expect(find.byType(ListTile), findsNothing);
-          expect(find.byType(ListView), findsNothing);
+        expect(currentPath(tester), path);
+        final bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
+        expect(bar.selectedIndex, index);
+        if (path == RoutePaths.home) {
+          // Home has real content since 002: Products, Categories and the
+          // low-stock card.
+          expect(find.text(l10n.homeProductsAction), findsOneWidget);
+          expect(find.text(l10n.homeCategoriesAction), findsOneWidget);
+          expect(find.text(l10n.lowStockCardTitle), findsOneWidget);
+          continue;
         }
-      },
-    );
+        if (path == RoutePaths.sales) {
+          // The invoice list since 003.
+          expect(find.text(l10n.salesNewAction), findsOneWidget);
+          expect(find.text(l10n.salesListEmpty), findsOneWidget);
+          continue;
+        }
+        if (path == RoutePaths.purchases) {
+          // The purchase list since 004.
+          // The button and the empty state's action.
+          expect(find.text(l10n.purchasesNewAction), findsWidgets);
+          expect(find.text(l10n.purchasesEmptyTitle), findsOneWidget);
+          continue;
+        }
+        if (path == RoutePaths.reports) {
+          // The profit report since 006.
+          expect(find.text(l10n.profitTitle), findsOneWidget);
+          expect(find.text(l10n.reportPeriodThisMonth), findsOneWidget);
+          continue;
+        }
+        if (path == RoutePaths.parties) {
+          // The customer list since 003.
+          expect(find.text(l10n.customersTitle), findsOneWidget);
+          expect(find.text(l10n.customersEmptyTitle), findsOneWidget);
+          continue;
+        }
+        expect(find.text(body), findsOneWidget);
+        expect(find.text(title), findsWidgets);
+        // A placeholder, not a list of sample data.
+        expect(find.byType(ListTile), findsNothing);
+        expect(find.byType(ListView), findsNothing);
+      }
+    });
   }
 
   testWidgets('the settings button opens settings above the shell', (

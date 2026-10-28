@@ -24,6 +24,9 @@ final class StepClock implements Clock {
 
   @override
   DateTime nowUtc() => _now = _now.add(const Duration(seconds: 1));
+
+  /// Jumps [by] forward, e.g. past the archive's 7 days.
+  void advance(Duration by) => _now = _now.add(by);
 }
 
 /// An in-memory database with the three product repositories.

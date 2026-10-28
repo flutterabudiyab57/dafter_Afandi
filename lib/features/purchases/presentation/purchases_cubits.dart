@@ -6,6 +6,7 @@ import '../../products/domain/product_repository.dart';
 import '../../products/presentation/cubits/product_form_cubit.dart';
 import '../../products/presentation/cubits/product_picker_cubit.dart';
 import '../../suppliers/domain/supplier_repository.dart';
+import '../../suppliers/presentation/cubits/supplier_form_cubit.dart';
 import '../../suppliers/presentation/cubits/suppliers_list_cubit.dart';
 import '../domain/purchase_repository.dart';
 import 'cubits/purchase_cubit.dart';
@@ -24,6 +25,9 @@ abstract class PurchasesCubits {
 
   /// The purchase's supplier picker, with quick add.
   SuppliersListCubit supplierPicker();
+
+  /// The full supplier form opened from the picker, its name prefilled.
+  SupplierFormCubit newSupplier(String name);
 
   /// All purchases, or one supplier's when [supplierId] is set.
   PurchasesListCubit purchasesList({String? supplierId});
@@ -58,6 +62,13 @@ final class AppPurchasesCubits implements PurchasesCubits {
   @override
   SuppliersListCubit supplierPicker() =>
       SuppliersListCubit(locator<SupplierRepository>());
+
+  @override
+  SupplierFormCubit newSupplier(String name) => SupplierFormCubit(
+    locator<SupplierRepository>(),
+    mode: SupplierFormMode.create,
+    initialName: name,
+  );
 
   @override
   PurchasesListCubit purchasesList({String? supplierId}) =>

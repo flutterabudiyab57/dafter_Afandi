@@ -17,7 +17,7 @@ void main() {
     final l10n = lookupAppLocalizations(Locale(locale.name));
     final ar = locale == AppLocale.ar;
     String egp(String latin, String arabic) =>
-        ar ? '$arabic ج.م' : 'EGP $latin';
+        ar ? '$arabic\u00A0ج.م' : 'EGP\u00A0$latin';
 
     for (final textScale in [1.0, 2.0]) {
       group('${locale.name} ×$textScale', () {
@@ -66,15 +66,15 @@ void main() {
           final store = FakeSalesStore();
           await open(tester, store, RoutePaths.parties);
           expect(find.text(l10n.customersEmptyTitle), findsOneWidget);
-          await tapVisible(tester, find.byType(FloatingActionButton));
+          await tapVisible(tester, find.text(l10n.customerAddTitle));
           expect(currentPath(tester), RoutePaths.customerNew);
           await type(tester, l10n.customerNameLabel, 'محمد');
           await type(tester, l10n.customerPhoneLabel, '٠١٠١٢٣٤٥٦٧٨');
           await save(tester);
+          // Back to the list, where they are.
           final id = store.activeCustomers().single.customer.id;
-          expect(currentPath(tester), RoutePaths.customerDetails(id));
+          expect(currentPath(tester), RoutePaths.parties);
           expect(store.customer(id)!.customer.phone, '01012345678');
-          await goTo(tester, RoutePaths.parties);
           expect(find.text('محمد'), findsOneWidget);
           expect(find.text(l10n.balanceZero), findsOneWidget);
         });
@@ -85,6 +85,8 @@ void main() {
           await type(tester, l10n.customerNameLabel, 'أحمد');
           await type(tester, l10n.customerOpeningAmount, '50');
           await save(tester);
+          final id = store.activeCustomers().single.customer.id;
+          await goTo(tester, RoutePaths.customerDetails(id));
           expect(
             find.text(l10n.balanceOwes(egp('50.00', '٥٠٫٠٠'))),
             findsOneWidget,
@@ -97,6 +99,7 @@ void main() {
           await type(tester, l10n.customerOpeningAmount, '20');
           await tapVisible(tester, find.text(l10n.customerOpeningInFavour));
           await save(tester);
+          await goTo(tester, RoutePaths.parties);
           expect(
             find.text(l10n.balanceInFavour(egp('20.00', '٢٠٫٠٠'))),
             findsOneWidget,
@@ -124,6 +127,10 @@ void main() {
             ..seedCustomer('محمد', openingPiasters: 900)
             ..seedCustomer('علي');
           await open(tester, store, RoutePaths.parties);
+          final total = find.text(
+            l10n.customersTotalOwing(egp('10.00', '١٠٫٠٠')),
+          );
+          expect(total, findsOneWidget);
           await tester.enterText(
             find.widgetWithText(TextField, l10n.customersSearchHint),
             'احمد',
@@ -131,6 +138,8 @@ void main() {
           await tester.pumpAndSettle();
           expect(find.text('أحمد'), findsOneWidget);
           expect(find.text('محمد'), findsNothing);
+          // The total is everyone's, whatever the search.
+          expect(total, findsOneWidget);
           await tester.enterText(
             find.widgetWithText(TextField, l10n.customersSearchHint),
             '',
@@ -215,6 +224,26 @@ void main() {
           await tapVisible(tester, find.text(l10n.customerRestoreAction));
           expect(store.activeCustomers(), hasLength(1));
           expect(store.balanceOf(k), 6000);
+        });
+
+        testWidgets('archive with no history warns of the deletion; the '
+            'archive shows its day', (tester) async {
+          final store = FakeSalesStore();
+          final k = store.seedCustomer('سعيد');
+          await open(tester, store, RoutePaths.customerDetails(k));
+          await tapVisible(tester, find.text(l10n.customerArchiveAction));
+          expect(
+            find.text(l10n.customerArchiveConfirmPurge(ar ? '٧' : '7')),
+            findsOneWidget,
+          );
+          await tester.tap(find.text(l10n.customerArchiveAction).last);
+          await tester.pumpAndSettle();
+
+          await goTo(tester, RoutePaths.customersArchived);
+          expect(
+            find.textContaining(ar ? '٢٠٢٦/١٠/٢٧' : '2026/10/27'),
+            findsOneWidget,
+          );
         });
 
         testWidgets('a cancelled payment shows a reversal and its mark', (

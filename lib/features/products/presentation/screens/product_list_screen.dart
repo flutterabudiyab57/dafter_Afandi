@@ -10,7 +10,9 @@ import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
 import '../../domain/product_query.dart';
 import '../cubits/product_list_cubit.dart';
+import '../cubits/stock_summary_cubit.dart';
 import '../widgets/product_row.dart';
+import '../widgets/unit_label.dart';
 
 /// Products: search, filters, marks and empty states (US2).
 class ProductListScreen extends StatefulWidget {
@@ -35,6 +37,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
     final tokens = context.tokens;
     final cubit = context.read<ProductListCubit>();
     final state = context.watch<ProductListCubit>().state;
+    final query = state.query;
+    final stock = context.watch<StockSummaryCubit>().state.summary;
+    // The empty list has its own Add product button; one is enough.
+    final emptyAction =
+        !state.loading &&
+        !state.loadFailed &&
+        state.items.isEmpty &&
+        query.text.trim().isEmpty &&
+        !query.lowOnly &&
+        query.categoryFilter is AllCategories;
 
     return Scaffold(
       appBar: AppBar(
@@ -50,11 +62,16 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        label: Text(l10n.productAddTitle),
-        onPressed: () => context.push(RoutePaths.productNew),
-      ),
+      floatingActionButton: emptyAction
+          ? null
+          : FloatingActionButton.extended(
+              // Section roots stay alive in the shell; a shared default tag
+              // would clash during page transitions.
+              heroTag: null,
+              icon: const Icon(Icons.add),
+              label: Text(l10n.productAddTitle),
+              onPressed: () => context.push(RoutePaths.productNew),
+            ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -74,6 +91,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
               ),
             ),
           ),
+          if (stock != null && !emptyAction)
+            ListTile(
+              title: Text(
+                l10n.stockValueAtCost(context.money(stock.costPiasters)),
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push(RoutePaths.productsStock),
+            ),
           _Filters(state: state),
           Expanded(
             child: _Body(

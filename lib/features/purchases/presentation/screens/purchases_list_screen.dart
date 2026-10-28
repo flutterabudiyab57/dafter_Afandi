@@ -37,16 +37,21 @@ class _PurchasesListScreenState extends State<PurchasesListScreen> {
     final state = context.watch<PurchasesListCubit>().state;
     final filtered =
         state.query.text.trim().isNotEmpty || state.query.unpaidOnly;
+    // The empty list has its own New purchase button; one is enough.
+    final emptyAction =
+        !state.loading && !state.loadFailed && state.items.isEmpty && !filtered;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        // Section roots stay alive in the shell; a shared default tag
-        // would clash during page transitions.
-        heroTag: null,
-        icon: const Icon(Icons.add_shopping_cart),
-        label: Text(l10n.purchasesNewAction),
-        onPressed: () => context.push(RoutePaths.purchasesNew),
-      ),
+      floatingActionButton: emptyAction
+          ? null
+          : FloatingActionButton.extended(
+              // Section roots stay alive in the shell; a shared default tag
+              // would clash during page transitions.
+              heroTag: null,
+              icon: const Icon(Icons.add_shopping_cart),
+              label: Text(l10n.purchasesNewAction),
+              onPressed: () => context.push(RoutePaths.purchasesNew),
+            ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

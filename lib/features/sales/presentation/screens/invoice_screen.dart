@@ -10,6 +10,7 @@ import '../../../../core/widgets/load_failed_view.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
 import '../../../customers/presentation/widgets/reason_dialog.dart';
+import '../../../payments/presentation/widgets/payment_parts_text.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/sale.dart';
 import '../../domain/sale_errors.dart';
@@ -158,7 +159,10 @@ class _Body extends StatelessWidget {
           if (s.paidPiasters > 0)
             ListTile(
               title: Text(l10n.saleMethodLabel),
-              subtitle: Text(context.methodLabel(invoice.method)),
+              subtitle: PaymentPartsText(
+                parts: invoice.parts,
+                method: invoice.method,
+              ),
             ),
           if (voidedAt == null)
             Padding(

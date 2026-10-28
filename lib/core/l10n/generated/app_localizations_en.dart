@@ -854,6 +854,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customerAddTitle => 'Add customer';
 
   @override
+  String get customerNewAction => 'Add new customer';
+
+  @override
   String customerAddNamed(String name) {
     return 'Add “$name”';
   }
@@ -1056,6 +1059,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get supplierAddTitle => 'Add supplier';
+
+  @override
+  String get supplierNewAction => 'Add new supplier';
 
   @override
   String supplierAddNamed(String name) {
@@ -1342,4 +1348,465 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadFailedBody => 'Nothing in your data changed. Try again.';
+
+  @override
+  String get dashboardTodayTitle => 'Today';
+
+  @override
+  String get dashboardSalesTitle => 'Today\'s sales';
+
+  @override
+  String dashboardSalesCount(int count, String countText) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countText sales',
+      one: '1 sale',
+      zero: 'No sales yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dashboardCollectedTitle => 'Collected today';
+
+  @override
+  String get dashboardRunningLowTitle => 'Running low';
+
+  @override
+  String get dashboardDebtorsTitle => 'Who owes most';
+
+  @override
+  String get dashboardDebtorsNone => 'No customer owes the shop.';
+
+  @override
+  String get dashboardSeeAll => 'See all';
+
+  @override
+  String get reportPeriodToday => 'Today';
+
+  @override
+  String get reportPeriodYesterday => 'Yesterday';
+
+  @override
+  String get reportPeriodThisWeek => 'This week';
+
+  @override
+  String get reportPeriodThisMonth => 'This month';
+
+  @override
+  String get reportPeriodLastMonth => 'Last month';
+
+  @override
+  String get reportPeriodCustom => 'Other dates';
+
+  @override
+  String reportPeriodRange(String from, String to) {
+    return '$from to $to';
+  }
+
+  @override
+  String get reportPeriodEndBeforeStart =>
+      'The end date is before the start date.';
+
+  @override
+  String get reportPeriodInFuture => 'You can’t pick a day after today.';
+
+  @override
+  String get profitTitle => 'Profit';
+
+  @override
+  String get profitNetSales => 'Net sales';
+
+  @override
+  String get profitCostOfGoods => 'Cost of goods sold';
+
+  @override
+  String get profitGross => 'Gross profit';
+
+  @override
+  String get profitInventoryLosses => 'Inventory losses';
+
+  @override
+  String get profitInventoryNetGain => 'Net inventory gain';
+
+  @override
+  String get profitExpenses => 'Expenses';
+
+  @override
+  String get profitNet => 'Net profit';
+
+  @override
+  String get profitNetLoss => 'Net loss';
+
+  @override
+  String get profitEmpty => 'Nothing happened in this period.';
+
+  @override
+  String get profitNoCostNote =>
+      'Some products were sold with no recorded cost, so profit may look higher than it is.';
+
+  @override
+  String get expensesTitle => 'Expenses';
+
+  @override
+  String get expenseNewAction => 'Record expense';
+
+  @override
+  String get expenseNewTitle => 'New expense';
+
+  @override
+  String expenseTitle(String number) {
+    return 'Expense $number';
+  }
+
+  @override
+  String get expenseCategoryLabel => 'Category';
+
+  @override
+  String get expenseDateLabel => 'Date';
+
+  @override
+  String get expenseCategoryRent => 'Rent';
+
+  @override
+  String get expenseCategoryElectricity => 'Electricity';
+
+  @override
+  String get expenseCategorySalaries => 'Salaries';
+
+  @override
+  String get expenseCategoryOther => 'Other';
+
+  @override
+  String get expensesAllCategories => 'All categories';
+
+  @override
+  String customersTotalOwing(String amount) {
+    return 'Customers owe in total: $amount';
+  }
+
+  @override
+  String suppliersTotalOwed(String amount) {
+    return 'Owed to suppliers in total: $amount';
+  }
+
+  @override
+  String get stockSummaryTitle => 'Stock summary';
+
+  @override
+  String stockValueAtCost(String amount) {
+    return 'Stock value at cost: $amount';
+  }
+
+  @override
+  String stockValueAtSale(String amount) {
+    return 'At sale price: $amount';
+  }
+
+  @override
+  String stockWithoutCost(String count) {
+    return '$count products in stock have no purchase cost, so they add nothing to the value at cost.';
+  }
+
+  @override
+  String get stockByCategory => 'By category';
+
+  @override
+  String stockProductCount(String count) {
+    return 'Products: $count';
+  }
+
+  @override
+  String stockGroupValue(String amount) {
+    return 'Value: $amount';
+  }
+
+  @override
+  String get stockNone => 'None in stock';
+
+  @override
+  String get stockSummaryEmpty => 'No products yet.';
+
+  @override
+  String customerArchiveConfirmPurge(String days) {
+    return 'Archive this customer? They have no history, so they will be deleted for good after $days days in the archive unless you restore them first. Deletion cannot be undone.';
+  }
+
+  @override
+  String supplierArchiveConfirmPurge(String days) {
+    return 'Archive this supplier? They have no history, so they will be deleted for good after $days days in the archive unless you restore them first. Deletion cannot be undone.';
+  }
+
+  @override
+  String partyPurgeOn(String date) {
+    return 'Deleted for good on $date';
+  }
+
+  @override
+  String expensesTotal(String amount) {
+    return 'Total, not voided: $amount';
+  }
+
+  @override
+  String get expensesEmptyTitle => 'No expenses in this period';
+
+  @override
+  String get expensesEmptyBody =>
+      'Record rent, electricity, salaries and other costs so the net profit is right.';
+
+  @override
+  String expenseSaved(String number) {
+    return 'Expense $number saved.';
+  }
+
+  @override
+  String get expenseVoidAction => 'Void expense';
+
+  @override
+  String get expenseVoidTitle => 'Void this expense?';
+
+  @override
+  String get expenseVoidBody =>
+      'It stays in the list marked voided and no longer counts in totals or profit. This cannot be undone.';
+
+  @override
+  String get expenseVoided => 'Expense voided.';
+
+  @override
+  String get expenseAlreadyVoided => 'This expense is already voided.';
+
+  @override
+  String get expenseNotFound => 'This expense doesn’t exist.';
+
+  @override
+  String get errorExpenseCategoryRequired => 'Choose a category.';
+
+  @override
+  String get errorExpenseCategoryArchived =>
+      'This category was archived. Choose another.';
+
+  @override
+  String get errorExpenseCategoryUnavailable =>
+      'This category no longer exists. Choose another.';
+
+  @override
+  String get errorExpenseAmountInvalid =>
+      'Enter an amount above zero with at most two decimal places.';
+
+  @override
+  String get errorExpenseDateInFuture => 'The date can’t be after today.';
+
+  @override
+  String get errorPaymentDetails => 'Check the payment details.';
+
+  @override
+  String get expenseCategoriesTitle => 'Expense categories';
+
+  @override
+  String get expenseCategoryArchiveConfirm =>
+      'Archive this category? Past expenses keep showing its name.';
+
+  @override
+  String get expenseCategoryArchive => 'Archive category';
+
+  @override
+  String get expenseCategoryRestore => 'Restore';
+
+  @override
+  String get expenseCategoriesArchived => 'Archived categories';
+
+  @override
+  String get expenseCategoriesEmpty => 'No active categories. Add one above.';
+
+  @override
+  String get errorExpenseCategoryNameRequired => 'Enter the category name.';
+
+  @override
+  String errorExpenseCategoryNameTooLong(String max) {
+    return 'The category name can be at most $max characters.';
+  }
+
+  @override
+  String errorExpenseCategoryNameTaken(String name) {
+    return 'An active category already has this name: $name.';
+  }
+
+  @override
+  String get errorExpenseCategoryNotFound => 'This category no longer exists.';
+
+  @override
+  String saleLowStockOne(String name, String qty) {
+    return '$name is running low ($qty left).';
+  }
+
+  @override
+  String saleLowStockItem(String name, String qty) {
+    return '$name ($qty left)';
+  }
+
+  @override
+  String saleLowStockTwo(String first, String second) {
+    return '$first and $second are running low.';
+  }
+
+  @override
+  String saleLowStockTwoMore(
+    String first,
+    String second,
+    int count,
+    String countText,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$first, $second and $countText more are running low.',
+      one: '$first, $second and 1 more are running low.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get saleLowStockShow => 'Show';
+
+  @override
+  String get reportCollectedTitle => 'Money collected';
+
+  @override
+  String reportCollectedTotal(String amount) {
+    return 'Total: $amount';
+  }
+
+  @override
+  String get reportCollectedEmpty => 'No money was collected in this period.';
+
+  @override
+  String get reportTopSellersTitle => 'Top sellers';
+
+  @override
+  String get reportTopByValue => 'By sales value';
+
+  @override
+  String get reportTopByQuantity => 'By quantity';
+
+  @override
+  String get reportTopEmpty => 'Nothing was sold in this period.';
+
+  @override
+  String reportTopSold(String qty) {
+    return 'Sold: $qty';
+  }
+
+  @override
+  String get reportBalancesTitle => 'Balances';
+
+  @override
+  String get reportBalancesCustomersTab => 'Customers owe';
+
+  @override
+  String get reportBalancesSuppliersTab => 'Shop owes';
+
+  @override
+  String reportBalancesCustomersTotal(String amount) {
+    return 'Total owed to the shop: $amount';
+  }
+
+  @override
+  String reportBalancesSuppliersTotal(String amount) {
+    return 'Total the shop owes: $amount';
+  }
+
+  @override
+  String get reportBalancesCustomersNone => 'No customer owes the shop.';
+
+  @override
+  String get reportBalancesSuppliersNone => 'The shop owes no supplier.';
+
+  @override
+  String get paymentSplitAction => 'Split payment';
+
+  @override
+  String paymentPartTitle(String n) {
+    return 'Part $n';
+  }
+
+  @override
+  String paymentPartRemove(String n) {
+    return 'Remove part $n';
+  }
+
+  @override
+  String get paymentPartAmountLabel => 'Part amount';
+
+  @override
+  String get paymentAccountLabel => 'Your account number (optional)';
+
+  @override
+  String get paymentAccountHint =>
+      'Like your wallet number or InstaPay address';
+
+  @override
+  String get paymentAccountSuggestions => 'Accounts you used before';
+
+  @override
+  String paymentRemaining(String amount) {
+    return 'Left to split: $amount';
+  }
+
+  @override
+  String paymentOverBy(String amount) {
+    return 'The parts are over by $amount';
+  }
+
+  @override
+  String get paymentSplitBalanced => 'The parts add up to the amount.';
+
+  @override
+  String get errorPartAmountInvalid =>
+      'Enter a valid amount with at most two decimal places.';
+
+  @override
+  String get errorPartAmountZero => 'A part must be more than zero.';
+
+  @override
+  String get errorPaymentMethodRepeated =>
+      'Each payment method can be used only once.';
+
+  @override
+  String get errorAccountInvalid =>
+      'Use only digits, Latin letters and @ . _ -';
+
+  @override
+  String errorAccountTooLong(String max) {
+    return 'The account number can be at most $max characters.';
+  }
+
+  @override
+  String get errorAccountNotAllowed => 'Cash has no account number.';
+
+  @override
+  String get errorTooManyParts => 'A payment can have at most three parts.';
+
+  @override
+  String errorPartsOver(String amount) {
+    return 'The parts are $amount more than the amount paid. Make them add up to it.';
+  }
+
+  @override
+  String errorPartsShort(String amount) {
+    return 'The parts are $amount less than the amount paid. Make them add up to it.';
+  }
+
+  @override
+  String paymentPartLine(String method, String amount) {
+    return '$method: $amount';
+  }
+
+  @override
+  String paymentPartAccount(String account) {
+    return 'Your account: $account';
+  }
+
+  @override
+  String get paymentPartsTitle => 'Paid by';
 }

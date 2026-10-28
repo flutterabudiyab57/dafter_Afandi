@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../customers/domain/ledger_entry.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/domain/payment_split.dart';
 
 /// The kinds of supplier account rows this feature shows.
 enum SupplierEntryType {
@@ -25,6 +26,7 @@ final class SupplierEntry extends Equatable {
     this.purchaseNumber,
     this.paymentNumber,
     this.method,
+    this.parts = const [],
     this.note,
     this.reversed = false,
   });
@@ -48,6 +50,10 @@ final class SupplierEntry extends Equatable {
   final int? purchaseNumber;
   final int? paymentNumber;
   final PaymentMethod? method;
+
+  /// The payment's parts with their methods and account numbers (FR-039);
+  /// empty for a record saved before 006 or with nothing paid.
+  final List<PaymentPart> parts;
   final String? note;
 
   /// A later reversal row points to this one (a cancelled payment).
@@ -71,6 +77,7 @@ final class SupplierEntry extends Equatable {
     purchaseNumber,
     paymentNumber,
     method,
+    parts,
     note,
     reversed,
   ];

@@ -2,10 +2,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
+import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/widgets/app_illustration.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
+import '../../../products/presentation/widgets/unit_label.dart';
 import '../cubits/customers_list_cubit.dart';
 import 'customers_screen.dart';
 
@@ -40,6 +42,21 @@ class ArchivedCustomersScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           CustomerRow(summary: s),
+                          if (s.purgeAt case final at?)
+                            Padding(
+                              padding: EdgeInsetsDirectional.symmetric(
+                                horizontal: context.tokens.spaceMd,
+                              ),
+                              child: Text(
+                                l10n.partyPurgeOn(context.date(at.toLocal())),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .error,
+                                    ),
+                              ),
+                            ),
                           Align(
                             alignment: AlignmentDirectional.centerEnd,
                             child: TextButton(

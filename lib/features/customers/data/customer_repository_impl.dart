@@ -11,6 +11,8 @@ import '../../../core/utils/clock.dart';
 import '../../../core/utils/digits.dart';
 import '../../../core/utils/id.dart';
 import '../../../core/utils/result.dart';
+import '../../payments/data/payment_parts_writer.dart';
+import '../../payments/domain/payment_split.dart';
 import '../domain/customer.dart';
 import '../domain/customer_draft.dart';
 import '../domain/customer_errors.dart';
@@ -27,6 +29,7 @@ final class CustomerRepositoryImpl implements CustomerRepository {
     this._tx,
     this._ids,
     this._clock,
+    this._parts,
   );
 
   final CustomersDao _customers;
@@ -35,6 +38,7 @@ final class CustomerRepositoryImpl implements CustomerRepository {
   final TransactionRunner _tx;
   final IdGenerator _ids;
   final Clock _clock;
+  final PaymentPartsWriter _parts;
 
   /// Only the digits of [text], for the phone match; empty when it has none.
   static String phoneDigits(String text) =>
@@ -53,6 +57,9 @@ final class CustomerRepositoryImpl implements CustomerRepository {
   Stream<CustomerSummary?> watchOne(String id) => _customers
       .watchOne(id)
       .map((row) => row == null ? null : CustomerMappers.summary(row));
+
+  @override
+  Stream<int> watchTotalOwing() => _customers.watchTotalOwing();
 
   @override
   Stream<List<CustomerSummary>> watchArchived() => _customers
@@ -143,6 +150,10 @@ final class CustomerRepositoryImpl implements CustomerRepository {
       _tx.run(() => _customers.setArchivedAt(id, null, _clock.nowUtc()));
 
   @override
+  Future<int> purgeArchived() =>
+      _customers.purgeArchived(_clock.nowUtc().subtract(kArchivePurgeAfter));
+
+  @override
   Future<List<LedgerEntry>> statement(
     String customerId, {
     LedgerCursor? before,
@@ -154,14 +165,28 @@ final class CustomerRepositoryImpl implements CustomerRepository {
       beforeRowOrder: before?.rowOrder,
       limit: limit,
     );
-    return rows.map(CustomerMappers.entry).toList();
+    return [
+      for (final s in rows)
+        CustomerMappers.entry(s, parts: await _partsOfEntry(s.row)),
+    ];
+  }
+
+  /// A payment row's parts: the invoice's when paid at sale time, else the
+  /// receipt's own (FR-039). Other rows have none.
+  Future<List<PaymentPart>> _partsOfEntry(CustomerLedgerRow r) async {
+    if (r.entryType != db.CustomerEntryType.PAYMENT_RECEIVED) return const [];
+    final invoice = r.salesInvoiceId;
+    return _parts.partsOf(
+      invoice != null ? SaleParent(invoice) : ReceiptParent(r.id),
+    );
   }
 
   @override
   Stream<void> watchStatementChanges(String customerId) =>
       _ledger.watchCountOf(customerId).distinct();
 
-  /// R1 customer active; W1 CUSTOMER_RECEIPT number; W2 PAYMENT_RECEIVED.
+  /// R1 customer active; W1 CUSTOMER_RECEIPT number; W2 PAYMENT_RECEIVED;
+  /// W3 its payment parts (006).
   @override
   Future<Result<int, PaymentError>> receivePayment(
     String customerId,
@@ -174,9 +199,10 @@ final class CustomerRepositoryImpl implements CustomerRepository {
     }
     final now = _clock.nowUtc();
     final number = await _counters.take(db.DocType.CUSTOMER_RECEIPT, now);
+    final entryId = _ids.newId();
     await _ledger.insertEntry(
       CustomerLedgerCompanion.insert(
-        id: _ids.newId(),
+        id: entryId,
         customerId: customerId,
         entryType: db.CustomerEntryType.PAYMENT_RECEIVED,
         amountPiasters: -request.amountPiasters,
@@ -185,6 +211,12 @@ final class CustomerRepositoryImpl implements CustomerRepository {
         note: Value(request.note),
         createdAt: now,
       ),
+    );
+    await _parts.write(
+      ReceiptParent(entryId),
+      request.split,
+      paidPiasters: request.amountPiasters,
+      at: now,
     );
     return Ok(number);
   });

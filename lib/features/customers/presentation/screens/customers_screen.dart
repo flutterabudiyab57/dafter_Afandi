@@ -5,11 +5,11 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
-import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_illustration.dart';
+import '../../../../core/widgets/balance_tile.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/list_load_state.dart';
-import '../../../../core/widgets/status_badge.dart';
+import '../../../products/presentation/widgets/unit_label.dart';
 import '../../domain/customer.dart';
 import '../cubits/customers_list_cubit.dart';
 import '../widgets/customer_text.dart';
@@ -39,16 +39,25 @@ class _CustomersScreenState extends State<CustomersScreen> {
     final tokens = context.tokens;
     final cubit = context.read<CustomersListCubit>();
     final state = context.watch<CustomersListCubit>().state;
+    // The empty list has its own Add customer button; one is enough.
+    final emptyAction =
+        !state.loading &&
+        !state.loadFailed &&
+        state.items.isEmpty &&
+        state.query.text.trim().isEmpty &&
+        !state.query.owesOnly;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        // Section roots stay alive in the shell; a shared default tag
-        // would clash during page transitions.
-        heroTag: null,
-        icon: const Icon(Icons.person_add_alt),
-        label: Text(l10n.customerAddTitle),
-        onPressed: () => context.push(RoutePaths.customerNew),
-      ),
+      floatingActionButton: emptyAction
+          ? null
+          : FloatingActionButton.extended(
+              // Section roots stay alive in the shell; a shared default tag
+              // would clash during page transitions.
+              heroTag: null,
+              icon: const Icon(Icons.person_add_alt),
+              label: Text(l10n.customerAddTitle),
+              onPressed: () => context.push(RoutePaths.customerNew),
+            ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -102,6 +111,16 @@ class _CustomersScreenState extends State<CustomersScreen> {
               ),
             ),
           ),
+          if (state.totalOwingPiasters case final total? when !emptyAction)
+            Padding(
+              padding: EdgeInsetsDirectional.symmetric(
+                horizontal: tokens.spaceMd,
+              ),
+              child: Text(
+                l10n.customersTotalOwing(context.money(total)),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
           Expanded(
             child: _Body(
               state: state,
@@ -174,25 +193,11 @@ class CustomerRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = summary.customer;
-    final b = summary.balancePiasters;
-    return ListTile(
-      title: Text(c.name),
-      subtitle: c.phone == null ? null : Text(ltrIsolate(c.phone!)),
-      trailing: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.sizeOf(context).width * 0.4,
-        ),
-        child: b == 0
-            ? Text(context.balance(b), textAlign: TextAlign.end)
-            : Align(
-                alignment: AlignmentDirectional.centerEnd,
-                widthFactor: 1,
-                child: StatusBadge(
-                  label: context.balance(b),
-                  tone: b > 0 ? BadgeTone.owes : BadgeTone.credit,
-                ),
-              ),
-      ),
+    return BalanceTile(
+      name: c.name,
+      phone: c.phone,
+      balancePiasters: summary.balancePiasters,
+      balanceText: context.balance(summary.balancePiasters),
       onTap: onTap ?? () => context.push(RoutePaths.customerDetails(c.id)),
     );
   }

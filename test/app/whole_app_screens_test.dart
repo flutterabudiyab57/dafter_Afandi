@@ -135,13 +135,11 @@ void main() {
         );
       }
 
-      testWidgets('$tag reports keeps its placeholder, with an illustration', (
-        tester,
-      ) async {
+      testWidgets('$tag reports shows the profit report (006)', (tester) async {
         await pumpIn(tester, FakeSettingsRepository(kOnboardedSettings));
         await goTo(tester, RoutePaths.reports);
-        expect(shown(tester), AppIllustration.emptyReports);
-        expect(find.text(l10n.placeholderReportsTitle), findsWidgets);
+        expect(find.text(l10n.profitTitle), findsOneWidget);
+        expect(find.text(l10n.profitEmpty), findsOneWidget);
       });
     }
   }

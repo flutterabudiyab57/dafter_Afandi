@@ -19,7 +19,7 @@ void main() {
     final l10n = lookupAppLocalizations(Locale(locale.name));
     final ar = locale == AppLocale.ar;
     String egp(String latin, String arabic) =>
-        ar ? '$arabic ج.م' : 'EGP $latin';
+        ar ? '$arabic\u00A0ج.م' : 'EGP\u00A0$latin';
     String saleNo(String latin, String arabic) =>
         ltrIsolate(ar ? 'S-$arabic' : 'S-$latin');
 

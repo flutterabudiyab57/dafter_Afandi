@@ -1574,6 +1574,12 @@ abstract class AppLocalizations {
   /// **'إضافة عميل'**
   String get customerAddTitle;
 
+  /// Opens the full customer form from the sale's customer picker.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة عميل جديد'**
+  String get customerNewAction;
+
   /// Adds a customer with the searched name.
   ///
   /// In ar, this message translates to:
@@ -1927,6 +1933,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'إضافة مورد'**
   String get supplierAddTitle;
+
+  /// Opens the full supplier form from the purchase's supplier picker.
+  ///
+  /// In ar, this message translates to:
+  /// **'إضافة مورد جديد'**
+  String get supplierNewAction;
 
   /// Adds a supplier with the searched name.
   ///
@@ -2419,6 +2431,737 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لم يتغيّر شيء في بياناتك. حاول مرة أخرى.'**
   String get loadFailedBody;
+
+  /// Home heading above today's numbers (006 US1).
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get dashboardTodayTitle;
+
+  /// Home card: today's net sales total.
+  ///
+  /// In ar, this message translates to:
+  /// **'مبيعات اليوم'**
+  String get dashboardSalesTitle;
+
+  /// How many sales today, under the total. {count} picks the plural form; {countText} is the same number in the active digit style.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, =0{لا توجد مبيعات بعد} =1{عملية بيع واحدة} =2{عمليتا بيع} few{{countText} عمليات بيع} other{{countText} عملية بيع}}'**
+  String dashboardSalesCount(int count, String countText);
+
+  /// Home card: money that came in today, with a line per payment method.
+  ///
+  /// In ar, this message translates to:
+  /// **'المحصَّل اليوم'**
+  String get dashboardCollectedTitle;
+
+  /// Home card: how many products are at or below their low-stock level or below zero; opens the filtered list.
+  ///
+  /// In ar, this message translates to:
+  /// **'منتجات قاربت على النفاد'**
+  String get dashboardRunningLowTitle;
+
+  /// Home card: the three customers who owe the shop the most.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأكثر مديونية'**
+  String get dashboardDebtorsTitle;
+
+  /// Home card text when no customer owes the shop.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد عملاء عليهم مبالغ للمحل.'**
+  String get dashboardDebtorsNone;
+
+  /// Home card action that opens the full list.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض الكل'**
+  String get dashboardSeeAll;
+
+  /// Report period chip (006 FR-001).
+  ///
+  /// In ar, this message translates to:
+  /// **'اليوم'**
+  String get reportPeriodToday;
+
+  /// Report period chip.
+  ///
+  /// In ar, this message translates to:
+  /// **'أمس'**
+  String get reportPeriodYesterday;
+
+  /// Report period chip; the week starts on Saturday.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الأسبوع'**
+  String get reportPeriodThisWeek;
+
+  /// Report period chip.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الشهر'**
+  String get reportPeriodThisMonth;
+
+  /// Report period chip.
+  ///
+  /// In ar, this message translates to:
+  /// **'الشهر الماضي'**
+  String get reportPeriodLastMonth;
+
+  /// Report period chip that opens a date range picker.
+  ///
+  /// In ar, this message translates to:
+  /// **'فترة أخرى'**
+  String get reportPeriodCustom;
+
+  /// The chosen period's first and last days.
+  ///
+  /// In ar, this message translates to:
+  /// **'من {from} إلى {to}'**
+  String reportPeriodRange(String from, String to);
+
+  /// Why a custom range is refused.
+  ///
+  /// In ar, this message translates to:
+  /// **'تاريخ النهاية قبل تاريخ البداية.'**
+  String get reportPeriodEndBeforeStart;
+
+  /// Why a custom range is refused.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن اختيار يوم بعد اليوم.'**
+  String get reportPeriodInFuture;
+
+  /// Profit report heading (006 US2).
+  ///
+  /// In ar, this message translates to:
+  /// **'الربح'**
+  String get profitTitle;
+
+  /// Profit line: sales not voided minus returns.
+  ///
+  /// In ar, this message translates to:
+  /// **'صافي المبيعات'**
+  String get profitNetSales;
+
+  /// Profit line: the cost recorded on each sale line.
+  ///
+  /// In ar, this message translates to:
+  /// **'تكلفة البضاعة المباعة'**
+  String get profitCostOfGoods;
+
+  /// Profit line: net sales minus cost of goods sold.
+  ///
+  /// In ar, this message translates to:
+  /// **'مجمل الربح'**
+  String get profitGross;
+
+  /// Profit line: stock adjustments at cost, losses net of count gains.
+  ///
+  /// In ar, this message translates to:
+  /// **'خسائر المخزون'**
+  String get profitInventoryLosses;
+
+  /// Shown instead of inventory losses when count gains are larger.
+  ///
+  /// In ar, this message translates to:
+  /// **'صافي مكسب المخزون'**
+  String get profitInventoryNetGain;
+
+  /// Profit line: expenses not voided in the period.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصروفات'**
+  String get profitExpenses;
+
+  /// Profit line: gross profit minus inventory losses minus expenses.
+  ///
+  /// In ar, this message translates to:
+  /// **'صافي الربح'**
+  String get profitNet;
+
+  /// Shown instead of net profit when it is negative.
+  ///
+  /// In ar, this message translates to:
+  /// **'صافي الخسارة'**
+  String get profitNetLoss;
+
+  /// Profit report text when nothing happened in the period.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد عمليات في هذه الفترة.'**
+  String get profitEmpty;
+
+  /// Note when some sale lines had no cost when sold.
+  ///
+  /// In ar, this message translates to:
+  /// **'بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.'**
+  String get profitNoCostNote;
+
+  /// Expenses list title and the Reports link.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصروفات'**
+  String get expensesTitle;
+
+  /// Button that opens the new expense form.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسجيل مصروف'**
+  String get expenseNewAction;
+
+  /// New expense form title.
+  ///
+  /// In ar, this message translates to:
+  /// **'مصروف جديد'**
+  String get expenseNewTitle;
+
+  /// Expense details title.
+  ///
+  /// In ar, this message translates to:
+  /// **'المصروف {number}'**
+  String expenseTitle(String number);
+
+  /// Expense form: the category.
+  ///
+  /// In ar, this message translates to:
+  /// **'البند'**
+  String get expenseCategoryLabel;
+
+  /// Expense form and details: the day it was spent.
+  ///
+  /// In ar, this message translates to:
+  /// **'التاريخ'**
+  String get expenseDateLabel;
+
+  /// Default expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'إيجار'**
+  String get expenseCategoryRent;
+
+  /// Default expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'كهرباء'**
+  String get expenseCategoryElectricity;
+
+  /// Default expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'رواتب'**
+  String get expenseCategorySalaries;
+
+  /// Default expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخرى'**
+  String get expenseCategoryOther;
+
+  /// Expenses list filter: no category filter.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل البنود'**
+  String get expensesAllCategories;
+
+  /// Above the customer list: what all customers, active or archived, owe the shop.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي المستحق على العملاء: {amount}'**
+  String customersTotalOwing(String amount);
+
+  /// Above the supplier list: what the shop owes all suppliers, active or archived.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي المستحق للموردين: {amount}'**
+  String suppliersTotalOwed(String amount);
+
+  /// Stock summary screen title.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملخص المخزون'**
+  String get stockSummaryTitle;
+
+  /// The stock of active products at their average purchase cost.
+  ///
+  /// In ar, this message translates to:
+  /// **'قيمة المخزون بسعر الشراء: {amount}'**
+  String stockValueAtCost(String amount);
+
+  /// The same stock at the sale prices.
+  ///
+  /// In ar, this message translates to:
+  /// **'وبسعر البيع: {amount}'**
+  String stockValueAtSale(String amount);
+
+  /// Note under the stock value.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count} من الأصناف المتوفرة بلا سعر شراء، فلم تُحسب في القيمة بسعر الشراء.'**
+  String stockWithoutCost(String count);
+
+  /// Stock summary section header.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب التصنيف'**
+  String get stockByCategory;
+
+  /// How many active products a category has.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأصناف: {count}'**
+  String stockProductCount(String count);
+
+  /// A category's stock at cost.
+  ///
+  /// In ar, this message translates to:
+  /// **'القيمة: {amount}'**
+  String stockGroupValue(String amount);
+
+  /// A category whose products have no stock.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد مخزون'**
+  String get stockNone;
+
+  /// Stock summary with no active products.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد أصناف بعد.'**
+  String get stockSummaryEmpty;
+
+  /// Archive confirmation for a customer with no history (constitution 1.2.0).
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة العميل؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد {days} أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.'**
+  String customerArchiveConfirmPurge(String days);
+
+  /// Archive confirmation for a supplier with no history (constitution 1.2.0).
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة المورد؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد {days} أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.'**
+  String supplierArchiveConfirmPurge(String days);
+
+  /// Under an archived customer or supplier with no history.
+  ///
+  /// In ar, this message translates to:
+  /// **'يُحذف نهائيًا في {date}'**
+  String partyPurgeOn(String date);
+
+  /// Expenses list total for the filters.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي غير الملغى: {amount}'**
+  String expensesTotal(String amount);
+
+  /// Expenses list empty state title.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد مصروفات في هذه الفترة'**
+  String get expensesEmptyTitle;
+
+  /// Expenses list empty state text.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل الإيجار والكهرباء والرواتب وغيرها ليظهر صافي الربح صحيحًا.'**
+  String get expensesEmptyBody;
+
+  /// Shown after saving an expense.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حفظ المصروف {number}.'**
+  String expenseSaved(String number);
+
+  /// Expense details: void button.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء المصروف'**
+  String get expenseVoidAction;
+
+  /// Void dialog title.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء هذا المصروف؟'**
+  String get expenseVoidTitle;
+
+  /// Void dialog text.
+  ///
+  /// In ar, this message translates to:
+  /// **'يبقى في القائمة مُعلَّمًا بأنه ملغى، ولا يُحسب في الإجماليات ولا في الربح. لا يمكن التراجع عن ذلك.'**
+  String get expenseVoidBody;
+
+  /// Shown after voiding an expense.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إلغاء المصروف.'**
+  String get expenseVoided;
+
+  /// Refusal: voided twice.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا المصروف ملغى بالفعل.'**
+  String get expenseAlreadyVoided;
+
+  /// Expense details for a missing id.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا المصروف غير موجود.'**
+  String get expenseNotFound;
+
+  /// Expense form error.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر البند.'**
+  String get errorExpenseCategoryRequired;
+
+  /// Expense form error.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُرشف هذا البند. اختر بندًا آخر.'**
+  String get errorExpenseCategoryArchived;
+
+  /// Expense save refusal.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا البند لم يعد موجودًا. اختر بندًا آخر.'**
+  String get errorExpenseCategoryUnavailable;
+
+  /// Expense form error.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب مبلغًا أكبر من صفر بخانتين عشريتين على الأكثر.'**
+  String get errorExpenseAmountInvalid;
+
+  /// Expense form error.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن أن يكون التاريخ بعد اليوم.'**
+  String get errorExpenseDateInFuture;
+
+  /// Expense form error when how it was paid is invalid.
+  ///
+  /// In ar, this message translates to:
+  /// **'راجع بيانات الدفع.'**
+  String get errorPaymentDetails;
+
+  /// Expense categories screen title and link.
+  ///
+  /// In ar, this message translates to:
+  /// **'بنود المصروفات'**
+  String get expenseCategoriesTitle;
+
+  /// Archive category confirmation.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة هذا البند؟ تظل المصروفات السابقة تعرض اسمه.'**
+  String get expenseCategoryArchiveConfirm;
+
+  /// Expense category archive button.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرشفة البند'**
+  String get expenseCategoryArchive;
+
+  /// Restore an archived expense category.
+  ///
+  /// In ar, this message translates to:
+  /// **'استعادة'**
+  String get expenseCategoryRestore;
+
+  /// Expense categories: archived section title.
+  ///
+  /// In ar, this message translates to:
+  /// **'البنود المؤرشفة'**
+  String get expenseCategoriesArchived;
+
+  /// Expense categories empty text.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد بنود نشطة. أضف بندًا من الأعلى.'**
+  String get expenseCategoriesEmpty;
+
+  /// Expense category error.
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتب اسم البند.'**
+  String get errorExpenseCategoryNameRequired;
+
+  /// Expense category error.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم البند لا يزيد على {max} حرفًا.'**
+  String errorExpenseCategoryNameTooLong(String max);
+
+  /// Expense category error.
+  ///
+  /// In ar, this message translates to:
+  /// **'يوجد بند نشط بنفس الاسم: {name}.'**
+  String errorExpenseCategoryNameTaken(String name);
+
+  /// Expense category error.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا البند لم يعد موجودًا.'**
+  String get errorExpenseCategoryNotFound;
+
+  /// After a sale is saved: one product on it is running low. {qty} is the quantity left with its unit.
+  ///
+  /// In ar, this message translates to:
+  /// **'مخزون {name} قليل (المتبقي {qty}).'**
+  String saleLowStockOne(String name, String qty);
+
+  /// One running-low product inside saleLowStockTwo and saleLowStockTwoMore. {qty} is the quantity left with its unit.
+  ///
+  /// In ar, this message translates to:
+  /// **'{name} (المتبقي {qty})'**
+  String saleLowStockItem(String name, String qty);
+
+  /// After a sale is saved: two products on it are running low. {first} and {second} are saleLowStockItem texts.
+  ///
+  /// In ar, this message translates to:
+  /// **'المخزون قليل: {first}، {second}.'**
+  String saleLowStockTwo(String first, String second);
+
+  /// After a sale is saved: more than two products on it are running low. {first} and {second} are saleLowStockItem texts; {count} is how many more and picks the plural form; {countText} is the same number in the active digit style.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, =1{المخزون قليل: {first}، {second}، ومنتج آخر.} =2{المخزون قليل: {first}، {second}، ومنتجان آخران.} few{المخزون قليل: {first}، {second}، و{countText} منتجات أخرى.} other{المخزون قليل: {first}، {second}، و{countText} منتجًا آخر.}}'**
+  String saleLowStockTwoMore(
+    String first,
+    String second,
+    int count,
+    String countText,
+  );
+
+  /// Snack bar action after a sale that opens the running-low product list.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض'**
+  String get saleLowStockShow;
+
+  /// Reports: title of the money-collected view and its link.
+  ///
+  /// In ar, this message translates to:
+  /// **'المبالغ المحصَّلة'**
+  String get reportCollectedTitle;
+
+  /// Money collected: the grand total. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإجمالي: {amount}'**
+  String reportCollectedTotal(String amount);
+
+  /// Money collected: nothing in the period.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تُحصَّل أي مبالغ في هذه الفترة.'**
+  String get reportCollectedEmpty;
+
+  /// Reports: title of the top-sellers view and its link.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأكثر مبيعًا'**
+  String get reportTopSellersTitle;
+
+  /// Top sellers: order by net sales value.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب قيمة المبيعات'**
+  String get reportTopByValue;
+
+  /// Top sellers: order by quantity sold.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسب الكمية'**
+  String get reportTopByQuantity;
+
+  /// Top sellers: nothing sold in the period.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يُبَع أي منتج في هذه الفترة.'**
+  String get reportTopEmpty;
+
+  /// Top sellers row: quantity sold, net of returns, with its unit.
+  ///
+  /// In ar, this message translates to:
+  /// **'المباع: {qty}'**
+  String reportTopSold(String qty);
+
+  /// Reports: title of the balances view and its link.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأرصدة'**
+  String get reportBalancesTitle;
+
+  /// Balances tab: customers who owe the shop.
+  ///
+  /// In ar, this message translates to:
+  /// **'على العملاء'**
+  String get reportBalancesCustomersTab;
+
+  /// Balances tab: suppliers the shop owes.
+  ///
+  /// In ar, this message translates to:
+  /// **'للموردين'**
+  String get reportBalancesSuppliersTab;
+
+  /// Balances: total that customers owe. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي المستحق للمحل: {amount}'**
+  String reportBalancesCustomersTotal(String amount);
+
+  /// Balances: total the shop owes suppliers. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي المستحق على المحل: {amount}'**
+  String reportBalancesSuppliersTotal(String amount);
+
+  /// Balances: no customer owes.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد عميل عليه مبالغ للمحل.'**
+  String get reportBalancesCustomersNone;
+
+  /// Balances: the shop owes no supplier.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد مبالغ مستحقة على المحل لأي مورد.'**
+  String get reportBalancesSuppliersNone;
+
+  /// Payment field: adds another part paid by another method.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقسيم الدفع'**
+  String get paymentSplitAction;
+
+  /// Payment field: heading of one part of a split payment. {n} is 1, 2 or 3 in the digit style.
+  ///
+  /// In ar, this message translates to:
+  /// **'الجزء {n}'**
+  String paymentPartTitle(String n);
+
+  /// Payment field: spoken label of the button that removes a part; its amount goes back to part 1.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف الجزء {n}'**
+  String paymentPartRemove(String n);
+
+  /// Payment field: the amount of one part.
+  ///
+  /// In ar, this message translates to:
+  /// **'مبلغ الجزء'**
+  String get paymentPartAmountLabel;
+
+  /// Payment field, wallet or InstaPay: the owner's own wallet number or InstaPay address the money arrived in or left from.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم حسابك (اختياري)'**
+  String get paymentAccountLabel;
+
+  /// Helper under the account number field.
+  ///
+  /// In ar, this message translates to:
+  /// **'مثل رقم محفظتك أو عنوان إنستاباي'**
+  String get paymentAccountHint;
+
+  /// Payment field: label above the chips of account numbers used before.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسابات استخدمتها من قبل'**
+  String get paymentAccountSuggestions;
+
+  /// Payment field, split: how much of the amount is not in any part yet. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'المتبقي توزيعه: {amount}'**
+  String paymentRemaining(String amount);
+
+  /// Payment field, split: the parts add up to more than the amount. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأجزاء أكثر من المبلغ بـ {amount}'**
+  String paymentOverBy(String amount);
+
+  /// Payment field, split: the parts add up exactly.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأجزاء مساوية للمبلغ.'**
+  String get paymentSplitBalanced;
+
+  /// Payment part error.
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل مبلغًا صحيحًا بحد أقصى منزلتين عشريتين.'**
+  String get errorPartAmountInvalid;
+
+  /// Payment part error.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجب أن يكون الجزء أكبر من صفر.'**
+  String get errorPartAmountZero;
+
+  /// Payment part error: the same method is on two parts.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل طريقة دفع تُستخدم مرة واحدة فقط.'**
+  String get errorPaymentMethodRepeated;
+
+  /// Account number error.
+  ///
+  /// In ar, this message translates to:
+  /// **'استخدم الأرقام والحروف اللاتينية و@ . _ - فقط.'**
+  String get errorAccountInvalid;
+
+  /// Account number error. {max} is 40 in the digit style.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الحساب {max} حرفًا على الأكثر.'**
+  String errorAccountTooLong(String max);
+
+  /// Account number error on a cash part.
+  ///
+  /// In ar, this message translates to:
+  /// **'الدفع النقدي ليس له رقم حساب.'**
+  String get errorAccountNotAllowed;
+
+  /// Payment error.
+  ///
+  /// In ar, this message translates to:
+  /// **'يمكن تقسيم الدفع إلى ثلاثة أجزاء على الأكثر.'**
+  String get errorTooManyParts;
+
+  /// Payment error: the parts add up to more. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'مجموع الأجزاء أكثر من المبلغ المدفوع بـ {amount}. اجعلها مساوية له.'**
+  String errorPartsOver(String amount);
+
+  /// Payment error: the parts add up to less. {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'مجموع الأجزاء أقل من المبلغ المدفوع بـ {amount}. اجعلها مساوية له.'**
+  String errorPartsShort(String amount);
+
+  /// One part of a payment on a details screen or statement. {method} is the method name; {amount} is money.
+  ///
+  /// In ar, this message translates to:
+  /// **'{method}: {amount}'**
+  String paymentPartLine(String method, String amount);
+
+  /// Under a payment part: the owner's account number. {account} is kept left-to-right.
+  ///
+  /// In ar, this message translates to:
+  /// **'حسابك: {account}'**
+  String paymentPartAccount(String account);
+
+  /// Details screens: heading of the payment parts.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة الدفع'**
+  String get paymentPartsTitle;
 }
 
 class _AppLocalizationsDelegate

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../core/utils/digits.dart';
 import '../../../core/utils/quantity.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/domain/payment_split.dart';
 
 /// How a sale was paid, derived from its amounts (report §3.1).
 enum SaleKind { cash, partial, credit }
@@ -96,6 +97,7 @@ final class SaleInvoice extends Equatable {
     required this.subtotalPiasters,
     required this.invoiceDiscountPiasters,
     required this.method,
+    this.parts = const [],
     required this.items,
     this.note,
     this.voidedAt,
@@ -106,6 +108,10 @@ final class SaleInvoice extends Equatable {
   final int subtotalPiasters;
   final int invoiceDiscountPiasters;
   final PaymentMethod method;
+
+  /// The payment's parts with their methods and account numbers (FR-039);
+  /// empty for a record saved before 006 or with nothing paid.
+  final List<PaymentPart> parts;
   final List<SaleItem> items;
   final String? note;
   final DateTime? voidedAt;
@@ -117,6 +123,7 @@ final class SaleInvoice extends Equatable {
     subtotalPiasters,
     invoiceDiscountPiasters,
     method,
+    parts,
     items,
     note,
     voidedAt,
@@ -156,11 +163,47 @@ final class SaleQuery extends Equatable {
 
 /// A saved sale.
 final class SaleSaved extends Equatable {
-  const SaleSaved({required this.id, required this.number});
+  const SaleSaved({
+    required this.id,
+    required this.number,
+    this.lowStock = const [],
+  });
 
   final String id;
   final int number;
 
+  /// The sale's products that are now running low, in line order (FR-028).
+  final List<LowStockItem> lowStock;
+
   @override
-  List<Object?> get props => [id, number];
+  List<Object?> get props => [id, number, lowStock];
+}
+
+/// A product on a saved sale that is below zero or at or below its
+/// low-stock level (FR-028, research R12).
+final class LowStockItem extends Equatable {
+  const LowStockItem({
+    required this.productId,
+    required this.name,
+    required this.unit,
+    required this.stockMilli,
+    this.thresholdMilli,
+  });
+
+  final String productId;
+  final String name;
+  final UnitType unit;
+  final int stockMilli;
+
+  /// Null when the product has no level and is only below zero.
+  final int? thresholdMilli;
+
+  @override
+  List<Object?> get props => [
+    productId,
+    name,
+    unit,
+    stockMilli,
+    thresholdMilli,
+  ];
 }

@@ -5,15 +5,16 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/decimal_text.dart';
+import '../../../../core/utils/digits.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
 import '../../../../core/widgets/confirm_dialog.dart';
+import '../../../../core/widgets/digit_style_scope.dart';
 import '../../../../core/widgets/form_error_banner.dart';
 import '../../../../core/widgets/number_fields.dart';
 import '../../../../core/widgets/save_button.dart';
 import '../../../../core/widgets/status_banner.dart';
-import '../../../customers/domain/payment.dart';
-import '../../../customers/presentation/widgets/customer_text.dart';
+import '../../../payments/presentation/widgets/payment_split_field.dart';
 import '../../../products/domain/product.dart';
 import '../../../products/domain/quantity_input.dart';
 import '../../../products/presentation/cubits/product_form_cubit.dart';
@@ -21,6 +22,7 @@ import '../../../products/presentation/cubits/product_picker_cubit.dart';
 import '../../../products/presentation/screens/product_picker_page.dart';
 import '../../../products/presentation/widgets/unit_label.dart';
 import '../../../suppliers/domain/supplier.dart';
+import '../../../suppliers/presentation/cubits/supplier_form_cubit.dart';
 import '../../../suppliers/presentation/cubits/suppliers_list_cubit.dart';
 import '../../../suppliers/presentation/screens/supplier_picker_page.dart';
 import '../../../suppliers/presentation/widgets/supplier_text.dart';
@@ -38,12 +40,14 @@ class NewPurchaseScreen extends StatelessWidget {
     required this.productPicker,
     required this.quickAddProduct,
     required this.supplierPicker,
+    required this.newSupplier,
     super.key,
   });
 
   final ProductPickerCubit Function() productPicker;
   final ProductFormCubit Function(String name) quickAddProduct;
   final SuppliersListCubit Function() supplierPicker;
+  final SupplierFormCubit Function(String name) newSupplier;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,12 @@ class NewPurchaseScreen extends StatelessWidget {
           context,
           l10n.purchaseSaved(context.purchaseNumber(state.saved!.number)),
         );
-        cubit.startNew();
+        // Back to where the purchase was started; the message stays.
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          cubit.startNew();
+        }
       },
       child: BlocBuilder<PurchaseCubit, PurchaseState>(
         buildWhen: (a, b) => a.draft.isEmpty != b.draft.isEmpty,
@@ -74,6 +83,7 @@ class NewPurchaseScreen extends StatelessWidget {
               productPicker: productPicker,
               quickAddProduct: quickAddProduct,
               supplierPicker: supplierPicker,
+              newSupplier: newSupplier,
             ),
           ),
         ),
@@ -101,11 +111,13 @@ class _Body extends StatefulWidget {
     required this.productPicker,
     required this.quickAddProduct,
     required this.supplierPicker,
+    required this.newSupplier,
   });
 
   final ProductPickerCubit Function() productPicker;
   final ProductFormCubit Function(String name) quickAddProduct;
   final SuppliersListCubit Function() supplierPicker;
+  final SupplierFormCubit Function(String name) newSupplier;
 
   @override
   State<_Body> createState() => _BodyState();
@@ -118,6 +130,9 @@ class _BodyState extends State<_Body> {
   final _invoiceDiscount = TextEditingController();
   final _supplierRef = TextEditingController();
   final _paid = TextEditingController();
+
+  /// Bumped after each saved purchase, so the payment field starts again.
+  var _payments = 0;
   final _note = TextEditingController();
 
   @override
@@ -180,7 +195,7 @@ class _BodyState extends State<_Body> {
       MaterialPageRoute(
         builder: (_) => BlocProvider(
           create: (_) => widget.supplierPicker(),
-          child: const SupplierPickerPage(),
+          child: SupplierPickerPage(newSupplier: widget.newSupplier),
         ),
       ),
     );
@@ -192,8 +207,14 @@ class _BodyState extends State<_Body> {
   }
 
   Future<void> _pickDate(DateTime shown) async {
+    // Plain Arabic numbers the days in Latin digits while its dates use
+    // Arabic-Indic ones; Egyptian Arabic uses Arabic-Indic for both.
+    final arabicIndic =
+        DigitStyleScope.of(context) == DigitStyle.arabicIndic &&
+        Localizations.localeOf(context).languageCode == 'ar';
     final picked = await showDatePicker(
       context: context,
+      locale: arabicIndic ? const Locale('ar', 'EG') : null,
       initialDate: shown,
       firstDate: DateTime(2000),
       // No future dates (FR-005).
@@ -256,6 +277,7 @@ class _BodyState extends State<_Body> {
         for (final c in [_invoiceDiscount, _barcode, _supplierRef, _note]) {
           c.clear();
         }
+        setState(() => _payments++);
       },
       child: SafeArea(
         child: SingleChildScrollView(
@@ -383,18 +405,14 @@ class _BodyState extends State<_Body> {
                   piasters: draft.remaining,
                 ),
               gap,
-              Text(l10n.saleMethodLabel, style: theme.textTheme.labelLarge),
-              SizedBox(height: tokens.spaceXs),
-              Wrap(
-                spacing: tokens.spaceSm,
-                runSpacing: tokens.spaceSm,
-                children: [
-                  for (final m in offeredPaymentMethods)
-                    ChoiceChip(
-                      label: Text(context.methodLabel(m)),
-                      selected: draft.method == m,
-                      onSelected: (_) => _cubit.methodChanged(m),
-                    ),
+              PaymentSplitField(
+                // A new purchase starts again with one cash part.
+                key: ValueKey(_payments),
+                totalPiasters: draft.paid,
+                onChanged: _cubit.paymentChanged,
+                errors: [
+                  for (final e in state.errors)
+                    if (e is PurchasePaymentInvalid) ...e.errors,
                 ],
               ),
               gap,

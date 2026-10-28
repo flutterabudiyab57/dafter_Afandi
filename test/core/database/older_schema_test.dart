@@ -1,8 +1,6 @@
-// Older data is upgraded automatically (US5). With only schema v1 the oldest
-// file a phone can hold is version 0: the file left behind when the very
-// first open stopped part-way (risk K4).
-// TODO(v2): from schema v2 on, the generated stepByStep migration tests in
-// test/drift/ cover US5-3 (each older version upgrades to the newest).
+// Older data is upgraded automatically (US5). Version 0 is the file left
+// behind when the very first open stopped part-way (risk K4); the upgrade
+// from v1 is covered by test/drift/app_database/migration_test.dart.
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -12,6 +10,7 @@ import 'package:daftar_afandi/core/database/app_database.dart';
 import 'package:daftar_afandi/core/database/connection.dart';
 import 'package:daftar_afandi/core/database/schema_constants.dart';
 import 'package:daftar_afandi/core/database/schema_guard.dart';
+import 'package:daftar_afandi/core/database/schema_sql.dart';
 import 'package:daftar_afandi/core/di/service_locator.dart';
 import 'package:daftar_afandi/core/utils/clock.dart';
 import 'package:daftar_afandi/core/utils/id.dart';
@@ -53,48 +52,54 @@ void main() {
   int headerInt(int offset) =>
       ByteData.sublistView(file.readAsBytesSync()).getInt32(offset);
 
-  test('the file left by a failed first open is completed to v1', () async {
-    // The first open fails inside onCreate; its transaction rolls back.
-    final broken = AppDatabase(
-      NativeDatabase(file),
-      _FailingIds(),
-      FixedClock(DateTime.utc(2026, 10, 20)),
-    );
-    await expectLater(broken.customSelect('SELECT 1').get(), throwsStateError);
-    await broken.close();
+  test(
+    'the file left by a failed first open is completed to the current version',
+    () async {
+      // The first open fails inside onCreate; its transaction rolls back.
+      final broken = AppDatabase(
+        NativeDatabase(file),
+        _FailingIds(),
+        FixedClock(DateTime.utc(2026, 10, 20)),
+      );
+      await expectLater(
+        broken.customSelect('SELECT 1').get(),
+        throwsStateError,
+      );
+      await broken.close();
 
-    // Nothing was committed, so the guard lets it through as fresh (an
-    // empty file) or as version 0, never as unrecognized.
-    final inspection = await const FileSchemaGuard().inspect(file.path);
-    expect(
-      inspection,
-      anyOf(
-        isA<SchemaFresh>(),
-        isA<SchemaOk>().having((s) => s.userVersion, 'userVersion', 0),
-      ),
-    );
+      // Nothing was committed, so the guard lets it through as fresh (an
+      // empty file) or as version 0, never as unrecognized.
+      final inspection = await const FileSchemaGuard().inspect(file.path);
+      expect(
+        inspection,
+        anyOf(
+          isA<SchemaFresh>(),
+          isA<SchemaOk>().having((s) => s.userVersion, 'userVersion', 0),
+        ),
+      );
 
-    final shown = <Object>[];
-    await bootstrap(
-      runAppFn: shown.add,
-      supportDir: () async => dir,
-      executorFactory: (d) => NativeDatabase(File(databasePathIn(d))),
-      versionSource: _Version(),
-    );
+      final shown = <Object>[];
+      await bootstrap(
+        runAppFn: shown.add,
+        supportDir: () async => dir,
+        executorFactory: (d) => NativeDatabase(File(databasePathIn(d))),
+        versionSource: _Version(),
+      );
 
-    expect(shown.last, isA<App>());
-    final db = sl<AppDatabase>();
-    final tables = await db
-        .customSelect(
-          "SELECT COUNT(*) AS n FROM sqlite_master WHERE type = 'table' "
-          "AND name NOT LIKE 'sqlite_%'",
-        )
-        .getSingle();
-    expect(tables.read<int>('n'), 17);
-    await resetDependencies();
-    expect(headerInt(60), kSchemaVersion);
-    expect(headerInt(68), kAppApplicationId);
-  });
+      expect(shown.last, isA<App>());
+      final db = sl<AppDatabase>();
+      final tables = await db
+          .customSelect(
+            "SELECT COUNT(*) AS n FROM sqlite_master WHERE type = 'table' "
+            "AND name NOT LIKE 'sqlite_%'",
+          )
+          .getSingle();
+      expect(tables.read<int>('n'), kAllTables.length);
+      await resetDependencies();
+      expect(headerInt(60), kSchemaVersion);
+      expect(headerInt(68), kAppApplicationId);
+    },
+  );
 
   for (var version = 0; version <= kSchemaVersion; version++) {
     test('SchemaOk($version) is let through to open', () {

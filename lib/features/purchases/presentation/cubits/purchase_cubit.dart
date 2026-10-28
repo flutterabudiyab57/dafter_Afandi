@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/clock.dart';
 import '../../../../core/utils/result.dart';
 import '../../../customers/domain/payment.dart';
+import '../../../payments/domain/payment_split.dart';
 import '../../../products/domain/product.dart';
 import '../../../products/domain/product_repository.dart';
 import '../../../products/domain/quantity_input.dart';
@@ -185,6 +186,13 @@ class PurchaseCubit extends Cubit<PurchaseState> {
 
   void methodChanged(PaymentMethod method) =>
       _update(state.draft.withMethod(method));
+
+  /// The payment parts as typed (US6).
+  void paymentChanged(List<PaymentPartInput> parts) {
+    if (parts != state.draft.payment) {
+      _update(state.draft.withPayment(parts));
+    }
+  }
 
   void supplierChanged(PurchaseSupplier? supplier) =>
       _update(state.draft.withSupplier(supplier));

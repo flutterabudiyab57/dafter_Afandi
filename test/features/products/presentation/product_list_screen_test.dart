@@ -69,7 +69,7 @@ void main() {
         final unit = l10n.unitPieceShort;
         expect(find.textContaining(unit), findsNWidgets(4));
         if (locale == AppLocale.ar) {
-          expect(find.text('٢٥٫٠٠ ج.م'), findsOneWidget);
+          expect(find.text('٢٥٫٠٠\u00A0ج.م'), findsOneWidget);
           expect(find.text('٣ $unit'), findsOneWidget);
           // RTL: the name starts at the right edge.
           expect(
@@ -77,7 +77,7 @@ void main() {
             greaterThan(tester.getSize(find.byType(Scaffold).last).width / 2),
           );
         } else {
-          expect(find.text('EGP 25.00'), findsOneWidget);
+          expect(find.text('EGP\u00A025.00'), findsOneWidget);
           expect(find.text('3 $unit'), findsOneWidget);
         }
       });

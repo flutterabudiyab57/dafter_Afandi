@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
-import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
 import '../../../../core/widgets/code_point_length_formatter.dart';
@@ -20,7 +19,11 @@ import '../widgets/customer_text.dart';
 /// Adds or edits a customer (US4). The opening balance appears only when
 /// adding.
 class CustomerFormScreen extends StatelessWidget {
-  const CustomerFormScreen({super.key});
+  const CustomerFormScreen({this.popOnCreate = false, super.key});
+
+  /// Adding pops with the new customer's id instead of opening their page,
+  /// so an invoice's picker can choose them.
+  final bool popOnCreate;
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +41,10 @@ class CustomerFormScreen extends StatelessWidget {
             tone: StatusTone.warning,
           );
         }
-        if (create) {
-          context.pushReplacement(RoutePaths.customerDetails(state.savedId!));
+        // Back where the form was opened from: the list, the page being
+        // edited, or an invoice's picker, which chooses the new one.
+        if (create && popOnCreate) {
+          Navigator.of(context).pop<String>(state.savedId);
         } else {
           context.pop();
         }

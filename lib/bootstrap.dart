@@ -14,15 +14,20 @@ import 'core/theme/font_license.dart';
 import 'core/widgets/starting_app.dart';
 import 'core/widgets/startup_error_app.dart';
 import 'core/widgets/update_required_app.dart';
+import 'features/customers/domain/customer_repository.dart';
 import 'features/customers/presentation/customers_cubits.dart';
+import 'features/expenses/presentation/expenses_cubits.dart';
+import 'features/payments/presentation/payments_cubits.dart';
 import 'features/products/presentation/products_cubits.dart';
 import 'features/purchases/presentation/purchases_cubits.dart';
+import 'features/reports/presentation/cubits/reports_cubits.dart';
 import 'features/sales/presentation/sales_cubits.dart';
 import 'features/settings/domain/app_settings.dart';
 import 'features/settings/domain/app_version.dart';
 import 'features/settings/domain/settings_repository.dart';
 import 'features/settings/presentation/cubits/app_preferences_cubit.dart';
 import 'features/settings/presentation/cubits/shop_profile_form_cubit.dart';
+import 'features/suppliers/domain/supplier_repository.dart';
 import 'features/suppliers/presentation/suppliers_cubits.dart';
 
 /// Starts the app (contracts/startup-guard.md). The schema guard runs before
@@ -75,6 +80,11 @@ Future<void> bootstrap({
     settings = await sl<SettingsRepository>().load();
     // Read once and passed down (T081).
     version = await sl<AppVersionSource>().read();
+    // Archived parties with no history go after 7 days (constitution
+    // 1.2.0). The trigger refuses anything else, so a failure here means
+    // the database is unusable, as for the reads above.
+    await sl<CustomerRepository>().purgeArchived();
+    await sl<SupplierRepository>().purgeArchived();
   } on SchemaTooNewException {
     await _releaseDatabase();
     runAppFn(const UpdateRequiredApp(kind: UpdateRequiredKind.tooNew));
@@ -96,6 +106,9 @@ Future<void> bootstrap({
       sales: sl<SalesCubits>(),
       suppliers: sl<SuppliersCubits>(),
       purchases: sl<PurchasesCubits>(),
+      reports: sl<ReportsCubits>(),
+      expenses: sl<ExpensesCubits>(),
+      payments: sl<PaymentsCubits>(),
     ),
   );
 }

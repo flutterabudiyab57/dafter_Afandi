@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/l10n/generated/app_localizations.dart';
+import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../../core/utils/decimal_text.dart';
 import '../../../../core/widgets/app_snack_bar.dart';
@@ -12,9 +13,10 @@ import '../../../../core/widgets/number_fields.dart';
 import '../../../../core/widgets/save_button.dart';
 import '../../../../core/widgets/status_banner.dart';
 import '../../../customers/domain/customer.dart';
-import '../../../customers/domain/payment.dart';
+import '../../../customers/presentation/cubits/customer_form_cubit.dart';
 import '../../../customers/presentation/cubits/customers_list_cubit.dart';
 import '../../../customers/presentation/widgets/customer_text.dart';
+import '../../../payments/presentation/widgets/payment_split_field.dart';
 import '../../../products/domain/product.dart';
 import '../../../products/domain/quantity_input.dart';
 import '../../../products/presentation/cubits/product_picker_cubit.dart';
@@ -32,11 +34,13 @@ class NewSaleScreen extends StatelessWidget {
   const NewSaleScreen({
     required this.productPicker,
     required this.customerPicker,
+    required this.newCustomer,
     super.key,
   });
 
   final ProductPickerCubit Function() productPicker;
   final CustomersListCubit Function() customerPicker;
+  final CustomerFormCubit Function(String name) newCustomer;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +63,7 @@ class NewSaleScreen extends StatelessWidget {
             body: _Body(
               productPicker: productPicker,
               customerPicker: customerPicker,
+              newCustomer: newCustomer,
             ),
           ),
         ),
@@ -77,11 +82,25 @@ class NewSaleScreen extends StatelessWidget {
           cubit.cancelShortage();
         }
       case SaleStatus.saved:
+        final saved = l10n.saleSaved(context.saleNumber(state.saved!.number));
+        final low = context.lowStockMessage(state.lowStock);
+        // The router outlives this screen, which closes right after.
+        final router = GoRouter.of(context);
         showAppSnackBar(
           context,
-          l10n.saleSaved(context.saleNumber(state.saved!.number)),
+          low == null ? saved : '$saved\n$low',
+          tone: low == null ? StatusTone.success : StatusTone.warning,
+          actionLabel: low == null ? null : l10n.saleLowStockShow,
+          onAction: low == null
+              ? null
+              : () => router.push(RoutePaths.productsLow),
         );
-        cubit.startNew();
+        // Back to where the sale was started; the message stays.
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          cubit.startNew();
+        }
       default:
         break;
     }
@@ -127,10 +146,15 @@ class NewSaleScreen extends StatelessWidget {
 }
 
 class _Body extends StatefulWidget {
-  const _Body({required this.productPicker, required this.customerPicker});
+  const _Body({
+    required this.productPicker,
+    required this.customerPicker,
+    required this.newCustomer,
+  });
 
   final ProductPickerCubit Function() productPicker;
   final CustomersListCubit Function() customerPicker;
+  final CustomerFormCubit Function(String name) newCustomer;
 
   @override
   State<_Body> createState() => _BodyState();
@@ -142,6 +166,9 @@ class _BodyState extends State<_Body> {
   final _barcodeFocus = FocusNode();
   final _invoiceDiscount = TextEditingController();
   final _paid = TextEditingController();
+
+  /// Bumped after each saved sale, so the payment field starts again.
+  var _payments = 0;
 
   @override
   void dispose() {
@@ -185,7 +212,7 @@ class _BodyState extends State<_Body> {
       MaterialPageRoute(
         builder: (_) => BlocProvider(
           create: (_) => widget.customerPicker(),
-          child: const CustomerPickerPage(),
+          child: CustomerPickerPage(newCustomer: widget.newCustomer),
         ),
       ),
     );
@@ -253,6 +280,7 @@ class _BodyState extends State<_Body> {
         if (s.status != SaleStatus.saved) return;
         _invoiceDiscount.clear();
         _barcode.clear();
+        setState(() => _payments++);
       },
       child: SafeArea(
         child: SingleChildScrollView(
@@ -346,18 +374,14 @@ class _BodyState extends State<_Body> {
                   piasters: draft.remaining,
                 ),
               gap,
-              Text(l10n.saleMethodLabel, style: theme.textTheme.labelLarge),
-              SizedBox(height: tokens.spaceXs),
-              Wrap(
-                spacing: tokens.spaceSm,
-                runSpacing: tokens.spaceSm,
-                children: [
-                  for (final m in offeredPaymentMethods)
-                    ChoiceChip(
-                      label: Text(context.methodLabel(m)),
-                      selected: draft.method == m,
-                      onSelected: (_) => _cubit.methodChanged(m),
-                    ),
+              PaymentSplitField(
+                // A new sale starts again with one cash part.
+                key: ValueKey(_payments),
+                totalPiasters: draft.paid,
+                onChanged: _cubit.paymentChanged,
+                errors: [
+                  for (final e in state.errors)
+                    if (e is SalePaymentInvalid) ...e.errors,
                 ],
               ),
               SizedBox(height: tokens.spaceXl),

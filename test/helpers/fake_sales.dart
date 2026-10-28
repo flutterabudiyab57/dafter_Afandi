@@ -13,6 +13,7 @@ import 'package:daftar_afandi/features/customers/presentation/cubits/customer_fo
 import 'package:daftar_afandi/features/customers/presentation/cubits/customers_list_cubit.dart';
 import 'package:daftar_afandi/features/customers/presentation/cubits/payment_cubit.dart';
 import 'package:daftar_afandi/features/customers/presentation/customers_cubits.dart';
+import 'package:daftar_afandi/features/payments/domain/payment_split.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/product_picker_cubit.dart';
 import 'package:daftar_afandi/features/sales/domain/sale.dart';
@@ -36,6 +37,7 @@ final class _Row {
     this.invoiceId,
     this.receipt,
     this.method,
+    this.parts = const [],
     this.note,
     this.reverses,
   });
@@ -49,6 +51,7 @@ final class _Row {
   final String? invoiceId;
   final int? receipt;
   final PaymentMethod? method;
+  final List<PaymentPart> parts;
   final String? note;
   final String? reverses;
 }
@@ -148,6 +151,7 @@ final class FakeSalesStore {
     String? invoiceId,
     int? receipt,
     PaymentMethod? method,
+    List<PaymentPart> parts = const [],
     String? note,
     String? reverses,
   }) {
@@ -161,6 +165,7 @@ final class FakeSalesStore {
       invoiceId: invoiceId,
       receipt: receipt,
       method: method,
+      parts: parts,
       note: note,
       reverses: reverses,
     );
@@ -173,11 +178,26 @@ final class FakeSalesStore {
   int balanceOf(String id) =>
       _ledger.where((r) => r.customerId == id).fold(0, (s, r) => s + r.amount);
 
+  /// When each archived customer was archived, for the purge date.
+  final Map<String, DateTime> _archivedAt = {};
+
+  bool hasHistory(String id) =>
+      _ledger.any((r) => r.customerId == id) ||
+      _sales.any((s) => s.invoice.summary.customerId == id);
+
   CustomerSummary? customer(String id) {
     final c = _customers[id];
-    return c == null
-        ? null
-        : CustomerSummary(customer: c, balancePiasters: balanceOf(id));
+    if (c == null) return null;
+    final history = hasHistory(id);
+    final archivedAt = _archivedAt[id];
+    return CustomerSummary(
+      customer: c,
+      balancePiasters: balanceOf(id),
+      hasHistory: history,
+      purgeAt: history || archivedAt == null
+          ? null
+          : archivedAt.add(kArchivePurgeAfter),
+    );
   }
 
   List<CustomerSummary> activeCustomers([
@@ -226,6 +246,7 @@ final class FakeSalesStore {
               : invoice(r.invoiceId!)?.summary.number,
           receiptNumber: r.receipt,
           method: r.method,
+          parts: r.parts,
           note: r.note,
           reversed: _ledger.any((x) => x.reverses == r.id),
         ),
@@ -289,6 +310,7 @@ final class FakeSalesStore {
           subtotalPiasters: draft.subtotal,
           invoiceDiscountPiasters: draft.invoiceDiscountPiasters,
           method: draft.method,
+          parts: draft.split.parts,
           items: [
             for (final (i, l) in draft.lines.indexed)
               SaleItem(
@@ -317,11 +339,26 @@ final class FakeSalesStore {
           -draft.paid,
           invoiceId: id,
           method: draft.method,
+          parts: draft.split.parts,
         );
       }
     }
     _changed();
-    return SaleSaved(id: id, number: number);
+    return SaleSaved(
+      id: id,
+      number: number,
+      lowStock: [
+        for (final pid in draft.lines.map((l) => l.productId).toSet())
+          if (products.summary(pid) case final p? when p.isLow)
+            LowStockItem(
+              productId: pid,
+              name: p.product.name,
+              unit: p.product.unit,
+              stockMilli: p.stockMilli,
+              thresholdMilli: p.product.lowStockThresholdMilli,
+            ),
+      ],
+    );
   }
 }
 
@@ -330,6 +367,10 @@ final class FakeCustomerRepository implements CustomerRepository {
 
   final FakeSalesStore _s;
 
+  /// The fake keeps no archive dates; purging is tested on the database.
+  @override
+  Future<int> purgeArchived() async => 0;
+
   @override
   Stream<List<CustomerSummary>> watchActive(CustomerQuery query) =>
       _s._watch(() => _s.activeCustomers(query));
@@ -337,6 +378,14 @@ final class FakeCustomerRepository implements CustomerRepository {
   @override
   Stream<CustomerSummary?> watchOne(String id) =>
       _s._watch(() => _s.customer(id));
+
+  @override
+  Stream<int> watchTotalOwing() => _s._watch(
+    () => _s._customers.keys
+        .map(_s.balanceOf)
+        .where((b) => b > 0)
+        .fold(0, (sum, b) => sum + b),
+  );
 
   @override
   Stream<List<CustomerSummary>> watchArchived() => _s._watch(
@@ -411,6 +460,11 @@ final class FakeCustomerRepository implements CustomerRepository {
       note: c.note,
       archived: archived,
     );
+    if (archived) {
+      _s._archivedAt[id] = _s._now();
+    } else {
+      _s._archivedAt.remove(id);
+    }
     _s._changed();
   }
 
@@ -461,6 +515,7 @@ final class FakeCustomerRepository implements CustomerRepository {
       -request.amountPiasters,
       receipt: number,
       method: request.method,
+      parts: request.split.parts,
       note: request.note,
     );
     _s._changed();
@@ -594,6 +649,7 @@ final class FakeSalesRepository implements SalesRepository {
       subtotalPiasters: inv.subtotalPiasters,
       invoiceDiscountPiasters: inv.invoiceDiscountPiasters,
       method: inv.method,
+      parts: inv.parts,
       items: inv.items,
       note: inv.note,
       voidedAt: at,
@@ -660,6 +716,13 @@ final class FakeSalesCubits implements SalesCubits {
   @override
   CustomersListCubit customerPicker() =>
       CustomersListCubit(store.customers, debounce: Duration.zero);
+
+  @override
+  CustomerFormCubit newCustomer(String name) => CustomerFormCubit(
+    store.customers,
+    mode: CustomerFormMode.create,
+    initialName: name,
+  );
 
   @override
   SalesListCubit salesList({String? customerId}) => SalesListCubit(

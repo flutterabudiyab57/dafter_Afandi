@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 
 import '../../customers/domain/customer_repository.dart';
+import '../../customers/presentation/cubits/customer_form_cubit.dart';
 import '../../customers/presentation/cubits/customers_list_cubit.dart';
 import '../../products/domain/product_repository.dart';
 import '../../products/presentation/cubits/product_picker_cubit.dart';
@@ -17,6 +18,9 @@ abstract class SalesCubits {
 
   /// The sale's customer picker, with quick add.
   CustomersListCubit customerPicker();
+
+  /// The full customer form opened from the picker, its name prefilled.
+  CustomerFormCubit newCustomer(String name);
 
   /// All invoices, or one customer's when [customerId] is set.
   SalesListCubit salesList({String? customerId});
@@ -42,6 +46,13 @@ final class AppSalesCubits implements SalesCubits {
   @override
   CustomersListCubit customerPicker() =>
       CustomersListCubit(locator<CustomerRepository>());
+
+  @override
+  CustomerFormCubit newCustomer(String name) => CustomerFormCubit(
+    locator<CustomerRepository>(),
+    mode: CustomerFormMode.create,
+    initialName: name,
+  );
 
   @override
   SalesListCubit salesList({String? customerId}) =>

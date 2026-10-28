@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/arabic_normalize.dart';
+import '../../customers/domain/customer.dart' show kArchivePurgeAfter;
 
 /// Someone the shop buys from (data-model.md).
 final class Supplier extends Equatable {
@@ -30,15 +31,25 @@ final class SupplierSummary extends Equatable {
   const SupplierSummary({
     required this.supplier,
     required this.balancePiasters,
+    this.hasHistory = true,
+    this.purgeAt,
   });
 
   final Supplier supplier;
   final int balancePiasters;
 
+  /// Any account row, invoice or return names them. Without, archiving
+  /// removes them for good after [kArchivePurgeAfter].
+  final bool hasHistory;
+
+  /// When an archived supplier with no history goes for good (UTC); null
+  /// otherwise.
+  final DateTime? purgeAt;
+
   bool get owed => balancePiasters > 0;
 
   @override
-  List<Object?> get props => [supplier, balancePiasters];
+  List<Object?> get props => [supplier, balancePiasters, hasHistory, purgeAt];
 }
 
 /// The supplier list's search and filter (FR-015).

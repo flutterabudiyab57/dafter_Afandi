@@ -28,9 +28,16 @@ class StartingApp extends StatelessWidget {
                         label: l10n.logoSemantics,
                         image: true,
                         child: ExcludeSemantics(
-                          child: Image.asset(
-                            'assets/images/logo.png',
-                            height: tokens.logoHeight,
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                tokens.radiusLg,
+                              ),
+                              child: Image.asset(
+                                'assets/images/afandi.jpg',
+                                height: tokens.logoHeight,
+                              ),
+                            ),
                           ),
                         ),
                       ),

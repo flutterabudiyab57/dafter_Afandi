@@ -406,4 +406,89 @@ void main() {
       }
     },
   );
+
+  group('low stock after the sale (US4)', () {
+    test('crossing the level names the product with what is left', () async {
+      final sugar = await env.products.addProduct(
+        'سكر',
+        lowStock: '3',
+        openingQty: '5',
+        openingCost: '20',
+      );
+      final saved = okValue(
+        await env.sales.create(await env.draftFor({sugar: 2 * one})),
+      );
+      expect(saved.lowStock, [
+        LowStockItem(
+          productId: sugar,
+          name: 'سكر',
+          unit: UnitType.piece,
+          stockMilli: 3000,
+          thresholdMilli: 3000,
+        ),
+      ]);
+    });
+
+    test('a product that was already low is named again', () async {
+      final sugar = await env.products.addProduct(
+        'سكر',
+        lowStock: '3',
+        openingQty: '2',
+        openingCost: '20',
+      );
+      final saved = okValue(
+        await env.sales.create(await env.draftFor({sugar: one})),
+      );
+      expect(saved.lowStock.single.stockMilli, 1000);
+    });
+
+    test('three low products come back in line order', () async {
+      final a = await env.products.addProduct(
+        'أرز',
+        lowStock: '5',
+        openingQty: '6',
+        openingCost: '20',
+      );
+      final b = await env.products.addProduct(
+        'زيت',
+        lowStock: '5',
+        openingQty: '6',
+        openingCost: '20',
+      );
+      final c = await env.products.addProduct(
+        'ملح',
+        lowStock: '5',
+        openingQty: '6',
+        openingCost: '20',
+      );
+      final saved = okValue(
+        await env.sales.create(
+          await env.draftFor({c: one, tea: one, a: 2 * one, b: one}),
+        ),
+      );
+      expect(saved.lowStock.map((i) => i.name), ['ملح', 'أرز', 'زيت']);
+    });
+
+    test('no level and still at or above zero: not listed', () async {
+      final saved = okValue(
+        await env.sales.create(await env.draftFor({tea: 10 * one})),
+      );
+      expect(await stock(tea), 0);
+      expect(saved.lowStock, isEmpty);
+    });
+
+    test('below zero is listed even with no level', () async {
+      final saved = okValue(
+        await env.sales.create(
+          await env.draftFor({tea: 12 * one, flour: 500}),
+          acknowledgeShortage: true,
+        ),
+      );
+      final item = saved.lowStock.single;
+      expect(
+        [item.name, item.stockMilli, item.thresholdMilli],
+        ['شاي', -2000, null],
+      );
+    });
+  });
 }

@@ -14,6 +14,7 @@ final class SuppliersListState extends Equatable {
     this.items = const [],
     this.loading = true,
     this.loadFailed = false,
+    this.totalOwedPiasters,
   });
 
   final SupplierQuery query;
@@ -25,20 +26,31 @@ final class SuppliersListState extends Equatable {
   /// The stream failed; [retry] tries again (research R7).
   final bool loadFailed;
 
+  /// What the shop owes all suppliers; null until it loads.
+  final int? totalOwedPiasters;
+
   SuppliersListState copyWith({
     SupplierQuery? query,
     List<SupplierSummary>? items,
     bool? loading,
     bool? loadFailed,
+    int? totalOwedPiasters,
   }) => SuppliersListState(
     query: query ?? this.query,
     items: items ?? this.items,
     loading: loading ?? this.loading,
     loadFailed: loadFailed ?? this.loadFailed,
+    totalOwedPiasters: totalOwedPiasters ?? this.totalOwedPiasters,
   );
 
   @override
-  List<Object?> get props => [query, items, loading, loadFailed];
+  List<Object?> get props => [
+    query,
+    items,
+    loading,
+    loadFailed,
+    totalOwedPiasters,
+  ];
 }
 
 /// The supplier list and the purchase's supplier picker (FR-015). Typing
@@ -49,11 +61,17 @@ class SuppliersListCubit extends Cubit<SuppliersListState> {
     this.debounce = const Duration(milliseconds: 200),
   }) : super(const SuppliersListState()) {
     _subscribe();
+    // Everyone, whatever the search. A failed total is just not shown.
+    _totalSub = _repository.watchTotalOwed().listen(
+      (total) => emit(state.copyWith(totalOwedPiasters: total)),
+      onError: addError,
+    );
   }
 
   final SupplierRepository _repository;
   final Duration debounce;
   StreamSubscription<List<SupplierSummary>>? _sub;
+  StreamSubscription<int>? _totalSub;
   Timer? _timer;
 
   void search(String text) {
@@ -81,6 +99,9 @@ class SuppliersListCubit extends Cubit<SuppliersListState> {
 
   /// Adds a supplier named like the search text, for the picker (US2).
   /// Returns it, or null when the name is not valid.
+  /// The supplier with [id], e.g. one just added from the full form.
+  Future<SupplierSummary?> byId(String id) => _repository.watchOne(id).first;
+
   Future<SupplierSummary?> quickAdd() async {
     final draft = SupplierDraft.create(name: state.query.text);
     if (draft case Ok(:final value)) {
@@ -119,6 +140,7 @@ class SuppliersListCubit extends Cubit<SuppliersListState> {
   Future<void> close() async {
     _timer?.cancel();
     await _sub?.cancel();
+    await _totalSub?.cancel();
     return super.close();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/quantity.dart';
+import '../../payments/domain/payment_split.dart';
 
 /// A rule a sale breaks (FR-002, FR-004, FR-005).
 sealed class SaleError extends Equatable {
@@ -86,6 +87,17 @@ final class Shortage extends Equatable {
 
   @override
   List<Object?> get props => [productId, name, unit, stockMilli, needMilli];
+}
+
+/// The payment parts are wrong (FR-036, FR-037); shown on the payment
+/// field.
+final class SalePaymentInvalid extends SaleError {
+  const SalePaymentInvalid(this.errors);
+
+  final List<PaymentSplitError> errors;
+
+  @override
+  List<Object?> get props => [errors];
 }
 
 /// Why saving a sale did not happen.

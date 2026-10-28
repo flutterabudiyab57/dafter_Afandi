@@ -4,7 +4,7 @@ import '../converters/utc_millis_converter.dart';
 import 'expense_categories_table.dart';
 
 /// Expenses. Voidable once; every other column is frozen by
-/// `trg_expenses_void_only`. No payment method (Q23).
+/// `trg_expenses_void_only`. The method is in its payment parts (Q23, 006).
 @DataClassName('ExpenseRow')
 class Expenses extends Table {
   TextColumn get id => text()();

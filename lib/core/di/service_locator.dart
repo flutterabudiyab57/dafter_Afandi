@@ -4,6 +4,14 @@ import 'package:get_it/get_it.dart';
 import '../../features/customers/data/customer_repository_impl.dart';
 import '../../features/customers/domain/customer_repository.dart';
 import '../../features/customers/presentation/customers_cubits.dart';
+import '../../features/expenses/data/expense_category_repository_impl.dart';
+import '../../features/expenses/data/expense_repository_impl.dart';
+import '../../features/expenses/domain/expense_repository.dart';
+import '../../features/expenses/presentation/expenses_cubits.dart';
+import '../../features/payments/data/account_suggestions_repository_impl.dart';
+import '../../features/payments/data/payment_parts_writer.dart';
+import '../../features/payments/domain/account_suggestions_repository.dart';
+import '../../features/payments/presentation/payments_cubits.dart';
 import '../../features/products/data/category_repository_impl.dart';
 import '../../features/products/data/inventory_repository_impl.dart';
 import '../../features/products/data/product_repository_impl.dart';
@@ -14,6 +22,9 @@ import '../../features/products/presentation/products_cubits.dart';
 import '../../features/purchases/data/purchase_repository_impl.dart';
 import '../../features/purchases/domain/purchase_repository.dart';
 import '../../features/purchases/presentation/purchases_cubits.dart';
+import '../../features/reports/data/reports_repository_impl.dart';
+import '../../features/reports/domain/reports_repository.dart';
+import '../../features/reports/presentation/cubits/reports_cubits.dart';
 import '../../features/sales/data/sales_repository_impl.dart';
 import '../../features/sales/domain/sales_repository.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
@@ -33,8 +44,12 @@ import '../database/daos/categories_dao.dart';
 import '../database/daos/counters_dao.dart';
 import '../database/daos/customer_ledger_dao.dart';
 import '../database/daos/customers_dao.dart';
+import '../database/daos/expense_categories_dao.dart';
+import '../database/daos/expenses_dao.dart';
+import '../database/daos/payment_parts_dao.dart';
 import '../database/daos/products_dao.dart';
 import '../database/daos/purchases_dao.dart';
+import '../database/daos/reports_dao.dart';
 import '../database/daos/sales_dao.dart';
 import '../database/daos/settings_dao.dart';
 import '../database/daos/stock_movements_dao.dart';
@@ -105,6 +120,15 @@ Future<void> configureDependencies({
       ),
     )
     ..registerLazySingleton<CountersDao>(() => sl<AppDatabase>().countersDao)
+    ..registerLazySingleton<PaymentPartsDao>(
+      () => sl<AppDatabase>().paymentPartsDao,
+    )
+    ..registerLazySingleton<PaymentPartsWriter>(
+      () => PaymentPartsWriter(sl<PaymentPartsDao>(), sl<IdGenerator>()),
+    )
+    ..registerLazySingleton<AccountSuggestionsRepository>(
+      () => AccountSuggestionsRepositoryImpl(sl<PaymentPartsDao>()),
+    )
     ..registerLazySingleton<CustomersDao>(() => sl<AppDatabase>().customersDao)
     ..registerLazySingleton<CustomerLedgerDao>(
       () => sl<AppDatabase>().customerLedgerDao,
@@ -118,6 +142,7 @@ Future<void> configureDependencies({
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),
+        sl<PaymentPartsWriter>(),
       ),
     )
     ..registerLazySingleton<SalesRepository>(
@@ -131,6 +156,7 @@ Future<void> configureDependencies({
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),
+        sl<PaymentPartsWriter>(),
       ),
     )
     ..registerLazySingleton<SuppliersDao>(() => sl<AppDatabase>().suppliersDao)
@@ -146,6 +172,7 @@ Future<void> configureDependencies({
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),
+        sl<PaymentPartsWriter>(),
       ),
     )
     ..registerLazySingleton<PurchaseRepository>(
@@ -159,13 +186,44 @@ Future<void> configureDependencies({
         sl<TransactionRunner>(),
         sl<IdGenerator>(),
         sl<Clock>(),
+        sl<PaymentPartsWriter>(),
       ),
+    )
+    ..registerLazySingleton<ExpensesDao>(() => sl<AppDatabase>().expensesDao)
+    ..registerLazySingleton<ExpenseCategoriesDao>(
+      () => sl<AppDatabase>().expenseCategoriesDao,
+    )
+    ..registerLazySingleton<ExpenseRepository>(
+      () => ExpenseRepositoryImpl(
+        sl<ExpensesDao>(),
+        sl<ExpenseCategoriesDao>(),
+        sl<CountersDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+        sl<PaymentPartsWriter>(),
+      ),
+    )
+    ..registerLazySingleton<ExpenseCategoryRepository>(
+      () => ExpenseCategoryRepositoryImpl(
+        sl<ExpenseCategoriesDao>(),
+        sl<TransactionRunner>(),
+        sl<IdGenerator>(),
+        sl<Clock>(),
+      ),
+    )
+    ..registerLazySingleton<ReportsDao>(() => sl<AppDatabase>().reportsDao)
+    ..registerLazySingleton<ReportsRepository>(
+      () => ReportsRepositoryImpl(sl<ReportsDao>(), sl<Clock>()),
     )
     ..registerLazySingleton<ProductsCubits>(() => AppProductsCubits(sl))
     ..registerLazySingleton<CustomersCubits>(() => AppCustomersCubits(sl))
     ..registerLazySingleton<SalesCubits>(() => AppSalesCubits(sl))
     ..registerLazySingleton<SuppliersCubits>(() => AppSuppliersCubits(sl))
     ..registerLazySingleton<PurchasesCubits>(() => AppPurchasesCubits(sl))
+    ..registerLazySingleton<ReportsCubits>(() => AppReportsCubits(sl))
+    ..registerLazySingleton<ExpensesCubits>(() => AppExpensesCubits(sl))
+    ..registerLazySingleton<PaymentsCubits>(() => AppPaymentsCubits(sl))
     ..registerSingleton<AppVersionSource>(
       versionSource ?? const PackageInfoAppVersionSource(),
     )

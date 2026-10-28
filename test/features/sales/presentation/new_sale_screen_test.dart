@@ -18,7 +18,7 @@ void main() {
     final l10n = lookupAppLocalizations(Locale(locale.name));
     final ar = locale == AppLocale.ar;
     String egp(String latin, String arabic) =>
-        ar ? '$arabic ج.م' : 'EGP $latin';
+        ar ? '$arabic\u00A0ج.م' : 'EGP\u00A0$latin';
     String number(String latin, String arabic) =>
         ltrIsolate(ar ? 'S-$arabic' : 'S-$latin');
 
@@ -99,8 +99,8 @@ void main() {
           find.widgetWithText(FilledButton, l10n.saleSaveAction),
         );
 
-        testWidgets('2 × شاي by barcode: cash sale 1, stock down, screen '
-            'empty again', (tester) async {
+        testWidgets('2 × شاي by barcode: cash sale 1, stock down, back on '
+            'the list', (tester) async {
           await open(tester);
           expect(find.text(l10n.saleEmpty), findsOneWidget);
           await scan(tester, '٦٢٢١');
@@ -117,8 +117,77 @@ void main() {
           );
           expect(store.products.stockOf(tea), 8000);
           expect(store.salesList(const SaleQuery()).single.kind, SaleKind.cash);
-          expect(find.text(l10n.saleEmpty), findsOneWidget);
-          expect(currentPath(tester), RoutePaths.salesNew);
+          // Back where the sale was started, the message still showing.
+          expect(currentPath(tester), RoutePaths.sales);
+        });
+
+        group('running low after the sale (US4)', () {
+          String left(String latin, String arabic) => ar
+              ? '$arabic ${l10n.unitPieceShort}'
+              : '$latin ${l10n.unitPieceShort}';
+
+          testWidgets('one product: named with what is left; Show opens '
+              'the running-low list', (tester) async {
+            store.products.seedProduct(
+              'سكر',
+              stockMilli: 5000,
+              lowStockMilli: 3000,
+            );
+            await open(tester);
+            await pick(tester, 'سكر');
+            await typeIn(tester, lineField(l10n.saleQtyLabel), '2');
+            await save(tester);
+            final low = l10n.saleLowStockOne('سكر', left('3', '٣'));
+            expect(
+              find.text('${l10n.saleSaved(number('000001', '٠٠٠٠٠١'))}\n$low'),
+              findsOneWidget,
+            );
+            await tester.tap(find.text(l10n.saleLowStockShow));
+            await tester.pumpAndSettle();
+            expect(
+              routerOf(tester).state.uri.toString(),
+              RoutePaths.productsLow,
+            );
+          });
+
+          testWidgets('three products: two named and one more', (tester) async {
+            const names = ['أرز', 'زيت', 'ملح'];
+            for (final (i, name) in names.indexed) {
+              store.products.seedProduct(
+                name,
+                stockMilli: 5000,
+                lowStockMilli: 5000,
+                barcode: '10$i',
+              );
+            }
+            await open(tester);
+            // By barcode: the picker list is lazy at 200%.
+            for (final i in [0, 1, 2]) {
+              await scan(tester, '10$i');
+            }
+            await save(tester);
+            final low = l10n.saleLowStockTwoMore(
+              l10n.saleLowStockItem('أرز', left('4', '٤')),
+              l10n.saleLowStockItem('زيت', left('4', '٤')),
+              1,
+              ar ? '١' : '1',
+            );
+            expect(find.textContaining(low), findsOneWidget);
+            expect(find.text(l10n.saleLowStockShow), findsOneWidget);
+          });
+
+          testWidgets('nothing low: the plain saved message, no action', (
+            tester,
+          ) async {
+            await open(tester);
+            await pick(tester, 'شاي');
+            await save(tester);
+            expect(
+              find.text(l10n.saleSaved(number('000001', '٠٠٠٠٠١'))),
+              findsOneWidget,
+            );
+            expect(find.text(l10n.saleLowStockShow), findsNothing);
+          });
         });
 
         testWidgets('an unknown barcode says so', (tester) async {
@@ -246,6 +315,34 @@ void main() {
           final k = store.activeCustomers().single.customer.id;
           expect(store.balanceOf(k), 6000);
           expect(store.statementOf(k).first.method, PaymentMethod.wallet);
+        });
+
+        testWidgets('the picker opens the full form, its name from the '
+            'search; the saved customer is chosen and the lines kept', (
+          tester,
+        ) async {
+          await open(tester);
+          await pick(tester, 'شاي');
+          await tapVisible(tester, find.text(l10n.saleCustomerPick));
+          await tester.enterText(
+            find.widgetWithText(TextField, l10n.customersSearchHint),
+            'سامي',
+          );
+          await tester.pumpAndSettle();
+          await tapVisible(tester, find.text(l10n.customerNewAction));
+          expect(find.text(l10n.customerAddTitle), findsOneWidget);
+          expect(find.text('سامي'), findsOneWidget);
+          await tester.enterText(
+            find.widgetWithText(TextField, l10n.customerPhoneLabel),
+            '01001234567',
+          );
+          await tapVisible(tester, find.text(l10n.saveAction));
+
+          final added = store.activeCustomers().single.customer;
+          expect(added.name, 'سامي');
+          expect(added.phone, '01001234567');
+          expect(find.text('سامي'), findsOneWidget);
+          expect(find.textContaining('شاي'), findsWidgets);
         });
 
         testWidgets('paid more than the total is rejected', (tester) async {

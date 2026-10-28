@@ -17,6 +17,7 @@ abstract final class RoutePaths {
   static const String productsLow = '/home/products?filter=low';
   static const String productNew = '/home/products/new';
   static const String productsArchived = '/home/products/archived';
+  static const String productsStock = '/home/products/stock';
   static const String categories = '/home/categories';
 
   static String productDetails(String id) => '$products/$id';
@@ -46,6 +47,17 @@ abstract final class RoutePaths {
   // Purchases, under the Purchases branch.
   static const String purchasesNew = '/purchases/new';
   static String purchase(String id) => '$purchases/$id';
+
+  // Report views, under the Reports branch (006 research R14).
+  static const String reportCollected = '/reports/collected';
+  static const String reportTopSellers = '/reports/top';
+  static const String reportBalances = '/reports/balances';
+
+  // Expenses, under the Reports branch (006 research R14).
+  static const String expenses = '/reports/expenses';
+  static const String expenseNew = '/reports/expenses/new';
+  static const String expenseCategories = '/reports/expense-categories';
+  static String expense(String id) => '$expenses/$id';
 
   /// The section roots, where the shell shows its own app bar. Parties
   /// has two: customers and suppliers.

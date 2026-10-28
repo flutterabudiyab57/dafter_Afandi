@@ -3,7 +3,7 @@
 /// them from this same source.
 library;
 
-/// Every table in schema v1.
+/// Every table, as of schema v2 (v3 added none).
 const List<String> kAllTables = [
   'app_settings',
   'counters',
@@ -22,6 +22,7 @@ const List<String> kAllTables = [
   'customer_ledger',
   'supplier_ledger',
   'expenses',
+  'payment_parts',
 ];
 
 /// Tables whose rows never change after insert.
@@ -33,6 +34,7 @@ const List<String> kImmutableTables = [
   'stock_movements',
   'customer_ledger',
   'supplier_ledger',
+  'payment_parts',
 ];
 
 /// The columns a void may change, on every voidable header.
@@ -120,9 +122,64 @@ const List<String> _indexes = [
   'CREATE INDEX ix_expenses_expense_category_id ON expenses (expense_category_id)',
 ];
 
+/// The payment parts parents: one method and one part number per parent.
+const List<String> _paymentPartParents = [
+  'sales_invoice_id',
+  'purchase_invoice_id',
+  'customer_ledger_id',
+  'supplier_ledger_id',
+  'expense_id',
+];
+
+/// Indexes added in schema v2 (006 data-model).
+final List<String> _v2Indexes = [
+  for (final parent in _paymentPartParents) ...[
+    'CREATE UNIQUE INDEX ux_payment_parts_${parent}_method ON payment_parts '
+        '($parent, method) WHERE $parent IS NOT NULL',
+    'CREATE UNIQUE INDEX ux_payment_parts_${parent}_part_no ON payment_parts '
+        '($parent, part_no) WHERE $parent IS NOT NULL',
+  ],
+  'CREATE INDEX ix_payment_parts_created_at ON payment_parts (created_at)',
+  'CREATE INDEX ix_payment_parts_method_account ON payment_parts '
+      '(method, account_ref, created_at) WHERE account_ref IS NOT NULL',
+  'CREATE INDEX ix_stock_movements_type_created ON stock_movements '
+      '(movement_type, created_at)',
+];
+
 String _noDelete(String table) =>
     'CREATE TRIGGER trg_${table}_no_delete BEFORE DELETE ON $table '
     "BEGIN SELECT RAISE(ABORT, 'no hard delete: $table'); END";
+
+/// What makes a party's row history: any row naming it (constitution
+/// 1.2.0). v3 lets such a party be deleted only when archived and without
+/// any of these; the 7 days are the app's to check.
+const Map<String, List<(String, String)>> kPurgeableHistory = {
+  'customers': [
+    ('customer_ledger', 'customer_id'),
+    ('sales_invoices', 'customer_id'),
+    ('sale_returns', 'customer_id'),
+  ],
+  'suppliers': [
+    ('supplier_ledger', 'supplier_id'),
+    ('purchase_invoices', 'supplier_id'),
+  ],
+};
+
+/// True when the party [idRef] (e.g. `OLD.id`, `c.id`) has any history
+/// row; [table] is a key of [kPurgeableHistory].
+String partyHistorySql(String table, String idRef) => [
+  for (final (t, column) in kPurgeableHistory[table]!)
+    'EXISTS(SELECT 1 FROM $t WHERE $column = $idRef)',
+].join(' OR ');
+
+/// The no-delete trigger, with v3's one opening for a party with no
+/// history, when [kPurgeableHistory] lists [table].
+String _noDeleteFor(String table) {
+  if (!kPurgeableHistory.containsKey(table)) return _noDelete(table);
+  return 'CREATE TRIGGER trg_${table}_no_delete BEFORE DELETE ON $table '
+      'WHEN OLD.archived_at IS NULL OR ${partyHistorySql(table, 'OLD.id')} '
+      "BEGIN SELECT RAISE(ABORT, 'no hard delete: $table'); END";
+}
 
 String _immutable(String table) =>
     'CREATE TRIGGER trg_${table}_immutable BEFORE UPDATE ON $table '
@@ -144,10 +201,27 @@ const String _saleReturnQtyCeiling =
     '(SELECT qty_milli FROM sale_items WHERE id = NEW.sale_item_id) '
     "BEGIN SELECT RAISE(ABORT, 'return exceeds sold qty'); END";
 
+/// What the v1 → v2 step runs after creating `payment_parts`: its indexes
+/// and triggers, and the new stock movements index.
+final List<String> kV2Sql = List.unmodifiable([
+  ..._v2Indexes,
+  _noDelete('payment_parts'),
+  _immutable('payment_parts'),
+]);
+
+/// The v2 → v3 step: the party delete triggers, replaced.
+final List<String> kV3Sql = List.unmodifiable([
+  for (final table in kPurgeableHistory.keys) ...[
+    'DROP TRIGGER IF EXISTS trg_${table}_no_delete',
+    _noDeleteFor(table),
+  ],
+]);
+
 /// All statements, in the order `onCreate` runs them.
 final List<String> kSchemaSql = List.unmodifiable([
   ..._indexes,
-  for (final table in kAllTables) _noDelete(table),
+  ..._v2Indexes,
+  for (final table in kAllTables) _noDeleteFor(table),
   for (final table in kImmutableTables) _immutable(table),
   for (final MapEntry(key: table, value: frozen)
       in kVoidableFrozenColumns.entries)

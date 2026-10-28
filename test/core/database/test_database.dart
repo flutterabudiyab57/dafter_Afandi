@@ -73,6 +73,7 @@ Future<void> insertFixtures(AppDatabase db) async {
     "INSERT INTO customer_ledger (id, customer_id, entry_type, amount_piasters, receipt_number, payment_method, created_at) VALUES ('cl2', 'cu1', 'PAYMENT_RECEIVED', -2000, 1, 'cash', 1)",
     "INSERT INTO supplier_ledger (id, supplier_id, entry_type, amount_piasters, purchase_invoice_id, created_at) VALUES ('sl1', 'su1', 'PURCHASE', 5000, 'pi1', 1)",
     "INSERT INTO expenses (id, number, expense_category_id, amount_piasters, spent_at, created_at, updated_at) VALUES ('e1', 1, 'ec1', 100, 1, 1, 1)",
+    "INSERT INTO payment_parts (id, sales_invoice_id, part_no, method, amount_piasters, created_at) VALUES ('pp1', 'si1', 1, 'cash', 2000, 1)",
   ];
   for (final sql in statements) {
     await db.exec(sql);

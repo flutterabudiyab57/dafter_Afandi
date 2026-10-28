@@ -2,7 +2,9 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/money.dart';
 import '../../../core/utils/quantity.dart';
+import '../../../core/utils/result.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/domain/payment_split.dart';
 import '../../products/domain/product_errors.dart';
 import 'sale_errors.dart';
 
@@ -72,7 +74,7 @@ final class SaleDraft extends Equatable {
     this.lines = const [],
     this.invoiceDiscountPiasters = 0,
     this.paidPiasters,
-    this.method = PaymentMethod.cash,
+    this.payment = const [PaymentPartInput(method: PaymentMethod.cash)],
     this.customer,
     this.note,
   });
@@ -82,7 +84,9 @@ final class SaleDraft extends Equatable {
 
   /// Paid now; null means the whole total (FR-005).
   final int? paidPiasters;
-  final PaymentMethod method;
+
+  /// How [paid] is paid, as typed: one part, or up to three (FR-036).
+  final List<PaymentPartInput> payment;
   final SaleCustomer? customer;
   final String? note;
 
@@ -95,6 +99,17 @@ final class SaleDraft extends Equatable {
   int get paid => paidPiasters ?? (total < 0 ? 0 : total);
 
   int get remaining => total - paid;
+
+  /// Part 1's method, kept on the invoice header.
+  PaymentMethod get method => payment.first.method;
+
+  /// [payment] read against [paid]; empty when nothing is paid. Only
+  /// meaningful when [validate] is empty.
+  PaymentSplit get split =>
+      switch (PaymentSplit.create(totalPiasters: paid, inputs: payment)) {
+        Ok(:final value) => value,
+        Err() => PaymentSplit.none,
+      };
 
   /// Each line's share of the invoice discount; they add up to it exactly
   /// (FR-004). Only meaningful when [validate] is empty.
@@ -164,18 +179,23 @@ final class SaleDraft extends Equatable {
     lines: lines,
     invoiceDiscountPiasters: invoiceDiscountPiasters,
     paidPiasters: piasters,
-    method: method,
+    payment: payment,
     customer: customer,
     note: note,
   );
 
-  SaleDraft withMethod(PaymentMethod method) => _with(method: method);
+  /// One part in [method] that takes the whole amount paid.
+  SaleDraft withMethod(PaymentMethod method) =>
+      withPayment([PaymentPartInput(method: method)]);
+
+  SaleDraft withPayment(List<PaymentPartInput> payment) =>
+      _with(payment: payment);
 
   SaleDraft withCustomer(SaleCustomer? customer) => SaleDraft(
     lines: lines,
     invoiceDiscountPiasters: invoiceDiscountPiasters,
     paidPiasters: paidPiasters,
-    method: method,
+    payment: payment,
     customer: customer,
     note: note,
   );
@@ -184,7 +204,7 @@ final class SaleDraft extends Equatable {
     lines: lines,
     invoiceDiscountPiasters: invoiceDiscountPiasters,
     paidPiasters: paidPiasters,
-    method: method,
+    payment: payment,
     customer: customer,
     note: note,
   );
@@ -192,13 +212,13 @@ final class SaleDraft extends Equatable {
   SaleDraft _with({
     List<SaleLine>? lines,
     int? invoiceDiscountPiasters,
-    PaymentMethod? method,
+    List<PaymentPartInput>? payment,
   }) => SaleDraft(
     lines: lines ?? this.lines,
     invoiceDiscountPiasters:
         invoiceDiscountPiasters ?? this.invoiceDiscountPiasters,
     paidPiasters: paidPiasters,
-    method: method ?? this.method,
+    payment: payment ?? this.payment,
     customer: customer,
     note: note,
   );
@@ -228,6 +248,13 @@ final class SaleDraft extends Equatable {
     final p = paid;
     if (p < 0 || p > total) errors.add(const PaidTooLarge());
     if (p < total && customer == null) errors.add(const CreditNeedsCustomer());
+    if (p > 0 && p <= total) {
+      if (PaymentSplit.create(totalPiasters: p, inputs: payment) case Err(
+        :final error,
+      )) {
+        errors.add(SalePaymentInvalid(error));
+      }
+    }
     return errors;
   }
 
@@ -236,7 +263,7 @@ final class SaleDraft extends Equatable {
     lines,
     invoiceDiscountPiasters,
     paidPiasters,
-    method,
+    payment,
     customer,
     note,
   ];

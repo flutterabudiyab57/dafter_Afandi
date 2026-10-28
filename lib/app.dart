@@ -10,8 +10,11 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/app_tokens.dart';
 import 'core/widgets/digit_style_scope.dart';
 import 'features/customers/presentation/customers_cubits.dart';
+import 'features/expenses/presentation/expenses_cubits.dart';
+import 'features/payments/presentation/payments_cubits.dart';
 import 'features/products/presentation/products_cubits.dart';
 import 'features/purchases/presentation/purchases_cubits.dart';
+import 'features/reports/presentation/cubits/reports_cubits.dart';
 import 'features/sales/presentation/sales_cubits.dart';
 import 'features/settings/domain/app_settings.dart';
 import 'features/settings/domain/app_version.dart';
@@ -29,6 +32,9 @@ class App extends StatefulWidget {
     required this.sales,
     required this.suppliers,
     required this.purchases,
+    required this.reports,
+    required this.expenses,
+    required this.payments,
     super.key,
   });
 
@@ -51,6 +57,15 @@ class App extends StatefulWidget {
   final SuppliersCubits suppliers;
   final PurchasesCubits purchases;
 
+  /// Builds the dashboard and report cubits (006).
+  final ReportsCubits reports;
+
+  /// Builds the expenses screens' cubits (006).
+  final ExpensesCubits expenses;
+
+  /// Builds the payment field's cubit on every payment form (006).
+  final PaymentsCubits payments;
+
   @override
   State<App> createState() => _AppState();
 }
@@ -64,6 +79,8 @@ class _AppState extends State<App> {
     sales: widget.sales,
     suppliers: widget.suppliers,
     purchases: widget.purchases,
+    reports: widget.reports,
+    expenses: widget.expenses,
   );
 
   @override
@@ -76,8 +93,11 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: widget.preferences,
-      child: RepositoryProvider.value(
-        value: widget.appVersion,
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider.value(value: widget.appVersion),
+          RepositoryProvider.value(value: widget.payments),
+        ],
         child: ScreenUtilInit(
           designSize: const Size(420, 812),
           builder: (context, _) => _buildApp(context),

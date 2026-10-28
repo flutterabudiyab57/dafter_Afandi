@@ -46,6 +46,8 @@ extension PurchaseText on BuildContext {
     PurchaseNoteTooLong() => _l10n.errorNoteTooLong(
       count(maxPurchaseNoteLength),
     ),
+    // The parts' own errors show on the payment field.
+    PurchasePaymentInvalid() => _l10n.errorPaymentDetails,
     PurchaseInvoiceDiscountTooLarge() ||
     PurchaseQuantityInvalid() ||
     PurchaseCostInvalid() ||

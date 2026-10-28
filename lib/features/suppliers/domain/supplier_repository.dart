@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/result.dart';
+import '../../customers/domain/customer.dart' show kArchivePurgeAfter;
 import '../../customers/domain/ledger_entry.dart';
 import '../../customers/domain/payment.dart';
 import 'supplier.dart';
@@ -18,6 +19,10 @@ abstract interface class SupplierRepository {
 
   Stream<List<SupplierSummary>> watchArchived();
 
+  /// What the shop owes all suppliers, active or archived: the sum of
+  /// the balances above 0.
+  Stream<int> watchTotalOwed();
+
   /// Saves a new supplier and, when set, its opening balance, in one
   /// transaction.
   Future<Result<SupplierSaved, SupplierSaveError>> create(SupplierDraft draft);
@@ -31,6 +36,10 @@ abstract interface class SupplierRepository {
   Future<void> archive(String id);
 
   Future<void> restore(String id);
+
+  /// Removes for good the suppliers archived [kArchivePurgeAfter] ago or
+  /// more with no history (constitution 1.2.0). Returns how many went.
+  Future<int> purgeArchived();
 
   /// Statement rows, newest first, in pages (research R10).
   Future<List<SupplierEntry>> statement(

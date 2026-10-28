@@ -17,6 +17,10 @@ abstract interface class CustomerRepository {
 
   Stream<List<CustomerSummary>> watchArchived();
 
+  /// What all customers, active or archived, owe the shop: the sum of
+  /// the balances above 0.
+  Stream<int> watchTotalOwing();
+
   /// Saves a new customer and, when set, its opening balance, in one
   /// transaction.
   Future<Result<CustomerSaved, CustomerSaveError>> create(CustomerDraft draft);
@@ -30,6 +34,10 @@ abstract interface class CustomerRepository {
   Future<void> archive(String id);
 
   Future<void> restore(String id);
+
+  /// Removes for good the customers archived [kArchivePurgeAfter] ago or
+  /// more with no history (constitution 1.2.0). Returns how many went.
+  Future<int> purgeArchived();
 
   /// Statement rows, newest first, in pages (research R9).
   Future<List<LedgerEntry>> statement(

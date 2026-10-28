@@ -4,8 +4,11 @@ import 'package:daftar_afandi/core/utils/arabic_normalize.dart';
 import 'package:daftar_afandi/core/utils/clock.dart';
 import 'package:daftar_afandi/core/utils/digits.dart';
 import 'package:daftar_afandi/core/utils/result.dart';
+import 'package:daftar_afandi/features/customers/domain/customer.dart'
+    show kArchivePurgeAfter;
 import 'package:daftar_afandi/features/customers/domain/ledger_entry.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
+import 'package:daftar_afandi/features/payments/domain/payment_split.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/product_form_cubit.dart';
 import 'package:daftar_afandi/features/products/presentation/cubits/product_picker_cubit.dart';
@@ -40,6 +43,7 @@ final class _Row {
     this.purchaseId,
     this.paymentNumber,
     this.method,
+    this.parts = const [],
     this.note,
     this.reverses,
   });
@@ -53,6 +57,7 @@ final class _Row {
   final String? purchaseId;
   final int? paymentNumber;
   final PaymentMethod? method;
+  final List<PaymentPart> parts;
   final String? note;
   final String? reverses;
 }
@@ -153,6 +158,7 @@ final class FakePurchasesStore {
     String? purchaseId,
     int? paymentNumber,
     PaymentMethod? method,
+    List<PaymentPart> parts = const [],
     String? note,
     String? reverses,
   }) {
@@ -166,6 +172,7 @@ final class FakePurchasesStore {
       purchaseId: purchaseId,
       paymentNumber: paymentNumber,
       method: method,
+      parts: parts,
       note: note,
       reverses: reverses,
     );
@@ -178,11 +185,26 @@ final class FakePurchasesStore {
   int balanceOf(String id) =>
       _ledger.where((r) => r.supplierId == id).fold(0, (s, r) => s + r.amount);
 
+  /// When each archived supplier was archived, for the purge date.
+  final Map<String, DateTime> _archivedAt = {};
+
+  bool hasHistory(String id) =>
+      _ledger.any((r) => r.supplierId == id) ||
+      _purchases.any((s) => s.summary.supplierId == id);
+
   SupplierSummary? supplier(String id) {
     final s = _suppliers[id];
-    return s == null
-        ? null
-        : SupplierSummary(supplier: s, balancePiasters: balanceOf(id));
+    if (s == null) return null;
+    final history = hasHistory(id);
+    final archivedAt = _archivedAt[id];
+    return SupplierSummary(
+      supplier: s,
+      balancePiasters: balanceOf(id),
+      hasHistory: history,
+      purgeAt: history || archivedAt == null
+          ? null
+          : archivedAt.add(kArchivePurgeAfter),
+    );
   }
 
   List<SupplierSummary> activeSuppliers([
@@ -232,6 +254,7 @@ final class FakePurchasesStore {
               : purchase(r.purchaseId!)?.summary.number,
           paymentNumber: r.paymentNumber,
           method: r.method,
+          parts: r.parts,
           note: r.note,
           reversed: _ledger.any((x) => x.reverses == r.id),
         ),
@@ -294,6 +317,7 @@ final class FakePurchasesStore {
         subtotalPiasters: draft.subtotal,
         invoiceDiscountPiasters: draft.invoiceDiscountPiasters,
         method: draft.method,
+        parts: draft.split.parts,
         items: [
           for (final (i, l) in draft.lines.indexed)
             PurchaseItem(
@@ -321,6 +345,7 @@ final class FakePurchasesStore {
           -draft.paid,
           purchaseId: id,
           method: draft.method,
+          parts: draft.split.parts,
         );
       }
     }
@@ -334,6 +359,10 @@ final class FakeSupplierRepository implements SupplierRepository {
 
   final FakePurchasesStore _s;
 
+  /// The fake keeps no archive dates; purging is tested on the database.
+  @override
+  Future<int> purgeArchived() async => 0;
+
   @override
   Stream<List<SupplierSummary>> watchActive(SupplierQuery query) =>
       _s._watch(() => _s.activeSuppliers(query));
@@ -341,6 +370,14 @@ final class FakeSupplierRepository implements SupplierRepository {
   @override
   Stream<SupplierSummary?> watchOne(String id) =>
       _s._watch(() => _s.supplier(id));
+
+  @override
+  Stream<int> watchTotalOwed() => _s._watch(
+    () => _s._suppliers.keys
+        .map(_s.balanceOf)
+        .where((b) => b > 0)
+        .fold(0, (sum, b) => sum + b),
+  );
 
   @override
   Stream<List<SupplierSummary>> watchArchived() => _s._watch(
@@ -415,6 +452,11 @@ final class FakeSupplierRepository implements SupplierRepository {
       note: s.note,
       archived: archived,
     );
+    if (archived) {
+      _s._archivedAt[id] = _s._now();
+    } else {
+      _s._archivedAt.remove(id);
+    }
     _s._changed();
   }
 
@@ -465,6 +507,7 @@ final class FakeSupplierRepository implements SupplierRepository {
       -request.amountPiasters,
       paymentNumber: number,
       method: request.method,
+      parts: request.split.parts,
       note: request.note,
     );
     _s._changed();
@@ -620,6 +663,7 @@ final class FakePurchaseRepository implements PurchaseRepository {
       subtotalPiasters: p.subtotalPiasters,
       invoiceDiscountPiasters: p.invoiceDiscountPiasters,
       method: p.method,
+      parts: p.parts,
       items: p.items,
       note: p.note,
       voidedAt: at,
@@ -696,6 +740,13 @@ final class FakePurchasesCubits implements PurchasesCubits {
   @override
   SuppliersListCubit supplierPicker() =>
       SuppliersListCubit(store.suppliers, debounce: Duration.zero);
+
+  @override
+  SupplierFormCubit newSupplier(String name) => SupplierFormCubit(
+    store.suppliers,
+    mode: SupplierFormMode.create,
+    initialName: name,
+  );
 
   @override
   PurchasesListCubit purchasesList({String? supplierId}) => PurchasesListCubit(

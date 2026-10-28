@@ -18,7 +18,7 @@ void main() {
     final l10n = lookupAppLocalizations(Locale(locale.name));
     final ar = locale == AppLocale.ar;
     String egp(String latin, String arabic) =>
-        ar ? '$arabic ج.م' : 'EGP $latin';
+        ar ? '$arabic\u00A0ج.م' : 'EGP\u00A0$latin';
     String doc(String latin) =>
         ltrIsolate(ar ? applyDigitStyle(latin, DigitStyle.arabicIndic) : latin);
 
@@ -87,16 +87,15 @@ void main() {
           expect(currentPath(tester), RoutePaths.suppliers);
           expect(find.text(l10n.suppliersEmptyTitle), findsOneWidget);
 
-          await tapVisible(tester, find.byType(FloatingActionButton));
+          await tapVisible(tester, find.text(l10n.supplierAddTitle));
           expect(currentPath(tester), RoutePaths.supplierNew);
           await type(tester, l10n.supplierNameLabel, 'شركة النور');
           await type(tester, l10n.customerPhoneLabel, '٠٢٢٣٤٥٦٧٨٩');
           await save(tester);
+          // Back to the list, where they are.
           final id = store.activeSuppliers().single.supplier.id;
-          expect(currentPath(tester), RoutePaths.supplierDetails(id));
+          expect(currentPath(tester), RoutePaths.suppliers);
           expect(store.supplier(id)!.supplier.phone, '0223456789');
-
-          await goTo(tester, RoutePaths.suppliers);
           expect(find.text('شركة النور'), findsOneWidget);
           expect(find.text(l10n.balanceZero), findsOneWidget);
           // And back to customers.
@@ -113,6 +112,8 @@ void main() {
           await type(tester, l10n.supplierNameLabel, 'شركة النور');
           await type(tester, l10n.customerOpeningAmount, '1000');
           await save(tester);
+          final id = store.activeSuppliers().single.supplier.id;
+          await goTo(tester, RoutePaths.supplierDetails(id));
           expect(
             find.text(l10n.supplierBalanceOwed(egp('1,000.00', '١٬٠٠٠٫٠٠'))),
             findsWidgets,
@@ -125,6 +126,7 @@ void main() {
           await type(tester, l10n.customerOpeningAmount, '50');
           await tapVisible(tester, find.text(l10n.supplierOpeningInShopFavour));
           await save(tester);
+          await goTo(tester, RoutePaths.suppliers);
           expect(
             find.text(l10n.supplierBalanceInShopFavour(egp('50.00', '٥٠٫٠٠'))),
             findsWidgets,
@@ -158,6 +160,11 @@ void main() {
             ..seedSupplier('مخازن الأمل', openingPiasters: 900)
             ..seedSupplier('الفجر', openingPiasters: -500);
           await open(tester, store, RoutePaths.suppliers);
+          // Only what the shop owes: 1 + 9, not the 5 in its favour.
+          expect(
+            find.text(l10n.suppliersTotalOwed(egp('10.00', '١٠٫٠٠'))),
+            findsOneWidget,
+          );
           final search = find.widgetWithText(
             TextField,
             l10n.suppliersSearchHint,
@@ -271,14 +278,26 @@ void main() {
           expect(store.balanceOf(v), 6000);
         });
 
-        testWidgets('archive with no balance asks plainly', (tester) async {
+        testWidgets('archive with no history warns of the deletion; the '
+            'archive shows its day', (tester) async {
           final store = FakePurchasesStore();
           final v = store.seedSupplier('شركة النور');
           await open(tester, store, RoutePaths.supplierDetails(v));
           await tapVisible(tester, find.text(l10n.supplierArchiveAction));
-          expect(find.text(l10n.supplierArchiveConfirm), findsOneWidget);
-          await tapVisible(tester, find.text(l10n.cancelAction));
-          expect(store.activeSuppliers(), hasLength(1));
+          expect(
+            find.text(l10n.supplierArchiveConfirmPurge(ar ? '٧' : '7')),
+            findsOneWidget,
+          );
+          await tester.tap(find.text(l10n.supplierArchiveAction).last);
+          await tester.pumpAndSettle();
+          expect(store.activeSuppliers(), isEmpty);
+
+          await goTo(tester, RoutePaths.suppliersArchived);
+          // Archived 2026-10-20 10:01 UTC, gone 7 days later.
+          expect(
+            find.textContaining(ar ? '٢٠٢٦/١٠/٢٧' : '2026/10/27'),
+            findsOneWidget,
+          );
         });
 
         testWidgets('a missing supplier says so', (tester) async {

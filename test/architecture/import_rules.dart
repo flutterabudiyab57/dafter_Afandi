@@ -202,20 +202,27 @@ Iterable<Violation> noLiteralTextInPresentation(SourceFile file, String code) {
   );
 }
 
-/// No hard delete anywhere, and no update of the append-only stock ledger
-/// (constitution III). The v1 triggers refuse both; this keeps code from
-/// trying.
+/// The one hard delete allowed (constitution 1.2.0): each party DAO's
+/// purge of its own table.
+const Map<String, String> kAllowedPurges = {
+  'lib/core/database/daos/customers_dao.dart': 'DELETE FROM customers',
+  'lib/core/database/daos/suppliers_dao.dart': 'DELETE FROM suppliers',
+};
+
+/// No hard delete anywhere but [kAllowedPurges], and no update of the
+/// append-only stock ledger (constitution III). The triggers refuse both;
+/// this keeps code from trying.
 Iterable<Violation> noDeleteOrMovementUpdate(SourceFile file, String code) =>
     _matches(
       'no-delete',
       file,
       code,
       RegExp(
-        r'\bdelete\(|\bdeleteWhere\b|\bDELETE\s+FROM\b|'
+        r'\bdelete\(|\bdeleteWhere\b|\bDELETE\s+FROM\s+\w+|'
         r'\bUPDATE\s+stock_movements\b|\bupdate\(\s*stockMovements\s*\)',
         caseSensitive: false,
       ),
-    );
+    ).where((v) => kAllowedPurges[file.path] != v.detail);
 
 const List<Rule> allRules = [
   noMaterialOrCupertino,

@@ -94,16 +94,16 @@ void main() {
     expect((result as SchemaOk).userVersion, 0);
   });
 
-  for (final version in [0, 1]) {
+  for (final version in [0, 1, 2, 3]) {
     test('version $version → ok', () async {
       final result = await inspectFile(_header(userVersion: version));
       expect((result as SchemaOk).userVersion, version);
     });
   }
 
-  test('version 2 → too new', () async {
-    final result = await inspectFile(_header(userVersion: 2));
-    expect((result as SchemaTooNew).userVersion, 2);
+  test('version 4 → too new', () async {
+    final result = await inspectFile(_header(userVersion: 4));
+    expect((result as SchemaTooNew).userVersion, 4);
   });
 
   test('exactly 100 bytes is enough', () async {

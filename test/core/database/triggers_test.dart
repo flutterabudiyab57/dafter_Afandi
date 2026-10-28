@@ -37,6 +37,35 @@ void main() {
     }
   });
 
+  test('a party with no history may go once archived, and only then', () async {
+    for (final (table, id) in [('customers', 'cu9'), ('suppliers', 'su9')]) {
+      await t.db.exec(
+        "INSERT INTO $table (id, name, search_key, created_at, updated_at) "
+        "VALUES ('$id', 'x', 'x', 1, 1)",
+      );
+      await expectLater(
+        t.db.exec("DELETE FROM $table WHERE id = '$id'"),
+        _aborts('no hard delete: $table'),
+        reason: '$table: not archived',
+      );
+      await t.db.exec("UPDATE $table SET archived_at = 2 WHERE id = '$id'");
+      await t.db.exec("DELETE FROM $table WHERE id = '$id'");
+      expect(
+        await t.db.scalar("SELECT COUNT(*) FROM $table WHERE id = '$id'"),
+        0,
+      );
+    }
+    // The fixture parties have ledger rows: archived, they still stay.
+    for (final (table, id) in [('customers', 'cu1'), ('suppliers', 'su1')]) {
+      await t.db.exec("UPDATE $table SET archived_at = 2 WHERE id = '$id'");
+      await expectLater(
+        t.db.exec("DELETE FROM $table WHERE id = '$id'"),
+        _aborts('no hard delete: $table'),
+        reason: '$table: with history',
+      );
+    }
+  });
+
   test('UPDATE aborts on every immutable table, even a no-op', () async {
     for (final table in kImmutableTables) {
       await expectLater(

@@ -96,6 +96,30 @@ void main() {
     expect(row.runningBalancePiasters, 15000);
   });
 
+  test('the total owed adds balances above 0, archived ones too', () async {
+    final a = await env.addSupplier('a', opening: '150');
+    await env.addSupplier('b', opening: '30');
+    await env.addSupplier('c', opening: '20', inShopFavour: true);
+    expect(await env.suppliers.watchTotalOwed().first, 18000);
+    await env.suppliers.archive(a);
+    expect(await env.suppliers.watchTotalOwed().first, 18000);
+  });
+
+  test(
+    'purge: only archived suppliers with no history, after 7 days',
+    () async {
+      final bare = await env.addSupplier('بلا حركة');
+      final owed = await env.addSupplier('له رصيد', opening: '10');
+      await env.suppliers.archive(bare);
+      await env.suppliers.archive(owed);
+      expect(await env.suppliers.purgeArchived(), 0);
+      env.products.clock.advance(const Duration(days: 7));
+      expect(await env.suppliers.purgeArchived(), 1);
+      expect(await env.suppliers.watchOne(bare).first, isNull);
+      expect(await env.suppliers.watchOne(owed).first, isNotNull);
+    },
+  );
+
   test('search by name or phone; owed filter highest first', () async {
     await env.addSupplier('شركة النور', phone: '01001234567', opening: '10');
     await env.addSupplier('مخازن الأمل', opening: '30');

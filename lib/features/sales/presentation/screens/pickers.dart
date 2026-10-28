@@ -4,12 +4,17 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_tokens.dart';
 import '../../../customers/domain/customer.dart';
+import '../../../customers/presentation/cubits/customer_form_cubit.dart';
 import '../../../customers/presentation/cubits/customers_list_cubit.dart';
+import '../../../customers/presentation/screens/customer_form_screen.dart';
 import '../../../customers/presentation/screens/customers_screen.dart';
 
 /// Picks or quickly adds the sale's customer (US2-4). Pops with them.
 class CustomerPickerPage extends StatelessWidget {
-  const CustomerPickerPage({super.key});
+  const CustomerPickerPage({required this.newCustomer, super.key});
+
+  /// The full customer form, its name prefilled from the search.
+  final CustomerFormCubit Function(String name) newCustomer;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +39,17 @@ class CustomerPickerPage extends StatelessWidget {
               ),
             ),
           ),
+          Padding(
+            padding: EdgeInsetsDirectional.symmetric(
+              horizontal: context.tokens.spaceMd,
+            ),
+            child: FilledButton.tonalIcon(
+              icon: const Icon(Icons.add),
+              label: Text(l10n.customerNewAction),
+              onPressed: () => _addNew(context, name),
+            ),
+          ),
+          SizedBox(height: context.tokens.spaceSm),
           if (name.isNotEmpty)
             Padding(
               padding: EdgeInsetsDirectional.symmetric(
@@ -65,5 +81,22 @@ class CustomerPickerPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Opens the full form; a saved customer is chosen at once.
+  Future<void> _addNew(BuildContext context, String name) async {
+    final cubit = context.read<CustomersListCubit>();
+    final navigator = Navigator.of(context);
+    final id = await navigator.push<String>(
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => newCustomer(name),
+          child: const CustomerFormScreen(popOnCreate: true),
+        ),
+      ),
+    );
+    if (id == null) return;
+    final added = await cubit.byId(id);
+    if (added != null) navigator.pop<CustomerSummary>(added);
   }
 }

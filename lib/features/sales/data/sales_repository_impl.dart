@@ -17,6 +17,7 @@ import '../../../core/utils/quantity.dart';
 import '../../../core/utils/result.dart';
 import '../../customers/data/customer_mappers.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/data/payment_parts_writer.dart';
 import '../domain/sale.dart';
 import '../domain/sale_draft.dart';
 import '../domain/sale_errors.dart';
@@ -33,6 +34,7 @@ final class SalesRepositoryImpl implements SalesRepository {
     this._tx,
     this._ids,
     this._clock,
+    this._parts,
   );
 
   final SalesDao _sales;
@@ -44,10 +46,12 @@ final class SalesRepositoryImpl implements SalesRepository {
   final TransactionRunner _tx;
   final IdGenerator _ids;
   final Clock _clock;
+  final PaymentPartsWriter _parts;
 
   /// Reads first, then W1 number, W2 header, W3 lines, W4 SALE movements,
   /// W5 SALE and W6 PAYMENT_RECEIVED rows for a named customer (research
-  /// R10).
+  /// R10), then W7 payment parts on the invoice (006). Last, it reads which
+  /// of the sale's products now run low (research R12).
   @override
   Future<Result<SaleSaved, SaleSaveError>> create(
     SaleDraft draft, {
@@ -170,8 +174,39 @@ final class SalesRepositoryImpl implements SalesRepository {
         );
       }
     }
-    return Ok(SaleSaved(id: invoiceId, number: number));
+    await _parts.write(
+      SaleParent(invoiceId),
+      draft.split,
+      paidPiasters: draft.paid,
+      at: now,
+    );
+    return Ok(
+      SaleSaved(
+        id: invoiceId,
+        number: number,
+        lowStock: await _lowStock(draft),
+      ),
+    );
   });
+
+  /// The draft's products that run low after its movements, in line order.
+  Future<List<LowStockItem>> _lowStock(SaleDraft draft) async {
+    final ids = [for (final line in draft.lines) line.productId];
+    final low = {
+      for (final r in await _products.lowAmong(ids)) r.product.id: r,
+    };
+    return [
+      for (final id in ids.toSet())
+        if (low[id] case final r?)
+          LowStockItem(
+            productId: id,
+            name: r.product.name,
+            unit: r.product.unitType,
+            stockMilli: r.stockMilli,
+            thresholdMilli: r.product.lowStockThresholdMilli,
+          ),
+    ];
+  }
 
   @override
   Stream<List<SaleSummary>> watchList(SaleQuery query, {int limit = 50}) =>
@@ -196,6 +231,7 @@ final class SalesRepositoryImpl implements SalesRepository {
           subtotalPiasters: i.subtotalPiasters,
           invoiceDiscountPiasters: i.discountPiasters,
           method: CustomerMappers.method(i.paymentMethod),
+          parts: await _parts.partsOf(SaleParent(id)),
           note: i.note,
           voidedAt: i.voidedAt,
           voidReason: i.voidReason,

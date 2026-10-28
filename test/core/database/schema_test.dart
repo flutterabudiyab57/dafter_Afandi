@@ -13,21 +13,21 @@ void main() {
   setUp(() async => t = await TempDatabase.open());
   tearDown(() => t.dispose());
 
-  test('all 17 tables exist, and no others', () async {
+  test('all 18 tables exist, and no others', () async {
     final rows = await t.db.rows(
       "SELECT name FROM sqlite_master WHERE type = 'table' "
       "AND name NOT LIKE 'sqlite_%' ORDER BY name",
     );
     final names = rows.map((r) => r['name']).toSet();
-    expect(kAllTables, hasLength(17));
+    expect(kAllTables, hasLength(18));
     expect(names, kAllTables.toSet());
   });
 
   test('header pragmas', () async {
     expect(await t.db.scalar('PRAGMA application_id'), 0x44414641);
     expect(kAppApplicationId, 0x44414641);
-    expect(await t.db.scalar('PRAGMA user_version'), 1);
-    expect(kSchemaVersion, 1);
+    expect(await t.db.scalar('PRAGMA user_version'), 3);
+    expect(kSchemaVersion, 3);
     expect(t.db.schemaVersion, kSchemaVersion);
   });
 
@@ -69,7 +69,7 @@ void main() {
     final ok = TempDatabase.openAt(file);
     expect(await ok.scalar('SELECT COUNT(*) FROM counters'), 6);
     expect(await ok.scalar('SELECT COUNT(*) FROM app_settings'), 1);
-    expect(await ok.scalar('PRAGMA user_version'), 1);
+    expect(await ok.scalar('PRAGMA user_version'), kSchemaVersion);
     expect(await ok.scalar('PRAGMA application_id'), kAppApplicationId);
     await ok.close();
   });

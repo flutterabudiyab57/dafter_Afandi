@@ -1158,6 +1158,10 @@
   "@customerAddTitle": {
     "description": "Title and button for adding a customer."
   },
+  "customerNewAction": "إضافة عميل جديد",
+  "@customerNewAction": {
+    "description": "Opens the full customer form from the sale's customer picker."
+  },
   "customerAddNamed": "إضافة «{name}»",
   "@customerAddNamed": {
     "description": "Adds a customer with the searched name.",
@@ -1448,6 +1452,10 @@
   "supplierAddTitle": "إضافة مورد",
   "@supplierAddTitle": {
     "description": "Add supplier button and form title."
+  },
+  "supplierNewAction": "إضافة مورد جديد",
+  "@supplierNewAction": {
+    "description": "Opens the full supplier form from the purchase's supplier picker."
   },
   "supplierAddNamed": "إضافة «{name}»",
   "@supplierAddNamed": {
@@ -1844,5 +1852,686 @@
   "loadFailedBody": "لم يتغيّر شيء في بياناتك. حاول مرة أخرى.",
   "@loadFailedBody": {
     "description": "Body when a list could not load."
+  },
+  "dashboardTodayTitle": "اليوم",
+  "@dashboardTodayTitle": {
+    "description": "Home heading above today's numbers (006 US1)."
+  },
+  "dashboardSalesTitle": "مبيعات اليوم",
+  "@dashboardSalesTitle": {
+    "description": "Home card: today's net sales total."
+  },
+  "dashboardSalesCount": "{count, plural, =0{لا توجد مبيعات بعد} =1{عملية بيع واحدة} =2{عمليتا بيع} few{{countText} عمليات بيع} other{{countText} عملية بيع}}",
+  "@dashboardSalesCount": {
+    "description": "How many sales today, under the total. {count} picks the plural form; {countText} is the same number in the active digit style.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "countText": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCollectedTitle": "المحصَّل اليوم",
+  "@dashboardCollectedTitle": {
+    "description": "Home card: money that came in today, with a line per payment method."
+  },
+  "dashboardRunningLowTitle": "منتجات قاربت على النفاد",
+  "@dashboardRunningLowTitle": {
+    "description": "Home card: how many products are at or below their low-stock level or below zero; opens the filtered list."
+  },
+  "dashboardDebtorsTitle": "الأكثر مديونية",
+  "@dashboardDebtorsTitle": {
+    "description": "Home card: the three customers who owe the shop the most."
+  },
+  "dashboardDebtorsNone": "لا يوجد عملاء عليهم مبالغ للمحل.",
+  "@dashboardDebtorsNone": {
+    "description": "Home card text when no customer owes the shop."
+  },
+  "dashboardSeeAll": "عرض الكل",
+  "@dashboardSeeAll": {
+    "description": "Home card action that opens the full list."
+  },
+  "reportPeriodToday": "اليوم",
+  "@reportPeriodToday": {
+    "description": "Report period chip (006 FR-001)."
+  },
+  "reportPeriodYesterday": "أمس",
+  "@reportPeriodYesterday": {
+    "description": "Report period chip."
+  },
+  "reportPeriodThisWeek": "هذا الأسبوع",
+  "@reportPeriodThisWeek": {
+    "description": "Report period chip; the week starts on Saturday."
+  },
+  "reportPeriodThisMonth": "هذا الشهر",
+  "@reportPeriodThisMonth": {
+    "description": "Report period chip."
+  },
+  "reportPeriodLastMonth": "الشهر الماضي",
+  "@reportPeriodLastMonth": {
+    "description": "Report period chip."
+  },
+  "reportPeriodCustom": "فترة أخرى",
+  "@reportPeriodCustom": {
+    "description": "Report period chip that opens a date range picker."
+  },
+  "reportPeriodRange": "من {from} إلى {to}",
+  "@reportPeriodRange": {
+    "description": "The chosen period's first and last days.",
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "reportPeriodEndBeforeStart": "تاريخ النهاية قبل تاريخ البداية.",
+  "@reportPeriodEndBeforeStart": {
+    "description": "Why a custom range is refused."
+  },
+  "reportPeriodInFuture": "لا يمكن اختيار يوم بعد اليوم.",
+  "@reportPeriodInFuture": {
+    "description": "Why a custom range is refused."
+  },
+  "profitTitle": "الربح",
+  "@profitTitle": {
+    "description": "Profit report heading (006 US2)."
+  },
+  "profitNetSales": "صافي المبيعات",
+  "@profitNetSales": {
+    "description": "Profit line: sales not voided minus returns."
+  },
+  "profitCostOfGoods": "تكلفة البضاعة المباعة",
+  "@profitCostOfGoods": {
+    "description": "Profit line: the cost recorded on each sale line."
+  },
+  "profitGross": "مجمل الربح",
+  "@profitGross": {
+    "description": "Profit line: net sales minus cost of goods sold."
+  },
+  "profitInventoryLosses": "خسائر المخزون",
+  "@profitInventoryLosses": {
+    "description": "Profit line: stock adjustments at cost, losses net of count gains."
+  },
+  "profitInventoryNetGain": "صافي مكسب المخزون",
+  "@profitInventoryNetGain": {
+    "description": "Shown instead of inventory losses when count gains are larger."
+  },
+  "profitExpenses": "المصروفات",
+  "@profitExpenses": {
+    "description": "Profit line: expenses not voided in the period."
+  },
+  "profitNet": "صافي الربح",
+  "@profitNet": {
+    "description": "Profit line: gross profit minus inventory losses minus expenses."
+  },
+  "profitNetLoss": "صافي الخسارة",
+  "@profitNetLoss": {
+    "description": "Shown instead of net profit when it is negative."
+  },
+  "profitEmpty": "لا توجد عمليات في هذه الفترة.",
+  "@profitEmpty": {
+    "description": "Profit report text when nothing happened in the period."
+  },
+  "profitNoCostNote": "بيعت بعض المنتجات دون تكلفة مسجلة، فقد يبدو الربح أعلى من حقيقته.",
+  "@profitNoCostNote": {
+    "description": "Note when some sale lines had no cost when sold."
+  },
+  "expensesTitle": "المصروفات",
+  "@expensesTitle": {
+    "description": "Expenses list title and the Reports link."
+  },
+  "expenseNewAction": "تسجيل مصروف",
+  "@expenseNewAction": {
+    "description": "Button that opens the new expense form."
+  },
+  "expenseNewTitle": "مصروف جديد",
+  "@expenseNewTitle": {
+    "description": "New expense form title."
+  },
+  "expenseTitle": "المصروف {number}",
+  "@expenseTitle": {
+    "description": "Expense details title.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseCategoryLabel": "البند",
+  "@expenseCategoryLabel": {
+    "description": "Expense form: the category."
+  },
+  "expenseDateLabel": "التاريخ",
+  "@expenseDateLabel": {
+    "description": "Expense form and details: the day it was spent."
+  },
+  "expenseCategoryRent": "إيجار",
+  "@expenseCategoryRent": {
+    "description": "Default expense category."
+  },
+  "expenseCategoryElectricity": "كهرباء",
+  "@expenseCategoryElectricity": {
+    "description": "Default expense category."
+  },
+  "expenseCategorySalaries": "رواتب",
+  "@expenseCategorySalaries": {
+    "description": "Default expense category."
+  },
+  "expenseCategoryOther": "أخرى",
+  "@expenseCategoryOther": {
+    "description": "Default expense category."
+  },
+  "expensesAllCategories": "كل البنود",
+  "@expensesAllCategories": {
+    "description": "Expenses list filter: no category filter."
+  },
+  "customersTotalOwing": "إجمالي المستحق على العملاء: {amount}",
+  "@customersTotalOwing": {
+    "description": "Above the customer list: what all customers, active or archived, owe the shop.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "suppliersTotalOwed": "إجمالي المستحق للموردين: {amount}",
+  "@suppliersTotalOwed": {
+    "description": "Above the supplier list: what the shop owes all suppliers, active or archived.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockSummaryTitle": "ملخص المخزون",
+  "@stockSummaryTitle": {
+    "description": "Stock summary screen title."
+  },
+  "stockValueAtCost": "قيمة المخزون بسعر الشراء: {amount}",
+  "@stockValueAtCost": {
+    "description": "The stock of active products at their average purchase cost.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockValueAtSale": "وبسعر البيع: {amount}",
+  "@stockValueAtSale": {
+    "description": "The same stock at the sale prices.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockWithoutCost": "{count} من الأصناف المتوفرة بلا سعر شراء، فلم تُحسب في القيمة بسعر الشراء.",
+  "@stockWithoutCost": {
+    "description": "Note under the stock value.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "stockByCategory": "حسب التصنيف",
+  "@stockByCategory": {
+    "description": "Stock summary section header."
+  },
+  "stockProductCount": "الأصناف: {count}",
+  "@stockProductCount": {
+    "description": "How many active products a category has.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "stockGroupValue": "القيمة: {amount}",
+  "@stockGroupValue": {
+    "description": "A category's stock at cost.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "stockNone": "لا يوجد مخزون",
+  "@stockNone": {
+    "description": "A category whose products have no stock."
+  },
+  "stockSummaryEmpty": "لا توجد أصناف بعد.",
+  "@stockSummaryEmpty": {
+    "description": "Stock summary with no active products."
+  },
+  "customerArchiveConfirmPurge": "أرشفة العميل؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد {days} أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.",
+  "@customerArchiveConfirmPurge": {
+    "description": "Archive confirmation for a customer with no history (constitution 1.2.0).",
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierArchiveConfirmPurge": "أرشفة المورد؟ ليس له أي حركة، لذلك سيُحذف نهائيًا بعد {days} أيام في الأرشيف إلا إذا استعدته قبلها. لا يمكن التراجع عن الحذف.",
+  "@supplierArchiveConfirmPurge": {
+    "description": "Archive confirmation for a supplier with no history (constitution 1.2.0).",
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "partyPurgeOn": "يُحذف نهائيًا في {date}",
+  "@partyPurgeOn": {
+    "description": "Under an archived customer or supplier with no history.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "expensesTotal": "إجمالي غير الملغى: {amount}",
+  "@expensesTotal": {
+    "description": "Expenses list total for the filters.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "expensesEmptyTitle": "لا توجد مصروفات في هذه الفترة",
+  "@expensesEmptyTitle": {
+    "description": "Expenses list empty state title."
+  },
+  "expensesEmptyBody": "سجّل الإيجار والكهرباء والرواتب وغيرها ليظهر صافي الربح صحيحًا.",
+  "@expensesEmptyBody": {
+    "description": "Expenses list empty state text."
+  },
+  "expenseSaved": "تم حفظ المصروف {number}.",
+  "@expenseSaved": {
+    "description": "Shown after saving an expense.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseVoidAction": "إلغاء المصروف",
+  "@expenseVoidAction": {
+    "description": "Expense details: void button."
+  },
+  "expenseVoidTitle": "إلغاء هذا المصروف؟",
+  "@expenseVoidTitle": {
+    "description": "Void dialog title."
+  },
+  "expenseVoidBody": "يبقى في القائمة مُعلَّمًا بأنه ملغى، ولا يُحسب في الإجماليات ولا في الربح. لا يمكن التراجع عن ذلك.",
+  "@expenseVoidBody": {
+    "description": "Void dialog text."
+  },
+  "expenseVoided": "تم إلغاء المصروف.",
+  "@expenseVoided": {
+    "description": "Shown after voiding an expense."
+  },
+  "expenseAlreadyVoided": "هذا المصروف ملغى بالفعل.",
+  "@expenseAlreadyVoided": {
+    "description": "Refusal: voided twice."
+  },
+  "expenseNotFound": "هذا المصروف غير موجود.",
+  "@expenseNotFound": {
+    "description": "Expense details for a missing id."
+  },
+  "errorExpenseCategoryRequired": "اختر البند.",
+  "@errorExpenseCategoryRequired": {
+    "description": "Expense form error."
+  },
+  "errorExpenseCategoryArchived": "أُرشف هذا البند. اختر بندًا آخر.",
+  "@errorExpenseCategoryArchived": {
+    "description": "Expense form error."
+  },
+  "errorExpenseCategoryUnavailable": "هذا البند لم يعد موجودًا. اختر بندًا آخر.",
+  "@errorExpenseCategoryUnavailable": {
+    "description": "Expense save refusal."
+  },
+  "errorExpenseAmountInvalid": "اكتب مبلغًا أكبر من صفر بخانتين عشريتين على الأكثر.",
+  "@errorExpenseAmountInvalid": {
+    "description": "Expense form error."
+  },
+  "errorExpenseDateInFuture": "لا يمكن أن يكون التاريخ بعد اليوم.",
+  "@errorExpenseDateInFuture": {
+    "description": "Expense form error."
+  },
+  "errorPaymentDetails": "راجع بيانات الدفع.",
+  "@errorPaymentDetails": {
+    "description": "Expense form error when how it was paid is invalid."
+  },
+  "expenseCategoriesTitle": "بنود المصروفات",
+  "@expenseCategoriesTitle": {
+    "description": "Expense categories screen title and link."
+  },
+  "expenseCategoryArchiveConfirm": "أرشفة هذا البند؟ تظل المصروفات السابقة تعرض اسمه.",
+  "@expenseCategoryArchiveConfirm": {
+    "description": "Archive category confirmation."
+  },
+  "expenseCategoryArchive": "أرشفة البند",
+  "@expenseCategoryArchive": {
+    "description": "Expense category archive button."
+  },
+  "expenseCategoryRestore": "استعادة",
+  "@expenseCategoryRestore": {
+    "description": "Restore an archived expense category."
+  },
+  "expenseCategoriesArchived": "البنود المؤرشفة",
+  "@expenseCategoriesArchived": {
+    "description": "Expense categories: archived section title."
+  },
+  "expenseCategoriesEmpty": "لا توجد بنود نشطة. أضف بندًا من الأعلى.",
+  "@expenseCategoriesEmpty": {
+    "description": "Expense categories empty text."
+  },
+  "errorExpenseCategoryNameRequired": "اكتب اسم البند.",
+  "@errorExpenseCategoryNameRequired": {
+    "description": "Expense category error."
+  },
+  "errorExpenseCategoryNameTooLong": "اسم البند لا يزيد على {max} حرفًا.",
+  "@errorExpenseCategoryNameTooLong": {
+    "description": "Expense category error.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorExpenseCategoryNameTaken": "يوجد بند نشط بنفس الاسم: {name}.",
+  "@errorExpenseCategoryNameTaken": {
+    "description": "Expense category error.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "errorExpenseCategoryNotFound": "هذا البند لم يعد موجودًا.",
+  "@errorExpenseCategoryNotFound": {
+    "description": "Expense category error."
+  },
+  "saleLowStockOne": "مخزون {name} قليل (المتبقي {qty}).",
+  "@saleLowStockOne": {
+    "description": "After a sale is saved: one product on it is running low. {qty} is the quantity left with its unit.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLowStockItem": "{name} (المتبقي {qty})",
+  "@saleLowStockItem": {
+    "description": "One running-low product inside saleLowStockTwo and saleLowStockTwoMore. {qty} is the quantity left with its unit.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLowStockTwo": "المخزون قليل: {first}، {second}.",
+  "@saleLowStockTwo": {
+    "description": "After a sale is saved: two products on it are running low. {first} and {second} are saleLowStockItem texts.",
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLowStockTwoMore": "{count, plural, =1{المخزون قليل: {first}، {second}، ومنتج آخر.} =2{المخزون قليل: {first}، {second}، ومنتجان آخران.} few{المخزون قليل: {first}، {second}، و{countText} منتجات أخرى.} other{المخزون قليل: {first}، {second}، و{countText} منتجًا آخر.}}",
+  "@saleLowStockTwoMore": {
+    "description": "After a sale is saved: more than two products on it are running low. {first} and {second} are saleLowStockItem texts; {count} is how many more and picks the plural form; {countText} is the same number in the active digit style.",
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "countText": {
+        "type": "String"
+      }
+    }
+  },
+  "saleLowStockShow": "عرض",
+  "@saleLowStockShow": {
+    "description": "Snack bar action after a sale that opens the running-low product list."
+  },
+  "reportCollectedTitle": "المبالغ المحصَّلة",
+  "@reportCollectedTitle": {
+    "description": "Reports: title of the money-collected view and its link."
+  },
+  "reportCollectedTotal": "الإجمالي: {amount}",
+  "@reportCollectedTotal": {
+    "description": "Money collected: the grand total. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reportCollectedEmpty": "لم تُحصَّل أي مبالغ في هذه الفترة.",
+  "@reportCollectedEmpty": {
+    "description": "Money collected: nothing in the period."
+  },
+  "reportTopSellersTitle": "الأكثر مبيعًا",
+  "@reportTopSellersTitle": {
+    "description": "Reports: title of the top-sellers view and its link."
+  },
+  "reportTopByValue": "حسب قيمة المبيعات",
+  "@reportTopByValue": {
+    "description": "Top sellers: order by net sales value."
+  },
+  "reportTopByQuantity": "حسب الكمية",
+  "@reportTopByQuantity": {
+    "description": "Top sellers: order by quantity sold."
+  },
+  "reportTopEmpty": "لم يُبَع أي منتج في هذه الفترة.",
+  "@reportTopEmpty": {
+    "description": "Top sellers: nothing sold in the period."
+  },
+  "reportTopSold": "المباع: {qty}",
+  "@reportTopSold": {
+    "description": "Top sellers row: quantity sold, net of returns, with its unit.",
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "reportBalancesTitle": "الأرصدة",
+  "@reportBalancesTitle": {
+    "description": "Reports: title of the balances view and its link."
+  },
+  "reportBalancesCustomersTab": "على العملاء",
+  "@reportBalancesCustomersTab": {
+    "description": "Balances tab: customers who owe the shop."
+  },
+  "reportBalancesSuppliersTab": "للموردين",
+  "@reportBalancesSuppliersTab": {
+    "description": "Balances tab: suppliers the shop owes."
+  },
+  "reportBalancesCustomersTotal": "إجمالي المستحق للمحل: {amount}",
+  "@reportBalancesCustomersTotal": {
+    "description": "Balances: total that customers owe. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reportBalancesSuppliersTotal": "إجمالي المستحق على المحل: {amount}",
+  "@reportBalancesSuppliersTotal": {
+    "description": "Balances: total the shop owes suppliers. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reportBalancesCustomersNone": "لا يوجد عميل عليه مبالغ للمحل.",
+  "@reportBalancesCustomersNone": {
+    "description": "Balances: no customer owes."
+  },
+  "reportBalancesSuppliersNone": "لا توجد مبالغ مستحقة على المحل لأي مورد.",
+  "@reportBalancesSuppliersNone": {
+    "description": "Balances: the shop owes no supplier."
+  },
+  "paymentSplitAction": "تقسيم الدفع",
+  "@paymentSplitAction": {
+    "description": "Payment field: adds another part paid by another method."
+  },
+  "paymentPartTitle": "الجزء {n}",
+  "@paymentPartTitle": {
+    "description": "Payment field: heading of one part of a split payment. {n} is 1, 2 or 3 in the digit style.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartRemove": "حذف الجزء {n}",
+  "@paymentPartRemove": {
+    "description": "Payment field: spoken label of the button that removes a part; its amount goes back to part 1.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartAmountLabel": "مبلغ الجزء",
+  "@paymentPartAmountLabel": {
+    "description": "Payment field: the amount of one part."
+  },
+  "paymentAccountLabel": "رقم حسابك (اختياري)",
+  "@paymentAccountLabel": {
+    "description": "Payment field, wallet or InstaPay: the owner's own wallet number or InstaPay address the money arrived in or left from."
+  },
+  "paymentAccountHint": "مثل رقم محفظتك أو عنوان إنستاباي",
+  "@paymentAccountHint": {
+    "description": "Helper under the account number field."
+  },
+  "paymentAccountSuggestions": "حسابات استخدمتها من قبل",
+  "@paymentAccountSuggestions": {
+    "description": "Payment field: label above the chips of account numbers used before."
+  },
+  "paymentRemaining": "المتبقي توزيعه: {amount}",
+  "@paymentRemaining": {
+    "description": "Payment field, split: how much of the amount is not in any part yet. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentOverBy": "الأجزاء أكثر من المبلغ بـ {amount}",
+  "@paymentOverBy": {
+    "description": "Payment field, split: the parts add up to more than the amount. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentSplitBalanced": "الأجزاء مساوية للمبلغ.",
+  "@paymentSplitBalanced": {
+    "description": "Payment field, split: the parts add up exactly."
+  },
+  "errorPartAmountInvalid": "أدخل مبلغًا صحيحًا بحد أقصى منزلتين عشريتين.",
+  "@errorPartAmountInvalid": {
+    "description": "Payment part error."
+  },
+  "errorPartAmountZero": "يجب أن يكون الجزء أكبر من صفر.",
+  "@errorPartAmountZero": {
+    "description": "Payment part error."
+  },
+  "errorPaymentMethodRepeated": "كل طريقة دفع تُستخدم مرة واحدة فقط.",
+  "@errorPaymentMethodRepeated": {
+    "description": "Payment part error: the same method is on two parts."
+  },
+  "errorAccountInvalid": "استخدم الأرقام والحروف اللاتينية و@ . _ - فقط.",
+  "@errorAccountInvalid": {
+    "description": "Account number error."
+  },
+  "errorAccountTooLong": "رقم الحساب {max} حرفًا على الأكثر.",
+  "@errorAccountTooLong": {
+    "description": "Account number error. {max} is 40 in the digit style.",
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "errorAccountNotAllowed": "الدفع النقدي ليس له رقم حساب.",
+  "@errorAccountNotAllowed": {
+    "description": "Account number error on a cash part."
+  },
+  "errorTooManyParts": "يمكن تقسيم الدفع إلى ثلاثة أجزاء على الأكثر.",
+  "@errorTooManyParts": {
+    "description": "Payment error."
+  },
+  "errorPartsOver": "مجموع الأجزاء أكثر من المبلغ المدفوع بـ {amount}. اجعلها مساوية له.",
+  "@errorPartsOver": {
+    "description": "Payment error: the parts add up to more. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "errorPartsShort": "مجموع الأجزاء أقل من المبلغ المدفوع بـ {amount}. اجعلها مساوية له.",
+  "@errorPartsShort": {
+    "description": "Payment error: the parts add up to less. {amount} is money.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartLine": "{method}: {amount}",
+  "@paymentPartLine": {
+    "description": "One part of a payment on a details screen or statement. {method} is the method name; {amount} is money.",
+    "placeholders": {
+      "method": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartAccount": "حسابك: {account}",
+  "@paymentPartAccount": {
+    "description": "Under a payment part: the owner's account number. {account} is kept left-to-right.",
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPartsTitle": "طريقة الدفع",
+  "@paymentPartsTitle": {
+    "description": "Details screens: heading of the payment parts."
   }
 }

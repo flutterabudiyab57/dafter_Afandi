@@ -58,6 +58,40 @@ void main() {
     expect(names(await list(const CustomerQuery(owesOnly: true))), 'محمد,أحمد');
   });
 
+  test('the total owing adds balances above 0, archived ones too', () async {
+    final a = await env.addCustomer('أحمد', opening: '10');
+    await env.addCustomer('محمد', opening: '90');
+    await env.addCustomer('علي', opening: '5', inFavour: true);
+    expect(await env.customers.watchTotalOwing().first, 10000);
+    await env.customers.receivePayment(a, pay('4'));
+    expect(await env.customers.watchTotalOwing().first, 9600);
+    await env.customers.archive(a);
+    expect(await env.customers.watchTotalOwing().first, 9600);
+  });
+
+  test(
+    'purge: only archived customers with no history, after 7 days',
+    () async {
+      final bare = await env.addCustomer('بلا حركة');
+      final owed = await env.addCustomer('عليه رصيد', opening: '10');
+      final active = await env.addCustomer('نشط');
+      await env.customers.archive(bare);
+      await env.customers.archive(owed);
+      final archived = await env.customers.watchArchived().first;
+      final bareRow = archived.firstWhere((s) => s.customer.id == bare);
+      expect(bareRow.hasHistory, isFalse);
+      expect(bareRow.purgeAt, isNotNull);
+      expect(archived.firstWhere((s) => s.customer.id == owed).purgeAt, isNull);
+
+      expect(await env.customers.purgeArchived(), 0);
+      env.products.clock.advance(const Duration(days: 7));
+      expect(await env.customers.purgeArchived(), 1);
+      expect(await env.customers.watchOne(bare).first, isNull);
+      expect(await env.customers.watchOne(owed).first, isNotNull);
+      expect(await env.customers.watchOne(active).first, isNotNull);
+    },
+  );
+
   test('a same name saves with a notice; edit keeps the balance', () async {
     await env.addCustomer('أحمد');
     final r = await env.customers.create(

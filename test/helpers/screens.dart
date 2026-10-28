@@ -5,15 +5,21 @@ import 'package:daftar_afandi/core/widgets/starting_app.dart';
 import 'package:daftar_afandi/core/widgets/startup_error_app.dart';
 import 'package:daftar_afandi/core/widgets/update_required_app.dart';
 import 'package:daftar_afandi/features/customers/domain/payment.dart';
+import 'package:daftar_afandi/features/expenses/domain/expense.dart';
+import 'package:daftar_afandi/features/payments/domain/payment_split.dart';
 import 'package:daftar_afandi/features/products/domain/stock_entry.dart';
 import 'package:daftar_afandi/features/purchases/domain/purchase_draft.dart';
+import 'package:daftar_afandi/features/reports/domain/report_types.dart';
 import 'package:daftar_afandi/features/sales/domain/sale_draft.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'fake_expenses.dart';
+import 'fake_payments.dart';
 import 'fake_products.dart';
 import 'fake_purchases.dart';
+import 'fake_reports.dart';
 import 'fake_sales.dart';
 import 'pump_app.dart';
 
@@ -50,6 +56,7 @@ Future<void> visitEveryScreen(
   required AppLocale locale,
   required Future<void> Function(String screen) check,
   Size size = const Size(420, 812),
+  double devicePixelRatio = 1,
   double textScale = 1,
   Brightness brightness = Brightness.light,
 }) async {
@@ -114,6 +121,17 @@ Future<void> visitEveryScreen(
   );
   final voided = sales.seedSale(teaSale());
   await sales.sales.voidSale(voided, 'خطأ في الكمية');
+  // Paid in two parts, the wallet one with the owner's number (US6).
+  final splitSale = sales.seedSale(
+    teaSale().withPayment(const [
+      PaymentPartInput(method: PaymentMethod.cash, amountText: '4'),
+      PaymentPartInput(
+        method: PaymentMethod.wallet,
+        amountText: '6',
+        accountText: '01012345678',
+      ),
+    ]),
+  );
   await sales.customers.receivePayment(
     ahmad,
     const PaymentRequest(amountPiasters: 1000, method: PaymentMethod.wallet),
@@ -148,6 +166,74 @@ Future<void> visitEveryScreen(
     const PaymentRequest(amountPiasters: 5000, method: PaymentMethod.instapay),
   );
 
+  // Expenses: a wallet one, a voided one and an archived category.
+  final spending = FakeExpensesStore();
+  final rent = spending.addCategory('إيجار');
+  spending.addCategory('قديم', archived: true);
+  Expense expense(int number, {DateTime? voidedAt}) => spending.addExpense(
+    Expense(
+      id: 'e$number',
+      number: number,
+      category: ExpenseCategory(id: rent, name: 'إيجار'),
+      amountPiasters: 150000,
+      parts: [
+        PaymentSplit.single(
+          PaymentMethod.wallet,
+          150000,
+          accountRef: '01001234567',
+        ).first,
+      ],
+      spentOn: DateTime(2026, 10, 25),
+      createdAt: DateTime.utc(2026, 10, 25, 9),
+      note: 'إيجار أكتوبر',
+      voidedAt: voidedAt,
+      voidReason: voidedAt == null ? null : 'مكرر',
+    ),
+  );
+  final paidRent = expense(1);
+  final voidedRent = expense(2, voidedAt: DateTime.utc(2026, 10, 25, 10));
+
+  // Report views: every method, long names, both balance lists.
+  final reports = FakeReportsStore()
+    ..collected = const CollectedSummary({
+      PaymentMethod.cash: 1234500,
+      PaymentMethod.wallet: 20000,
+      PaymentMethod.instapay: 5000,
+    })
+    ..topSellers = {
+      for (final order in TopSellerOrder.values)
+        order: [
+          TopSeller(
+            productId: tea,
+            name: 'شاي العروسة ٢٥٠ جرام',
+            unit: UnitType.piece,
+            qtyMilli: 120000,
+            netSalesPiasters: 1500000,
+          ),
+          TopSeller(
+            productId: sugar,
+            name: 'سكر',
+            unit: UnitType.kg,
+            qtyMilli: 12750,
+            netSalesPiasters: 38250,
+          ),
+        ],
+    }
+    ..customersOwing = [
+      BalanceRow(
+        partyId: ahmad,
+        name: 'أحمد محمود عبد الرحمن',
+        balancePiasters: 250000,
+      ),
+    ]
+    ..suppliersOwed = [
+      BalanceRow(
+        partyId: nour,
+        name: 'شركة النور للتوريدات',
+        balancePiasters: 30000,
+      ),
+    ];
+
   Future<void> pump(bool onboarded) async => pumpApp(
     tester,
     await repo(onboarded),
@@ -156,7 +242,16 @@ Future<void> visitEveryScreen(
     sales: FakeSalesCubits(sales),
     suppliers: FakeSuppliersCubits(buying),
     purchases: FakePurchasesCubits(buying),
+    expenses: FakeExpensesCubits(spending),
+    reports: FakeReportsCubits(reports),
+    payments: FakePaymentsCubits(
+      FakeAccountSuggestions({
+        PaymentMethod.wallet: ['01012345678', '01198765432'],
+        PaymentMethod.instapay: ['shop@instapay'],
+      }),
+    ),
     size: size,
+    devicePixelRatio: devicePixelRatio,
     textScale: textScale,
     brightness: brightness,
   );
@@ -172,6 +267,7 @@ Future<void> visitEveryScreen(
     RoutePaths.productsLow,
     RoutePaths.productNew,
     RoutePaths.productsArchived,
+    RoutePaths.productsStock,
     RoutePaths.categories,
     RoutePaths.productDetails(tea),
     RoutePaths.productEdit(tea),
@@ -180,6 +276,7 @@ Future<void> visitEveryScreen(
     RoutePaths.salesNew,
     RoutePaths.saleInvoice(partPaid),
     RoutePaths.saleInvoice(voided),
+    RoutePaths.saleInvoice(splitSale),
     RoutePaths.customerNew,
     RoutePaths.customersArchived,
     RoutePaths.customerDetails(ahmad),
@@ -194,7 +291,18 @@ Future<void> visitEveryScreen(
     RoutePaths.purchase(onCredit),
     RoutePaths.purchase(voidedPurchase),
     RoutePaths.supplierPayment(nour),
+    RoutePaths.reportCollected,
+    RoutePaths.reportTopSellers,
+    RoutePaths.reportBalances,
+    RoutePaths.expenses,
+    RoutePaths.expenseNew,
+    RoutePaths.expenseCategories,
+    RoutePaths.expense(paidRent.id),
+    RoutePaths.expense(voidedRent.id),
   ]) {
+    // The list page is already open, so a new query alone would keep its
+    // cubit; start it again from Home.
+    if (path == RoutePaths.productsLow) await goTo(tester, RoutePaths.home);
     await goTo(tester, path);
     await check(path);
   }
@@ -206,6 +314,7 @@ Future<void> visitEveryScreen(
   }
 
   // Overpaying asks to confirm the credit, still on the payment page.
+  await goTo(tester, RoutePaths.customerPayment(ahmad));
   await tester.enterText(
     find.widgetWithText(TextField, l10n.paymentAmountLabel),
     '1000',
@@ -213,6 +322,11 @@ Future<void> visitEveryScreen(
   await tap(find.widgetWithText(FilledButton, l10n.saveAction));
   await check('payment credit dialog');
   await tap(find.text(l10n.backAction));
+
+  // A payment split across methods, with the account suggestions (US6).
+  await tap(find.text(l10n.paymentSplitAction));
+  await tap(find.text(l10n.paymentSplitAction));
+  await check('payment split');
 
   // The archive confirmation and the cancel-payment reason.
   await goTo(tester, RoutePaths.customerDetails(ahmad));
@@ -227,6 +341,12 @@ Future<void> visitEveryScreen(
   await goTo(tester, RoutePaths.saleInvoice(partPaid));
   await tap(find.text(l10n.invoiceVoidAction));
   await check('void dialog');
+  await tap(find.text(l10n.backAction));
+
+  // The expense void reason.
+  await goTo(tester, RoutePaths.expense(paidRent.id));
+  await tap(find.text(l10n.expenseVoidAction));
+  await check('expense void dialog');
   await tap(find.text(l10n.backAction));
 
   // The new sale's pickers, shortage warning and discard question.

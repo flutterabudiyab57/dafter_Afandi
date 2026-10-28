@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:daftar_afandi/app.dart';
 import 'package:daftar_afandi/features/customers/presentation/customers_cubits.dart';
+import 'package:daftar_afandi/features/expenses/presentation/expenses_cubits.dart';
+import 'package:daftar_afandi/features/payments/presentation/payments_cubits.dart';
 import 'package:daftar_afandi/features/products/presentation/products_cubits.dart';
 import 'package:daftar_afandi/features/purchases/presentation/purchases_cubits.dart';
+import 'package:daftar_afandi/features/reports/presentation/cubits/reports_cubits.dart';
 import 'package:daftar_afandi/features/sales/presentation/sales_cubits.dart';
 import 'package:daftar_afandi/features/settings/domain/app_locale.dart';
 import 'package:daftar_afandi/features/settings/domain/app_settings.dart';
@@ -17,8 +20,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'fake_expenses.dart';
+import 'fake_payments.dart';
 import 'fake_products.dart';
 import 'fake_purchases.dart';
+import 'fake_reports.dart';
 import 'fake_sales.dart';
 
 const AppVersion kTestVersion = AppVersion(name: '1.0.0', build: '1');
@@ -108,6 +114,7 @@ Future<void> pumpApp(
   WidgetTester tester,
   SettingsRepository repository, {
   Size size = const Size(420, 812),
+  double devicePixelRatio = 1,
   double textScale = 1,
   Brightness brightness = Brightness.light,
   ProductsCubits? products,
@@ -115,10 +122,13 @@ Future<void> pumpApp(
   SalesCubits? sales,
   SuppliersCubits? suppliers,
   PurchasesCubits? purchases,
+  ReportsCubits? reports,
+  ExpensesCubits? expenses,
+  PaymentsCubits? payments,
 }) async {
   tester.view
-    ..devicePixelRatio = 1
-    ..physicalSize = size;
+    ..devicePixelRatio = devicePixelRatio
+    ..physicalSize = size * devicePixelRatio;
   tester.platformDispatcher
     ..textScaleFactorTestValue = textScale
     ..platformBrightnessTestValue = brightness;
@@ -142,6 +152,9 @@ Future<void> pumpApp(
       sales: sales ?? FakeSalesCubits(),
       suppliers: suppliers ?? FakeSuppliersCubits(),
       purchases: purchases ?? FakePurchasesCubits(),
+      reports: reports ?? FakeReportsCubits(),
+      expenses: expenses ?? FakeExpensesCubits(),
+      payments: payments ?? FakePaymentsCubits(),
     ),
   );
   await tester.pumpAndSettle();

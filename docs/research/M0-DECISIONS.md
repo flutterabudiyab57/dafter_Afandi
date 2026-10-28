@@ -36,4 +36,6 @@ Q22 Numbers run forever. Display prefixes per type in the UI only (S-, R-, P-, E
 Q23 Add paymentMethod TEXT NOT NULL DEFAULT 'cash' CHECK IN ('cash','wallet','instapay','card')
     to sales_invoices, purchase_invoices, sale_returns, and the payment ledger rows. MVP UI shows cash
     + wallet + instapay. No external integration.
+    Amended 2026-10-26 (constitution 1.1.0): payments can be split into up to three parts in
+    payment_parts, with the owner's optional account number; expenses record their method there.
 Q24 Yes: product name snapshot on sale and purchase lines.

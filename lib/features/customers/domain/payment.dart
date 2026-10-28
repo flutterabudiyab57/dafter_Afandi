@@ -2,19 +2,12 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/utils/result.dart';
 import '../../../core/utils/text_length.dart';
+import '../../payments/domain/payment_method.dart';
+import '../../payments/domain/payment_split.dart';
 import 'customer_draft.dart';
 import 'customer_errors.dart';
 
-/// How money was paid (decision Q23). `card` exists in storage but is not
-/// offered in the user interface.
-enum PaymentMethod { cash, wallet, instapay, card }
-
-/// The methods the user can pick.
-const List<PaymentMethod> offeredPaymentMethods = [
-  PaymentMethod.cash,
-  PaymentMethod.wallet,
-  PaymentMethod.instapay,
-];
+export '../../payments/domain/payment_method.dart';
 
 /// A validated payment from a customer (FR-016).
 final class PaymentRequest extends Equatable {
@@ -22,11 +15,28 @@ final class PaymentRequest extends Equatable {
     required this.amountPiasters,
     required this.method,
     this.note,
+    this._split,
   });
 
   /// Above 0.
   final int amountPiasters;
   final PaymentMethod method;
+
+  final PaymentSplit? _split;
+
+  /// How it was paid; one part in [method] unless a split was given.
+  PaymentSplit get split =>
+      _split ?? PaymentSplit.single(method, amountPiasters);
+
+  /// The same payment made in [split]'s parts; part 1's method is kept as
+  /// the ledger row's method.
+  PaymentRequest withSplit(PaymentSplit split) => PaymentRequest(
+    amountPiasters: amountPiasters,
+    method: split.first.method,
+    note: note,
+    split: split,
+  );
+
   final String? note;
 
   static Result<PaymentRequest, List<CustomerFieldError>> create({
@@ -63,7 +73,7 @@ final class PaymentRequest extends Equatable {
   }
 
   @override
-  List<Object?> get props => [amountPiasters, method, note];
+  List<Object?> get props => [amountPiasters, method, note, split];
 }
 
 /// A void or cancel reason: trimmed, 1–200 code points (FR-008a, FR-016a).

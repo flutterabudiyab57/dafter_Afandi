@@ -13,8 +13,11 @@ import '../../../core/utils/result.dart';
 import '../../customers/data/customer_mappers.dart';
 import '../../customers/data/customer_repository_impl.dart'
     show CustomerRepositoryImpl;
+import '../../customers/domain/customer.dart' show kArchivePurgeAfter;
 import '../../customers/domain/ledger_entry.dart';
 import '../../customers/domain/payment.dart';
+import '../../payments/data/payment_parts_writer.dart';
+import '../../payments/domain/payment_split.dart';
 import '../domain/supplier.dart';
 import '../domain/supplier_draft.dart';
 import '../domain/supplier_entry.dart';
@@ -30,6 +33,7 @@ final class SupplierRepositoryImpl implements SupplierRepository {
     this._tx,
     this._ids,
     this._clock,
+    this._parts,
   );
 
   final SuppliersDao _suppliers;
@@ -38,6 +42,7 @@ final class SupplierRepositoryImpl implements SupplierRepository {
   final TransactionRunner _tx;
   final IdGenerator _ids;
   final Clock _clock;
+  final PaymentPartsWriter _parts;
 
   @override
   Stream<List<SupplierSummary>> watchActive(SupplierQuery query) => _suppliers
@@ -52,6 +57,9 @@ final class SupplierRepositoryImpl implements SupplierRepository {
   Stream<SupplierSummary?> watchOne(String id) => _suppliers
       .watchOne(id)
       .map((row) => row == null ? null : SupplierMappers.summary(row));
+
+  @override
+  Stream<int> watchTotalOwed() => _suppliers.watchTotalOwed();
 
   @override
   Stream<List<SupplierSummary>> watchArchived() => _suppliers
@@ -142,6 +150,10 @@ final class SupplierRepositoryImpl implements SupplierRepository {
       _tx.run(() => _suppliers.setArchivedAt(id, null, _clock.nowUtc()));
 
   @override
+  Future<int> purgeArchived() =>
+      _suppliers.purgeArchived(_clock.nowUtc().subtract(kArchivePurgeAfter));
+
+  @override
   Future<List<SupplierEntry>> statement(
     String supplierId, {
     LedgerCursor? before,
@@ -153,14 +165,28 @@ final class SupplierRepositoryImpl implements SupplierRepository {
       beforeRowOrder: before?.rowOrder,
       limit: limit,
     );
-    return rows.map(SupplierMappers.entry).toList();
+    return [
+      for (final s in rows)
+        SupplierMappers.entry(s, parts: await _partsOfEntry(s.row)),
+    ];
+  }
+
+  /// A payment row's parts: the purchase's when paid at purchase time, else
+  /// the payment's own (FR-039). Other rows have none.
+  Future<List<PaymentPart>> _partsOfEntry(SupplierLedgerRow r) async {
+    if (r.entryType != db.SupplierEntryType.PAYMENT_MADE) return const [];
+    final purchase = r.purchaseInvoiceId;
+    return _parts.partsOf(
+      purchase != null ? PurchaseParent(purchase) : SupplierPaymentParent(r.id),
+    );
   }
 
   @override
   Stream<void> watchStatementChanges(String supplierId) =>
       _ledger.watchCountOf(supplierId).distinct();
 
-  /// R1 supplier active; P1 SUPPLIER_PAYMENT number; P2 PAYMENT_MADE.
+  /// R1 supplier active; P1 SUPPLIER_PAYMENT number; P2 PAYMENT_MADE; P3
+  /// its payment parts (006).
   @override
   Future<Result<int, SupplierPaymentError>> pay(
     String supplierId,
@@ -173,9 +199,10 @@ final class SupplierRepositoryImpl implements SupplierRepository {
     }
     final now = _clock.nowUtc();
     final number = await _counters.take(db.DocType.SUPPLIER_PAYMENT, now);
+    final entryId = _ids.newId();
     await _ledger.insertEntry(
       SupplierLedgerCompanion.insert(
-        id: _ids.newId(),
+        id: entryId,
         supplierId: supplierId,
         entryType: db.SupplierEntryType.PAYMENT_MADE,
         amountPiasters: -request.amountPiasters,
@@ -184,6 +211,12 @@ final class SupplierRepositoryImpl implements SupplierRepository {
         note: Value(request.note),
         createdAt: now,
       ),
+    );
+    await _parts.write(
+      SupplierPaymentParent(entryId),
+      request.split,
+      paidPiasters: request.amountPiasters,
+      at: now,
     );
     return Ok(number);
   });

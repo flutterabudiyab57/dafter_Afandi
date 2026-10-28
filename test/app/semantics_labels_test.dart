@@ -51,7 +51,9 @@ void main() {
           }
         },
       );
-      expect(screens, 64); // 005 adds the starting app and 4 states.
+      // 006 adds the 5 expense pages, void dialog, stock, 3 report views,
+      // a split invoice and a split payment.
+      expect(screens, 76);
       expect(checked, greaterThan(30), reason: 'the walk found the buttons');
       semantics.dispose();
     });

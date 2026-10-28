@@ -1,6 +1,8 @@
 import '../../../core/database/daos/customer_ledger_dao.dart';
 import '../../../core/database/daos/customers_dao.dart';
 import '../../../core/database/tables/enums.dart' as db;
+import '../../payments/data/payment_parts_writer.dart';
+import '../../payments/domain/payment_split.dart';
 import '../domain/customer.dart';
 import '../domain/ledger_entry.dart';
 import '../domain/payment.dart';
@@ -17,9 +19,16 @@ abstract final class CustomerMappers {
       archived: row.customer.archivedAt != null,
     ),
     balancePiasters: row.balancePiasters,
+    hasHistory: row.hasHistory,
+    purgeAt: row.hasHistory
+        ? null
+        : row.customer.archivedAt?.add(kArchivePurgeAfter),
   );
 
-  static LedgerEntry entry(StatementRow s) {
+  static LedgerEntry entry(
+    StatementRow s, {
+    List<PaymentPart> parts = const [],
+  }) {
     final r = s.row;
     return LedgerEntry(
       id: r.id,
@@ -34,6 +43,7 @@ abstract final class CustomerMappers {
       method: r.paymentMethod == null ? null : method(r.paymentMethod!),
       note: r.note,
       reversed: s.reversed,
+      parts: parts,
     );
   }
 
@@ -50,17 +60,7 @@ abstract final class CustomerMappers {
     db.CustomerEntryType.ADJUSTMENT => LedgerEntryType.reversal,
   };
 
-  static PaymentMethod method(db.PaymentMethod m) => switch (m) {
-    db.PaymentMethod.cash => PaymentMethod.cash,
-    db.PaymentMethod.wallet => PaymentMethod.wallet,
-    db.PaymentMethod.instapay => PaymentMethod.instapay,
-    db.PaymentMethod.card => PaymentMethod.card,
-  };
+  static PaymentMethod method(db.PaymentMethod m) => PaymentMappers.method(m);
 
-  static db.PaymentMethod toDb(PaymentMethod m) => switch (m) {
-    PaymentMethod.cash => db.PaymentMethod.cash,
-    PaymentMethod.wallet => db.PaymentMethod.wallet,
-    PaymentMethod.instapay => db.PaymentMethod.instapay,
-    PaymentMethod.card => db.PaymentMethod.card,
-  };
+  static db.PaymentMethod toDb(PaymentMethod m) => PaymentMappers.toDb(m);
 }

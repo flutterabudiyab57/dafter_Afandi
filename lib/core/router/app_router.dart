@@ -9,6 +9,11 @@ import '../../features/customers/presentation/screens/customer_details_screen.da
 import '../../features/customers/presentation/screens/customer_form_screen.dart';
 import '../../features/customers/presentation/screens/customers_screen.dart';
 import '../../features/customers/presentation/screens/payment_screen.dart';
+import '../../features/expenses/presentation/expenses_cubits.dart';
+import '../../features/expenses/presentation/screens/expense_categories_screen.dart';
+import '../../features/expenses/presentation/screens/expense_form_screen.dart';
+import '../../features/expenses/presentation/screens/expense_screen.dart';
+import '../../features/expenses/presentation/screens/expenses_list_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/onboarding/presentation/shop_details_step_screen.dart';
 import '../../features/onboarding/presentation/welcome_screen.dart';
@@ -22,11 +27,17 @@ import '../../features/products/presentation/screens/product_details_screen.dart
 import '../../features/products/presentation/screens/product_form_screen.dart';
 import '../../features/products/presentation/screens/product_list_screen.dart';
 import '../../features/products/presentation/screens/stock_adjustment_screen.dart';
+import '../../features/products/presentation/screens/stock_summary_screen.dart';
 import '../../features/purchases/presentation/purchases_cubits.dart';
 import '../../features/purchases/presentation/screens/new_purchase_screen.dart';
 import '../../features/purchases/presentation/screens/purchase_screen.dart';
 import '../../features/purchases/presentation/screens/purchases_list_screen.dart';
+import '../../features/reports/presentation/cubits/report_period_cubit.dart';
+import '../../features/reports/presentation/cubits/reports_cubits.dart';
 import '../../features/reports/presentation/reports_screen.dart';
+import '../../features/reports/presentation/screens/balances_screen.dart';
+import '../../features/reports/presentation/screens/collected_screen.dart';
+import '../../features/reports/presentation/screens/top_sellers_screen.dart';
 import '../../features/sales/presentation/sales_cubits.dart';
 import '../../features/sales/presentation/screens/invoice_screen.dart';
 import '../../features/sales/presentation/screens/new_sale_screen.dart';
@@ -57,6 +68,10 @@ typedef ShopProfileFormCubitFactory = ShopProfileFormCubit Function(
 
 /// The app's routes with one redirect (contracts/routes-and-screens.md):
 /// before onboarding only the first-run routes, after it never them.
+///
+/// go_router keys a page by its route pattern, so a `go` from one id to
+/// another would keep the first id's cubits. Each page that reads an id is
+/// keyed by its own matched location instead.
 GoRouter createAppRouter(
   AppPreferencesCubit prefs, {
   required ShopProfileFormCubitFactory shopProfileForm,
@@ -65,12 +80,9 @@ GoRouter createAppRouter(
   required SalesCubits sales,
   required SuppliersCubits suppliers,
   required PurchasesCubits purchases,
+  required ReportsCubits reports,
+  required ExpensesCubits expenses,
 }) {
-  StatefulShellBranch section(String path, Widget screen) =>
-      StatefulShellBranch(
-        routes: [GoRoute(path: path, builder: (context, state) => screen)],
-      );
-
   return GoRouter(
     initialLocation: RoutePaths.welcome,
     refreshListenable: StreamListenable(prefs.stream),
@@ -104,12 +116,17 @@ GoRouter createAppRouter(
       ),
       // The five sections, in the order of FR-008, each keeping its stack.
       StatefulShellRoute.indexedStack(
-        builder: (context, state, shell) => AppShellScaffold(
-          navigationShell: shell,
-          showAppBar: RoutePaths.isSectionRoot(state.uri.path),
+        // The report period is shared by every report screen (006 research
+        // R14) and kept while the owner visits other sections.
+        builder: (context, state, shell) => BlocProvider(
+          create: (_) => reports.reportPeriod(),
+          child: AppShellScaffold(
+            navigationShell: shell,
+            showAppBar: RoutePaths.isSectionRoot(state.uri.path),
+          ),
         ),
         branches: [
-          StatefulShellBranch(routes: [_homeRoute(products)]),
+          StatefulShellBranch(routes: [_homeRoute(products, reports)]),
           StatefulShellBranch(routes: [_salesRoute(sales)]),
           StatefulShellBranch(
             routes: [
@@ -118,7 +135,7 @@ GoRouter createAppRouter(
             ],
           ),
           StatefulShellBranch(routes: [_purchasesRoute(purchases)]),
-          section(RoutePaths.reports, const ReportsScreen()),
+          StatefulShellBranch(routes: [_reportsRoute(reports, expenses)]),
         ],
       ),
       // Settings are pushed above the shell.
@@ -147,23 +164,100 @@ GoRouter createAppRouter(
   );
 }
 
+/// Reports and the expenses screens below it, all on the shell's report
+/// period (006 research R14).
+GoRoute _reportsRoute(ReportsCubits reports, ExpensesCubits expenses) =>
+    GoRoute(
+      path: RoutePaths.reports,
+      builder: (context, state) => BlocProvider(
+        create: (context) => reports.profit(context.read<ReportPeriodCubit>()),
+        child: const ReportsScreen(),
+      ),
+      routes: [
+        GoRoute(
+          path: 'collected',
+          builder: (context, state) => BlocProvider(
+            create: (context) =>
+                reports.collected(context.read<ReportPeriodCubit>()),
+            child: const CollectedScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'top',
+          builder: (context, state) => BlocProvider(
+            create: (context) =>
+                reports.topSellers(context.read<ReportPeriodCubit>()),
+            child: const TopSellersScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'balances',
+          builder: (context, state) => BlocProvider(
+            create: (_) => reports.balances(),
+            child: const BalancesScreen(),
+          ),
+        ),
+        GoRoute(
+          path: 'expenses',
+          builder: (context, state) => BlocProvider(
+            create: (context) =>
+                expenses.expensesList(context.read<ReportPeriodCubit>()),
+            child: const ExpensesListScreen(),
+          ),
+          routes: [
+            // Before ':id', so it never matches as an id.
+            GoRoute(
+              path: 'new',
+              builder: (context, state) => BlocProvider(
+                create: (_) => expenses.expenseForm(),
+                child: const ExpenseFormScreen(),
+              ),
+            ),
+            GoRoute(
+              path: ':id',
+              builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
+                create: (_) => expenses.expense(state.pathParameters['id']!),
+                child: const ExpenseScreen(),
+              ),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: 'expense-categories',
+          builder: (context, state) => BlocProvider(
+            create: (_) => expenses.expenseCategories(),
+            child: const ExpenseCategoriesScreen(),
+          ),
+        ),
+      ],
+    );
+
 /// Home and the products screens below it, so the bottom bar stays and Back
 /// returns to Home (002 research R10).
-GoRoute _homeRoute(ProductsCubits products) => GoRoute(
+GoRoute _homeRoute(ProductsCubits products, ReportsCubits reports) => GoRoute(
   path: RoutePaths.home,
-  builder: (context, state) => BlocProvider(
-    create: (_) => products.lowStock(),
+  builder: (context, state) => MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (_) => products.lowStock()),
+      BlocProvider(create: (_) => reports.dashboard()),
+    ],
     child: const HomeScreen(),
   ),
   routes: [
     GoRoute(
       path: 'products',
-      builder: (context, state) => BlocProvider(
-        create: (_) => products.productList(
-          initialQuery: ProductQuery(
-            lowOnly: state.uri.queryParameters['filter'] == 'low',
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => products.productList(
+              initialQuery: ProductQuery(
+                lowOnly: state.uri.queryParameters['filter'] == 'low',
+              ),
+            ),
           ),
-        ),
+          BlocProvider(create: (_) => products.stockSummary()),
+        ],
         child: const ProductListScreen(),
       ),
       routes: [
@@ -186,10 +280,18 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
           ),
         ),
         GoRoute(
+          path: 'stock',
+          builder: (context, state) => BlocProvider(
+            create: (_) => products.stockSummary(),
+            child: const StockSummaryScreen(),
+          ),
+        ),
+        GoRoute(
           path: ':id',
           builder: (context, state) {
             final id = state.pathParameters['id']!;
             return MultiBlocProvider(
+              key: ValueKey(state.matchedLocation),
               providers: [
                 BlocProvider(create: (_) => products.productDetails(id)),
                 BlocProvider(create: (_) => products.stockHistory(id)..load()),
@@ -201,6 +303,7 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
             GoRoute(
               path: 'edit',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) => products.productForm(
                   mode: ProductFormMode.edit,
                   productId: state.pathParameters['id'],
@@ -211,6 +314,7 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
             GoRoute(
               path: 'opening',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) =>
                     products.openingStock(state.pathParameters['id']!),
                 child: const OpeningStockScreen(),
@@ -219,6 +323,7 @@ GoRoute _homeRoute(ProductsCubits products) => GoRoute(
             GoRoute(
               path: 'adjust',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) =>
                     products.stockAdjustment(state.pathParameters['id']!),
                 child: const StockAdjustmentScreen(),
@@ -254,12 +359,14 @@ GoRoute _salesRoute(SalesCubits sales) => GoRoute(
         child: NewSaleScreen(
           productPicker: sales.productPicker,
           customerPicker: sales.customerPicker,
+          newCustomer: sales.newCustomer,
         ),
       ),
     ),
     GoRoute(
       path: ':id',
       builder: (context, state) => BlocProvider(
+        key: ValueKey(state.matchedLocation),
         create: (_) => sales.invoice(state.pathParameters['id']!),
         child: const InvoiceScreen(),
       ),
@@ -284,12 +391,14 @@ GoRoute _purchasesRoute(PurchasesCubits purchases) => GoRoute(
           productPicker: purchases.productPicker,
           quickAddProduct: purchases.quickAddProduct,
           supplierPicker: purchases.supplierPicker,
+          newSupplier: purchases.newSupplier,
         ),
       ),
     ),
     GoRoute(
       path: ':id',
       builder: (context, state) => BlocProvider(
+        key: ValueKey(state.matchedLocation),
         create: (_) => purchases.purchaseView(state.pathParameters['id']!),
         child: const PurchaseScreen(),
       ),
@@ -329,6 +438,7 @@ GoRoute _partiesRoute(CustomersCubits customers, SalesCubits sales) => GoRoute(
       builder: (context, state) {
         final id = state.pathParameters['id']!;
         return MultiBlocProvider(
+          key: ValueKey(state.matchedLocation),
           providers: [
             BlocProvider(create: (_) => customers.customerDetails(id)),
             BlocProvider(create: (_) => customers.statement(id)..load()),
@@ -341,6 +451,7 @@ GoRoute _partiesRoute(CustomersCubits customers, SalesCubits sales) => GoRoute(
         GoRoute(
           path: 'edit',
           builder: (context, state) => BlocProvider(
+            key: ValueKey(state.matchedLocation),
             create: (_) => customers.customerForm(
               mode: CustomerFormMode.edit,
               customerId: state.pathParameters['id'],
@@ -351,6 +462,7 @@ GoRoute _partiesRoute(CustomersCubits customers, SalesCubits sales) => GoRoute(
         GoRoute(
           path: 'payment',
           builder: (context, state) => BlocProvider(
+            key: ValueKey(state.matchedLocation),
             create: (_) => customers.payment(state.pathParameters['id']!),
             child: const PaymentScreen(),
           ),
@@ -394,6 +506,7 @@ GoRoute _suppliersRoute(SuppliersCubits suppliers, PurchasesCubits purchases) =>
           builder: (context, state) {
             final id = state.pathParameters['id']!;
             return MultiBlocProvider(
+              key: ValueKey(state.matchedLocation),
               providers: [
                 BlocProvider(create: (_) => suppliers.supplierDetails(id)),
                 BlocProvider(create: (_) => suppliers.statement(id)..load()),
@@ -408,6 +521,7 @@ GoRoute _suppliersRoute(SuppliersCubits suppliers, PurchasesCubits purchases) =>
             GoRoute(
               path: 'edit',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) => suppliers.supplierForm(
                   mode: SupplierFormMode.edit,
                   supplierId: state.pathParameters['id'],
@@ -418,6 +532,7 @@ GoRoute _suppliersRoute(SuppliersCubits suppliers, PurchasesCubits purchases) =>
             GoRoute(
               path: 'payment',
               builder: (context, state) => BlocProvider(
+                key: ValueKey(state.matchedLocation),
                 create: (_) => suppliers.payment(state.pathParameters['id']!),
                 child: const SupplierPaymentScreen(),
               ),

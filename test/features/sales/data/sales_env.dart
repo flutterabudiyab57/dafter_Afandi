@@ -7,6 +7,7 @@ import 'package:daftar_afandi/features/customers/domain/customer_draft.dart';
 import 'package:daftar_afandi/features/customers/domain/customer_errors.dart';
 import 'package:daftar_afandi/features/customers/domain/customer_repository.dart';
 import 'package:daftar_afandi/features/customers/domain/ledger_entry.dart';
+import 'package:daftar_afandi/features/payments/data/payment_parts_writer.dart';
 import 'package:daftar_afandi/features/sales/data/sales_repository_impl.dart';
 import 'package:daftar_afandi/features/sales/domain/sale_draft.dart';
 
@@ -19,6 +20,7 @@ final class SalesEnv {
     : products = ProductsEnv() {
     final db = products.db;
     final tx = DriftTransactionRunner(db);
+    parts = PaymentPartsWriter(db.paymentPartsDao, products.ids);
     customers = CustomerRepositoryImpl(
       db.customersDao,
       db.customerLedgerDao,
@@ -26,6 +28,7 @@ final class SalesEnv {
       tx,
       products.ids,
       products.clock,
+      parts,
     );
     sales = SalesRepositoryImpl(
       salesDao?.call(this) ?? db.salesDao,
@@ -37,12 +40,14 @@ final class SalesEnv {
       tx,
       products.ids,
       products.clock,
+      parts,
     );
   }
 
   final ProductsEnv products;
   late final CustomerRepositoryImpl customers;
   late final SalesRepositoryImpl sales;
+  late final PaymentPartsWriter parts;
 
   Future<void> dispose() => products.dispose();
 
