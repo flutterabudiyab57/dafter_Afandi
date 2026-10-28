@@ -178,7 +178,7 @@ packages:
     source: hosted
     version: "3.1.2"
   coverage:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: coverage
       sha256: "956a3de0725ca232ad353565a8290d3357592bf4250f6f298a185e2d949c5d3d"
@@ -803,7 +803,7 @@ packages:
     source: hosted
     version: "0.7.0+eol"
   sqlite3:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: sqlite3
       sha256: cc62d72dbf16bb1f6ae8954b238016de1473e53df060ed0c332eed0a41dd1848
